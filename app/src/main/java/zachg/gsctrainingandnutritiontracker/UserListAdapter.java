@@ -1,12 +1,15 @@
 package zachg.gsctrainingandnutritiontracker;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Collections;
 import java.util.List;
 
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
@@ -21,10 +24,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
             userItemView = itemView.findViewById(R.id.userListItem);
         }
     }
-    private List<User> mUsers; // Cached copy of users
+    private List<User> mUsers = Collections.emptyList(); // Cached copy of users
+    private final LayoutInflater mInflater;
 
-    public UserListAdapter(List<User> mUsers) {
-        this.mUsers = mUsers;
+    UserListAdapter(Context context) {
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override

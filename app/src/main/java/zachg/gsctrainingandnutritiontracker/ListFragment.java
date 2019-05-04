@@ -1,6 +1,6 @@
 package zachg.gsctrainingandnutritiontracker;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,10 +21,9 @@ import java.util.List;
 
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 
-import static android.app.Activity.RESULT_OK;
-
 // TODO: Get ListFragment to show menu
 // TODO: Get ListFragment to show RecyclerView items
+// Why is LoginFragment loaded "beneath" ListFragment?
 
 // ListFragment is the fragment of Users which the admin accesses upon logging in
 
@@ -35,19 +34,18 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     private Button mAddNewClient;
     private List<User> mUsers;
     private Callbacks mCallbacks;
-    public static final int NEW_USER_ACTIVITY_REQUEST_CODE = 1;
 
     public ListFragment() {}
 
     public interface Callbacks {
-        //void onUserSelected(User user);
+        void onUserSelected(User user);
     }
 
     @Override
     public void onClick(View v) {
         // required onClick method
     }
-/*
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -59,7 +57,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         super.onDetach();
         mCallbacks = null;
     }
-    */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,19 +64,17 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        UserListAdapter adapter = new UserListAdapter(mUsers);
-        mUserRecyclerView.setAdapter(adapter);
-
-        setHasOptionsMenu(true);
+        //UserListAdapter adapter = new UserListAdapter(mUsers);
+        //mUserRecyclerView.setAdapter(adapter);
 
         mAddNewClient = view.findViewById(R.id.add_new_client);
         // Get a new or existing ViewModel from the ViewModelProvider.
                 mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
                 mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
                     public void onChanged(List<User> mUsers) {
-                        UserListAdapter adapter = new UserListAdapter(mUsers);
+                        //UserListAdapter adapter = new UserListAdapter(mUsers);
                         // Update the cached copy of the users in the adapter.
-                        adapter.setUsers(mUsers);
+                        //adapter.setUsers(mUsers);
                     }
                 });
         return view;
@@ -89,7 +84,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -115,23 +109,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new RegisterFragment()).addToBackStack(null).commit();
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
-    }
-
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == NEW_USER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            User user = new User(data.getStringExtra(RegisterFragment.EXTRA_REPLY));
-            mUserViewModel.insert(user);
-        } else {
-            Toast.makeText(
-                    getActivity(),
-                    "not_saved",
-                    Toast.LENGTH_LONG).show();
-        }
+        return true;
     }
 }
