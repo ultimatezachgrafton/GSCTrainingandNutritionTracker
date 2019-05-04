@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
+
+    <ImageView
+        android:id="@+id/client_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@android:color/darker_gray"
+        android:contentDescription="@string/report_photo_no_image_description"
+        android:cropToPadding="true"
+        android:focusable="true"
+        android:scaleType="centerInside" />
+
+    <ImageButton
+        android:id="@+id/report_camera"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/report_photo_button_description"
+        android:src="@android:drawable/ic_menu_camera"
+        android:layout_below="@id/client_photo" />
+
+    <TextView
+        android:id="@+id/client_name"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/client_name"
+        android:textSize="18sp"
+        android:layout_toRightOf="@id/client_photo"/>
+
+    <TextView
+        android:id="@+id/date"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/client_photo"
+        android:layout_below="@id/client_name"
+        android:text="@string/date"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/separator1"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/report_details_label"
+        android:layout_below="@id/report_camera"/>
+
+    <TextView
+        android:id="@+id/weight_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator1"
+        android:text="@string/enter_weight"/>
+
+    <EditText
+        android:id="@+id/weight_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_toRightOf="@id/weight_text"
+        android:layout_alignBottom="@id/weight_text"/>
+
+    <TextView
+        android:id="@+id/separator2"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exercises"
+        android:layout_below="@id/weight_text"/>
+
+    <TextView
+        android:id="@+id/exercise_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exercise_name"
+        android:layout_below="@+id/separator2"/>
+
+    <EditText
+        android:id="@+id/exercise_name_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_toRightOf="@id/exercise_name_text"
+        android:layout_alignBottom="@id/exercise_name_text"/>
+
+    <TextView
+        android:id="@+id/reps_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reps"
+        android:layout_below="@id/exercise_name_text"/>
+
+    <EditText
+        android:id="@+id/reps_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_toRightOf="@id/reps_text"
+        android:layout_alignBottom="@id/reps_text"/>
+
+    <TextView
+        android:id="@+id/weight_used_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/workout_weight"
+        android:layout_below="@id/reps_text"/>
+
+    <EditText
+        android:id="@+id/weight_used_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/weight_used_text"
+        android:layout_alignBottom="@id/weight_used_text"/>
+
+    <EditText
+        android:id="@+id/workout_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/comments"
+        android:layout_below="@id/weight_used_text" />
+
+    <TextView
+        android:id="@+id/nutrition_text"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/workout_comments"
+        android:text="@string/nutrition"/>
+
+    <TextView
+        android:id="@+id/meal_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nutrition_text"
+        android:text="@string/food_item"/>
+
+    <EditText
+        android:id="@+id/meal_item_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/meal_item_text"
+        android:layout_alignBottom="@id/meal_item_text"/>
+
+    <TextView
+        android:id="@+id/calories_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/meal_item_text"
+        android:text="@string/calories"/>
+
+    <EditText
+        android:id="@+id/calories_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/calories_text"
+        android:layout_alignBottom="@id/calories_text"/>
+
+    <TextView
+        android:id="@+id/fat_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calories_entry"
+        android:text="@string/fats"/>
+
+    <EditText
+        android:id="@+id/fat_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/fat_text"
+        android:layout_alignBottom="@id/fat_text"/>
+
+    <TextView
+        android:id="@+id/carb_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fat_text"
+        android:text="@string/carbs"/>
+
+    <EditText
+        android:id="@+id/carb_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/carb_text"
+        android:layout_alignBottom="@id/carb_text"/>
+
+    <TextView
+        android:id="@+id/protein_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/carb_text"
+        android:text="@string/protein"/>
+
+    <EditText
+        android:id="@+id/protein_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/protein_text"
+        android:layout_alignBottom="@id/protein_text"/>
+
+    <Button
+        android:id="@+id/report_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@id/protein_text"
+        android:text="@string/report_report_text" />
+
+</RelativeLayout>

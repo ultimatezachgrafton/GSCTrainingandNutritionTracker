@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
+
+// UserListAdapter adapts the RecyclerView list items of Users for viewing
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
 
@@ -17,18 +18,18 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
 
         private UserViewHolder(View itemView) {
             super(itemView);
-            userItemView = itemView.findViewById(R.id.textView);
+            userItemView = itemView.findViewById(R.id.userListItem);
         }
     }
-
-    private final LayoutInflater mInflater;
     private List<User> mUsers; // Cached copy of users
 
-    UserListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    public UserListAdapter(List<User> mUsers) {
+        this.mUsers = mUsers;
+    }
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
         return new UserViewHolder(itemView);
     }
 
@@ -36,15 +37,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     public void onBindViewHolder(UserViewHolder holder, int position) {
         if (mUsers != null) {
             User current = mUsers.get(position);
-            holder.userItemView.setText(current.getUser());
+            holder.userItemView.setText(current.getUserName());
         } else {
             // Covers the case of data not being ready yet.
             holder.userItemView.setText("No User");
         }
     }
 
-    void setUsers(List<User> users){
-        mUsers = users;
+    void setUsers(List<User> mUsers){
+        this.mUsers = mUsers;
         notifyDataSetChanged();
     }
 

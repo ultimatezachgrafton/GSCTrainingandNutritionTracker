@@ -4,8 +4,9 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/userListItem"
         style="@style/user_title"
+        android:text="hi idiot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_orange_light" />

@@ -2,18 +2,20 @@ package zachg.gsctrainingandnutritiontracker;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
+
+// Shows the LiveData List observed by ListActivity and ListFragment
 
 public class UserViewModel extends AndroidViewModel {
 
     private UserRepository mRepository;
 
-    private LiveData<List<User>> mAllUsers;
+    private final LiveData<List<User>> mAllUsers;
 
-    public UserViewModel(Application application) {
+    public UserViewModel(@NonNull Application application) {
         super(application);
         mRepository = new UserRepository(application);
         mAllUsers = mRepository.getAllUsers();

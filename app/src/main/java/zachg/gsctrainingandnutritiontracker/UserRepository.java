@@ -36,7 +36,7 @@ public class UserRepository {
 
         @Override
         protected Void doInBackground(final User... params) {
-            mAsyncTaskDao.insert(params[0]);
+            mAsyncTaskDao.addUser(params[0]);
             return null;
         }
     }

@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {User.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class}, version = 2, exportSchema = false)
 public abstract class UserRoomDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
@@ -22,7 +22,7 @@ public abstract class UserRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             UserRoomDatabase.class, "users").addCallback(sRoomDatabaseCallback)
-                            .build();
+                            .fallbackToDestructiveMigration().build();
                 }
             }
         }
@@ -50,10 +50,10 @@ public abstract class UserRoomDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(final Void... params) {
             mDao.deleteAll();
-            User user = new User("Hello");
-            mDao.insert(user);
-            user = new User("World");
-            mDao.insert(user);
+            User user = new User("Biff Tannen");
+            mDao.addUser(user);
+            user = new User("Doc Brown");
+            mDao.addUser(user);
             return null;
         }
     }

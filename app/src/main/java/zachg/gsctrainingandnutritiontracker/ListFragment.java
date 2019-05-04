@@ -1,0 +1,137 @@
+package zachg.gsctrainingandnutritiontracker;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
+
+import static android.app.Activity.RESULT_OK;
+
+// TODO: Get ListFragment to show menu
+// TODO: Get ListFragment to show RecyclerView items
+
+// ListFragment is the fragment of Users which the admin accesses upon logging in
+
+public class ListFragment extends Fragment implements View.OnClickListener {
+
+    private RecyclerView mUserRecyclerView;
+    private UserViewModel mUserViewModel;
+    private Button mAddNewClient;
+    private List<User> mUsers;
+    private Callbacks mCallbacks;
+    public static final int NEW_USER_ACTIVITY_REQUEST_CODE = 1;
+
+    public ListFragment() {}
+
+    public interface Callbacks {
+        //void onUserSelected(User user);
+    }
+
+    @Override
+    public void onClick(View v) {
+        // required onClick method
+    }
+/*
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+    */
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        UserListAdapter adapter = new UserListAdapter(mUsers);
+        mUserRecyclerView.setAdapter(adapter);
+
+        setHasOptionsMenu(true);
+
+        mAddNewClient = view.findViewById(R.id.add_new_client);
+        // Get a new or existing ViewModel from the ViewModelProvider.
+                mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+                mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
+                    public void onChanged(List<User> mUsers) {
+                        UserListAdapter adapter = new UserListAdapter(mUsers);
+                        // Update the cached copy of the users in the adapter.
+                        adapter.setUsers(mUsers);
+                    }
+                });
+        return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_new_client:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new RegisterFragment()).addToBackStack(null).commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == NEW_USER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            User user = new User(data.getStringExtra(RegisterFragment.EXTRA_REPLY));
+            mUserViewModel.insert(user);
+        } else {
+            Toast.makeText(
+                    getActivity(),
+                    "not_saved",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+}
