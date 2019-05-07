@@ -30,6 +30,7 @@ import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 public class ListFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView mUserRecyclerView;
+    private UserListAdapter mUserListAdapter;
     private UserViewModel mUserViewModel;
     private Button mAddNewClient;
     private List<User> mUsers;
@@ -37,25 +38,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     public ListFragment() {}
 
-    public interface Callbacks {
-        void onUserSelected(User user);
-    }
-
     @Override
-    public void onClick(View v) {
-        // required onClick method
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mCallbacks = (Callbacks) context;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -80,10 +66,26 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+
+    public interface Callbacks {
+        void onUserSelected(User user);
+    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+    public void onClick(View v) {
+        // required onClick method
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
@@ -109,7 +111,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new RegisterFragment()).addToBackStack(null).commit();
                 return true;
+                default: return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 }

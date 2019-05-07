@@ -74,6 +74,7 @@ public class ReportFragment extends Fragment {
         UUID reportId = (UUID) getArguments().getSerializable(ARG_REPORT_ID);
         //mReport = ReportLab.get(getActivity()).getReport(reportId);
         //mPhotoFile = ReportLab.get(getActivity()).getPhotoFile(mReport);
+        //mReport = new Report();
     }
 
     @Override

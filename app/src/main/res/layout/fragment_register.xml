@@ -5,7 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context="zachg.Main.SingleFragmentActivity">
+    android:id="@+id/fragment_register"
+    tools:context=".SingleFragmentActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="?attr/colorPrimary"
+        />
 
     <TextView
         android:layout_width="wrap_content"

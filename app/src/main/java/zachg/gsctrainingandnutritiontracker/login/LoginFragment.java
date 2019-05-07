@@ -25,8 +25,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private Button bLogin;
     private EditText etUsername, etPassword;
     UserRoomDatabase sUserDatabase;
+
     public LoginFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

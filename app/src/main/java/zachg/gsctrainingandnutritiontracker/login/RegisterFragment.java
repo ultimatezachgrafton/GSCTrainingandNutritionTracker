@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.Report;
 import zachg.gsctrainingandnutritiontracker.User;
 import zachg.gsctrainingandnutritiontracker.UserRoomDatabase;
 
@@ -27,6 +28,14 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     EditText etPassword, etConfirmPassword, etClientName;
     public static UserRoomDatabase sUserDatabase;
     public static final String EXTRA_REPLY = "zachg.bensfitnessapp.REPLY";
+    private Report mReport;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mReport = new Report();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // inflate layout for fragment
