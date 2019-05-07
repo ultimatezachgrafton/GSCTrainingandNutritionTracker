@@ -23,7 +23,8 @@ public class PagerActivity extends AppCompatActivity implements ReportFragment.C
     private ViewPager mViewPager;
     private List<Report> mReports;
 
-    public static Intent newIntent(Context packageContext, UUID reportId) {
+    // putting int for now Zach, fix it
+    public static Intent newIntent(Context packageContext, int reportId) {
         Intent intent = new Intent(packageContext, PagerActivity.class);
         intent.putExtra(EXTRA_REPORT_ID, reportId);
         return intent;
@@ -34,7 +35,7 @@ public class PagerActivity extends AppCompatActivity implements ReportFragment.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_pager);
 
-        UUID reportId = (UUID) getIntent().getSerializableExtra(EXTRA_REPORT_ID);
+        int reportId = getIntent().getIntExtra(EXTRA_REPORT_ID, 0);
 
         mViewPager = (ViewPager) findViewById(R.id.report_view_pager);
         //mReports = ReportLab.get(this).getReports();

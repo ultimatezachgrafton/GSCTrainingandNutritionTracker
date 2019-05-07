@@ -17,41 +17,37 @@ import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
 
-    class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class UserViewHolder extends RecyclerView.ViewHolder {
         //private final TextView userItemView;
         private User mUser;
         private TextView mTitleTextView;
 
         public UserViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.recyclerview_item, parent, false));
-            itemView.setOnClickListener(this);
-            //userItemView = itemView.findViewById(R.id.userListItem);
+            View rootView = inflater.inflate(R.layout.recyclerview_item, parent, false);
+            mTitleTextView = rootView.findViewById(R.id.userListItem);
         }
 
         public void bind(User user) {
             mUser = user;
             mTitleTextView.setText(mUser.getClientName());
         }
-
-        @Override
-        public void onClick(View view) {
-            Intent intent = PagerActivity.newIntent(getActivity(), mUser.getId());
-            startActivity(intent);
-        }
     }
 
     private List<User> mUsers; // Cached copy of users
     private LayoutInflater mInflater;
     private Context mContext;
+    private View.OnClickListener mOnClickListener;
 
-    public UserListAdapter(Context context, List<User> users) {
+    public UserListAdapter(Context context, List<User> users, View.OnClickListener clickListener) {
         mUsers = users;
         this.mContext = context;
+        mOnClickListener = clickListener;
     }
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         return new UserViewHolder(layoutInflater, parent);
     }
 
@@ -60,6 +56,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         if (mUsers != null) {
             User current = mUsers.get(position);
             holder.bind(current);
+            holder.itemView.setOnClickListener(mOnClickListener);
         }
     }
 

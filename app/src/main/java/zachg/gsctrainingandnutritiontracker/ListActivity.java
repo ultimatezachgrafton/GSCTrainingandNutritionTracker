@@ -34,8 +34,7 @@ public class ListActivity extends AppCompatActivity {
     protected Fragment createFragment() {
         return new ListFragment();
     }
-}
-    /*
+
     private RecyclerView mUserRecyclerView;
     private UserViewModel mUserViewModel;
     private Button mAddNewClient;
@@ -48,17 +47,14 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_list);
+        SingleFragmentActivity.fm = getSupportFragmentManager();
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new ListFragment()).addToBackStack(null).commit();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         //setHasOptionsMenu(true);
-
-        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        final UserListAdapter adapter = new UserListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Get a new or existing ViewModel from the ViewModelProvider.
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -66,23 +62,23 @@ public class ListActivity extends AppCompatActivity {
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-        mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable final List<User> users) {
-                // Update the cached copy of the words in the adapter.
-                adapter.setUsers(users);
-            }
-        });
+//        mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
+//            @Override
+//            public void onChanged(@Nullable final List<User> users) {
+//                // Update the cached copy of the words in the adapter.
+//                adapter.setUsers(users);
+//            }
+//        });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView.setVisibility(GONE);
-                FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.fragment_list, new RegisterFragment()).commit();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                recyclerView.setVisibility(GONE);
+//                FragmentManager fm = getSupportFragmentManager();
+//                fm.beginTransaction().replace(R.id.fragment_list, new RegisterFragment()).commit();
+//            }
+//        });
     }
 
     @Override
@@ -126,4 +122,4 @@ public class ListActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
-}*/
+}
