@@ -50,17 +50,17 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //UserListAdapter adapter = new UserListAdapter(mUsers);
-        //mUserRecyclerView.setAdapter(adapter);
+        UserListAdapter adapter = new UserListAdapter(getActivity(), mUsers);
+        mUserRecyclerView.setAdapter(adapter);
 
         mAddNewClient = view.findViewById(R.id.add_new_client);
         // Get a new or existing ViewModel from the ViewModelProvider.
                 mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
                 mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
                     public void onChanged(List<User> mUsers) {
-                        //UserListAdapter adapter = new UserListAdapter(mUsers);
+                        UserListAdapter adapter = new UserListAdapter(getActivity(), mUsers);
                         // Update the cached copy of the users in the adapter.
-                        //adapter.setUsers(mUsers);
+                        adapter.setUsers(mUsers);
                     }
                 });
         return view;
