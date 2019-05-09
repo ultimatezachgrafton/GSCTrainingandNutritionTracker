@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
@@ -19,18 +21,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
 
     class UserViewHolder extends RecyclerView.ViewHolder {
         //private final TextView userItemView;
-        private User mUser;
         private TextView mTitleTextView;
 
-        public UserViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.recyclerview_item, parent, false));
-            View rootView = inflater.inflate(R.layout.recyclerview_item, parent, false);
-            mTitleTextView = rootView.findViewById(R.id.userListItem);
+        public UserViewHolder(View view) {
+            super(view);
+            mTitleTextView = (TextView)view.findViewById(R.id.userListItem);
         }
 
         public void bind(User user) {
-            mUser = user;
-            mTitleTextView.setText(mUser.getClientName());
+            mTitleTextView.setText(user.getClientName());
         }
     }
 
@@ -47,8 +46,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
 
     @Override
     public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        return new UserViewHolder(layoutInflater, parent);
+        View rootView =  LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
+        return new UserViewHolder(rootView);
     }
 
     @Override
@@ -57,6 +56,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
             User current = mUsers.get(position);
             holder.bind(current);
             holder.itemView.setOnClickListener(mOnClickListener);
+            ((TextView)holder.itemView.findViewById(R.id.userListItem)).setText(current.getClientName());
         }
     }
 
