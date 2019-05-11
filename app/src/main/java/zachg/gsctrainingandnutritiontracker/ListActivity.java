@@ -52,24 +52,6 @@ public class ListActivity extends AppCompatActivity {
                 new ListFragment()).addToBackStack(null).commit();
 
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        //setHasOptionsMenu(true);
-
-        // Get a new or existing ViewModel from the ViewModelProvider.
-        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-//        mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
-//            @Override
-//            public void onChanged(@Nullable final List<User> users) {
-//                // Update the cached copy of the words in the adapter.
-//                adapter.setUsers(users);
-//            }
-//        });
-
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override

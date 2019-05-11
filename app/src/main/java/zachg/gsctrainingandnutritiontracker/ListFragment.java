@@ -1,8 +1,10 @@
 package zachg.gsctrainingandnutritiontracker;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -24,6 +28,8 @@ import java.util.UUID;
 
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 
+import static android.content.ContentValues.TAG;
+
 // TODO: Get ListFragment to show menu
 // TODO: Get ListFragment to show RecyclerView items
 // Why is LoginFragment loaded "beneath" ListFragment?
@@ -34,7 +40,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView mUserRecyclerView;
     private UserListAdapter mUserListAdapter;
-    private UserViewModel mUserViewModel;
     private Button mAddNewClient;
     private List<User> mUsers;
     private Callbacks mCallbacks;
@@ -49,21 +54,44 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
         mUsers = new ArrayList<>();
 
-        User user1 = new User();
-        User user2 = new User();
-        user1.setClientName("Biff Tannen");
-        user2.setClientName("Marty McFly");
+        User user1 = new User("Biff Tannen");
+        User user2 = new User("Marty McFly");
+        User user3 = new User("Doc Brown");
         mUsers.add(user1);
         mUsers.add(user2);
+        mUsers.add(user3);
+
+        RecyclerView mUserRecyclerView = new RecyclerView(getContext());
+        mUserRecyclerView = mUserRecyclerView.findViewById(R.id.recycler_view);
+        final UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
+        mUserRecyclerView.setAdapter(adapter);
+        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Get a new or existing ViewModel from the ViewModelProvider.
+        Application application = new Application();
+        UserViewModel mUserViewModel = new UserViewModel(application);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
+        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // The onChanged() method fires when the observed data changes and the activity is
+        // in the foreground.
+        mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable final List<User> users) {
+                //Update the cached copy of the words in the adapter.
+                adapter.setUsers(users);
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        //RecyclerView mUserRecyclerView = new RecyclerView(getContext());
         mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        UserListAdapter adapter = new UserListAdapter(getActivity(), mUsers, this);
+        UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
         mUserRecyclerView.setAdapter(adapter);
 
 //        mAddNewClient = view.findViewById(R.id.add_new_client);

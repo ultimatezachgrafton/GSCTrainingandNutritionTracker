@@ -16,16 +16,17 @@ import java.util.Collections;
 import java.util.List;
 
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
+// UserViewHolder is the class of views that hold the User data
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> {
 
     class UserViewHolder extends RecyclerView.ViewHolder {
-        //private final TextView userItemView;
+
         private TextView mTitleTextView;
 
         public UserViewHolder(View view) {
             super(view);
-            mTitleTextView = (TextView)view.findViewById(R.id.userListItem);
+            mTitleTextView = view.findViewById(R.id.userListItem);
         }
 
         public void bind(User user) {
@@ -38,10 +39,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
     private Context mContext;
     private View.OnClickListener mOnClickListener;
 
-    public UserListAdapter(Context context, List<User> users, View.OnClickListener clickListener) {
+    public UserListAdapter(Context context, List<User> users) {
         mUsers = users;
         this.mContext = context;
-        mOnClickListener = clickListener;
     }
 
     @Override
@@ -57,6 +57,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
             holder.bind(current);
             holder.itemView.setOnClickListener(mOnClickListener);
             ((TextView)holder.itemView.findViewById(R.id.userListItem)).setText(current.getClientName());
+            View.OnClickListener mOnClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            };
         }
     }
 
@@ -65,8 +71,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mUsers has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mUsers != null)
