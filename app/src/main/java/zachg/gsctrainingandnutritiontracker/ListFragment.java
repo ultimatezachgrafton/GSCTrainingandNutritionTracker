@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +37,7 @@ import static android.content.ContentValues.TAG;
 
 public class ListFragment extends Fragment implements View.OnClickListener {
 
+    private UserViewModel mUserViewModel;
     private RecyclerView mUserRecyclerView;
     private UserListAdapter mUserListAdapter;
     private Button mAddNewClient;
@@ -71,7 +71,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        mUserRecyclerView = view.findViewById(R.id.recycler_view);
+        //RecyclerView mUserRecyclerView = new RecyclerView(getContext());
+        mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
