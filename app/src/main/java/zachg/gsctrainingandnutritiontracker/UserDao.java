@@ -17,16 +17,16 @@ public interface UserDao {
     //@Insert
     //void createAdmin(Admin admin);
 
-    @Query("select * from users")
+    @Query("SELECT * FROM users")
     List<User> getUser();
 
-    @Query("select * FROM users ORDER BY clientName")
+    @Query("SELECT * FROM users ORDER BY clientName")
     LiveData<List<User>> getAllUsers();
 
-    @Query("select * FROM users WHERE id = :id")
+    @Query("SELECT * FROM users WHERE id = :id")
     List<User> getUserById(int id);
 
-    @Query("select * FROM users WHERE clientName = :clientName LIMIT 1")
+    @Query("SELECT * FROM users WHERE clientName = :clientName LIMIT 1")
     List<User> getUserByName(String clientName);
 
     @Delete

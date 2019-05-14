@@ -61,34 +61,17 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mUsers.add(user2);
         mUsers.add(user3);
 
-        RecyclerView mUserRecyclerView = new RecyclerView(getContext());
-        mUserRecyclerView = mUserRecyclerView.findViewById(R.id.recycler_view);
-        final UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
-        mUserRecyclerView.setAdapter(adapter);
-        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         // Get a new or existing ViewModel from the ViewModelProvider.
-        Application application = new Application();
-        UserViewModel mUserViewModel = new UserViewModel(application);
-        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+//        Application application = new Application();
+//        UserViewModel mUserViewModel = new UserViewModel(application);
+//        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-        mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(@Nullable final List<User> users) {
-                //Update the cached copy of the words in the adapter.
-                adapter.setUsers(users);
-            }
-        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        //RecyclerView mUserRecyclerView = new RecyclerView(getContext());
-        mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mUserRecyclerView = view.findViewById(R.id.recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
