@@ -54,7 +54,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mUsers.add(user1);
         mUsers.add(user2);
         mUsers.add(user3);
-        
+
         // trying to give mUserRecyclerView the recyclerview layout
         mUserRecyclerView = findViewById();
         final UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
