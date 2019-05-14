@@ -70,7 +70,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_linear_layout, container, false);
         //RecyclerView mUserRecyclerView = new RecyclerView(getContext());
         mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
