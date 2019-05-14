@@ -51,16 +51,6 @@ public class ListActivity extends AppCompatActivity {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ListFragment()).addToBackStack(null).commit();
 
-
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                recyclerView.setVisibility(GONE);
-//                FragmentManager fm = getSupportFragmentManager();
-//                fm.beginTransaction().replace(R.id.fragment_list, new RegisterFragment()).commit();
-//            }
-//        });
     }
 
     @Override
