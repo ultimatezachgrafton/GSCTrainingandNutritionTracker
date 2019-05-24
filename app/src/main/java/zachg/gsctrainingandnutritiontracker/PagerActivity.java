@@ -23,7 +23,6 @@ public class PagerActivity extends AppCompatActivity implements ReportFragment.C
     private ViewPager mViewPager;
     private List<Report> mReports;
 
-    // putting int for now Zach, fix it
     public static Intent newIntent(Context packageContext, int reportId) {
         Intent intent = new Intent(packageContext, PagerActivity.class);
         intent.putExtra(EXTRA_REPORT_ID, reportId);

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="PagerActivity" />
+        <activity android:name="PagerActivity"/>
         <provider
             android:authorities="gsctrainingandnutritiontracker.fileprovider"
             android:name="androidx.core.content.FileProvider"
@@ -27,16 +27,19 @@
                 android:resource="@xml/files"/>
         </provider>
 
+        <activity android:name=".login.RegisterActivity"
+            android:parentActivityName=".ListActivity"/>
+
         <activity
             android:name=".ListActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".login.LoginActivity"/>
 
     </application>
 

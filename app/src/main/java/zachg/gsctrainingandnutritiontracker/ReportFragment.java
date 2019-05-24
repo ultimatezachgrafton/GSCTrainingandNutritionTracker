@@ -31,8 +31,6 @@ import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
 // ReportFragment builds out the fragment that hosts the Report objects
 
-// TODO: track if report sent/unsent unread/read
-
 public class ReportFragment extends Fragment {
     private static final String ARG_REPORT_ID = "report_id";
     private static final String DIALOG_DATE = "DialogDate";

@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.login;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.Report;
 import zachg.gsctrainingandnutritiontracker.User;
 import zachg.gsctrainingandnutritiontracker.UserRoomDatabase;
 
-// TODO: authenticaTE/VALIDATE
+import static android.content.ContentValues.TAG;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
@@ -63,15 +73,32 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 String confirmPassword = etConfirmPassword.getText().toString();
 
                 if (password.equals(confirmPassword)) {
+                    // Access a Cloud Firestore instance
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                    User registeredData = new User(clientName, password);
-                    RegisterFragment.sUserDatabase.userDao().addUser(registeredData);
-                    Toast.makeText(getActivity(), "You are registered " + sUserDatabase.userDao().getUserByName(registeredData.getClientName()), Toast.LENGTH_SHORT).show();
+                    // Create a new user with a first and last name
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("first", clientName);
+                    user.put("password", password);
 
-                    //go back to login where this is true:
-                    etClientName.setText(clientName);
-                    etPassword.setText(password);
+                // Add user as a new document with a generated ID
+                db.collection("users")
+                        .add(user)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                            }
+                        });
+
                 } else {
+                    // alert user if passwords do not match
                     Toast.makeText(getActivity(), "Passwords do not match. " + password + " " + confirmPassword,
                             Toast.LENGTH_SHORT).show();
                 }

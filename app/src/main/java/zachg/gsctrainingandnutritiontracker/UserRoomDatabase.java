@@ -54,6 +54,8 @@ public abstract class UserRoomDatabase extends RoomDatabase {
             mDao.addUser(user);
             user = new User("Doc Brown");
             mDao.addUser(user);
+            user = new User("Marty McFly");
+            mDao.addUser(user);
             return null;
         }
     }

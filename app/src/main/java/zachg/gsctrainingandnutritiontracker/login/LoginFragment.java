@@ -18,8 +18,6 @@ import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.User;
 import zachg.gsctrainingandnutritiontracker.UserRoomDatabase;
 
-// TODO: authenticate/validate
-
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private Button bLogin;
@@ -47,13 +45,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         sUserDatabase = Room.databaseBuilder(getActivity(), UserRoomDatabase.class, "users")
                 .fallbackToDestructiveMigration().allowMainThreadQueries().build();
 
-        //checks if Ben exists as Admin, adds if not
-        //set admin
-        if (sUserDatabase.userDao().getUserByName("b") == null) {
-            //Admin admin = new Admin("b", "d");
-            //sUserDatabase.userDao().createAdmin(admin);
-            Toast.makeText(getActivity(), "hi dickon!", Toast.LENGTH_SHORT).show();
-        }
         return view;
     }
 
@@ -90,19 +81,4 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /*
-    private void authenticate(User user) {
-        ServerRequests serverRequest = new ServerRequests(this);
-        serverRequest.fetchUserDataAsyncTask(user, new GetUserCallback() {
-            @Override
-            public void done(User returnedUser) {
-                if (returnedUser == null) {
-                    showErrorMessage();
-                } else {
-                    logUserIn(returnedUser);
-                }
-            }
-        });
-    }
-    */
 }
