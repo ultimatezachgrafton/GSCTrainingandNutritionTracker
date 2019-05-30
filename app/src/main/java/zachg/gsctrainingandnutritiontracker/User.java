@@ -12,6 +12,8 @@ public class User {
     @NonNull
     private int id;
     @ColumnInfo(name = "clientName")
+    private String email;
+    @ColumnInfo(name = "email")
     private String clientName;
     @ColumnInfo(name = "birthday")
     private String birthday;
@@ -38,6 +40,10 @@ public class User {
     }
 
     public void setId(int id) { this.id = id; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public String getBirthday() {
         return birthday;

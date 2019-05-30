@@ -16,6 +16,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.firestore.Query;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +34,6 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     private UserViewModel mUserViewModel;
     private RecyclerView mUserRecyclerView;
     private Button mAddNewClient;
-    private List<User> mUsers;
-    private Callbacks mCallbacks;
 
     private static final int BIFF = 1;
 
@@ -40,41 +43,15 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mUsers = new ArrayList<>();
 
-        //get Users, display users
-//        User user1 = new User("Biff Tannen");
-//        User user2 = new User("Marty McFly");
-//        User user3 = new User("Doc Brown");
-//        mUsers.add(user1);
-//        mUsers.add(user2);
-//        mUsers.add(user3);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        mUserRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
-        mUserRecyclerView.setAdapter(adapter);
-
         mAddNewClient = view.findViewById(R.id.add_new_client);
-         //Get a new or existing ViewModel from the ViewModelProvider.
-            mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-            mUserViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
-                public void onChanged(List<User> mUsers) {
-                    UserListAdapter adapter = new UserListAdapter(getContext(), mUsers);
-                    // Update the cached copy of the users in the adapter.
-                    adapter.setUsers(mUsers);
-                }
-            });
         return view;
-    }
-
-    public interface Callbacks {
-        void onUserSelected(User user);
     }
 
     @Override
@@ -87,13 +64,11 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mCallbacks = (Callbacks) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
     }
 
     @Override

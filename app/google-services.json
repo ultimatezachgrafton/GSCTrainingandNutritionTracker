@@ -10,10 +10,47 @@
       "client_info": {
         "mobilesdk_app_id": "1:985766464532:android:46a11e107b20a011",
         "android_client_info": {
+          "package_name": "zachg.gsctnt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985766464532-77k55m80duqq12mu8eok9fmonvi3liu9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvgX0cMDeunOWQfyfKLi3EVxBAT1If4Ns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985766464532-77k55m80duqq12mu8eok9fmonvi3liu9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985766464532:android:e1517baafb436e04",
+        "android_client_info": {
           "package_name": "zachg.gsctrainingandnutritiontracker"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "985766464532-9k4u3rbvgu9e98ilgdmku46j6kio4cac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "zachg.gsctrainingandnutritiontracker",
+            "certificate_hash": "4ef760994f6833d8ccce246db22be243229c4126"
+          }
+        },
         {
           "client_id": "985766464532-77k55m80duqq12mu8eok9fmonvi3liu9.apps.googleusercontent.com",
           "client_type": 3

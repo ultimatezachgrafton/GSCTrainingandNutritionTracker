@@ -14,6 +14,7 @@
     <string name="send_report">Send report via</string>
     <string name="show_subtitle">subtitle</string>
 
+    <string name="add_email">Email</string>
     <string name="add_new_client">Add New Client</string>
     <string name="client_name">Client Name</string>
     <string name="username">Username</string>
