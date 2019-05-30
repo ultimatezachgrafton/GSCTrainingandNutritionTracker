@@ -12,9 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.Query;
 
@@ -22,18 +19,17 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 
 // ListFragment is the fragment that displays the list of Users which the admin accesses upon logging in
-
 public class ListFragment extends Fragment implements View.OnClickListener {
 
     private UserViewModel mUserViewModel;
     private RecyclerView mUserRecyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     private Button mAddNewClient;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference mUsers = db.collection("users");
 
     private static final int BIFF = 1;
 
@@ -43,14 +39,27 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         mAddNewClient = view.findViewById(R.id.add_new_client);
+
+        // Query the Firestore database
+        Query query = mUsers.orderBy("priority", Query.Direction.DESCENDING);
+
+        // Build the database
+        FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query, User.class)
+                .build();
+
+        mUserRecyclerView = view.findViewById(R.id.recycler_view);
+        mUserRecyclerView.setLayoutManager(layoutManager);
+        UserListAdapter adapter = new UserListAdapter(users);
+        mUserRecyclerView.setAdapter(adapter);
+        mUserRecyclerView.setHasFixedSize(true);
+
         return view;
     }
 

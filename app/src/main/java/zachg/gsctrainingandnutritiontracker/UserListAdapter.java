@@ -11,10 +11,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
-
 public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
 
     public UserListAdapter(@NonNull FirestoreRecyclerOptions<User> users) {
