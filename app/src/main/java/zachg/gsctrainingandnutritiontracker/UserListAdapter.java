@@ -20,16 +20,10 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         super(users);
     }
 
-    // UserViewHolder is the class that defines the views that hold the User data
-    class UserViewHolder extends RecyclerView.ViewHolder {
-        TextView tvEmail;
-        TextView tvClientName;
-
-        public UserViewHolder(View itemView) {
-            super(itemView);
-            tvClientName = itemView.findViewById(R.id.etClientName);
-            tvEmail = itemView.findViewById(R.id.etEmail);
-        }
+    @Override
+    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
+        holder.tvFirstName.setText(user.getFirstName());
+        holder.tvEmail.setText(user.getEmail());
     }
 
     @NonNull
@@ -40,10 +34,15 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         return new UserViewHolder(v);
     }
 
-    @Override
-    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
-        holder.tvClientName.setText(user.getClientName());
-        holder.tvEmail.setText(user.getEmail());
-    }
+    // UserViewHolder is the class that defines the views that hold the User data
+    class UserViewHolder extends RecyclerView.ViewHolder {
+        TextView tvEmail;
+        TextView tvFirstName;
 
+        public UserViewHolder(View itemView) {
+            super(itemView);
+            tvFirstName = itemView.findViewById(R.id.tvFirstName);
+            tvEmail = itemView.findViewById(R.id.tvEmail);
+        }
+    }
 }

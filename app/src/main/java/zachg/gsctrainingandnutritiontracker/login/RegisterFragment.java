@@ -12,20 +12,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.Report;
-import zachg.gsctrainingandnutritiontracker.User;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,8 +33,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     Button bRegister;
-    EditText etPassword, etConfirmPassword, etClientName;
-    public static final String EXTRA_REPLY = "zachg.bensfitnessapp.REPLY";
+    EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail;
     private Report mReport;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference userRef = db.collection("users");
@@ -56,14 +52,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         etPassword = view.findViewById(R.id.etPassword);
         etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
         bRegister = view.findViewById(R.id.bRegister);
-        etClientName = view.findViewById(R.id.etClientName);
+        etFirstName = view.findViewById(R.id.etFirstName);
+        etLastName = view.findViewById(R.id.etLastName);
+        etEmail = view.findViewById(R.id.etEmail);
 
         bRegister.setOnClickListener(this);
-
-        Query query = userRef;
-        FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(query, User.class)
-                .build();
 
         return view;
     }
@@ -72,7 +65,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.bRegister:
-                String clientName = etClientName.getText().toString();
+                String firstName = etFirstName.getText().toString();
+                String lastName = etLastName.getText().toString();
+                String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
                 String confirmPassword = etConfirmPassword.getText().toString();
 
@@ -80,9 +75,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     // Access a Cloud Firestore instance
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                    // Create a new user with a first and last name
+                    // Create a new user
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first", clientName);
+                    user.put("firstName", firstName);
+                    user.put("lastName", lastName);
+                    user.put("email", email);
                     user.put("password", password);
 
                 // Add user as a new document with a generated ID

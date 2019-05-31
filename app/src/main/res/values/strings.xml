@@ -16,15 +16,17 @@
 
     <string name="add_email">Email</string>
     <string name="add_new_client">Add New Client</string>
-    <string name="client_name">Client Name</string>
-    <string name="username">Username</string>
+    <string name="firstName">First Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="email">Email</string>
     <string name="login">Login</string>
-    <string name="client_age">Age</string>
+    <string name="cage">Age</string>
     <string name="client_gender">Gender</string>
     <string name="register">Register</string>
     <string name="logout">Logout</string>
-    <string name="client_birthday">Birthday</string>
-    <string name="client_weight">Weight</string>
+    <string name="birthday">Birthday</string>
+    <string name="weight">Weight</string>
+
 
     <string name="enter_weight">Enter Today\'s Weight:</string>
     <string name="exercises">Today\'s workout:</string>
@@ -40,5 +42,4 @@
     <string name="carbs">Amount of carbs in grams:</string>
     <string name="protein">Amount of protein in grams:</string>
 
-    <!--- TODO: add ES translation once strings are final-->
 </resources>

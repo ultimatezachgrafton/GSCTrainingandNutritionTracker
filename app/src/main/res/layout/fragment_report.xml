@@ -28,7 +28,7 @@
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/client_name"
+        android:text="@string/firstName"
         android:textSize="18sp"
         android:layout_toRightOf="@id/client_photo"/>
 

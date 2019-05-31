@@ -31,10 +31,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     private Button mAddNewClient;
     private UserListAdapter adapter;
     private static final CollectionReference userCol = FirebaseFirestore.getInstance().collection("users");
-    static final Query sUserQuery = userCol.orderBy("firstName", Query.Direction.DESCENDING);
     private final static int BIFF = 1;
-    public static final String TAG = "ListActivity";
-
 
     public ListFragment() {}
 
@@ -53,36 +50,19 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         mAddNewClient = view.findViewById(R.id.add_new_client);
 
-        // Query the Firestore database
+        // Query the Firestore collection
         // Order by name
         Query query = userCol;
-
         // Build the database
-        FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
+        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class)
                 .build();
-        adapter = new UserListAdapter(users);
+        adapter = new UserListAdapter(options);
 
         mUserRecyclerView = view.findViewById(R.id.recycler_view);
-        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        mUserRecyclerView.setAdapter(adapter);
         mUserRecyclerView.setHasFixedSize(true);
-
-        mUserRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View view, int left, int top, int right, int bottom,
-                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (bottom < oldBottom) {
-                    mUserRecyclerView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mUserRecyclerView.smoothScrollToPosition(0);
-                        }
-                    }, 100);
-                }
-            }
-        });
+        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mUserRecyclerView.setAdapter(adapter);
 
         return view;
     }

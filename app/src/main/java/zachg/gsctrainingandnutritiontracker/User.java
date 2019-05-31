@@ -1,36 +1,33 @@
 package zachg.gsctrainingandnutritiontracker;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "users")
 public class User {
 
-    @PrimaryKey (autoGenerate = true)
     @NonNull
     private int id;
-    @ColumnInfo(name = "clientName")
+    @NonNull
     private String email;
-    @ColumnInfo(name = "email")
-    private String clientName;
-    @ColumnInfo(name = "birthday")
+    @NonNull
+    private String firstName;
+    @NonNull
+    private String lastName;
     private String birthday;
-    @ColumnInfo(name = "password")
+    @NonNull
     private String password;
-    @ColumnInfo(name = "gender")
     private String gender;
+    private boolean isAdmin;
 
     public User() {}
 
-    public User(String user) {
-        this.clientName = user;
-        this.password = null;
-        this.id = getId(); }
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
-    public User(String clientName, String email, String password) {
-        this.clientName = clientName;
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.id = getId();
@@ -62,13 +59,17 @@ public class User {
         this.password = password;
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
+
+    public String getLastName() { return lastName; }
+
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getGender() {
         return gender;
@@ -82,6 +83,8 @@ public class User {
 
     public void setIsLoggedIn(boolean isLoggedIn) { isLoggedIn = false; }
 
-    public String getUserName() { return this.getClientName(); }
+    public boolean setIsAdmin(boolean isAdmin) { return false; }
+
+    public void getIsAdmin(boolean isAdmin) { this.isAdmin = false; }
 
 }

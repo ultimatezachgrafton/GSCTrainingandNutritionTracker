@@ -12,6 +12,4 @@ public class RegisterActivity extends SingleFragmentActivity {
         return new RegisterFragment();
     }
 
-//    // Access a Cloud Firestore instance
-//    FirebaseFirestore db = FirebaseFirestore.getInstance();
 }
