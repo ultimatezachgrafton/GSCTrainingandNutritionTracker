@@ -49,7 +49,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
         // Query the Firestore database
         // Order by name
-        Query query = userRef;//.orderBy("name", Query.Direction.DESCENDING);
+        Query query = userRef;
 
         // Build the database
         FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()

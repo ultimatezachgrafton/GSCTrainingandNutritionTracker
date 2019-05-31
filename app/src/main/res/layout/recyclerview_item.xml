@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/userListItem"
+    android:paddingBottom="10dp"
     android:background="@android:color/holo_orange_light">
 
     <TextView
@@ -10,13 +11,12 @@
         style="@style/user_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@id/tvEmail" />
+        />
 
     <TextView
         android:id="@+id/tvEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true" />
+        />
 
 </LinearLayout>
