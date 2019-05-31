@@ -11,12 +11,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.room.Room;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,6 @@ import java.util.Map;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.Report;
 import zachg.gsctrainingandnutritiontracker.User;
-import zachg.gsctrainingandnutritiontracker.UserRoomDatabase;
 
 import static android.content.ContentValues.TAG;
 
@@ -34,11 +35,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         // Required empty constructor
     }
 
-    public static Button bRegister;
+    Button bRegister;
     EditText etPassword, etConfirmPassword, etClientName;
-    public static UserRoomDatabase sUserDatabase;
     public static final String EXTRA_REPLY = "zachg.bensfitnessapp.REPLY";
     private Report mReport;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference userRef = db.collection("users");
 
 
     @Override
@@ -58,8 +60,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
         bRegister.setOnClickListener(this);
 
-        sUserDatabase = Room.databaseBuilder(getActivity(), UserRoomDatabase.class, "users").allowMainThreadQueries()
-                .fallbackToDestructiveMigration().build();
+        Query query = userRef;
+        FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query, User.class)
+                .build();
 
         return view;
     }

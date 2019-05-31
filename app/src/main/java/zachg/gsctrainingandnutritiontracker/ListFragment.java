@@ -14,6 +14,8 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.Query;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -25,16 +27,20 @@ import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 // ListFragment is the fragment that displays the list of Users which the admin accesses upon logging in
 public class ListFragment extends Fragment implements View.OnClickListener {
 
-    private UserViewModel mUserViewModel;
     private RecyclerView mUserRecyclerView;
     private Button mAddNewClient;
     private UserListAdapter adapter;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference userRef = db.collection("users");
+    private static final CollectionReference userCol = FirebaseFirestore.getInstance().collection("users");
+    static final Query sUserQuery = userCol.orderBy("firstName", Query.Direction.DESCENDING);
+    private final static int BIFF = 1;
+    public static final String TAG = "ListActivity";
 
-    private static final int BIFF = 1;
 
     public ListFragment() {}
+
+    static {
+        FirebaseFirestore.setLoggingEnabled(true);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
         // Query the Firestore database
         // Order by name
-        Query query = userRef;
+        Query query = userCol;
 
         // Build the database
         FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
@@ -62,6 +68,21 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
         mUserRecyclerView.setAdapter(adapter);
         mUserRecyclerView.setHasFixedSize(true);
+
+        mUserRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    mUserRecyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mUserRecyclerView.smoothScrollToPosition(0);
+                        }
+                    }, 100);
+                }
+            }
+        });
 
         return view;
     }

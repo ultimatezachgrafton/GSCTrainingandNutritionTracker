@@ -9,20 +9,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.room.Room;
+import com.google.firebase.firestore.Query;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.ListFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.User;
-import zachg.gsctrainingandnutritiontracker.UserRoomDatabase;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private Button bLogin;
     private EditText etUsername, etPassword, etEmail;
-    UserRoomDatabase sUserDatabase;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference userRef = db.collection("users");
 
     public LoginFragment() {
         // Required empty public constructor
@@ -43,8 +47,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         bLogin = (Button) view.findViewById(R.id.bLogin);
         bLogin.setOnClickListener(this);
 
-        sUserDatabase = Room.databaseBuilder(getActivity(), UserRoomDatabase.class, "users")
-                .fallbackToDestructiveMigration().allowMainThreadQueries().build();
+        Query query = userRef;
+        FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query, User.class)
+                .build();
 
         return view;
     }
@@ -63,16 +69,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 //authenticate(user);
                 //}
 
-                // Admin login
-                if (username.equals("b") && password.equals("d")) {
-                    //Admin currentUser = new Admin(username, password);
-                    //currentUser.setIsLoggedIn(true);
-                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new ListFragment()).addToBackStack(null).commit();
-                    //Toast.makeText(getActivity(), "getting admin" + currentUser.getClientName(), Toast.LENGTH_SHORT).show();
-                }
                 // User login
-                else if (sUserDatabase.userDao().getUserByName(username) != null) {
+                if (username != null) {
                         User currentUser = new User(username, email, password);
                         currentUser.setIsLoggedIn(true);
                         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,

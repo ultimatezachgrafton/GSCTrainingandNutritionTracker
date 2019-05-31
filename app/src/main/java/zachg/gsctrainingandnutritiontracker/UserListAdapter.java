@@ -11,7 +11,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
+
 public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
 
     public UserListAdapter(@NonNull FirestoreRecyclerOptions<User> users) {
@@ -25,8 +27,8 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
 
         public UserViewHolder(View itemView) {
             super(itemView);
-            tvClientName = itemView.findViewById(R.id.tvClientName);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
+            tvClientName = itemView.findViewById(R.id.etClientName);
+            tvEmail = itemView.findViewById(R.id.etEmail);
         }
     }
 
@@ -38,10 +40,10 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         return new UserViewHolder(v);
     }
 
-    // Binds the data to the UserViewHolder
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
         holder.tvClientName.setText(user.getClientName());
         holder.tvEmail.setText(user.getEmail());
     }
+
 }

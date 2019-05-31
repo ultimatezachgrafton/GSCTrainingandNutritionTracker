@@ -16,12 +16,11 @@ public class ListActivity extends SingleFragmentActivity {
         return new ListFragment();
     }
 
-    private UserViewModel mUserViewModel;
     private RecyclerView mUserRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference mUsers = db.collection("users");
-    public static final int NEW_USER_ACTIVITY_REQUEST_CODE = 1;
+    public static final String TAG = "ListActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,17 +43,4 @@ public class ListActivity extends SingleFragmentActivity {
         super.onSaveInstanceState(outState);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == NEW_USER_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            User user = new User(data.getStringExtra(RegisterFragment.EXTRA_REPLY));
-            mUserViewModel.insert(user);
-        } else {
-            Toast.makeText(
-                    getApplicationContext(),
-                    "not_saved",
-                    Toast.LENGTH_LONG).show();
-        }
-    }
 }
