@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.Query;
 
@@ -26,10 +27,10 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
     private UserViewModel mUserViewModel;
     private RecyclerView mUserRecyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private Button mAddNewClient;
+    private UserListAdapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference mUsers = db.collection("users");
+    private CollectionReference userRef = db.collection("users");
 
     private static final int BIFF = 1;
 
@@ -48,16 +49,17 @@ public class ListFragment extends Fragment implements View.OnClickListener {
 
         // Query the Firestore database
         // Order by name
-        Query query = mUsers.orderBy("name", Query.Direction.DESCENDING);
+        Query query = userRef;//.orderBy("name", Query.Direction.DESCENDING);
 
         // Build the database
         FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class)
                 .build();
+        adapter = new UserListAdapter(users);
 
         mUserRecyclerView = view.findViewById(R.id.recycler_view);
-        mUserRecyclerView.setLayoutManager(layoutManager);
-        UserListAdapter adapter = new UserListAdapter(users);
+        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         mUserRecyclerView.setAdapter(adapter);
         mUserRecyclerView.setHasFixedSize(true);
 
@@ -84,6 +86,17 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
     @Override

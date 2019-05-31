@@ -21,7 +21,7 @@ import zachg.gsctrainingandnutritiontracker.UserRoomDatabase;
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private Button bLogin;
-    private EditText etUsername, etPassword;
+    private EditText etUsername, etPassword, etEmail;
     UserRoomDatabase sUserDatabase;
 
     public LoginFragment() {
@@ -39,6 +39,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         etUsername = view.findViewById(R.id.etUsername);
         etPassword = view.findViewById(R.id.etPassword);
+        etEmail = view.findViewById(R.id.etEmail);
         bLogin = (Button) view.findViewById(R.id.bLogin);
         bLogin.setOnClickListener(this);
 
@@ -54,6 +55,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             case R.id.bLogin:
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
+                String email = etEmail.getText().toString();
 
                 //authenticate
                 //if (sUserDatabase != null) {
@@ -71,7 +73,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
                 // User login
                 else if (sUserDatabase.userDao().getUserByName(username) != null) {
-                        User currentUser = new User(username, password);
+                        User currentUser = new User(username, email, password);
                         currentUser.setIsLoggedIn(true);
                         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                                 new DatePickerFragment()).addToBackStack(null).commit();
@@ -80,5 +82,4 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
 }
