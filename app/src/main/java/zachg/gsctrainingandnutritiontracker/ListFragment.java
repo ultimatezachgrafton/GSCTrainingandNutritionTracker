@@ -47,7 +47,8 @@ public class ListFragment extends Fragment implements View.OnClickListener {
         mAddNewClient = view.findViewById(R.id.add_new_client);
 
         // Query the Firestore database
-        Query query = mUsers.orderBy("priority", Query.Direction.DESCENDING);
+        // Order by name
+        Query query = mUsers.orderBy("name", Query.Direction.DESCENDING);
 
         // Build the database
         FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()

@@ -29,8 +29,9 @@ public class User {
         this.password = null;
         this.id = getId(); }
 
-    public User(String clientName, String password) {
+    public User(String clientName, String email, String password) {
         this.clientName = clientName;
+        this.email = email;
         this.password = password;
         this.id = getId();
     }

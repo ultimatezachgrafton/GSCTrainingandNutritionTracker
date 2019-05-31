@@ -57,4 +57,12 @@ public class ListActivity extends SingleFragmentActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
+
+    protected void onStart() {
+        super.onStart();
+    }
+
+    protected void onStop() {
+        super.onStop();
+    }
 }
