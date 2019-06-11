@@ -14,15 +14,15 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.Report;
+import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -34,15 +34,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     Button bRegister;
     EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail;
-    private Report mReport;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference userRef = db.collection("users");
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mReport = new Report();
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +67,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 String confirmPassword = etConfirmPassword.getText().toString();
 
                 if (password.equals(confirmPassword)) {
+                    // AND password != an existing password
+
                     // Access a Cloud Firestore instance
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -83,7 +80,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     user.put("password", password);
 
                 // Add user as a new document with a generated ID
-                db.collection("users")
+                    db.collection("users")
                         .add(user)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
@@ -97,6 +94,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                 Log.w(TAG, "Error adding document", e);
                             }
                         });
+                    // send user to DatePickerFragment
+                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                            new DatePickerFragment()).addToBackStack(null).commit();
 
                 } else {
                     // alert user if passwords do not match

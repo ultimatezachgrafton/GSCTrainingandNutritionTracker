@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_datePickerFragment"
+            app:destination="@id/datePickerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.login.RegisterFragment"
+        android:label="RegisterFragment" />
+    <dialog
+        android:id="@+id/datePickerFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.DatePickerFragment"
+        android:label="dialog_date"
+        tools:layout="@layout/dialog_date" >
+        <action
+            android:id="@+id/action_datePickerFragment_to_reportFragment"
+            app:destination="@id/reportFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.ListFragment"
+        android:label="fragment_list"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_datePickerFragment"
+            app:destination="@id/datePickerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reportFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.ReportFragment"
+        android:label="fragment_report"
+        tools:layout="@layout/fragment_report" />
+</navigation>

@@ -10,18 +10,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.Query;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 
 // ListFragment is the fragment that displays the list of Users which the admin accesses upon logging in
@@ -31,6 +34,7 @@ public class ListFragment extends Fragment implements View.OnClickListener {
     private Button mAddNewClient;
     private UserListAdapter adapter;
     private static final CollectionReference userCol = FirebaseFirestore.getInstance().collection("users");
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private final static int BIFF = 1;
 
     public ListFragment() {}
@@ -117,6 +121,12 @@ public class ListFragment extends Fragment implements View.OnClickListener {
             case R.id.add_new_client:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new RegisterFragment()).addToBackStack(null).commit();
+                return true;
+            case R.id.bLogout:
+                mAuth.signOut();
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new LoginFragment()).addToBackStack(null).commit();
+                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return super.onOptionsItemSelected(item);
     }

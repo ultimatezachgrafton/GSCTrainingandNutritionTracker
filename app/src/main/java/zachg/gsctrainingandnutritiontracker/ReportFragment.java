@@ -13,20 +13,27 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
 // ReportFragment builds out the fragment that hosts the Report objects
@@ -45,6 +52,7 @@ public class ReportFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private Callbacks mCallbacks;
+    private FirebaseAuth mAuth =  FirebaseAuth.getInstance();
 
     // Required interface for hosting activities
     public interface Callbacks {
@@ -73,6 +81,25 @@ public class ReportFragment extends Fragment {
         //mReport = ReportLab.get(getActivity()).getReport(reportId);
         //mPhotoFile = ReportLab.get(getActivity()).getPhotoFile(mReport);
         //mReport = new Report();
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.basic_menu, menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bLogout:
+                mAuth.signOut();
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new LoginFragment()).addToBackStack(null).commit();
+                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
     }
 
     @Override

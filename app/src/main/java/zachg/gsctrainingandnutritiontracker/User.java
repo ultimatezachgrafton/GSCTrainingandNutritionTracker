@@ -17,12 +17,17 @@ public class User {
     private String password;
     private String gender;
     private boolean isAdmin;
+    private boolean isLoggedIn;
 
     public User() {}
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public User(String email) {
+        this.email = email;
     }
 
     public User(String firstName, String lastName, String email, String password) {
@@ -79,12 +84,12 @@ public class User {
         this.gender = gender;
     }
 
-    public boolean getIsLoggedIn(boolean isLoggedIn) { return isLoggedIn; }
+    public boolean getIsLoggedIn() { return isLoggedIn; }
 
-    public void setIsLoggedIn(boolean isLoggedIn) { isLoggedIn = false; }
+    public void setIsLoggedIn(boolean isLoggedIn) { this.isLoggedIn = false; }
 
-    public boolean setIsAdmin(boolean isAdmin) { return false; }
+    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
-    public void getIsAdmin(boolean isAdmin) { this.isAdmin = false; }
+    public boolean getIsAdmin() { return isAdmin; }
 
 }
