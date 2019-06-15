@@ -10,8 +10,11 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/bInbox"
+        android:title="Inbox" />
+
+    <item
         android:id="@+id/bLogout"
-        android:icon="@drawable/ic_menu_add"
         android:title="@string/logout" />
 
 </menu>

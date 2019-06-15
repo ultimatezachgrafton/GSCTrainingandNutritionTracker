@@ -1,17 +1,13 @@
 package zachg.gsctrainingandnutritiontracker;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,17 +17,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
@@ -40,131 +36,47 @@ import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
 public class ReportFragment extends Fragment {
     private static final String ARG_REPORT_ID = "report_id";
-    private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
-    private Report mReport;
     private File mPhotoFile;
-    private Button mDateButton;
-    private Button mClientButton;
     private Button mReportButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
-    private Callbacks mCallbacks;
-    private FirebaseAuth mAuth =  FirebaseAuth.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    // Required interface for hosting activities
-    public interface Callbacks {
-        void onReportUpdated(Report mReport);
-    }
-
-    public static ReportFragment newInstance(UUID reportId) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_REPORT_ID, reportId);
-
-        ReportFragment fragment = new ReportFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mCallbacks = (Callbacks) context;
-    }
+    private TextView tvClientName;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Fetches a Report from arguments by fetching intent to pull UUID into variable
-        UUID reportId = (UUID) getArguments().getSerializable(ARG_REPORT_ID);
-        //mReport = ReportLab.get(getActivity()).getReport(reportId);
-        //mPhotoFile = ReportLab.get(getActivity()).getPhotoFile(mReport);
-        //mReport = new Report();
         setHasOptionsMenu(true);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.basic_menu, menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bLogout:
-                mAuth.signOut();
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).addToBackStack(null).commit();
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //ReportLab.get(getActivity()).updateReport(mReport);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_report, container, false);
-        /*updateDate();
-        mDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mReport.getDate());
-                dialog.setTargetFragment(ReportFragment.this, REQUEST_DATE);
-                dialog.show(manager, DIALOG_DATE);
-            }
-        }); */
+        View v = inflater.inflate(R.layout.fragment_workout_report, container, false);
+
+        // set user profile as current user's, or in Ben's case, as the user he's clicked on
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Set Date
+        // fetch and set name, etc from firebase users
+        // user.getFirstName();
+        // user.getLastName();
+
+        tvClientName = v.findViewById(R.id.client_name);
+        tvClientName.setText("user name");
 
         mReportButton = (Button) v.findViewById(R.id.report_report);
         mReportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_TEXT, getDate());
-                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_report_subject));
-                i = Intent.createChooser(i, getString(R.string.send_report));
-                startActivity(i);
+                // send report to reports
             }
         });
-
-        final Intent pickContact = new Intent(Intent.ACTION_PICK,
-                ContactsContract.Contacts.CONTENT_URI);
-
-        //This is for Ben Only Mode
-        /*
-        mClientButton = v.findViewById(R.id.add_new_client);
-        mClientButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivityForResult(pickContact, REQUEST_CONTACT);
-            }
-        });
-        if (mReport.getClientName() != null) {
-            mReportButton.setText(mReport.getClientName());
-        }*/
-
-        PackageManager packageManager = getActivity().getPackageManager();
-        if (packageManager.resolveActivity(pickContact,
-                PackageManager.MATCH_DEFAULT_ONLY) == null) {
-            mClientButton.setEnabled(false);
-        }
 
         mPhotoButton = (ImageButton) v.findViewById(R.id.report_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        boolean canTakePhoto = mPhotoFile != null && captureImage.resolveActivity(packageManager) != null;
+        boolean canTakePhoto = mPhotoFile != null;
         mPhotoButton.setEnabled(canTakePhoto);
 
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -189,66 +101,19 @@ public class ReportFragment extends Fragment {
 
         return v;
     }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if (requestCode == REQUEST_DATE) {
-            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-            mReport.setDate(date);
-            updateReport();
-            updateDate();
-        } else if (requestCode == REQUEST_CONTACT && data != null) {
-            Uri contactUri = data.getData();
-            // Specify which fields query should return values for
-            String[] queryFields = new String[] {
-                    ContactsContract.Contacts.DISPLAY_NAME
-            };
-            // Perform query - the ContactUri is the "where" clause here
-            Cursor c = getActivity().getContentResolver().query(contactUri,
-                    queryFields, null, null, null);
-            try {
-                // Double-check results
-                if (c.getCount() == 0) {
-                    return;
-                }
-                // Pull out first column first row of data for suspect's name
-                c.moveToFirst();
-                String client = c.getString(0);
-                mReport.setClientName(client);
-                updateReport();
-                mClientButton.setText(client);
-            } finally {
-                c.close();
-            }
-        } else if (requestCode == REQUEST_PHOTO) {
-            Uri uri = FileProvider.getUriForFile(getActivity(),
-                    "zachg.bensfitnessapp.fileprovider",
-                    mPhotoFile);
-            getActivity().revokeUriPermission(uri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            updateReport();
-            updatePhotoView();
-        }
+    public void onPause() {
+        super.onPause();
     }
 
-    private void updateReport() {
-        //ReportLab.get(getActivity()).updateReport(mReport);
-        mCallbacks.onReportUpdated(mReport);
-    }
-
-    private void updateDate() {
-        mDateButton.setText(mReport.getDate().toString());
-    }
-
-    // Creates four strings and pieces them together to return a complete report
-    private String getDate() {
-        String dateFormat = "EEE, MMM ddd";
-        String dateString = DateFormat.format(dateFormat, mReport.getDate()).toString();
-
-        return dateString;
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     private void updatePhotoView() {
@@ -265,38 +130,25 @@ public class ReportFragment extends Fragment {
             );
         }
     }
-}
-
-/*
-private void displayUserDetails() {
-        User user = userLocalStore.getLoggedInUser();
-        etUsername.setText(user.username);
-        etClientName.setText(user.clientName);
-        etBirthday.setText(user.birthday);
-        etGender.setText(user.gender);
-    }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        if (authenticate() == true) {
-            displayUserDetails();
-        }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.basic_menu, menu);
     }
 
-    private boolean authenticate() {
-        return userLocalStore.getUserLoggedIn();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bAskBen:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new AskBenFragment()).addToBackStack(null).commit();
+                return true;
             case R.id.bLogout:
-
-                userLocalStore.clearUserData();
-                userLocalStore.setUserLoggedIn(false);
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
-        }
+                mAuth.signOut();
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new LoginFragment()).addToBackStack(null).commit();
+                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+                return true;
+        } return super.onOptionsItemSelected(item);
     }
- */
+}

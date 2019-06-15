@@ -79,7 +79,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     user.put("email", email);
                     user.put("password", password);
 
-                // Add user as a new document with a generated ID
+                    // Add user as a new document with a generated ID
                     db.collection("users")
                         .add(user)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

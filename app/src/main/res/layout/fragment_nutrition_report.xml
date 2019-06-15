@@ -28,7 +28,7 @@
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstName"
+        android:text="@string/clientName"
         android:textSize="18sp"
         android:layout_toRightOf="@id/client_photo"/>
 
@@ -43,93 +43,38 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/separator1"
-        style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/report_details_label"
-        android:layout_below="@id/report_camera"/>
+        android:layout_toRightOf="@+id/client_photo"
+        android:layout_below="@+id/date"
+        android:id="@+id/gender"
+        android:text="@string/gender"
+        android:textSize="18dp"
+        style="?android:listSeparatorTextViewStyle"/>
 
     <TextView
-        android:id="@+id/weight_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/separator1"
-        android:text="@string/enter_weight"/>
-
-    <EditText
-        android:id="@+id/weight_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:layout_toRightOf="@id/weight_text"
-        android:layout_alignBottom="@id/weight_text"/>
+        android:id="@+id/birthday"
+        android:layout_toRightOf="@+id/client_photo"
+        android:layout_below="@id/gender"
+        style="?android:listSeparatorTextViewStyle"
+        android:text="@string/birthday"
+        android:textSize="18dp"/>
 
     <TextView
         android:id="@+id/separator2"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/exercises"
-        android:layout_below="@id/weight_text"/>
-
-    <TextView
-        android:id="@+id/exercise_name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/exercise_name"
-        android:layout_below="@+id/separator2"/>
-
-    <EditText
-        android:id="@+id/exercise_name_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:layout_toRightOf="@id/exercise_name_text"
-        android:layout_alignBottom="@id/exercise_name_text"/>
-
-    <TextView
-        android:id="@+id/reps_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reps"
-        android:layout_below="@id/exercise_name_text"/>
-
-    <EditText
-        android:id="@+id/reps_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="true"
-        android:layout_toRightOf="@id/reps_text"
-        android:layout_alignBottom="@id/reps_text"/>
-
-    <TextView
-        android:id="@+id/weight_used_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/workout_weight"
-        android:layout_below="@id/reps_text"/>
-
-    <EditText
-        android:id="@+id/weight_used_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/weight_used_text"
-        android:layout_alignBottom="@id/weight_used_text"/>
-
-    <EditText
-        android:id="@+id/workout_comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/comments"
-        android:layout_below="@id/weight_used_text" />
+        android:layout_below="@id/birthday"/>
 
     <TextView
         android:id="@+id/nutrition_text"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/workout_comments"
+        android:layout_below="@id/report_camera"
         android:text="@string/nutrition"/>
 
     <TextView
@@ -137,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/nutrition_text"
-        android:text="@string/food_item"/>
+        android:text="@string/meal_num"/>
 
     <EditText
         android:id="@+id/meal_item_entry"
@@ -212,5 +157,13 @@
         android:layout_marginBottom="16dp"
         android:layout_below="@id/protein_text"
         android:text="@string/report_report_text" />
+
+    <TextView
+        android:id="@+id/swipe_info"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/swipe_info2"
+        android:layout_below="@id/report_report"/>
 
 </RelativeLayout>

@@ -6,37 +6,40 @@
     <string name="report_photo_image_description">Report photo (set)</string>
     <string name="date">Date:</string>
     <string name="new_report">New Report</string>
-    <string name="subtitle_format">%1$d reports</string>
     <string name="report_client_text">Choose Client</string>
     <string name="report_report_text">Send Report</string>
     <string name="report_report_client">Client name.</string>
     <string name="report_report_subject">Ben\'s Fitness App Report</string>
     <string name="send_report">Send report via</string>
     <string name="show_subtitle">subtitle</string>
+    <string name="select_date_greeting">Hi, firstName!</string>
+    <string name="select_date">Select Workout Date:</string>
 
     <string name="add_email">Email</string>
     <string name="add_new_client">Add New Client</string>
     <string name="firstName">First Name</string>
     <string name="lastName">Last Name</string>
+    <string name="clientName">First name + last name</string>
     <string name="email">Email</string>
     <string name="login">Login</string>
     <string name="cage">Age</string>
-    <string name="client_gender">Gender</string>
+    <string name="gender">Gender</string>
     <string name="register">Register</string>
     <string name="logout">Logout</string>
     <string name="birthday">Birthday</string>
     <string name="weight">Weight</string>
 
-
+    <string name="swipe_info1">Swipe left for nutrition</string>
+    <string name="swipe_info2">Swipe right for workout</string>
     <string name="enter_weight">Enter Today\'s Weight:</string>
     <string name="exercises">Today\'s workout:</string>
-    <string name="exercise_name">Enter exercise name.</string>
+    <string name="exercise_num">Exercise 1:</string>
     <string name="reps">Enter # of reps</string>
     <string name="workout_weight">Enter weight used:</string>
     <string name="comments">Enter comments</string>
 
     <string name="nutrition">Today\'s nutrition:</string>
-    <string name="food_item">Enter food item:</string>
+    <string name="meal_num">Meal 1:</string>
     <string name="calories">Calories:</string>
     <string name="fats">Amount of fat in grams:</string>
     <string name="carbs">Amount of carbs in grams:</string>

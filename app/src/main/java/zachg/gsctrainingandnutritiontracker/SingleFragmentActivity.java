@@ -10,21 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 
 // Controls the various fragments
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     public static FragmentManager fm;
-
     protected abstract Fragment createFragment();
 
     private static final String TAG = "SingleFragmentActivity";

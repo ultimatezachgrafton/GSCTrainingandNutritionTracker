@@ -46,5 +46,5 @@
         android:id="@+id/reportFragment"
         android:name="zachg.gsctrainingandnutritiontracker.ReportFragment"
         android:label="fragment_report"
-        tools:layout="@layout/fragment_report" />
+        tools:layout="@layout/fragment_workout_report" />
 </navigation>

@@ -10,10 +10,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class PagerActivity extends AppCompatActivity implements ReportFragment.Callbacks {
+public class PagerActivity extends AppCompatActivity {
 
     // ReportPagerActivity is the Activity for Reports utilizing ViewPager to allow the user to swipe left and right on reports
 
@@ -21,7 +21,7 @@ public class PagerActivity extends AppCompatActivity implements ReportFragment.C
     private static final String EXTRA_REPORT_ID = "zachg.gsctrainingandnutritiontracker";
 
     private ViewPager mViewPager;
-    private List<Report> mReports;
+    private ArrayList<Report> mReports;
 
     public static Intent newIntent(Context packageContext, int reportId) {
         Intent intent = new Intent(packageContext, PagerActivity.class);
@@ -37,13 +37,15 @@ public class PagerActivity extends AppCompatActivity implements ReportFragment.C
         int reportId = getIntent().getIntExtra(EXTRA_REPORT_ID, 0);
 
         mViewPager = (ViewPager) findViewById(R.id.report_view_pager);
-        //mReports = ReportLab.get(this).getReports();
+
+        // get Reports from Firestore
+        //mReports = Report.getReports(this).getReports();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
                 Report report = mReports.get(position);
-                return ReportFragment.newInstance(report.getId());
+                return new Fragment();
             }
 
             @Override
@@ -58,9 +60,5 @@ public class PagerActivity extends AppCompatActivity implements ReportFragment.C
                 break;
             }
         }
-    }
-
-    @Override
-    public void onReportUpdated(Report report) {
     }
 }

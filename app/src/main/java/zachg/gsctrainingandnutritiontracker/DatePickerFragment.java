@@ -1,64 +1,44 @@
 package zachg.gsctrainingandnutritiontracker;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
+import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.Toast;
 
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 
 // The fragment to host the calendar widget to select workout dates
 
-public class DatePickerFragment extends DialogFragment {
+public class DatePickerFragment extends Fragment {
 
     public static final String EXTRA_DATE = "zachg.gsctrainingandnutritiontracker.date";
     private static final String ARG_DATE = "date";
-    private android.widget.DatePicker mDatePicker;
+    private static final String TAG = "CalendarFragment";
+    private CalendarView mCalendarView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public DatePickerFragment() {
         //empty constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.basic_menu, menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bLogout:
-                mAuth.signOut();
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).addToBackStack(null).commit();
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return true;
+    public DatePickerFragment(ArrayList<Report> mReports) {
+        // fill DatePickerFragment with mReports
     }
 
     public static DatePickerFragment newInstance(Date date) {
@@ -70,34 +50,39 @@ public class DatePickerFragment extends DialogFragment {
         return fragment;
     }
 
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Date date = (Date) getArguments().getSerializable(ARG_DATE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_date, container, false);
 
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date, null);
+        mCalendarView = view.findViewById(R.id.calendarView);
+        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
+                String date = (i1 + 1) + "/" + i2 + "/" + i;
+                Log.d(TAG, "onSelectedDayChange: mm/dd/yyyy: " + date);
 
-        mDatePicker = v.findViewById(R.id.dialog_date_picker);
-        mDatePicker.init(year, month, day, null);
+                // query ReportFragment to get the getDate() && currentUser.getUserId() that matches the user's id
+                // - which is what I did in LoginFragment -
+                // date and userId == date && id;
+                // if WorkoutDate == null, start an empty Report
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new ReportFragment()).addToBackStack(null).commit();
+                // else bring up existing report
+//              SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new ReportFragment()).addToBackStack(null).commit();
+            }
+        });
 
-        return new AlertDialog.Builder(getActivity())
-                .setView(v)
-                .setTitle(R.string.date)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int year = mDatePicker.getYear();
-                        int month = mDatePicker.getMonth();
-                        int day = mDatePicker.getDayOfMonth();
-                        Date date = new GregorianCalendar(year, month, day).getTime();
-                        sendResult(Activity.RESULT_OK, date);
-                    }
-                })
-                .create();
+        return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+
     }
 
     private void sendResult(int resultCode, Date date) {
@@ -109,5 +94,28 @@ public class DatePickerFragment extends DialogFragment {
         intent.putExtra(EXTRA_DATE, date);
 
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.basic_menu, menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bAskBen:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new AskBenFragment()).addToBackStack(null).commit();
+                Toast.makeText(getActivity(), "Ask Ben", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.bLogout:
+                mAuth.signOut();
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new LoginFragment()).addToBackStack(null).commit();
+                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
     }
 }
