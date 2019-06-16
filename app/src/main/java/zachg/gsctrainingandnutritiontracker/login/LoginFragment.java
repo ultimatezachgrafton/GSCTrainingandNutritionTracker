@@ -8,25 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
-import zachg.gsctrainingandnutritiontracker.ListFragment;
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.User;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
@@ -34,6 +21,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private Button bLogin;
     private DocumentSnapshot mSnap;
     private EditText etPassword, etEmail;
+    private LoginHandler mLoginHandler;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -44,38 +32,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        mLoginHandler = new LoginHandler();
+
         if (mAuth.getCurrentUser() != null) {
             // create user to
             // go to apropos frag
-            onLogin(mAuth.getCurrentUser().getEmail());
+            mLoginHandler.onLogin(mAuth.getCurrentUser().getEmail());
         }
-    }
-
-    public void onLogin(String email) {
-        // Fetch user data, then Query for email
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference userColRef = db.collection("users");
-        // Queries for the user associated with the entered email
-        Query userQuery = userColRef.whereEqualTo("email", email);
-
-        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    User currentUser = doc.toObject(User.class);
-                    // Determine access level and redirect as appropriate
-                    if (currentUser.getIsAdmin() == false) {
-                        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                new DatePickerFragment()).addToBackStack(null).commit();
-                        Toast.makeText(getActivity(), "User login" + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                new ListFragment()).addToBackStack(null).commit();
-                        Toast.makeText(getActivity(), "Admin login" + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -103,7 +66,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         if (email != null && password != null) {
             mAuth.signInWithEmailAndPassword(email, password);
             // if successful...
-            onLogin(email);
+            mLoginHandler.onLogin(email);
         } else {
             Toast.makeText(getActivity(), "Do not leave fields blank", Toast.LENGTH_SHORT).show();
         }
