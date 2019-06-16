@@ -19,6 +19,11 @@ import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.User;
 
 public class LoginHandler {
+    private LoginListener mLoginListener;
+
+    public LoginHandler(LoginListener loginListener) {
+        mLoginListener = loginListener;
+    }
 
     public void onLogin(String email) {
         // Fetch user data, then Query for email
@@ -35,11 +40,9 @@ public class LoginHandler {
                     User currentUser = doc.toObject(User.class);
                     // Determine access level and redirect as appropriate
                     if (currentUser.getIsAdmin() == false) {
-                        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                new DatePickerFragment()).addToBackStack(null).commit();
+                        mLoginListener.goToDatePicker();
                     } else {
-                        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                new ListFragment()).addToBackStack(null).commit();
+                        mLoginListener.goToList();
                     }
                 }
             }

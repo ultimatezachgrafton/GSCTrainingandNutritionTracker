@@ -13,13 +13,15 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
+import zachg.gsctrainingandnutritiontracker.ListFragment;
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends Fragment implements View.OnClickListener, LoginListener {
 
     private FirebaseAuth mAuth;
     private Button bLogin;
-    private DocumentSnapshot mSnap;
     private EditText etPassword, etEmail;
     private LoginHandler mLoginHandler;
 
@@ -32,7 +34,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        mLoginHandler = new LoginHandler();
+        mLoginHandler = new LoginHandler(this);
 
         if (mAuth.getCurrentUser() != null) {
             // create user to
@@ -67,8 +69,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             mAuth.signInWithEmailAndPassword(email, password);
             // if successful...
             mLoginHandler.onLogin(email);
+
         } else {
             Toast.makeText(getActivity(), "Do not leave fields blank", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void goToDatePicker() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new DatePickerFragment()).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void goToList() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new ListFragment()).addToBackStack(null).commit();
     }
 }

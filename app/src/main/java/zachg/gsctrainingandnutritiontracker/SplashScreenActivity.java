@@ -1,35 +1,27 @@
 package zachg.gsctrainingandnutritiontracker;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.login.LoginActivity;
 import zachg.gsctrainingandnutritiontracker.login.LoginHandler;
+import zachg.gsctrainingandnutritiontracker.login.LoginListener;
 
-public class SplashScreenActivity extends SingleFragmentActivity {
+public class SplashScreenActivity extends FragmentActivity implements LoginListener {
 
     private FirebaseAuth mAuth;
     private LoginHandler mLoginHandler;
 
     @Override
-    protected Fragment createFragment() {
-        return null;
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Log.d("Zach rules", "Splashy splooosh!");
-        mLoginHandler = new LoginHandler();
+        mLoginHandler = new LoginHandler(this);
         login();
     }
 
@@ -45,5 +37,16 @@ public class SplashScreenActivity extends SingleFragmentActivity {
             startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
             finish();
         }
+    }
+
+    @Override
+    public void goToDatePicker() {
+        Intent intent
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new DatePickerFragment()).commit();;
+    }
+
+    @Override
+    public void goToList() {
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new ListFragment()).commit();
     }
 }
