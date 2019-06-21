@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="zachg.gsctrainingandnutritiontracker.ReportFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.reports.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_workout_report" />
 </navigation>

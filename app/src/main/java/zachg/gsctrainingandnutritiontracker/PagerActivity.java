@@ -11,7 +11,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import zachg.gsctrainingandnutritiontracker.reports.Report;
 
 public class PagerActivity extends AppCompatActivity {
 

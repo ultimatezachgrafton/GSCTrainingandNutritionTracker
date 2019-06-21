@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker;
+package zachg.gsctrainingandnutritiontracker.reports;
 
 import java.util.Date;
 import java.util.UUID;
@@ -13,6 +13,7 @@ public class Report {
     private String mWeight; // client's weight
     // box for questions for Ben
     // photos to include with questions
+    private boolean mIsUnread = true;
 
     // This constructor generates a universally unique ID, then initializes it as well as the Date field
     public Report() {
@@ -41,10 +42,14 @@ public class Report {
 
     public void setClientName(String client) { mClientName = client; }
 
-    public String getPhotoFilename() { return "IMG_" + getId().toString() + ".jpg"; }
-
     public String getWeight() { return mWeight; }
 
-    public void setWeight(String weight) { mWeight = weight; }
+    public void setWeight(String weight) { this.mWeight = weight; }
+
+    public boolean getIsUnread() { return mIsUnread; }
+
+    public void setIsUnread(boolean isUnread) { this.mIsUnread = isUnread; }
+
+    public String getPhotoFilename() { return "IMG_" + getId().toString() + ".jpg"; }
 
 }

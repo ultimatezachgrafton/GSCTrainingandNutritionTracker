@@ -12,6 +12,7 @@ public class User {
     private String firstName;
     @NonNull
     private String lastName;
+    private String clientName;
     private String birthday;
     @NonNull
     private String password;
@@ -75,6 +76,10 @@ public class User {
     public String getLastName() { return lastName; }
 
     public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getClientName() { return clientName; }
+
+    public void setClientName(String firstName, String lastName) { this.clientName = (firstName + " " + lastName); }
 
     public String getGender() {
         return gender;

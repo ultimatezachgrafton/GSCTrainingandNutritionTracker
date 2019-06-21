@@ -1,6 +1,5 @@
 package zachg.gsctrainingandnutritiontracker;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,9 +19,15 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.Date;
 
+import zachg.gsctrainingandnutritiontracker.inbox.AskBenFragment;
+import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
+import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
+import zachg.gsctrainingandnutritiontracker.reports.Report;
+import zachg.gsctrainingandnutritiontracker.reports.ReportWorkoutFragment;
+
+import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
 
 // The fragment to host the calendar widget to select workout dates
 
@@ -31,6 +37,10 @@ public class DatePickerFragment extends Fragment {
     private static final String ARG_DATE = "date";
     private static final String TAG = "CalendarFragment";
     private CalendarView mCalendarView;
+    private String mFirstName;
+    private String mGreetingFormat;
+    private String mGreetingMsg;
+    private TextView tvTextView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public DatePickerFragment() {
@@ -41,24 +51,22 @@ public class DatePickerFragment extends Fragment {
         // fill DatePickerFragment with mReports
     }
 
-    public static DatePickerFragment newInstance(Date date) {
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_DATE, date);
-
-        DatePickerFragment fragment = new DatePickerFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_date, container, false);
+        View v = inflater.inflate(R.layout.fragment_date, container, false);
 
-        mCalendarView = view.findViewById(R.id.calendarView);
+        mFirstName = currentUser.getFirstName();
+        mGreetingFormat = getResources().getString(R.string.select_date_greeting);
+        mGreetingMsg = String.format(mGreetingFormat, mFirstName);
+        tvTextView = v.findViewById(R.id.textView);
+        tvTextView.setText(mGreetingMsg);
+
+        mCalendarView = v.findViewById(R.id.calendarView);
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
+                // sets date format
                 String date = (i1 + 1) + "/" + i2 + "/" + i;
                 Log.d(TAG, "onSelectedDayChange: mm/dd/yyyy: " + date);
 
@@ -67,39 +75,30 @@ public class DatePickerFragment extends Fragment {
                 // date and userId == date && id;
                 // if WorkoutDate == null, start an empty Report
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportFragment()).addToBackStack(null).commit();
+                        new ReportWorkoutFragment()).addToBackStack(null).commit();
                 // else bring up existing report
 //              SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
 //                        new ReportFragment()).addToBackStack(null).commit();
             }
         });
 
-        return view;
+        return v;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
-    }
-
-    private void sendResult(int resultCode, Date date) {
-        if (getTargetFragment() == null) {
-            return;
-        }
-
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_DATE, date);
-
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.basic_menu, menu);
+        if (currentUser.getIsAdmin()) {
+            inflater.inflate(R.menu.admin_menu, menu);
+        } else {
+           inflater.inflate(R.menu.user_menu, menu);
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -109,12 +108,20 @@ public class DatePickerFragment extends Fragment {
                         new AskBenFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Ask Ben", Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.bAddNewClient:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new RegisterFragment()).addToBackStack(null).commit();
+                return true;
+            case R.id.bInbox:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new InboxFragment()).addToBackStack(null).commit();
+                return true;
             case R.id.bLogout:
                 mAuth.signOut();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                break;
+                return true;
         }
         return true;
     }

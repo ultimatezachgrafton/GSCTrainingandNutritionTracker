@@ -23,17 +23,23 @@
         android:src="@android:drawable/ic_menu_camera"
         android:layout_below="@id/client_photo" />
 
-    <TextView
-        android:id="@+id/question"
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/etMsgTitle"
         android:layout_below="@id/report_camera"/>
+
+    <EditText
+        android:id="@+id/etMsgBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etMsgTitle"/>
 
     <Button
         android:id="@+id/bSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/question"
+        android:layout_below="@+id/etMsgBody"
         android:text="Send"/>
 
 </RelativeLayout>

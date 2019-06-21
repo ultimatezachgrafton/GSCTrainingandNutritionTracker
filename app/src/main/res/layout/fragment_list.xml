@@ -8,10 +8,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
-        tools:listitem="@layout/recyclerview_item" />
+        tools:listitem="@layout/rvlist_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/add_new_client"
+        android:id="@+id/bAddNewClient"
         android:icon="@drawable/ic_menu_add"
         android:title="@string/add_new_client"
         android:visible="true"

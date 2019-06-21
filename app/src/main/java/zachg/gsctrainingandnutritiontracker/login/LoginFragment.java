@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.ListFragment;
@@ -82,7 +81,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     }
 
     @Override
-    public void goToList() {
+    public void goToAdminList() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ListFragment()).addToBackStack(null).commit();
     }

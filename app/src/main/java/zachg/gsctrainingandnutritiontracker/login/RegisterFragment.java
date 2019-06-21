@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     Button bRegister;
-    EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail;
+    EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail, etGender, etBirthDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         etFirstName = view.findViewById(R.id.etFirstName);
         etLastName = view.findViewById(R.id.etLastName);
         etEmail = view.findViewById(R.id.etEmail);
+        etGender = view.findViewById(R.id.etGender);
+        etBirthDate = view.findViewById(R.id.etBirthDate);
 
         bRegister.setOnClickListener(this);
 
@@ -65,6 +68,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
                 String confirmPassword = etConfirmPassword.getText().toString();
+                String gender = etGender.getText().toString();
+                String birthDate = etBirthDate.getText().toString();
 
                 if (password.equals(confirmPassword)) {
                     // AND password != an existing password
@@ -78,6 +83,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     user.put("lastName", lastName);
                     user.put("email", email);
                     user.put("password", password);
+                    user.put("gender", gender);
+                    user.put("birthdate", birthDate);
 
                     // Add user as a new document with a generated ID
                     db.collection("users")

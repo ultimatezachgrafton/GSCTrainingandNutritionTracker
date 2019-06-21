@@ -39,14 +39,14 @@ public class SplashScreenActivity extends FragmentActivity implements LoginListe
         }
     }
 
+    // why does this go to DatePicker?
     @Override
     public void goToDatePicker() {
-        Intent intent
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new DatePickerFragment()).commit();;
+        startActivity(new Intent(this, ListActivity.class));
     }
 
     @Override
-    public void goToList() {
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new ListFragment()).commit();
+    public void goToAdminList() {
+        startActivity(new Intent(this, ListActivity.class));
     }
 }

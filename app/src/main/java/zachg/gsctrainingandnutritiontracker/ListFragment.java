@@ -1,7 +1,5 @@
 package zachg.gsctrainingandnutritiontracker;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,21 +28,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
+import zachg.gsctrainingandnutritiontracker.reports.Report;
 
 // ListFragment is the fragment that displays the list of Users which the admin accesses upon logging in
 public class ListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
 
     private RecyclerView mUserRecyclerView;
-    private Button mAddNewClient;
     private UserListAdapter adapter;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final CollectionReference userCol = db.collection("users");
     private static final CollectionReference reportCol = db.collection("reports");
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<Report> mReports;
-    private final static int BIFF = 1;
 
     public ListFragment() {}
 
@@ -61,8 +58,7 @@ public class ListFragment extends Fragment implements UserListAdapter.OnItemClic
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
-        mAddNewClient = view.findViewById(R.id.add_new_client);
+        View v = inflater.inflate(R.layout.fragment_list, container, false);
 
         // Query the Firestore collection
         Query query = userCol;
@@ -73,7 +69,7 @@ public class ListFragment extends Fragment implements UserListAdapter.OnItemClic
 
         adapter = new UserListAdapter(options);
 
-        mUserRecyclerView = view.findViewById(R.id.recycler_view);
+        mUserRecyclerView = v.findViewById(R.id.rv_list);
         mUserRecyclerView.setHasFixedSize(true);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mUserRecyclerView.setAdapter(adapter);
@@ -99,42 +95,21 @@ public class ListFragment extends Fragment implements UserListAdapter.OnItemClic
                                 mReports.add(report);
                             }
                         } else {
-                            Toast.makeText(getActivity(), "failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "failed to make mReports", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
 
                 if (mReports == null) {
                     SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new DatePickerFragment()).addToBackStack(null).commit();
+                            new ClientProfileFragment()).addToBackStack(null).commit();
                 } else {
                     SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                             new DatePickerFragment(mReports)).addToBackStack(null).commit();
                 }
             }
         });
-        return view;
-    }
-
-    public void onClick(View v) {
-        // required onClick method
-        Intent intent = PagerActivity.newIntent(getActivity(), BIFF);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
+        return v;
     }
 
     @Override
@@ -149,20 +124,15 @@ public class ListFragment extends Fragment implements UserListAdapter.OnItemClic
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.admin_list_menu, menu);
+        inflater.inflate(R.menu.admin_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_new_client:
+            case R.id.bAddNewClient:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new RegisterFragment()).addToBackStack(null).commit();
                 return true;
@@ -181,6 +151,6 @@ public class ListFragment extends Fragment implements UserListAdapter.OnItemClic
 
     @Override
     public void onItemClick(DocumentSnapshot doc, int position) {
-
+        // go to client's datepicker or profile
     }
 }

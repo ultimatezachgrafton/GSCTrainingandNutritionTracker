@@ -71,7 +71,7 @@
         android:layout_below="@id/report_camera"/>
 
     <EditText
-        android:id="@+id/weight_entry"
+        android:id="@+id/etWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/exercises"
-        android:layout_below="@id/weight_entry"/>
+        android:layout_below="@id/etWeight"/>
 
     <TextView
         android:id="@+id/exercise_name_text"
@@ -94,7 +94,7 @@
         android:layout_below="@+id/separator2"/>
 
     <EditText
-        android:id="@+id/exercise_name_entry"
+        android:id="@+id/etExerciseName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
@@ -109,7 +109,7 @@
         android:layout_below="@id/exercise_name_text"/>
 
     <EditText
-        android:id="@+id/reps_entry"
+        android:id="@+id/etRepsEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
@@ -124,28 +124,28 @@
         android:layout_below="@id/reps_text"/>
 
     <EditText
-        android:id="@+id/weight_used_entry"
+        android:id="@+id/etWeightUsedEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/weight_used_text"
         android:layout_alignBottom="@id/weight_used_text"/>
 
     <EditText
-        android:id="@+id/workout_comments"
+        android:id="@+id/etWorkoutComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/comments"
         android:layout_below="@id/weight_used_text" />
 
     <Button
-        android:id="@+id/report_report"
+        android:id="@+id/bSendReport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_below="@id/workout_comments"
+        android:layout_below="@id/etWorkoutComments"
         android:text="@string/report_report_text" />
 
     <TextView
