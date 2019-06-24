@@ -19,6 +19,7 @@ public class User {
     private String gender;
     private boolean isAdmin;
     private boolean isLoggedIn;
+    private String dateJoined;
 
     public User() {}
 
@@ -96,5 +97,9 @@ public class User {
     public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
     public boolean getIsAdmin() { return isAdmin; }
+
+    public void setDateJoined(String dateJoined) { this.dateJoined = dateJoined; }
+
+    public String getDateJoined() { return dateJoined; }
 
 }

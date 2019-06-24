@@ -3,6 +3,7 @@ package zachg.gsctrainingandnutritiontracker.inbox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,6 @@ public class MsgListAdapter extends FirestoreRecyclerAdapter<Msg, MsgListAdapter
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvinbox_item,
                 parent, false);
-        //v.setOnClickListener(mOnClickListener);
         return new MsgListAdapter.MsgViewHolder(v);
     }
 
@@ -37,11 +37,14 @@ public class MsgListAdapter extends FirestoreRecyclerAdapter<Msg, MsgListAdapter
         TextView tvMsgBody;
         TextView tvDateSent;
         TextView tvClientName;
+        ImageView check;
 
         public MsgViewHolder(View itemView) {
             super(itemView);
             tvMsgTitle = itemView.findViewById(R.id.tvMsgTitle);
             tvMsgBody = itemView.findViewById(R.id.tvMsgBody);
+            // if msg is read
+            check = itemView.findViewById(R.id.check);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,7 +68,12 @@ public class MsgListAdapter extends FirestoreRecyclerAdapter<Msg, MsgListAdapter
 
     public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot doc, int position);
+        // if msg is unread,
+        // switch boolean from unread to read
+        // if msg is read, show check
+        // setIsRead(true);
     }
+
     public void setOnItemClickListener(MsgListAdapter.OnItemClickListener listener) {
         this.listener = listener;
     }

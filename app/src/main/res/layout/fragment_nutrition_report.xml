@@ -15,137 +15,137 @@
         android:focusable="true"
         android:scaleType="centerInside" />
 
-    <ImageButton
-        android:id="@+id/report_camera"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/report_photo_button_description"
-        android:src="@android:drawable/ic_menu_camera"
-        android:layout_below="@id/client_photo" />
-
     <TextView
         android:id="@+id/client_name"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/client_photo"
         android:text="@string/clientName"
-        android:textSize="18sp"
-        android:layout_toRightOf="@id/client_photo"/>
+        android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/tvDate"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/client_photo"
         android:layout_below="@id/client_name"
+        android:layout_toRightOf="@id/client_photo"
         android:text="@string/date"
         android:textSize="18sp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/client_photo"
-        android:layout_below="@+id/date"
-        android:id="@+id/gender"
-        android:text="@string/gender"
-        android:textSize="18dp"
-        style="?android:listSeparatorTextViewStyle"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/birthday"
-        android:layout_toRightOf="@+id/client_photo"
-        android:layout_below="@id/gender"
-        style="?android:listSeparatorTextViewStyle"
-        android:text="@string/birthday"
-        android:textSize="18dp"/>
-
-    <TextView
-        android:id="@+id/separator2"
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/birthday"/>
-
-    <TextView
         android:id="@+id/nutrition_text"
         style="?android:listSeparatorTextViewStyle"
+        android:layout_below="@+id/client_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/report_camera"
         android:text="@string/nutrition"/>
 
     <TextView
-        android:id="@+id/meal_item_text"
+        android:id="@+id/tvMealItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/nutrition_text"
         android:text="@string/meal_num"/>
 
     <EditText
-        android:id="@+id/meal_item_entry"
+        android:id="@+id/etMealItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/meal_item_text"
-        android:layout_alignBottom="@id/meal_item_text"/>
+        android:layout_toRightOf="@id/tvMealItem"
+        android:layout_alignBottom="@id/tvMealItem"/>
 
     <TextView
-        android:id="@+id/calories_text"
+        android:id="@+id/tvCalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/meal_item_text"
+        android:layout_below="@id/tvMealItem"
         android:text="@string/calories"/>
 
     <EditText
-        android:id="@+id/calories_entry"
+        android:id="@+id/etCalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/calories_text"
-        android:layout_alignBottom="@id/calories_text"/>
+        android:layout_toRightOf="@id/tvCalories"
+        android:layout_alignBottom="@id/tvCalories"/>
 
     <TextView
-        android:id="@+id/fat_text"
+        android:id="@+id/tvFat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/calories_entry"
+        android:layout_below="@id/tvCalories"
         android:text="@string/fats"/>
 
     <EditText
-        android:id="@+id/fat_entry"
+        android:id="@+id/etFat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/fat_text"
-        android:layout_alignBottom="@id/fat_text"/>
+        android:layout_toRightOf="@id/tvFat"
+        android:layout_alignBottom="@id/tvFat"/>
 
     <TextView
-        android:id="@+id/carb_text"
+        android:id="@+id/tvCarbs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fat_text"
+        android:layout_below="@id/tvFat"
         android:text="@string/carbs"/>
 
     <EditText
-        android:id="@+id/carb_entry"
+        android:id="@+id/etCarbs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/carb_text"
-        android:layout_alignBottom="@id/carb_text"/>
+        android:layout_toRightOf="@id/tvCarbs"
+        android:layout_alignBottom="@id/tvCarbs"/>
 
     <TextView
-        android:id="@+id/protein_text"
+        android:id="@+id/tvProtein"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/carb_text"
+        android:layout_below="@id/tvCarbs"
         android:text="@string/protein"/>
 
     <EditText
-        android:id="@+id/protein_entry"
+        android:id="@+id/etProtein"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/protein_text"
-        android:layout_alignBottom="@id/protein_text"/>
+        android:layout_toRightOf="@id/tvProtein"
+        android:layout_alignBottom="@id/tvProtein"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotals"
+        android:text="@string/Totals"
+        android:layout_below="@id/etProtein"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalCalories"
+        android:layout_below="@id/tvTotals"
+        android:text="@string/tvTotalCalories"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalFat"
+        android:layout_below="@id/tvTotalCalories"
+        android:text="@string/tvTotalFat"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalCarbs"
+        android:layout_below="@id/tvTotalFat"
+        android:text="@string/tvTotalCarbs"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalProtein"
+        android:layout_below="@id/tvTotalCarbs"
+        android:text="@string/tvTotalProtein"/>
 
     <Button
         android:id="@+id/report_report"
@@ -155,7 +155,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_below="@id/protein_text"
+        android:layout_below="@id/tvTotalProtein"
         android:text="@string/report_report_text" />
 
     <TextView

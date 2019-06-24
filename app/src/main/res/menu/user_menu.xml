@@ -3,8 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/bViewProfile"
+        android:title="string/viewProfile"/>
+
+    <item
         android:id="@+id/bAskBen"
-        android:title="Ask Ben" />
+        android:title="string/askBen" />
 
     <item
         android:id="@+id/bLogout"

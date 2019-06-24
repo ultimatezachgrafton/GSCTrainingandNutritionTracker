@@ -1,13 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.reports;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,9 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.inbox.AskBenFragment;
@@ -48,7 +40,9 @@ import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
 import static android.content.ContentValues.TAG;
+import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
+import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
 
 // ReportFragment builds out the fragment that hosts the Report objects
 
@@ -56,10 +50,8 @@ public class ReportWorkoutFragment extends Fragment {
     private static final String ARG_REPORT_ID = "report_id";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
-    private static final int REQUEST_PHOTO = 2;
-    private File mPhotoFile;
     private Button mReportButton;
-    private ImageButton mPhotoButton;
+    private File mPhotoFile;
     private ImageView mPhotoView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -67,10 +59,6 @@ public class ReportWorkoutFragment extends Fragment {
     private TextView tvClientName;
     private String mDate;
     private TextView tvDate;
-    private String mGender;
-    private TextView tvGender;
-    private String mBirthDate;
-    private TextView tvBirthDate;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +69,13 @@ public class ReportWorkoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_workout_report, container, false);
 
-        currentUser.setClientName(currentUser.getFirstName(), currentUser.getLastName());
-        mClientName = currentUser.getClientName();
+        if (isAdmin) {
+            currentUser.setClientName(currentUser.getFirstName(), currentUser.getLastName());
+            mClientName = currentUser.getClientName();
+        } else {
+            currentSelectedUser.setClientName(currentSelectedUser.getFirstName(), currentSelectedUser.getLastName());
+            mClientName = currentSelectedUser.getClientName();
+        }
         String mClientNameFormat = getResources().getString(R.string.clientName);
         final String mClientNameMsg = String.format(mClientNameFormat, mClientName);
         tvClientName = v.findViewById(R.id.client_name);
@@ -92,20 +85,8 @@ public class ReportWorkoutFragment extends Fragment {
         mDate = String.valueOf(Calendar.getInstance().getTime());
         String mDateFormat = getResources().getString(R.string.date);
         final String mDateMsg = String.format(mDateFormat, mDate);
-        tvDate = v.findViewById(R.id.date);
+        tvDate = v.findViewById(R.id.tvDate);
         tvDate.setText(mDateMsg);
-
-        mGender = currentUser.getGender();
-        String mGenderFormat = getResources().getString(R.string.gender);
-        String mGenderMsg = String.format(mGenderFormat, mGender);
-        tvGender = v.findViewById(R.id.gender);
-        tvGender.setText(mGenderMsg);
-
-        mBirthDate = currentUser.getBirthday();
-        String mBirthDateFormat = getResources().getString(R.string.birthday);
-        String mBirthDateMsg = String.format(mBirthDateFormat, mBirthDate);
-        tvBirthDate = v.findViewById(R.id.birthday);
-        tvBirthDate.setText(mBirthDateMsg);
 
         final EditText etWeight = v.findViewById(R.id.etWeight);
         final EditText etExerciseName = v.findViewById(R.id.etExerciseName);
@@ -157,59 +138,23 @@ public class ReportWorkoutFragment extends Fragment {
                 }
             });
 
-        mPhotoButton = (ImageButton) v.findViewById(R.id.report_camera);
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        boolean canTakePhoto = mPhotoFile != null;
-        mPhotoButton.setEnabled(canTakePhoto);
-
-        mPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = FileProvider.getUriForFile(getActivity(),
-                        "zachg.bensfitnessapp.fileprovider", mPhotoFile);
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
-                        queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
-
-                for (ResolveInfo activity : cameraActivities) {
-                    getActivity().grantUriPermission(activity.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                }
-
-                startActivityForResult(captureImage, REQUEST_PHOTO);
-            }
-        });
-
-        mPhotoView = (ImageView) v.findViewById(R.id.client_photo);
-        updatePhotoView();
 
         v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeRight() {
-                // go to NutritionFragment, or next date
-                Toast.makeText(getActivity(), "hi", Toast.LENGTH_LONG).show();
+                // go to NutritionFragment
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new ReportNutritionFragment()).addToBackStack(null).commit();
             }
             public void onSwipeLeft() {
-                // go to WorkoutFragment or prev date
-                Toast.makeText(getActivity(), "hi", Toast.LENGTH_LONG).show();
+                // go to prev date
+                Toast.makeText(getActivity(), "ya swiped left", Toast.LENGTH_LONG).show();
             }
         });
 
+        mPhotoView =(ImageView)v.findViewById(R.id.client_photo);
+        updatePhotoView();
+
         return v;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     private void updatePhotoView() {
@@ -239,6 +184,9 @@ public class ReportWorkoutFragment extends Fragment {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.bViewProfile:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new ClientProfileFragment()).addToBackStack(null).commit();
             case R.id.bAskBen:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new AskBenFragment()).addToBackStack(null).commit();

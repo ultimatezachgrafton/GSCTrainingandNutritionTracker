@@ -1,13 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.reports;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +27,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import zachg.gsctrainingandnutritiontracker.R;
@@ -48,18 +39,17 @@ import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
 import static android.content.ContentValues.TAG;
+import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
+import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
 
 // ReportFragment builds out the fragment that hosts the Report objects
 
 public class ReportNutritionFragment extends Fragment {
     private static final String ARG_REPORT_ID = "report_id";
     private static final int REQUEST_DATE = 0;
-    private static final int REQUEST_CONTACT = 1;
-    private static final int REQUEST_PHOTO = 2;
-    private File mPhotoFile;
     private Button mReportButton;
-    private ImageButton mPhotoButton;
+    private File mPhotoFile;
     private ImageView mPhotoView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -67,10 +57,6 @@ public class ReportNutritionFragment extends Fragment {
     private TextView tvClientName;
     private String mDate;
     private TextView tvDate;
-    private String mGender;
-    private TextView tvGender;
-    private String mBirthDate;
-    private TextView tvBirthDate;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +67,15 @@ public class ReportNutritionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_workout_report, container, false);
 
-        currentUser.setClientName(currentUser.getFirstName(), currentUser.getLastName());
-        mClientName = currentUser.getClientName();
+        // nutrition info
+        // add nutrition totals as input
+        if (isAdmin) {
+            currentUser.setClientName(currentUser.getFirstName(), currentUser.getLastName());
+            mClientName = currentUser.getClientName();
+        } else {
+            currentSelectedUser.setClientName(currentSelectedUser.getFirstName(), currentSelectedUser.getLastName());
+            mClientName = currentSelectedUser.getClientName();
+        }
         String mClientNameFormat = getResources().getString(R.string.clientName);
         final String mClientNameMsg = String.format(mClientNameFormat, mClientName);
         tvClientName = v.findViewById(R.id.client_name);
@@ -92,35 +85,31 @@ public class ReportNutritionFragment extends Fragment {
         mDate = String.valueOf(Calendar.getInstance().getTime());
         String mDateFormat = getResources().getString(R.string.date);
         final String mDateMsg = String.format(mDateFormat, mDate);
-        tvDate = v.findViewById(R.id.date);
+        tvDate = v.findViewById(R.id.tvDate);
         tvDate.setText(mDateMsg);
 
-        mGender = currentUser.getGender();
-        String mGenderFormat = getResources().getString(R.string.gender);
-        String mGenderMsg = String.format(mGenderFormat, mGender);
-        tvGender = v.findViewById(R.id.gender);
-        tvGender.setText(mGenderMsg);
+        final EditText etMealItem = v.findViewById(R.id.etMealItem);
 
-        mBirthDate = currentUser.getBirthday();
-        String mBirthDateFormat = getResources().getString(R.string.birthday);
-        String mBirthDateMsg = String.format(mBirthDateFormat, mBirthDate);
-        tvBirthDate = v.findViewById(R.id.birthday);
-        tvBirthDate.setText(mBirthDateMsg);
+        // Take Only Ints
+        final EditText etCalories = v.findViewById(R.id.etCalories);
+        final EditText etFat = v.findViewById(R.id.etFat);
+        final EditText etCarbs = v.findViewById(R.id.etCarbs);
+        final EditText etProtein = v.findViewById(R.id.etProtein);
 
-        final EditText etWeight = v.findViewById(R.id.etWeight);
-        final EditText etExerciseName = v.findViewById(R.id.etExerciseName);
-        final EditText etRepsEntry = v.findViewById(R.id.etRepsEntry);
-        final EditText etWeightUsedEntry = v.findViewById(R.id.etWeightUsedEntry);
-        final EditText etWorkoutComments = v.findViewById(R.id.etWorkoutComments);
+        // Calculate the totals
+        final int mTotalCalories = Integer.parseInt(etCalories.getText().toString()); // + all dynamic Calorie fields
+        final int mTotalFat = Integer.parseInt(etFat.getText().toString());
+        final int mTotalCarbs = Integer.parseInt(etCarbs.getText().toString());
+        final int mTotalProtein = Integer.parseInt(etProtein.getText().toString());
 
         mReportButton = (Button) v.findViewById(R.id.bSendReport);
         mReportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String mDailyWeight = etWeight.getText().toString();
-                String mExerciseName = etExerciseName.getText().toString();
-                String mWeightUsed = etWeightUsedEntry.getText().toString();
-                String mRepsEntry = etRepsEntry.getText().toString();
-                String mWorkoutComments = etWorkoutComments.getText().toString();
+                String mMealItem = etMealItem.getText().toString();
+                String mCalories = etCalories.getText().toString();
+                String mFat = etFat.getText().toString();
+                String mCarbs = etCarbs.getText().toString();
+                String mProtein = etProtein.getText().toString();
 
                 // this will increment
                 int mExerciseNum = 1;
@@ -133,11 +122,21 @@ public class ReportNutritionFragment extends Fragment {
                 Map<String, Object> report = new HashMap<>();
                 report.put("client name", mClientNameMsg);
                 report.put("date", mDateMsg);
-                report.put("weight", mDailyWeight);
-                report.put("Exercise " + mExerciseNum, mExerciseName);
-                report.put("Weight Used ", mWeightUsed);
-                report.put("# of reps", mRepsEntry);
-                report.put("Workout comments:", mWorkoutComments);
+//                report.put("weight", mDailyWeight);
+//                report.put("Exercise " + mExerciseNum, mExerciseName);
+//                report.put("Weight Used ", mWeightUsed);
+//                report.put("# of reps", mRepsEntry);
+//                report.put("Workout comments:", mWorkoutComments);
+                report.put("Meal", mMealItem);
+                report.put("Calories", mCalories);
+                report.put("Fat", mFat);
+                report.put("Carbs", mCarbs);
+                report.put("Protein", mProtein);
+//                report.put("Total Calories", mTotalCalories);
+//                report.put("Total Fat", mTotalFat);
+//                report.put("Total Carbs", mTotalCarbs);
+//                report.put("Total Protein", mTotalProtein);
+
 
                 // Add user as a new document with a generated ID
                 db.collection("reports")
@@ -157,59 +156,22 @@ public class ReportNutritionFragment extends Fragment {
             }
         });
 
-        mPhotoButton = (ImageButton) v.findViewById(R.id.report_camera);
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        boolean canTakePhoto = mPhotoFile != null;
-        mPhotoButton.setEnabled(canTakePhoto);
-
-        mPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = FileProvider.getUriForFile(getActivity(),
-                        "zachg.bensfitnessapp.fileprovider", mPhotoFile);
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
-                        queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
-
-                for (ResolveInfo activity : cameraActivities) {
-                    getActivity().grantUriPermission(activity.activityInfo.packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                }
-
-                startActivityForResult(captureImage, REQUEST_PHOTO);
-            }
-        });
-
-        mPhotoView = (ImageView) v.findViewById(R.id.client_photo);
-        updatePhotoView();
-
         v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeRight() {
-                // go to WorkoutFragment or prev date
-                Toast.makeText(getActivity(), "hi", Toast.LENGTH_LONG).show();
+                // go to WorkoutFragment
+                Toast.makeText(getActivity(), "you swiped right", Toast.LENGTH_LONG).show();
             }
             public void onSwipeLeft() {
-                // go to NutritionFragment, or next date
-                Toast.makeText(getActivity(), "hi", Toast.LENGTH_LONG).show();
+                // go to next date
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new ReportWorkoutFragment()).addToBackStack(null).commit();
             }
         });
 
+        mPhotoView =(ImageView)v.findViewById(R.id.client_photo);
+        updatePhotoView();
+
         return v;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     private void updatePhotoView() {
@@ -230,7 +192,7 @@ public class ReportNutritionFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (currentUser.getIsAdmin()) {
+        if (isAdmin) {
             inflater.inflate(R.menu.admin_menu, menu);
         } else {
             inflater.inflate(R.menu.user_menu, menu);
@@ -239,6 +201,9 @@ public class ReportNutritionFragment extends Fragment {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.bViewProfile:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new UserProfileFragment()).addToBackStack(null).commit();
             case R.id.bAskBen:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new AskBenFragment()).addToBackStack(null).commit();

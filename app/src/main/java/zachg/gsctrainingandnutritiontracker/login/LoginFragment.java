@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment;
 import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
-import zachg.gsctrainingandnutritiontracker.ListFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 
@@ -83,6 +83,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     @Override
     public void goToAdminList() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ListFragment()).addToBackStack(null).commit();
+                new AdminListFragment()).addToBackStack(null).commit();
     }
 }

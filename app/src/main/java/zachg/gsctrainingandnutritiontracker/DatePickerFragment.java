@@ -27,7 +27,9 @@ import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 import zachg.gsctrainingandnutritiontracker.reports.Report;
 import zachg.gsctrainingandnutritiontracker.reports.ReportWorkoutFragment;
 
+import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
+import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
 
 // The fragment to host the calendar widget to select workout dates
 
@@ -56,7 +58,8 @@ public class DatePickerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_date, container, false);
 
-        mFirstName = currentUser.getFirstName();
+        // get cSU by user's name
+        mFirstName = currentSelectedUser.getFirstName();
         mGreetingFormat = getResources().getString(R.string.select_date_greeting);
         mGreetingMsg = String.format(mGreetingFormat, mFirstName);
         tvTextView = v.findViewById(R.id.textView);
@@ -70,7 +73,7 @@ public class DatePickerFragment extends Fragment {
                 String date = (i1 + 1) + "/" + i2 + "/" + i;
                 Log.d(TAG, "onSelectedDayChange: mm/dd/yyyy: " + date);
 
-                // query ReportFragment to get the getDate() && currentUser.getUserId() that matches the user's id
+                // query ReportFragment to get the getDate() && currentSelectedUser.getUserId() that matches the user's id
                 // - which is what I did in LoginFragment -
                 // date and userId == date && id;
                 // if WorkoutDate == null, start an empty Report
@@ -94,7 +97,7 @@ public class DatePickerFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (currentUser.getIsAdmin()) {
+        if (isAdmin) {
             inflater.inflate(R.menu.admin_menu, menu);
         } else {
            inflater.inflate(R.menu.user_menu, menu);

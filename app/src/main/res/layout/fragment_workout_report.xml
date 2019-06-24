@@ -15,52 +15,24 @@
         android:focusable="true"
         android:scaleType="centerInside" />
 
-    <ImageButton
-        android:id="@+id/report_camera"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/report_photo_button_description"
-        android:src="@android:drawable/ic_menu_camera"
-        android:layout_below="@id/client_photo" />
-
     <TextView
         android:id="@+id/client_name"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/client_photo"
         android:text="@string/clientName"
-        android:textSize="18sp"
-        android:layout_toRightOf="@id/client_photo"/>
+        android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/tvDate"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/client_photo"
         android:layout_below="@id/client_name"
+        android:layout_toRightOf="@id/client_photo"
         android:text="@string/date"
         android:textSize="18sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/client_photo"
-        android:layout_below="@+id/date"
-        android:id="@+id/gender"
-        android:text="@string/gender"
-        android:textSize="18dp"
-        style="?android:listSeparatorTextViewStyle"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/birthday"
-        android:layout_toRightOf="@+id/client_photo"
-        android:layout_below="@id/gender"
-        style="?android:listSeparatorTextViewStyle"
-        android:text="@string/birthday"
-        android:textSize="18dp"/>
 
     <TextView
         android:id="@+id/separator1"
@@ -68,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/enter_weight"
-        android:layout_below="@id/report_camera"/>
+        android:layout_below="@id/client_photo"/>
 
     <EditText
         android:id="@+id/etWeight"
@@ -76,7 +48,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_toRightOf="@id/separator1"
-        android:layout_below="@id/birthday"/>
+        android:layout_alignBaseline="@id/separator1"/>
 
     <TextView
         android:id="@+id/separator2"
@@ -154,6 +126,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/swipe_info1"
-        android:layout_below="@id/report_report"/>
+        android:layout_below="@id/bSendReport"/>
 
 </RelativeLayout>

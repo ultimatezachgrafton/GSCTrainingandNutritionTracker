@@ -37,7 +37,7 @@
         android:id="@+id/listFragment"
         android:name="zachg.gsctrainingandnutritiontracker.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" >
+        tools:layout="@layout/fragment_admin_list" >
         <action
             android:id="@+id/action_listFragment_to_datePickerFragment"
             app:destination="@id/datePickerFragment" />

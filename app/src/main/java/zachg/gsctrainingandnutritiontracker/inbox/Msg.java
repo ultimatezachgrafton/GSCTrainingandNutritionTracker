@@ -10,6 +10,7 @@ public class Msg {
     private String msgBody;
     private String msgDate;
     private String clientName;
+    private boolean isRead;
 
     public String getMsgTitle() {
         return msgTitle;
@@ -42,5 +43,9 @@ public class Msg {
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
+
+    public boolean getIsRead() { return isRead; }
+
+    public void setIsRead(boolean isRead) {this.isRead = isRead; }
 
 }

@@ -23,7 +23,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 
 public class InboxFragment extends Fragment implements MsgListAdapter.OnItemClickListener {
 
@@ -80,7 +82,7 @@ public class InboxFragment extends Fragment implements MsgListAdapter.OnItemClic
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc: task.getResult()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
                                 Msg msg = doc.toObject(Msg.class);
                                 mMsgs.add(msg);
                             }
@@ -89,6 +91,8 @@ public class InboxFragment extends Fragment implements MsgListAdapter.OnItemClic
                         }
                     }
                 });
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                            new MessageFragment()).addToBackStack(null).commit();
             }
         });
         return v;

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import zachg.gsctrainingandnutritiontracker.AdminList.AdminListActivity;
 import zachg.gsctrainingandnutritiontracker.login.LoginActivity;
 import zachg.gsctrainingandnutritiontracker.login.LoginHandler;
 import zachg.gsctrainingandnutritiontracker.login.LoginListener;
@@ -42,11 +43,11 @@ public class SplashScreenActivity extends FragmentActivity implements LoginListe
     // why does this go to DatePicker?
     @Override
     public void goToDatePicker() {
-        startActivity(new Intent(this, ListActivity.class));
+        startActivity(new Intent(this, AdminListActivity.class));
     }
 
     @Override
     public void goToAdminList() {
-        startActivity(new Intent(this, ListActivity.class));
+        startActivity(new Intent(this, AdminListActivity.class));
     }
 }

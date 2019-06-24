@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker;
+package zachg.gsctrainingandnutritiontracker.AdminList;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,13 +28,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
+import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
+import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.User;
 import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 import zachg.gsctrainingandnutritiontracker.reports.Report;
 
 // ListFragment is the fragment that displays the list of Users which the admin accesses upon logging in
-public class ListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
+public class AdminListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
 
     private RecyclerView mUserRecyclerView;
     private UserListAdapter adapter;
@@ -44,7 +49,7 @@ public class ListFragment extends Fragment implements UserListAdapter.OnItemClic
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<Report> mReports;
 
-    public ListFragment() {}
+    public AdminListFragment() {}
 
     static {
         FirebaseFirestore.setLoggingEnabled(true);
@@ -58,7 +63,7 @@ public class ListFragment extends Fragment implements UserListAdapter.OnItemClic
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_admin_list, container, false);
 
         // Query the Firestore collection
         Query query = userCol;

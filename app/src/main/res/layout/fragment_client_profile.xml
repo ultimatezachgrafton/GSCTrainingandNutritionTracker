@@ -9,10 +9,40 @@
         android:layout_height="wrap_content"
     />
 
+    <TextView
+        android:id="@+id/tvGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvClientName"
+        />
+
+    <TextView
+        android:id="@+id/tvDateJoined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvGender"
+    />
+
+    <TextView
+        android:id="@+id/tvBirthDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDateJoined"
+        />
+
+    <TextView
+        android:id="@+id/tvIsAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBirthDate"
+        />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bToDatePicker"
+        android:layout_below="@id/tvIsAdmin"
+        android:text="@string/toDatePicker"
         />
 
 </LinearLayout>

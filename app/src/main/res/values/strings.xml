@@ -31,6 +31,10 @@
     <string name="etGender">Gender</string>
     <string name="weight">Weight</string>
 
+    <string name="isAdminAdmin">Admin</string>
+    <string name="isAdminUser">User</string>
+    <string name="toDatePicker">Client Calendar</string>
+
     <string name="swipe_info1">Swipe left for nutrition</string>
     <string name="swipe_info2">Swipe right for workout</string>
     <string name="enter_weight">Enter Today\'s Weight:</string>

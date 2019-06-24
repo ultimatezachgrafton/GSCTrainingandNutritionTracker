@@ -15,6 +15,8 @@ import zachg.gsctrainingandnutritiontracker.User;
 public class LoginHandler {
     private LoginListener mLoginListener;
     public static User currentUser;
+    public static User currentSelectedUser;
+    public static boolean isAdmin;
 
     public LoginHandler(LoginListener loginListener) {
         mLoginListener = loginListener;
@@ -35,8 +37,10 @@ public class LoginHandler {
                     // Determine access level and redirect as appropriate
                     if (currentUser.getIsAdmin() == false) {
                         mLoginListener.goToDatePicker();
+                        isAdmin = false;
                     } else {
                         mLoginListener.goToAdminList();
+                        isAdmin = true;
                     }
                 }
             }
