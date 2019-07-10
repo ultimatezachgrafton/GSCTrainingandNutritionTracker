@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.inbox;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +24,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.User;
 
-public class InboxFragment extends Fragment implements MsgListAdapter.OnItemClickListener {
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
+public class InboxFragment extends Fragment implements MessageListAdapter.OnItemClickListener {
 
     private RecyclerView mMsgRecyclerView;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final CollectionReference msgCol = db.collection("messages");
-    private MsgListAdapter adapter;
-    private ArrayList<Msg> mMsgs;
+    private MessageListAdapter adapter;
+    private static ArrayList<Message> mMsgs = new ArrayList<>();
+    private static Message currentSelectedMsg;
 
     public InboxFragment() {
         // required empty public constructor
@@ -51,51 +55,34 @@ public class InboxFragment extends Fragment implements MsgListAdapter.OnItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        // Query the Firestore collection
-        Query query = msgCol;
-        // Build the database
-        FirestoreRecyclerOptions<Msg> options = new FirestoreRecyclerOptions.Builder<Msg>()
-                .setQuery(query, Msg.class)
-                .build();
+        // fetch Msgs for display
+        MessageHandler.fetchMsgs(mMsgs);
 
-        adapter = new MsgListAdapter(options);
+        adapter = new MessageListAdapter(MessageHandler.getMsgOptions(MessageHandler.msgColRef));
 
         mMsgRecyclerView = v.findViewById(R.id.rv_inbox);
         mMsgRecyclerView.setHasFixedSize(true);
         mMsgRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mMsgRecyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new MsgListAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new MessageListAdapter.OnItemClickListener() {
             // Fetch msg info into Msg object
             @Override
             public void onItemClick(DocumentSnapshot doc, int position) {
-                Msg msg = doc.toObject(Msg.class);
-                String id = doc.getId();
-                String path = doc.getReference().getPath();
+                getMsgAtPosition(position);
+                String msgId = currentSelectedMsg.getId();
 
-                // Query for Reports with same firstName, lastName as user
-                Query msgQuery = msgCol.whereEqualTo("date sent", msg.getMsgDate())
-                        .whereEqualTo("client name", msg.getClientName())
-                        .orderBy("unread", Query.Direction.ASCENDING)
-                        .orderBy("date", Query.Direction.ASCENDING);
-                msgQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                Msg msg = doc.toObject(Msg.class);
-                                mMsgs.add(msg);
-                            }
-                        } else {
-                            Toast.makeText(getActivity(), "failed to create mMsgs", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                             new MessageFragment()).addToBackStack(null).commit();
             }
         });
         return v;
+    }
+
+    public Message getMsgAtPosition(int position) {
+        currentSelectedMsg = mMsgs.get(position);
+        Log.d(TAG, String.valueOf(currentSelectedMsg));
+        return currentSelectedMsg;
     }
 
     @Override

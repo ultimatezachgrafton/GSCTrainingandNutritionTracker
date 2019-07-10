@@ -1,16 +1,21 @@
 package zachg.gsctrainingandnutritiontracker.inbox;
 
-public class Msg {
+public class Message {
 
     public void Msg() {
 
     }
 
+    private String msgId;
     private String msgTitle;
     private String msgBody;
     private String msgDate;
     private String clientName;
     private boolean isRead;
+
+    public String getId() {
+        return msgId;
+    }
 
     public String getMsgTitle() {
         return msgTitle;

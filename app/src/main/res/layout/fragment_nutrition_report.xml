@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,6 +34,17 @@
         android:layout_toRightOf="@id/client_photo"
         android:text="@string/date"
         android:textSize="18sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rvNutrition"
+        tools:listitem="@layout/rvnutrition_item"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bAddMeal"/>
 
     <TextView
         android:id="@+id/nutrition_text"
@@ -116,7 +128,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvTotals"
-        android:text="@string/Totals"
+        android:text="hi"
         android:layout_below="@id/etProtein"/>
 
     <TextView
@@ -124,28 +136,28 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvTotalCalories"
         android:layout_below="@id/tvTotals"
-        android:text="@string/tvTotalCalories"/>
+        android:text="hi"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvTotalFat"
         android:layout_below="@id/tvTotalCalories"
-        android:text="@string/tvTotalFat"/>
+        android:text="hi"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvTotalCarbs"
         android:layout_below="@id/tvTotalFat"
-        android:text="@string/tvTotalCarbs"/>
+        android:text="hi"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvTotalProtein"
         android:layout_below="@id/tvTotalCarbs"
-        android:text="@string/tvTotalProtein"/>
+        android:text="hi"/>
 
     <Button
         android:id="@+id/report_report"

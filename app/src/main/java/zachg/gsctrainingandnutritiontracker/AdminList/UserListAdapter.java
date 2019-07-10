@@ -34,9 +34,8 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvlist_item,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvuser_item,
                 parent, false);
-        //v.setOnClickListener(mOnClickListener);
         return new UserViewHolder(v);
     }
 

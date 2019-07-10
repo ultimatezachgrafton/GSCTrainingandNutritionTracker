@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
+import zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 

@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,10 +27,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.inbox.AskBenFragment;
@@ -39,15 +43,18 @@ import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
 import static android.content.ContentValues.TAG;
-import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentSelectedUser;
+import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
 
 // ReportFragment builds out the fragment that hosts the Report objects
 
 public class ReportNutritionFragment extends Fragment {
-    private static final String ARG_REPORT_ID = "report_id";
-    private static final int REQUEST_DATE = 0;
+    private RecyclerView mNutritionRecyclerView;
+    // User adds names of meals and nutrition info here
+    private Button mAddMeal;
+    private ReportListAdapter adapter;
+
     private Button mReportButton;
     private File mPhotoFile;
     private ImageView mPhotoView;
@@ -58,6 +65,10 @@ public class ReportNutritionFragment extends Fragment {
     private String mDate;
     private TextView tvDate;
 
+    private static ArrayList<Report> mReports = new ArrayList<>();
+
+    ReportNutritionFragment() {}
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -66,9 +77,7 @@ public class ReportNutritionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_workout_report, container, false);
-
         // nutrition info
-        // add nutrition totals as input
         if (isAdmin) {
             currentUser.setClientName(currentUser.getFirstName(), currentUser.getLastName());
             mClientName = currentUser.getClientName();
@@ -76,6 +85,17 @@ public class ReportNutritionFragment extends Fragment {
             currentSelectedUser.setClientName(currentSelectedUser.getFirstName(), currentSelectedUser.getLastName());
             mClientName = currentSelectedUser.getClientName();
         }
+
+        ReportHandler.fetchReports(mReports);
+        adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportColRef));
+
+        mNutritionRecyclerView = v.findViewById(R.id.rvNutrition);
+        mNutritionRecyclerView.setHasFixedSize(true);
+        mNutritionRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mNutritionRecyclerView.setAdapter(adapter);
+
+        // Five meal blocks autogenerate, add meal will add more
+
         String mClientNameFormat = getResources().getString(R.string.clientName);
         final String mClientNameMsg = String.format(mClientNameFormat, mClientName);
         tvClientName = v.findViewById(R.id.client_name);
@@ -111,10 +131,6 @@ public class ReportNutritionFragment extends Fragment {
                 String mCarbs = etCarbs.getText().toString();
                 String mProtein = etProtein.getText().toString();
 
-                // this will increment
-                int mExerciseNum = 1;
-                // when called, increase by 1
-
                 // Access a Cloud Firestore instance
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -122,11 +138,6 @@ public class ReportNutritionFragment extends Fragment {
                 Map<String, Object> report = new HashMap<>();
                 report.put("client name", mClientNameMsg);
                 report.put("date", mDateMsg);
-//                report.put("weight", mDailyWeight);
-//                report.put("Exercise " + mExerciseNum, mExerciseName);
-//                report.put("Weight Used ", mWeightUsed);
-//                report.put("# of reps", mRepsEntry);
-//                report.put("Workout comments:", mWorkoutComments);
                 report.put("Meal", mMealItem);
                 report.put("Calories", mCalories);
                 report.put("Fat", mFat);
@@ -136,6 +147,7 @@ public class ReportNutritionFragment extends Fragment {
 //                report.put("Total Fat", mTotalFat);
 //                report.put("Total Carbs", mTotalCarbs);
 //                report.put("Total Protein", mTotalProtein);
+                // report.put("Nutrition comments", mNutritionComments);
 
 
                 // Add user as a new document with a generated ID
@@ -203,7 +215,7 @@ public class ReportNutritionFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new UserProfileFragment()).addToBackStack(null).commit();
+                        new ClientProfileFragment()).addToBackStack(null).commit();
             case R.id.bAskBen:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new AskBenFragment()).addToBackStack(null).commit();

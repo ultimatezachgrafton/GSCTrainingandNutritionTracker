@@ -15,7 +15,6 @@ import zachg.gsctrainingandnutritiontracker.User;
 public class LoginHandler {
     private LoginListener mLoginListener;
     public static User currentUser;
-    public static User currentSelectedUser;
     public static boolean isAdmin;
 
     public LoginHandler(LoginListener loginListener) {

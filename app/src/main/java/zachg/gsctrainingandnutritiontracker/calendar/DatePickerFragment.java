@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker;
+package zachg.gsctrainingandnutritiontracker.calendar;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.inbox.AskBenFragment;
 import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
@@ -27,7 +29,7 @@ import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 import zachg.gsctrainingandnutritiontracker.reports.Report;
 import zachg.gsctrainingandnutritiontracker.reports.ReportWorkoutFragment;
 
-import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentSelectedUser;
+import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
 
@@ -44,6 +46,8 @@ public class DatePickerFragment extends Fragment {
     private String mGreetingMsg;
     private TextView tvTextView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    public static Report currentSelectedReport;
 
     public DatePickerFragment() {
         //empty constructor
@@ -76,12 +80,16 @@ public class DatePickerFragment extends Fragment {
                 // query ReportFragment to get the getDate() && currentSelectedUser.getUserId() that matches the user's id
                 // - which is what I did in LoginFragment -
                 // date and userId == date && id;
-                // if WorkoutDate == null, start an empty Report
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+
+                // if it's a new Report, start an empty Report fragment
+                if (currentSelectedReport.getIsNew()) {
+                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                            new ReportWorkoutFragment()).addToBackStack(null).commit();
+                } else {
+                    // fill report w the report's info
+                  SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new ReportWorkoutFragment()).addToBackStack(null).commit();
-                // else bring up existing report
-//              SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new ReportFragment()).addToBackStack(null).commit();
+                }
             }
         });
 

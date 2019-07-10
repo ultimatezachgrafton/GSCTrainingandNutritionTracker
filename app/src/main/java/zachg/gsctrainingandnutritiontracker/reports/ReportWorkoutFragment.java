@@ -17,21 +17,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import zachg.gsctrainingandnutritiontracker.AdminList.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.inbox.AskBenFragment;
 import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
@@ -40,25 +46,37 @@ import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
 import static android.content.ContentValues.TAG;
-import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentSelectedUser;
+import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
+import static zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment.currentSelectedReport;
 
 // ReportFragment builds out the fragment that hosts the Report objects
+// fetch Reports, show via RecyclerView
 
-public class ReportWorkoutFragment extends Fragment {
-    private static final String ARG_REPORT_ID = "report_id";
-    private static final int REQUEST_DATE = 0;
-    private static final int REQUEST_CONTACT = 1;
+public class ReportWorkoutFragment extends Fragment implements ReportListAdapter.OnItemClickListener {
+    private RecyclerView mWorkoutRecyclerView;
+    private ReportListAdapter adapter;
     private Button mReportButton;
     private File mPhotoFile;
     private ImageView mPhotoView;
+    private boolean isNew;
+
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     private String mClientName;
     private TextView tvClientName;
     private String mDate;
     private TextView tvDate;
+
+    private static ArrayList<Report> mReports = new ArrayList<>();
+
+    public ReportWorkoutFragment() {}
+
+    static {
+        FirebaseFirestore.setLoggingEnabled(true);
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +94,20 @@ public class ReportWorkoutFragment extends Fragment {
             currentSelectedUser.setClientName(currentSelectedUser.getFirstName(), currentSelectedUser.getLastName());
             mClientName = currentSelectedUser.getClientName();
         }
+
+        // get Workout info for that user
+        // distinguish between Workout Days 1, 2, 3, 4, 5, 6, 7 and display
+        // auto-generates the actual workout day, but user can choose to change to different workout from list
+        // once Report is saved it is no longer new
+
+        ReportHandler.fetchReports(mReports);
+        adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportColRef));
+
+        mWorkoutRecyclerView = v.findViewById(R.id.rvWorkout);
+        mWorkoutRecyclerView.setHasFixedSize(true);
+        mWorkoutRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mWorkoutRecyclerView.setAdapter(adapter);
+
         String mClientNameFormat = getResources().getString(R.string.clientName);
         final String mClientNameMsg = String.format(mClientNameFormat, mClientName);
         tvClientName = v.findViewById(R.id.client_name);
@@ -95,6 +127,7 @@ public class ReportWorkoutFragment extends Fragment {
         final EditText etWorkoutComments = v.findViewById(R.id.etWorkoutComments);
 
         mReportButton = (Button) v.findViewById(R.id.bSendReport);
+
         mReportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String mDailyWeight = etWeight.getText().toString();
@@ -102,10 +135,6 @@ public class ReportWorkoutFragment extends Fragment {
                 String mWeightUsed = etWeightUsedEntry.getText().toString();
                 String mRepsEntry = etRepsEntry.getText().toString();
                 String mWorkoutComments = etWorkoutComments.getText().toString();
-
-                // this will increment
-                int mExerciseNum = 1;
-                // when called, increase by 1
 
                 // Access a Cloud Firestore instance
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -115,7 +144,7 @@ public class ReportWorkoutFragment extends Fragment {
                 report.put("client name", mClientNameMsg);
                 report.put("date", mDateMsg);
                 report.put("weight", mDailyWeight);
-                report.put("Exercise " + mExerciseNum, mExerciseName);
+                report.put("Exercise ", mExerciseName);
                 report.put("Weight Used ", mWeightUsed);
                 report.put("# of reps", mRepsEntry);
                 report.put("Workout comments:", mWorkoutComments);
@@ -135,8 +164,8 @@ public class ReportWorkoutFragment extends Fragment {
                                     Log.w(TAG, "Error adding document", e);
                                 }
                             });
-                }
-            });
+            }
+        });
 
 
         v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
@@ -154,7 +183,26 @@ public class ReportWorkoutFragment extends Fragment {
         mPhotoView =(ImageView)v.findViewById(R.id.client_photo);
         updatePhotoView();
 
+        // Click on User name in RecyclerView item, go to their profile
+        if (mReports != null) {
+            adapter.setOnItemClickListener(new ReportListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(DocumentSnapshot doc, int position) {
+                    getReportAtPosition(position);
+                    String reportId = currentSelectedReport.getId();
+                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                            new ReportWorkoutFragment()).addToBackStack(null).commit();
+                }
+            });
+        }
+
         return v;
+    }
+
+    public Report getReportAtPosition(int position) {
+        currentSelectedReport = mReports.get(position);
+        Log.d("currentSelectedReport", String.valueOf(currentSelectedReport));
+        return currentSelectedReport;
     }
 
     private void updatePhotoView() {
@@ -175,7 +223,7 @@ public class ReportWorkoutFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (currentUser.getIsAdmin()) {
+        if (currentSelectedUser.getIsAdmin()) {
             inflater.inflate(R.menu.admin_menu, menu);
         } else {
             inflater.inflate(R.menu.user_menu, menu);
@@ -206,5 +254,10 @@ public class ReportWorkoutFragment extends Fragment {
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(DocumentSnapshot doc, int position) {
+
     }
 }

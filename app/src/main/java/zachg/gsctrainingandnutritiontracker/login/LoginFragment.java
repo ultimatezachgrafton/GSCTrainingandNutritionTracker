@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment;
-import zachg.gsctrainingandnutritiontracker.DatePickerFragment;
+import zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 

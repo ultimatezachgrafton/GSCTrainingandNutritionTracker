@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.inbox;
+package zachg.gsctrainingandnutritiontracker.reports;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,35 +15,33 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
 
-public class MsgListAdapter extends FirestoreRecyclerAdapter<Msg, MsgListAdapter.MsgViewHolder> {
+public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportListAdapter.ReportViewHolder> {
     private OnItemClickListener listener;
 
-    public MsgListAdapter(@NonNull FirestoreRecyclerOptions<Msg> msgs) {
-        super(msgs);
+    public ReportListAdapter(@NonNull FirestoreRecyclerOptions<Report> reports) {
+        super(reports);
     }
 
     @NonNull
     @Override
-    public MsgListAdapter.MsgViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReportListAdapter.ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvinbox_item,
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvworkout_item,
                 parent, false);
-        return new MsgListAdapter.MsgViewHolder(v);
+        return new ReportListAdapter.ReportViewHolder(v);
     }
 
     // MsgViewHolder is the class that defines the views that hold the User data
-    class MsgViewHolder extends RecyclerView.ViewHolder {
-        TextView tvMsgTitle;
-        TextView tvMsgBody;
+    class ReportViewHolder extends RecyclerView.ViewHolder {
         TextView tvDateSent;
         TextView tvClientName;
         ImageView check;
 
-        public MsgViewHolder(View itemView) {
+        public ReportViewHolder(View itemView) {
             super(itemView);
-            tvMsgTitle = itemView.findViewById(R.id.tvMsgTitle);
-            tvMsgBody = itemView.findViewById(R.id.tvMsgBody);
-            // if msg is read
+            tvDateSent = itemView.findViewById(R.id.tvDate);
+            tvClientName = itemView.findViewById(R.id.tvClientName);
+            //if Report is new
             check = itemView.findViewById(R.id.check);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -59,22 +57,16 @@ public class MsgListAdapter extends FirestoreRecyclerAdapter<Msg, MsgListAdapter
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MsgViewHolder holder, int position, @NonNull Msg msg) {
-        holder.tvMsgTitle.setText(msg.getMsgTitle());
-        holder.tvMsgBody.setText(msg.getMsgBody());
-        //holder.tvDateSent.setText(msg.getMsgDate());
-        //holder.tvClientName.setText(msg.getClientName());
+    protected void onBindViewHolder(@NonNull ReportViewHolder holder, int position, @NonNull Report report) {
+        holder.tvClientName.setText(report.getClientName());
     }
 
     public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot doc, int position);
-        // if msg is unread,
-        // switch boolean from unread to read
-        // if msg is read, show check
-        // setIsRead(true);
+
     }
 
-    public void setOnItemClickListener(MsgListAdapter.OnItemClickListener listener) {
+    public void setOnItemClickListener(ReportListAdapter.OnItemClickListener listener) {
         this.listener = listener;
     }
 }

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 public class User {
 
     @NonNull
-    private int id;
+    private String id;
     @NonNull
     private String email;
     @NonNull
@@ -40,11 +40,11 @@ public class User {
         this.id = getId();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(String id) { this.id = id; }
 
     public String getEmail() { return email; }
 

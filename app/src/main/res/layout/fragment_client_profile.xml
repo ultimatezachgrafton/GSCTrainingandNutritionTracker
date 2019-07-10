@@ -3,10 +3,25 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/profile_photo"
+        android:background="@android:color/darker_gray"
+        />
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bCamera"
+        android:layout_below="@id/client_photo"/>
+
     <TextView
         android:id="@+id/tvClientName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/bCamera"
     />
 
     <TextView

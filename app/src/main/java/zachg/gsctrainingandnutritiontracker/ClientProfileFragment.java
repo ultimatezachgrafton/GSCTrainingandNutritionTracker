@@ -21,9 +21,10 @@ import androidx.fragment.app.Fragment;
 import java.io.File;
 import java.util.List;
 
+import zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
-import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentSelectedUser;
+import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
 
 public class ClientProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -33,6 +34,15 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
     private ImageView mPhotoView;
     TextView tvClientName, tvGender, tvDateJoined, tvBirthDate, tvIsAdmin;
     Button bToDatePicker;
+    private static final String ARG_USER_ID = "user_id";
+
+    public static ClientProfileFragment newInstance(String clientId){
+        Bundle args = new Bundle();
+        args.putString("id", clientId);
+        ClientProfileFragment fragment = new ClientProfileFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +51,7 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
         bToDatePicker = v.findViewById(R.id.bToDatePicker);
 
         tvClientName = v.findViewById(R.id.tvClientName);
+        currentSelectedUser.setClientName(currentSelectedUser.getFirstName(), currentSelectedUser.getLastName());
         tvClientName.setText(currentSelectedUser.getClientName());
         tvGender = v.findViewById(R.id.tvGender);
         tvGender.setText(currentSelectedUser.getGender());
@@ -60,8 +71,7 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
         // to client's datepicker
         bToDatePicker.setOnClickListener(this);
 
-
-        mPhotoButton = (ImageButton) v.findViewById(R.id.report_camera);
+        mPhotoButton = v.findViewById(R.id.bCamera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         boolean canTakePhoto = mPhotoFile != null;
@@ -84,7 +94,7 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
             }
         });
 
-        mPhotoView =(ImageView)v.findViewById(R.id.client_photo);
+        mPhotoView = v.findViewById(R.id.profile_photo);
 
         updatePhotoView();
 
