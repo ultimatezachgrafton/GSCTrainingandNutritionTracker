@@ -57,7 +57,7 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
         adapter = new UserListAdapter(UserHandler.getUserOptions(UserHandler.userColRef));
 
-        mUserRecyclerView = v.findViewById(R.id.rvuser_list);
+        mUserRecyclerView = v.findViewById(R.id.rvUser);
         mUserRecyclerView.setHasFixedSize(true);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mUserRecyclerView.setAdapter(adapter);

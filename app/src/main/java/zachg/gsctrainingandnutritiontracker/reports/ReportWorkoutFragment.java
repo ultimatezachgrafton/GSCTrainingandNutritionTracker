@@ -24,20 +24,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import zachg.gsctrainingandnutritiontracker.AdminList.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment;
 import zachg.gsctrainingandnutritiontracker.inbox.AskBenFragment;
 import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
@@ -49,12 +47,10 @@ import static android.content.ContentValues.TAG;
 import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
-import static zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment.currentSelectedReport;
 
 // ReportFragment builds out the fragment that hosts the Report objects
-// fetch Reports, show via RecyclerView
 
-public class ReportWorkoutFragment extends Fragment implements ReportListAdapter.OnItemClickListener {
+public class ReportWorkoutFragment extends Fragment {
     private RecyclerView mWorkoutRecyclerView;
     private ReportListAdapter adapter;
     private Button mReportButton;
@@ -63,7 +59,6 @@ public class ReportWorkoutFragment extends Fragment implements ReportListAdapter
     private boolean isNew;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
 
     private String mClientName;
     private TextView tvClientName;
@@ -95,12 +90,8 @@ public class ReportWorkoutFragment extends Fragment implements ReportListAdapter
             mClientName = currentSelectedUser.getClientName();
         }
 
-        // get Workout info for that user
-        // distinguish between Workout Days 1, 2, 3, 4, 5, 6, 7 and display
-        // auto-generates the actual workout day, but user can choose to change to different workout from list
-        // once Report is saved it is no longer new
+        ReportHandler.fetchReportsByUserDate(mReports, currentSelectedUser.getClientName());
 
-        ReportHandler.fetchReports(mReports);
         adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportColRef));
 
         mWorkoutRecyclerView = v.findViewById(R.id.rvWorkout);
@@ -113,28 +104,29 @@ public class ReportWorkoutFragment extends Fragment implements ReportListAdapter
         tvClientName = v.findViewById(R.id.client_name);
         tvClientName.setText(mClientNameMsg);
 
-        // get date of day clicked, not current date
+        // get original date, not current date if updated
         mDate = String.valueOf(Calendar.getInstance().getTime());
         String mDateFormat = getResources().getString(R.string.date);
         final String mDateMsg = String.format(mDateFormat, mDate);
         tvDate = v.findViewById(R.id.tvDate);
         tvDate.setText(mDateMsg);
 
+        final TextView tvExerciseName = v.findViewById(R.id.tvExerciseName);
+
         final EditText etWeight = v.findViewById(R.id.etWeight);
-        final EditText etExerciseName = v.findViewById(R.id.etExerciseName);
-        final EditText etRepsEntry = v.findViewById(R.id.etRepsEntry);
-        final EditText etWeightUsedEntry = v.findViewById(R.id.etWeightUsedEntry);
-        final EditText etWorkoutComments = v.findViewById(R.id.etWorkoutComments);
+
+        // once entries are input, they are saved locally
 
         mReportButton = (Button) v.findViewById(R.id.bSendReport);
 
+        // Send Report to database
         mReportButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String mDailyWeight = etWeight.getText().toString();
-                String mExerciseName = etExerciseName.getText().toString();
-                String mWeightUsed = etWeightUsedEntry.getText().toString();
-                String mRepsEntry = etRepsEntry.getText().toString();
-                String mWorkoutComments = etWorkoutComments.getText().toString();
+//                String mExerciseName = etExerciseName.getText().toString();
+//                String mWeightUsed = etWeightUsedEntry.getText().toString();
+//                String mRepsEntry = etRepsEntry.getText().toString();
+//                String mWorkoutComments = etWorkoutComments.getText().toString();
 
                 // Access a Cloud Firestore instance
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -144,10 +136,10 @@ public class ReportWorkoutFragment extends Fragment implements ReportListAdapter
                 report.put("client name", mClientNameMsg);
                 report.put("date", mDateMsg);
                 report.put("weight", mDailyWeight);
-                report.put("Exercise ", mExerciseName);
-                report.put("Weight Used ", mWeightUsed);
-                report.put("# of reps", mRepsEntry);
-                report.put("Workout comments:", mWorkoutComments);
+//                report.put("Exercise ", mExerciseName);
+//                report.put("Weight Used ", mWeightUsed);
+//                report.put("# of reps", mRepsEntry);
+//                report.put("Workout comments:", mWorkoutComments);
 
                 // Add user as a new document with a generated ID
                 db.collection("reports")
@@ -165,8 +157,8 @@ public class ReportWorkoutFragment extends Fragment implements ReportListAdapter
                                 }
                             });
             }
+            // "Send Report" turns into "Update Report"
         });
-
 
         v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeRight() {
@@ -183,26 +175,7 @@ public class ReportWorkoutFragment extends Fragment implements ReportListAdapter
         mPhotoView =(ImageView)v.findViewById(R.id.client_photo);
         updatePhotoView();
 
-        // Click on User name in RecyclerView item, go to their profile
-        if (mReports != null) {
-            adapter.setOnItemClickListener(new ReportListAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(DocumentSnapshot doc, int position) {
-                    getReportAtPosition(position);
-                    String reportId = currentSelectedReport.getId();
-                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new ReportWorkoutFragment()).addToBackStack(null).commit();
-                }
-            });
-        }
-
         return v;
-    }
-
-    public Report getReportAtPosition(int position) {
-        currentSelectedReport = mReports.get(position);
-        Log.d("currentSelectedReport", String.valueOf(currentSelectedReport));
-        return currentSelectedReport;
     }
 
     private void updatePhotoView() {
@@ -254,10 +227,5 @@ public class ReportWorkoutFragment extends Fragment implements ReportListAdapter
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onItemClick(DocumentSnapshot doc, int position) {
-
     }
 }

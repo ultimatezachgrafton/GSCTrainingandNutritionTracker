@@ -86,7 +86,6 @@ public class ReportNutritionFragment extends Fragment {
             mClientName = currentSelectedUser.getClientName();
         }
 
-        ReportHandler.fetchReports(mReports);
         adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportColRef));
 
         mNutritionRecyclerView = v.findViewById(R.id.rvNutrition);

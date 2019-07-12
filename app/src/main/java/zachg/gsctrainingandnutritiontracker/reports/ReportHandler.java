@@ -21,13 +21,12 @@ public class ReportHandler {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     static final CollectionReference reportColRef = db.collection("reports");
 
-    public static ArrayList<Report> fetchReports(final ArrayList<Report> mReports) {
+    public static ArrayList<Report> fetchReportsByUserDate(final ArrayList<Report> mReports, String user, String date) {
 
-        Query userQuery = reportColRef;
+        Query reportQuery = reportColRef.whereEqualTo("user", user).whereEqualTo("reports/date", date);
         getReportOptions(reportColRef);
 
-
-        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        reportQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

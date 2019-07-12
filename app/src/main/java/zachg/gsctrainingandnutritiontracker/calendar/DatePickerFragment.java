@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.calendar;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,9 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import zachg.gsctrainingandnutritiontracker.AdminList.UserListAdapter;
+import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.inbox.AskBenFragment;
@@ -27,6 +32,7 @@ import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 import zachg.gsctrainingandnutritiontracker.reports.Report;
+import zachg.gsctrainingandnutritiontracker.reports.ReportHandler;
 import zachg.gsctrainingandnutritiontracker.reports.ReportWorkoutFragment;
 
 import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
@@ -46,6 +52,7 @@ public class DatePickerFragment extends Fragment {
     private String mGreetingMsg;
     private TextView tvTextView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private ArrayList<Report> mReports = new ArrayList<>();
 
     public static Report currentSelectedReport;
 
@@ -77,23 +84,32 @@ public class DatePickerFragment extends Fragment {
                 String date = (i1 + 1) + "/" + i2 + "/" + i;
                 Log.d(TAG, "onSelectedDayChange: mm/dd/yyyy: " + date);
 
-                // query ReportFragment to get the getDate() && currentSelectedUser.getUserId() that matches the user's id
-                // - which is what I did in LoginFragment -
-                // date and userId == date && id;
+                mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
+                    @Override
+                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                // if it's a new Report, start an empty Report fragment
-                if (currentSelectedReport.getIsNew()) {
-                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new ReportWorkoutFragment()).addToBackStack(null).commit();
-                } else {
-                    // fill report w the report's info
-                  SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportWorkoutFragment()).addToBackStack(null).commit();
-                }
+                        // search mReports for report that matches user and date
+                        Date date = new Date(year - 1900, month, dayOfMonth);
+                        String currentSelectedDate = DateFormat.format("MM.dd.yy", date).toString();
+
+                        ReportHandler.fetchReportsByUserDate(mReports, currentSelectedUser.getClientName(), currentSelectedDate);
+
+                        if (mReports != null) {
+                            SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                                    new ReportWorkoutFragment()).addToBackStack(null).commit();
+                        }
+                    }
+                });
             }
         });
 
         return v;
+    }
+
+    public Report getReportAtPosition(int position) {
+        currentSelectedReport = mReports.get(position);
+        Log.d("currentSelectedReport", String.valueOf(currentSelectedReport));
+        return currentSelectedReport;
     }
 
     @Override
