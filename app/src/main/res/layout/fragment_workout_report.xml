@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mNutButton"
+        android:text="Nut"        />
+
     <ImageView
         android:id="@+id/client_photo"
         android:layout_width="80dp"

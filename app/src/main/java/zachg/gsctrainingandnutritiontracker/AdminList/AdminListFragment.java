@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.User;
 import zachg.gsctrainingandnutritiontracker.inbox.InboxFragment;
 import zachg.gsctrainingandnutritiontracker.login.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
@@ -33,8 +32,8 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
     private RecyclerView mUserRecyclerView;
     private UserListAdapter adapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private static ArrayList<User> mUsers = new ArrayList<>();
-    public static User currentSelectedUser;
+    private ArrayList<User> mUsers = new ArrayList<>();
+    public static User currentSelectedUser = new User();
 
     public AdminListFragment() {}
 
@@ -68,7 +67,7 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
                 @Override
                 public void onItemClick(DocumentSnapshot doc, int position) {
                     getUserAtPosition(position);
-                    String clientId = currentSelectedUser.getId();
+                    // get the doc's ID
                     SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                             new ClientProfileFragment()).addToBackStack(null).commit();
                 }
@@ -77,10 +76,9 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
         return v;
     }
 
-    public User getUserAtPosition(int position) {
+    // sets currentSelectUser
+    public void getUserAtPosition(int position) {
         currentSelectedUser = mUsers.get(position);
-        Log.d("currentSelectedUser", String.valueOf(currentSelectedUser));
-        return currentSelectedUser;
     }
 
     @Override

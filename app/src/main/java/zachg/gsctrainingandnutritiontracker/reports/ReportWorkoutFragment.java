@@ -29,7 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +57,8 @@ public class ReportWorkoutFragment extends Fragment {
     private ImageView mPhotoView;
     private boolean isNew;
 
+    private Button mNutButton;
+
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private String mClientName;
@@ -65,7 +66,7 @@ public class ReportWorkoutFragment extends Fragment {
     private String mDate;
     private TextView tvDate;
 
-    private static ArrayList<Report> mReports = new ArrayList<>();
+    private static ArrayList<Workout> mWorkouts = new ArrayList<>();
 
     public ReportWorkoutFragment() {}
 
@@ -90,9 +91,9 @@ public class ReportWorkoutFragment extends Fragment {
             mClientName = currentSelectedUser.getClientName();
         }
 
-        ReportHandler.fetchReportsByUserDate(mReports, currentSelectedUser.getClientName());
+        mWorkouts = ReportHandler.getWorkouts(mWorkouts);
 
-        adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportColRef));
+        adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportsColRef));
 
         mWorkoutRecyclerView = v.findViewById(R.id.rvWorkout);
         mWorkoutRecyclerView.setHasFixedSize(true);
@@ -104,19 +105,19 @@ public class ReportWorkoutFragment extends Fragment {
         tvClientName = v.findViewById(R.id.client_name);
         tvClientName.setText(mClientNameMsg);
 
-        // get original date, not current date if updated
+        // TODO: get original date, not current date if updated
         mDate = String.valueOf(Calendar.getInstance().getTime());
         String mDateFormat = getResources().getString(R.string.date);
         final String mDateMsg = String.format(mDateFormat, mDate);
         tvDate = v.findViewById(R.id.tvDate);
         tvDate.setText(mDateMsg);
 
-        final TextView tvExerciseName = v.findViewById(R.id.tvExerciseName);
-
         final EditText etWeight = v.findViewById(R.id.etWeight);
 
-        // once entries are input, they are saved locally
+        // once Weight entries are input, they are saved locally
 
+        // temp button
+        mNutButton = v.findViewById(R.id.mNutButton);
         mReportButton = (Button) v.findViewById(R.id.bSendReport);
 
         // Send Report to database
@@ -160,6 +161,13 @@ public class ReportWorkoutFragment extends Fragment {
             // "Send Report" turns into "Update Report"
         });
 
+        mNutButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new ReportNutritionFragment()).addToBackStack(null).commit();
+            }
+        });
+
         v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeRight() {
                 // go to NutritionFragment
@@ -190,6 +198,21 @@ public class ReportWorkoutFragment extends Fragment {
             mPhotoView.setContentDescription(
                     getString(R.string.report_photo_image_description)
             );
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (adapter != null) {
+            adapter.stopListening();
         }
     }
 

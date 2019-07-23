@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import zachg.gsctrainingandnutritiontracker.User;
+import zachg.gsctrainingandnutritiontracker.AdminList.User;
 
 public class LoginHandler {
     private LoginListener mLoginListener;

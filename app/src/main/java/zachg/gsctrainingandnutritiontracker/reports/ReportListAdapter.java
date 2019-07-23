@@ -14,15 +14,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import zachg.gsctrainingandnutritiontracker.R;
 
+import static zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment.currentSelectedReport;
+import static zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment.currentSelectedWorkout;
+
 public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportListAdapter.ReportViewHolder> {
 
     public ReportListAdapter(@NonNull FirestoreRecyclerOptions<Report> reports) {
         super(reports);
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull ReportViewHolder holder, int position, @NonNull Report report) {
-        holder.tvExerciseName.setText(report.getExerciseName());
     }
 
     @NonNull
@@ -33,26 +31,28 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
         return new ReportViewHolder(v);
     }
 
-//    @Override
-//    public int getItemCount() {
-//        return reports.size;
-//    }
-
     // ReportViewHolder is the class that defines the views that hold the User data
     class ReportViewHolder extends RecyclerView.ViewHolder {
         TextView tvDateSent;
         TextView tvClientName;
         TextView tvExerciseName;
+        TextView tvReps;
         ImageView check;
 
         public ReportViewHolder(View itemView) {
             super(itemView);
             tvDateSent = itemView.findViewById(R.id.tvDate);
             tvClientName = itemView.findViewById(R.id.tvClientName);
-            tvExerciseName = itemView.findViewById(R.id.tvExerciseName);
+            tvExerciseName.setText(currentSelectedWorkout.getExerciseName());
+            tvReps.setText(currentSelectedWorkout.getReps());
 
-            //if Report is new
-            check = itemView.findViewById(R.id.check);
+            if (currentSelectedReport.getIsNew()) {
+                check = itemView.findViewById(R.id.check);
+            }
         }
+    }
+
+    @Override
+    protected void onBindViewHolder(@NonNull ReportViewHolder holder, int position, @NonNull Report report) {
     }
 }

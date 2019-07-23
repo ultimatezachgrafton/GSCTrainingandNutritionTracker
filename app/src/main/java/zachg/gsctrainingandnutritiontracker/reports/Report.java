@@ -10,7 +10,8 @@ import java.util.UUID;
 public class Report {
 
     private String mReportId; // unique ID
-    private Date mDate;
+    private String mDate;
+//    private Date mDate;
     private String mDateString; // date of report
     private String mClientName; // client's name
     private String mWeight; // client's weight
@@ -30,7 +31,7 @@ public class Report {
 
     public Report(String id) {
         mReportId = id;
-        mDate = new Date();
+        mDate = new String();
         mDateString = mDate.toString();
         this.mClientName = getClientName();
     }
@@ -64,7 +65,7 @@ public class Report {
 
     public void setExerciseName(String exerciseName) { this.mExerciseName = exerciseName; }
 
-    public String getExerciseName() { return "kung fu"; } //return mExerciseName; }
+    public String getExerciseName() { return mExerciseName; }
 
     public void setWeightAmount(int weightAmount) { this.mWeightAmount = weightAmount; }
 

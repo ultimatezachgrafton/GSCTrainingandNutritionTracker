@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker;
+package zachg.gsctrainingandnutritiontracker.AdminList;
 
 import androidx.annotation.NonNull;
 
@@ -20,6 +20,8 @@ public class User {
     private boolean isAdmin;
     private boolean isLoggedIn;
     private String dateJoined;
+
+    private int mPrevWorkoutNum;
 
     public User() {}
 
@@ -101,5 +103,18 @@ public class User {
     public void setDateJoined(String dateJoined) { this.dateJoined = dateJoined; }
 
     public String getDateJoined() { return dateJoined; }
+
+
+    public void setPrevWorkoutNum(int prevWorkoutNum) {
+        mPrevWorkoutNum = prevWorkoutNum;
+    }
+
+    public int getPrevWorkoutNum() {
+        return mPrevWorkoutNum;
+    }
+
+    public void incrementWorkout() {
+        mPrevWorkoutNum++;
+    }
 
 }

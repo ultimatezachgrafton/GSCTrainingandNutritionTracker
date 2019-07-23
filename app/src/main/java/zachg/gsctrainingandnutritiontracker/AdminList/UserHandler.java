@@ -15,13 +15,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.User;
-
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class UserHandler {
-
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    // TODO: where should my db be initialized? here or separately, like in a SetupHandler?
+    public static FirebaseFirestore db = FirebaseFirestore.getInstance();
     static final CollectionReference userColRef = db.collection("users");
 
     public static ArrayList<User> fetchUsers(final ArrayList<User> mUsers) {
@@ -43,6 +41,7 @@ public class UserHandler {
                 }
             }
         });
+        Log.d("mReports", "mUsers: " + String.valueOf(mUsers));
         return mUsers;
     }
 

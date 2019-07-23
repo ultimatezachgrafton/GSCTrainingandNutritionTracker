@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 
+import zachg.gsctrainingandnutritiontracker.AdminList.User;
 import zachg.gsctrainingandnutritiontracker.AdminList.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
@@ -34,6 +35,7 @@ import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 import zachg.gsctrainingandnutritiontracker.reports.Report;
 import zachg.gsctrainingandnutritiontracker.reports.ReportHandler;
 import zachg.gsctrainingandnutritiontracker.reports.ReportWorkoutFragment;
+import zachg.gsctrainingandnutritiontracker.reports.Workout;
 
 import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
@@ -41,7 +43,7 @@ import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
 
 // The fragment to host the calendar widget to select workout dates
 
-public class DatePickerFragment extends Fragment {
+public class DatePickerFragment<currentSelectedDated> extends Fragment {
 
     public static final String EXTRA_DATE = "zachg.gsctrainingandnutritiontracker.date";
     private static final String ARG_DATE = "date";
@@ -54,7 +56,9 @@ public class DatePickerFragment extends Fragment {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<Report> mReports = new ArrayList<>();
 
-    public static Report currentSelectedReport;
+    public static String currentSelectedDate = new String();
+    public static Workout currentSelectedWorkout = new Workout();
+    public static Report currentSelectedReport = new Report();
 
     public DatePickerFragment() {
         //empty constructor
@@ -90,12 +94,21 @@ public class DatePickerFragment extends Fragment {
 
                         // search mReports for report that matches user and date
                         Date date = new Date(year - 1900, month, dayOfMonth);
-                        String currentSelectedDate = DateFormat.format("MM.dd.yy", date).toString();
+                        currentSelectedDate = DateFormat.format("MM.dd.yy", date).toString();
+                        Log.d("mReports", currentSelectedDate);
+                        mReports = ReportHandler.fetchReportsByUserDate(currentSelectedDate);
 
-                        ReportHandler.fetchReportsByUserDate(mReports, currentSelectedUser.getClientName(), currentSelectedDate);
+                        // currentSelectedReport == .where date matches date
+//                        if (currentSelectedReport.getIsFirst()) {
+//                            workout = workout1;
+//                        }
+                        // else
+                        // fetch previous workout from the User
+                        // workout = previous workout incremented by one
 
-                        if (mReports != null) {
-                            SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        // check if report isNew
+                        if (currentSelectedReport != null) {
+                                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                                     new ReportWorkoutFragment()).addToBackStack(null).commit();
                         }
                     }
@@ -104,12 +117,6 @@ public class DatePickerFragment extends Fragment {
         });
 
         return v;
-    }
-
-    public Report getReportAtPosition(int position) {
-        currentSelectedReport = mReports.get(position);
-        Log.d("currentSelectedReport", String.valueOf(currentSelectedReport));
-        return currentSelectedReport;
     }
 
     @Override

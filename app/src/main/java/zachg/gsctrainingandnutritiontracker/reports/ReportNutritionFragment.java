@@ -2,7 +2,6 @@ package zachg.gsctrainingandnutritiontracker.reports;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,22 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import zachg.gsctrainingandnutritiontracker.ClientProfileFragment;
 import zachg.gsctrainingandnutritiontracker.R;
@@ -42,7 +34,6 @@ import zachg.gsctrainingandnutritiontracker.login.RegisterFragment;
 import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
-import static android.content.ContentValues.TAG;
 import static zachg.gsctrainingandnutritiontracker.AdminList.AdminListFragment.currentSelectedUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.currentUser;
 import static zachg.gsctrainingandnutritiontracker.login.LoginHandler.isAdmin;
@@ -76,7 +67,7 @@ public class ReportNutritionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_workout_report, container, false);
+        View v = inflater.inflate(R.layout.fragment_nutrition_report, container, false);
         // nutrition info
         if (isAdmin) {
             currentUser.setClientName(currentUser.getFirstName(), currentUser.getLastName());
@@ -86,14 +77,14 @@ public class ReportNutritionFragment extends Fragment {
             mClientName = currentSelectedUser.getClientName();
         }
 
-        adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportColRef));
+        adapter = new ReportListAdapter(ReportHandler.getReportOptions(ReportHandler.reportsColRef));
 
         mNutritionRecyclerView = v.findViewById(R.id.rvNutrition);
         mNutritionRecyclerView.setHasFixedSize(true);
         mNutritionRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mNutritionRecyclerView.setAdapter(adapter);
 
-        // Five meal blocks autogenerate, add meal will add more
+        // Five meal blocks autogenerate, add meal will add 3 more
 
         String mClientNameFormat = getResources().getString(R.string.clientName);
         final String mClientNameMsg = String.format(mClientNameFormat, mClientName);
@@ -116,56 +107,56 @@ public class ReportNutritionFragment extends Fragment {
         final EditText etProtein = v.findViewById(R.id.etProtein);
 
         // Calculate the totals
-        final int mTotalCalories = Integer.parseInt(etCalories.getText().toString()); // + all dynamic Calorie fields
-        final int mTotalFat = Integer.parseInt(etFat.getText().toString());
-        final int mTotalCarbs = Integer.parseInt(etCarbs.getText().toString());
-        final int mTotalProtein = Integer.parseInt(etProtein.getText().toString());
+//        final int mTotalCalories = Integer.parseInt(etCalories.getText().toString()); // + all dynamic Calorie fields
+//        final int mTotalFat = Integer.parseInt(etFat.getText().toString());
+//        final int mTotalCarbs = Integer.parseInt(etCarbs.getText().toString());
+//        final int mTotalProtein = Integer.parseInt(etProtein.getText().toString());
 
         mReportButton = (Button) v.findViewById(R.id.bSendReport);
-        mReportButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                String mMealItem = etMealItem.getText().toString();
-                String mCalories = etCalories.getText().toString();
-                String mFat = etFat.getText().toString();
-                String mCarbs = etCarbs.getText().toString();
-                String mProtein = etProtein.getText().toString();
-
-                // Access a Cloud Firestore instance
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                // Create a Report
-                Map<String, Object> report = new HashMap<>();
-                report.put("client name", mClientNameMsg);
-                report.put("date", mDateMsg);
-                report.put("Meal", mMealItem);
-                report.put("Calories", mCalories);
-                report.put("Fat", mFat);
-                report.put("Carbs", mCarbs);
-                report.put("Protein", mProtein);
-//                report.put("Total Calories", mTotalCalories);
-//                report.put("Total Fat", mTotalFat);
-//                report.put("Total Carbs", mTotalCarbs);
-//                report.put("Total Protein", mTotalProtein);
-                // report.put("Nutrition comments", mNutritionComments);
-
-
-                // Add user as a new document with a generated ID
-                db.collection("reports")
-                        .add(report)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
-                            }
-                        });
-            }
-        });
+//        mReportButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                String mMealItem = etMealItem.getText().toString();
+//                String mCalories = etCalories.getText().toString();
+//                String mFat = etFat.getText().toString();
+//                String mCarbs = etCarbs.getText().toString();
+//                String mProtein = etProtein.getText().toString();
+//
+//                // Access a Cloud Firestore instance
+//                FirebaseFirestore db = FirebaseFirestore.getInstance();
+//
+//                // Create a Report
+//                Map<String, Object> report = new HashMap<>();
+//                report.put("client name", mClientNameMsg);
+//                report.put("date", mDateMsg);
+//                report.put("Meal", mMealItem);
+//                report.put("Calories", mCalories);
+//                report.put("Fat", mFat);
+//                report.put("Carbs", mCarbs);
+//                report.put("Protein", mProtein);
+////                report.put("Total Calories", mTotalCalories);
+////                report.put("Total Fat", mTotalFat);
+////                report.put("Total Carbs", mTotalCarbs);
+////                report.put("Total Protein", mTotalProtein);
+//                // report.put("Nutrition comments", mNutritionComments);
+//
+//
+//                // Add user as a new document with a generated ID
+//                db.collection("reports")
+//                        .add(report)
+//                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                            @Override
+//                            public void onSuccess(DocumentReference documentReference) {
+//                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Log.w(TAG, "Error adding document", e);
+//                            }
+//                        });
+//            }
+//        });
 
         v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeRight() {
@@ -183,6 +174,21 @@ public class ReportNutritionFragment extends Fragment {
         updatePhotoView();
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (adapter != null) {
+            adapter.stopListening();
+        }
     }
 
     private void updatePhotoView() {
