@@ -12,11 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/mNutButton"
-        android:text="Nut"        />
+        <Button
+            android:id="@+id/bAddUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add/Update" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bNut"
+            android:layout_below="@+id/bAddUpdate"
+            android:text="Nut" />
 
     <ImageView
         android:id="@+id/client_photo"

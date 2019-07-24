@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="zachg.gsctrainingandnutritiontracker.login.LoginFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.UI.Fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -22,11 +22,11 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="zachg.gsctrainingandnutritiontracker.login.RegisterFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.UI.Fragments.RegisterFragment"
         android:label="RegisterFragment" />
     <dialog
         android:id="@+id/datePickerFragment"
-        android:name="zachg.gsctrainingandnutritiontracker.calendar.DatePickerFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.UI.Fragments.DatePickerFragment"
         android:label="dialog_date"
         tools:layout="@layout/dialog_date" >
         <action
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="zachg.gsctrainingandnutritiontracker.reports.ReportFragment"
+        android:name="zachg.gsctrainingandnutritiontracker.toSort.AdminList.reports.ReportFragment"
         android:label="fragment_report"
         tools:layout="@layout/fragment_workout_report" />
 </navigation>
