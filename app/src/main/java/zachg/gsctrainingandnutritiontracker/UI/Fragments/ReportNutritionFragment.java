@@ -26,11 +26,11 @@ import java.util.Calendar;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.UI.Adapters.ReportListAdapter;
-import zachg.gsctrainingandnutritiontracker.ViewModel.ReportHandler;
+import zachg.gsctrainingandnutritiontracker.ViewModels.ReportHandler;
 import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 
-import zachg.gsctrainingandnutritiontracker.ViewModel.LoginHandler;
+import zachg.gsctrainingandnutritiontracker.ViewModels.LoginHandler;
 
 // ReportFragment builds out the fragment that hosts the Report objects
 

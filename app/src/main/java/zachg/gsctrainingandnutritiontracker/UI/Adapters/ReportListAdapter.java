@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import zachg.gsctrainingandnutritiontracker.Model.Report;
+import zachg.gsctrainingandnutritiontracker.Models.Report;
 import zachg.gsctrainingandnutritiontracker.R;
 
 public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportListAdapter.ReportViewHolder> {

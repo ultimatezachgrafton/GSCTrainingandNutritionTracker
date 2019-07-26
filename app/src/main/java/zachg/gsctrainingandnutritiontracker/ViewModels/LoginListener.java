@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ViewModel;
+package zachg.gsctrainingandnutritiontracker.ViewModels;
 
 public interface LoginListener {
 

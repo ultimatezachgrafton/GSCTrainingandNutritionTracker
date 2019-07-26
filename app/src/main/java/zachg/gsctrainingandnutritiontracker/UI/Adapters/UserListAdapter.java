@@ -12,7 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import zachg.gsctrainingandnutritiontracker.Model.User;
+import zachg.gsctrainingandnutritiontracker.Models.User;
 import zachg.gsctrainingandnutritiontracker.R;
 
 // UserListAdapter adapts the RecyclerView list items of Users for viewing

@@ -19,8 +19,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.ViewModel.UserHandler;
-import zachg.gsctrainingandnutritiontracker.Model.User;
+import zachg.gsctrainingandnutritiontracker.ViewModels.UserHandler;
+import zachg.gsctrainingandnutritiontracker.Models.User;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.UI.Adapters.UserListAdapter;

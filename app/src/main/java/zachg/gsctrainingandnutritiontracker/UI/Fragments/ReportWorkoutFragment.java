@@ -32,12 +32,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import zachg.gsctrainingandnutritiontracker.Model.Workout;
+import zachg.gsctrainingandnutritiontracker.Models.Workout;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.UI.Adapters.ReportListAdapter;
-import zachg.gsctrainingandnutritiontracker.ViewModel.LoginHandler;
-import zachg.gsctrainingandnutritiontracker.ViewModel.ReportHandler;
+import zachg.gsctrainingandnutritiontracker.ViewModels.LoginHandler;
+import zachg.gsctrainingandnutritiontracker.ViewModels.ReportHandler;
 import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 

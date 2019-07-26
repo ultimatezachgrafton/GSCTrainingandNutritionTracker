@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.Model;
+package zachg.gsctrainingandnutritiontracker.Models;
 
 public class Message {
 

@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.ViewModel.LoginHandler;
-import zachg.gsctrainingandnutritiontracker.ViewModel.LoginListener;
+import zachg.gsctrainingandnutritiontracker.ViewModels.LoginHandler;
+import zachg.gsctrainingandnutritiontracker.ViewModels.LoginListener;
 
 public class SplashScreenActivity extends FragmentActivity implements LoginListener {
 

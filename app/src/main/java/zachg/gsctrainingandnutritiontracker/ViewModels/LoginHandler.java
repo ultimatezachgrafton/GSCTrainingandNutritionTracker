@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ViewModel;
+package zachg.gsctrainingandnutritiontracker.ViewModels;
 
 import androidx.annotation.NonNull;
 
@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import zachg.gsctrainingandnutritiontracker.Model.User;
+import zachg.gsctrainingandnutritiontracker.Models.User;
 
 public class LoginHandler {
     private LoginListener mLoginListener;

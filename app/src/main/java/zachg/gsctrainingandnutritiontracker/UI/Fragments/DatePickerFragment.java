@@ -24,10 +24,10 @@ import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.Model.Report;
-import zachg.gsctrainingandnutritiontracker.ViewModel.ReportHandler;
+import zachg.gsctrainingandnutritiontracker.Models.Report;
+import zachg.gsctrainingandnutritiontracker.ViewModels.ReportHandler;
 
-import zachg.gsctrainingandnutritiontracker.ViewModel.LoginHandler;
+import zachg.gsctrainingandnutritiontracker.ViewModels.LoginHandler;
 
 // The fragment to host the calendar widget to select workout dates
 

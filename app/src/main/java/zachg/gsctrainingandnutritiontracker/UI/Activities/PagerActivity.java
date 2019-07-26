@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.Model.Report;
+import zachg.gsctrainingandnutritiontracker.Models.Report;
 import zachg.gsctrainingandnutritiontracker.R;
 
 public class PagerActivity extends AppCompatActivity {

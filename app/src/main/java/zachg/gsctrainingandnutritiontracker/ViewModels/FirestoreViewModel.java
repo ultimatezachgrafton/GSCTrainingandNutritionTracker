@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ViewModel;
+package zachg.gsctrainingandnutritiontracker.ViewModels;
 
 import androidx.lifecycle.ViewModel;
 

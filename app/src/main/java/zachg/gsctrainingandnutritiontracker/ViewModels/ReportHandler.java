@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ViewModel;
+package zachg.gsctrainingandnutritiontracker.ViewModels;
 
 import android.util.Log;
 import android.widget.EditText;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import zachg.gsctrainingandnutritiontracker.Model.Report;
-import zachg.gsctrainingandnutritiontracker.Model.Workout;
+import zachg.gsctrainingandnutritiontracker.Models.Report;
+import zachg.gsctrainingandnutritiontracker.Models.Workout;
 import zachg.gsctrainingandnutritiontracker.UI.Fragments.DatePickerFragment;
 import static zachg.gsctrainingandnutritiontracker.UI.Fragments.AdminListFragment.currentSelectedUser;
 

@@ -16,10 +16,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.Model.Message;
+import zachg.gsctrainingandnutritiontracker.Models.Message;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ViewModel.MessageHandler;
+import zachg.gsctrainingandnutritiontracker.ViewModels.MessageHandler;
 import zachg.gsctrainingandnutritiontracker.UI.Adapters.MessageListAdapter;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;

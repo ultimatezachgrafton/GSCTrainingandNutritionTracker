@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ViewModel;
+package zachg.gsctrainingandnutritiontracker.ViewModels;
 
 import android.util.Log;
 
@@ -15,7 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.Model.Message;
+import zachg.gsctrainingandnutritiontracker.Models.Message;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 

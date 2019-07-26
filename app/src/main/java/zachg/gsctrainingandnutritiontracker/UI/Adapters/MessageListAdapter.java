@@ -13,7 +13,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import zachg.gsctrainingandnutritiontracker.Model.Message;
+import zachg.gsctrainingandnutritiontracker.Models.Message;
 import zachg.gsctrainingandnutritiontracker.R;
 
 public class MessageListAdapter extends FirestoreRecyclerAdapter<Message, MessageListAdapter.MessageViewHolder> {
