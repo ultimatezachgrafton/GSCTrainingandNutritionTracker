@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.Models;
 
 import androidx.annotation.NonNull;
+import static zachg.gsctrainingandnutritiontracker.Repositories.FirestoreRepository.sWorkouts;
 
 public class User {
 
@@ -21,7 +22,7 @@ public class User {
     private boolean isLoggedIn;
     private String dateJoined;
 
-    private int mPrevWorkoutNum;
+    private int mWorkoutNum; // tracks which workout day the user is on
 
     public User() {}
 
@@ -40,6 +41,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.id = getId();
+        this.mWorkoutNum = 0;
     }
 
     public String getId() {
@@ -105,16 +107,19 @@ public class User {
     public String getDateJoined() { return dateJoined; }
 
 
-    public void setPrevWorkoutNum(int prevWorkoutNum) {
-        mPrevWorkoutNum = prevWorkoutNum;
+    public void setWorkoutNum(int workoutNum) {
+        mWorkoutNum = workoutNum;
     }
 
-    public int getPrevWorkoutNum() {
-        return mPrevWorkoutNum;
+    public int getWorkoutNum() {
+        return mWorkoutNum;
     }
 
     public void incrementWorkout() {
-        mPrevWorkoutNum++;
+        if (getWorkoutNum() < sWorkouts.size()) {
+            mWorkoutNum++;
+        } else {
+            setWorkoutNum(0);
+        }
     }
-
 }

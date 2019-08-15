@@ -17,13 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add/Update" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bNut"
-            android:layout_below="@+id/bAddUpdate"
-            android:text="Nut" />
+        />
 
     <ImageView
         android:id="@+id/client_photo"
@@ -84,16 +78,17 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/cLayout"
+        android:id="@+id/rvWorkoutLayout"
         android:layout_below="@+id/separator2"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvWorkout"
-        android:background="@android:color/darker_gray"
-        tools:listitem="@layout/rvworkout_item"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWorkout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            tools:listitem="@layout/rvworkout_item"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <EditText
@@ -101,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/comments"
-        android:layout_below="@id/cLayout" />
+        android:layout_below="@id/rvWorkoutLayout" />
 
     <Button
         android:id="@+id/bSendReport"
@@ -111,16 +106,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_below="@id/etWorkoutComments"
-        android:text="@string/report_report_text" />
-
-    <TextView
-        android:id="@+id/swipe_info"
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/swipe_info1"
-        android:layout_below="@id/bSendReport"/>
+        android:layout_below="@id/etWorkoutComments" />
 
     </RelativeLayout>
 

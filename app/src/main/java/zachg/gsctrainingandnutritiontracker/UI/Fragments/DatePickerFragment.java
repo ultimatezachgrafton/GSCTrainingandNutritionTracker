@@ -16,23 +16,28 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.Models.Report;
-import zachg.gsctrainingandnutritiontracker.ViewModels.ReportHandler;
+import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.Repositories.FirestoreRepository;
+import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.UI.Adapters.DatePickerAdapter;
+import zachg.gsctrainingandnutritiontracker.ViewModels.DatePickerViewModel;
+import zachg.gsctrainingandnutritiontracker.ViewModels.LoginViewModel;
 
-import zachg.gsctrainingandnutritiontracker.ViewModels.LoginHandler;
+import static zachg.gsctrainingandnutritiontracker.UI.Fragments.AdminListFragment.currentSelectedUser;
 
 // The fragment to host the calendar widget to select workout dates
 
-public class DatePickerFragment<currentSelectedDated> extends Fragment {
+public class DatePickerFragment<currentSelectedDated> extends Fragment implements DatePickerAdapter.OnItemClickListener {
 
+    private DatePickerViewModel mDatePickerViewModel;
     private CalendarView mCalendarView;
     private String mFirstName;
     private String mGreetingFormat;
@@ -40,15 +45,17 @@ public class DatePickerFragment<currentSelectedDated> extends Fragment {
     private TextView tvTextView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public ArrayList<Report> mReports = new ArrayList<>();
-    public String currentSelectedDate = new String();
-    public Report currentSelectedReport = new Report();
+    public FirestoreRepository mRepo = new FirestoreRepository();
+
+    public static ArrayList<Report> mReports = new ArrayList<>();
+    public static String currentSelectedDate = new String();
+    public static Report currentSelectedReport = new Report();
 
     public DatePickerFragment() {
         //empty constructor
     }
 
-    public DatePickerFragment(ArrayList<Report> mReports) {
+    public DatePickerFragment(ArrayList<Report> reports) {
         // fill DatePickerFragment with mReports
     }
 
@@ -56,11 +63,14 @@ public class DatePickerFragment<currentSelectedDated> extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_date, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
 
-        AdminListFragment af = new AdminListFragment();
-        final ReportHandler rh = new ReportHandler();
-        // get cSU by user's name
-        mFirstName = af.currentSelectedUser.getFirstName();
+        mDatePickerViewModel = ViewModelProviders.of(getActivity()).get(DatePickerViewModel.class);
+
+        mDatePickerViewModel.init();
+
+        mFirstName = currentSelectedUser.getFirstName();
+        // TODO: center greeting
         mGreetingFormat = getResources().getString(R.string.select_date_greeting);
         mGreetingMsg = String.format(mGreetingFormat, mFirstName);
         tvTextView = v.findViewById(R.id.textView);
@@ -81,13 +91,20 @@ public class DatePickerFragment<currentSelectedDated> extends Fragment {
                         // search mReports for report that matches user and date
                         Date date = new Date(year - 1900, month, dayOfMonth);
                         currentSelectedDate = DateFormat.format("MM.dd.yy", date).toString();
-                        Log.d("mReports", currentSelectedDate);
-                        mReports = rh.fetchReportsByUserDate(mReports, currentSelectedDate);
 
-                        // check if report isNew
-                        if (currentSelectedReport != null) {
+//                        if (mostRecentReport > currentSelectedDate) {
+//                            // this report generates random workout
+//                        }
+
+                        // does not let admin click on a client's null date
+                        if (currentSelectedUser.getIsAdmin()) {
+                            if (currentSelectedReport != null) {
                                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                    new ReportWorkoutFragment()).addToBackStack(null).commit();
+                                        new ReportFragment()).addToBackStack(null).commit();
+                            }
+                        } else if (currentSelectedReport != null) {
+                                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                                    new ReportFragment()).addToBackStack(null).commit();
                         }
                     }
                 });
@@ -106,7 +123,7 @@ public class DatePickerFragment<currentSelectedDated> extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        LoginHandler lh = new LoginHandler();
+        LoginViewModel lh = new LoginViewModel();
         if (lh.isAdmin) {
             inflater.inflate(R.menu.admin_menu, menu);
         } else {

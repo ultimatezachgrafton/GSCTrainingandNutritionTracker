@@ -1,4 +1,10 @@
 package zachg.gsctrainingandnutritiontracker.ViewModels;
 
-public class MessageViewModel {
+import androidx.lifecycle.ViewModel;
+//import static sMessages;
+
+public class MessageViewModel extends ViewModel {
+
+    public void init() {}
+
 }

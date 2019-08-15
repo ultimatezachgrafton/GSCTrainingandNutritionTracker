@@ -14,15 +14,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ViewModels.LoginHandler;
-import zachg.gsctrainingandnutritiontracker.ViewModels.LoginListener;
+import zachg.gsctrainingandnutritiontracker.ViewModels.LoginViewModel;
 
-public class LoginFragment extends Fragment implements View.OnClickListener, LoginListener {
+public class LoginFragment extends Fragment implements View.OnClickListener, LoginViewModel.LoginListener {
 
     private FirebaseAuth mAuth;
     private Button bLogin;
     private EditText etPassword, etEmail;
-    private LoginHandler mLoginHandler;
+    private LoginViewModel mLoginViewModel;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -33,12 +32,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         super.onCreate(savedInstanceState);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        mLoginHandler = new LoginHandler(this);
+        mLoginViewModel = new LoginViewModel(this);
 
         if (mAuth.getCurrentUser() != null) {
             // create user to
             // go to apropos frag
-            mLoginHandler.onLogin(mAuth.getCurrentUser().getEmail());
+            mLoginViewModel.onLogin(mAuth.getCurrentUser().getEmail());
         }
     }
 
@@ -67,7 +66,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
         if (email != null && password != null) {
             mAuth.signInWithEmailAndPassword(email, password);
             // if successful...
-            mLoginHandler.onLogin(email);
+            mLoginViewModel.onLogin(email);
 
         } else {
             Toast.makeText(getActivity(), "Do not leave fields blank", Toast.LENGTH_SHORT).show();

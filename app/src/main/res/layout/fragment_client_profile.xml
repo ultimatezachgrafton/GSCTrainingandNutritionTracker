@@ -7,8 +7,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/profile_photo"
-        android:background="@android:color/darker_gray"
-        />
+        android:background="@android:color/darker_gray" />
 
 
     <ImageButton

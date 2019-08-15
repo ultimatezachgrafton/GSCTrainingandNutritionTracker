@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,6 +23,8 @@ import java.util.Map;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.ViewModels.RegisterViewModel;
+import zachg.gsctrainingandnutritiontracker.ViewModels.ReportViewModel;
 
 import static android.content.ContentValues.TAG;
 
@@ -31,8 +34,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         // Required empty constructor
     }
 
-    Button bRegister;
-    EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail, etGender, etBirthDate;
+    private RegisterViewModel mRegisterViewModel;
+    private Button bRegister;
+    private EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail, etGender, etBirthDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // inflate layout for fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+
+        mRegisterViewModel = ViewModelProviders.of(getActivity()).get(RegisterViewModel.class);
+        mRegisterViewModel.init();
 
         etPassword = view.findViewById(R.id.etPassword);
         etConfirmPassword = view.findViewById(R.id.etConfirmPassword);

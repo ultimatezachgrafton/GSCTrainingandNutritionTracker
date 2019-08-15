@@ -50,5 +50,7 @@
     <string name="fats">Amount of fat in grams:</string>
     <string name="carbs">Amount of carbs in grams:</string>
     <string name="protein">Amount of protein in grams:</string>
+    <string name="send">\"Send Report\"</string>
+    <string name="update">\"Update Report\"</string>
 
 </resources>

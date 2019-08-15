@@ -17,16 +17,22 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import java.io.File;
 import java.util.List;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.ViewModels.AdminListViewModel;
+import zachg.gsctrainingandnutritiontracker.ViewModels.ClientProfileViewModel;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
+
+import static zachg.gsctrainingandnutritiontracker.UI.Fragments.AdminListFragment.currentSelectedUser;
 
 public class ClientProfileFragment extends Fragment implements View.OnClickListener {
 
+    private ClientProfileViewModel mClientProfileViewModel;
     private final int REQUEST_PHOTO = 2;
     private File mPhotoFile;
     private ImageButton mPhotoButton;
@@ -47,21 +53,21 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_client_profile, container, false);
+        mClientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
+
         bToDatePicker = v.findViewById(R.id.bToDatePicker);
 
-        AdminListFragment af = new AdminListFragment();
-
         tvClientName = v.findViewById(R.id.tvClientName);
-        af.currentSelectedUser.setClientName(af.currentSelectedUser.getFirstName(), af.currentSelectedUser.getLastName());
-        tvClientName.setText(af.currentSelectedUser.getClientName());
+        currentSelectedUser.setClientName(currentSelectedUser.getFirstName(), currentSelectedUser.getLastName());
+        tvClientName.setText(currentSelectedUser.getClientName());
         tvGender = v.findViewById(R.id.tvGender);
-        tvGender.setText(af.currentSelectedUser.getGender());
+        tvGender.setText(currentSelectedUser.getGender());
         tvBirthDate = v.findViewById(R.id.tvBirthDate);
-        tvBirthDate.setText(af.currentSelectedUser.getBirthdate());
+        tvBirthDate.setText(currentSelectedUser.getBirthdate());
         tvDateJoined = v.findViewById(R.id.tvDateJoined);
-        tvDateJoined.setText(af.currentSelectedUser.getDateJoined());
+        tvDateJoined.setText(currentSelectedUser.getDateJoined());
         tvIsAdmin = v.findViewById(R.id.tvIsAdmin);
-        if (af.currentSelectedUser.getIsAdmin()) {
+        if (currentSelectedUser.getIsAdmin()) {
             tvIsAdmin.setText(R.string.isAdminUser);
         } else {
             tvIsAdmin.setText(R.string.isAdminAdmin);

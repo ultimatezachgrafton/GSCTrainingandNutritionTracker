@@ -8,19 +8,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvExerciseName"
-        android:text="karate"/>
+        android:id="@+id/tvExerciseName" />
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etRepsEntry"
+        android:id="@+id/tvReps"
         android:layout_toRightOf="@+id/tvExerciseName"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etWeightUsedEntry"
-        android:layout_toRightOf="@+id/etRepsEntry"/>
+        android:id="@+id/etWeightUsed"
+        android:layout_toRightOf="@+id/tvReps"/>
 
 </RelativeLayout>

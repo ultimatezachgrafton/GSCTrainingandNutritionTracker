@@ -1,7 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.UI.Fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,27 +9,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.ViewModels.UserHandler;
 import zachg.gsctrainingandnutritiontracker.Models.User;
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.Repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.UI.Adapters.UserListAdapter;
+import zachg.gsctrainingandnutritiontracker.ViewModels.AdminListViewModel;
 
-// ListFragment is the fragment that displays the list of Users which the admin accesses upon logging in
+import static zachg.gsctrainingandnutritiontracker.Repositories.FirestoreRepository.sUsers;
+
+// AdminListFragment displays the list of Users which the admin accesses upon logging in
+
 public class AdminListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
     private RecyclerView mUserRecyclerView;
-    private UserListAdapter adapter;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    public ArrayList<User> mUsers = new ArrayList<>();
+    private AdminListViewModel mAdminListViewModel;
+    private UserListAdapter mUserListAdapter;
+
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    public FirestoreRepository mRepo = new FirestoreRepository();
+
     public static User currentSelectedUser = new User();
 
     public AdminListFragment() {}
@@ -44,47 +54,68 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_admin_list, container, false);
+        // TODO: super necessary or in singlefragmentactivity?
+        // super.onCreateView(inflater, container, savedInstanceState);
 
-        // fetch Users for display
-        UserHandler h = new UserHandler();
-        mUsers = h.fetchUsers(mUsers);
+        mAdminListViewModel = ViewModelProviders.of(getActivity()).get(AdminListViewModel.class);
 
-        adapter = new UserListAdapter(h.getUserOptions(h.userQuery));
+        mAdminListViewModel.init();
+
+        mAdminListViewModel.getUsers().observe(this, new Observer<ArrayList<User>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<User> mUsers) {
+                mUserListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mAdminListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (!aBoolean) {
+                    mUserRecyclerView.smoothScrollToPosition(mAdminListViewModel.getUsers().getValue().size() - 1);
+                }
+            }
+
+        });
+
+        initRecyclerView(v);
+
+        return v;
+    }
+
+    private void initRecyclerView(View v) {
+
+        FirestoreRecyclerOptions<User> mUserOptions = mRepo.setUsers();
+        mUserListAdapter = new UserListAdapter(mUserOptions);
 
         mUserRecyclerView = v.findViewById(R.id.rvUser);
         mUserRecyclerView.setHasFixedSize(true);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mUserRecyclerView.setAdapter(adapter);
+        mUserRecyclerView.setAdapter(mUserListAdapter);
 
         // Click on User name in RecyclerView item, go to their profile
-        if (mUsers != null) {
-            adapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+        if (sUsers != null) {
+            mUserListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DocumentSnapshot doc, int position) {
-                    getUserAtPosition(position);
+                    mUserListAdapter.getUserAtPosition(position, sUsers);
                     // get the doc's ID
                     SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                             new ClientProfileFragment()).addToBackStack(null).commit();
                 }
             });
         }
-        return v;
-    }
-
-    public void getUserAtPosition(int position) {
-        currentSelectedUser = mUsers.get(position);
-        Log.d("mReports", "currentSelectUser: " + String.valueOf(currentSelectedUser));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
+        mUserListAdapter.startListening();
     }
 
     public void onStop() {
         super.onStop();
-        adapter.stopListening();
+        mUserListAdapter.stopListening();
     }
 
     @Override
@@ -115,6 +146,7 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     @Override
     public void onItemClick(DocumentSnapshot doc, int position) {
-        // go to client's datepicker or profile
+        // go to client's profile
     }
+
 }

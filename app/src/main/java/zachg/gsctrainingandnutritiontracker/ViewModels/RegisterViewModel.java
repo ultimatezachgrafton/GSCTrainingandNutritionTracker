@@ -1,4 +1,9 @@
 package zachg.gsctrainingandnutritiontracker.ViewModels;
 
-public class RegisterViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class RegisterViewModel extends ViewModel {
+
+    public void init() {}
+
 }

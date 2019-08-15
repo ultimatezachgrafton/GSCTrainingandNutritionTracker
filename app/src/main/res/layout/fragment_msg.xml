@@ -11,11 +11,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvMsgTitle"/>
+        android:id="@+id/tvMsgTitle"
+        android:layout_below="@id/tvClientName"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvMsgBody"/>
+        android:id="@+id/tvMsgBody"
+        android:layout_below="@id/tvMsgTitle"/>
 
 </LinearLayout>
