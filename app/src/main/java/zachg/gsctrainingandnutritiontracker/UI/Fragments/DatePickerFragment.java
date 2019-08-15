@@ -108,6 +108,8 @@ public class DatePickerFragment<currentSelectedDated> extends Fragment implement
                         }
                     }
                 });
+
+                // observer
             }
         });
 

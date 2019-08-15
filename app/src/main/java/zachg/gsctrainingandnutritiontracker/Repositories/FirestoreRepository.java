@@ -41,7 +41,6 @@ public class FirestoreRepository {
     public final CollectionReference messageColRef = db.collection("messages");
     public Query messageQuery = messageColRef.orderBy("date");
 
-    // fill out workouts from workoutDays subcollection
     public static ArrayList<User> sUsers = new ArrayList<>();
     public static ArrayList<Report> sReports = new ArrayList<>();
     public static ArrayList<Workout> sWorkouts = new ArrayList<>();

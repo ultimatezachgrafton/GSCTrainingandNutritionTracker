@@ -85,6 +85,7 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     private void initRecyclerView(View v) {
 
+
         FirestoreRecyclerOptions<User> mUserOptions = mRepo.setUsers();
         mUserListAdapter = new UserListAdapter(mUserOptions);
 
