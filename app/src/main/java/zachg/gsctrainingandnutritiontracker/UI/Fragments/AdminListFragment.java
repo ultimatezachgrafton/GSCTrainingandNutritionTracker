@@ -29,8 +29,6 @@ import zachg.gsctrainingandnutritiontracker.UI.Activities.SingleFragmentActivity
 import zachg.gsctrainingandnutritiontracker.UI.Adapters.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.ViewModels.AdminListViewModel;
 
-import static zachg.gsctrainingandnutritiontracker.Repositories.FirestoreRepository.sUsers;
-
 // AdminListFragment displays the list of Users which the admin accesses upon logging in
 
 public class AdminListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
@@ -39,7 +37,6 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
     private UserListAdapter mUserListAdapter;
 
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    public FirestoreRepository mRepo = new FirestoreRepository();
 
     public static User currentSelectedUser = new User();
 
@@ -53,18 +50,18 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_admin_list, container, false);
+        final View v = inflater.inflate(R.layout.fragment_admin_list, container, false);
         // TODO: super necessary or in singlefragmentactivity?
         // super.onCreateView(inflater, container, savedInstanceState);
 
         mAdminListViewModel = ViewModelProviders.of(getActivity()).get(AdminListViewModel.class);
 
         mAdminListViewModel.init();
-
-        mAdminListViewModel.getUsers().observe(this, new Observer<ArrayList<User>>() {
+        mAdminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<User> mUsers) {
-                mUserListAdapter.notifyDataSetChanged();
+            public void onChanged(FirestoreRecyclerOptions<User> userFirestoreRecyclerOptions) {
+                initRecyclerView(v, userFirestoreRecyclerOptions);
+                mUserListAdapter.startListening();
             }
         });
 
@@ -72,21 +69,18 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    mUserRecyclerView.smoothScrollToPosition(mAdminListViewModel.getUsers().getValue().size() - 1);
+                    mUserRecyclerView.smoothScrollToPosition(mAdminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
                 }
             }
 
         });
 
-        initRecyclerView(v);
-
         return v;
     }
 
-    private void initRecyclerView(View v) {
+    private void initRecyclerView(View v, final FirestoreRecyclerOptions<User> firestoreUsers) {
 
-        FirestoreRecyclerOptions<User> mUserOptions = mRepo.setUsers();
-        mUserListAdapter = new UserListAdapter(mUserOptions);
+        mUserListAdapter = new UserListAdapter(firestoreUsers);
 
         mUserRecyclerView = v.findViewById(R.id.rvUser);
         mUserRecyclerView.setHasFixedSize(true);
@@ -94,23 +88,21 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
         mUserRecyclerView.setAdapter(mUserListAdapter);
 
         // Click on User name in RecyclerView item, go to their profile
-        if (sUsers != null) {
             mUserListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DocumentSnapshot doc, int position) {
-                    mUserListAdapter.getUserAtPosition(position, sUsers);
+                    mUserListAdapter.getUserAtPosition(firestoreUsers.getSnapshots().get(position));
                     // get the doc's ID
                     SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                             new ClientProfileFragment()).addToBackStack(null).commit();
                 }
             });
-        }
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mUserListAdapter.startListening();
     }
 
     public void onStop() {

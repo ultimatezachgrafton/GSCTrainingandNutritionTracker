@@ -69,8 +69,8 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         void onItemClick(DocumentSnapshot doc, int position);
     }
 
-    public void getUserAtPosition(int position, ArrayList<User> users) {
-        currentSelectedUser = users.get(position);
+    public void getUserAtPosition(User user) {
+        currentSelectedUser = user;
         Log.d("mReports", "currentSelectedUser: " + String.valueOf(currentSelectedUser));
     }
 

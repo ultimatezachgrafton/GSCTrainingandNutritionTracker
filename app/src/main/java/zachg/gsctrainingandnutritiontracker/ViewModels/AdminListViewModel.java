@@ -2,6 +2,8 @@ package zachg.gsctrainingandnutritiontracker.ViewModels;
 
 import android.os.AsyncTask;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,16 +15,16 @@ import zachg.gsctrainingandnutritiontracker.Repositories.FirestoreRepository;
 
 public class AdminListViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<User>> mUsers;
+    private MutableLiveData<FirestoreRecyclerOptions<User>> mUsers = new MutableLiveData<>();
     private FirestoreRepository mRepo;
     private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
 
     public void init() {
-        if (mUsers != null) {
+        if (mUsers.getValue() != null) {
             return;
         }
         mRepo = FirestoreRepository.getInstance();
-        mUsers = mRepo.getUsers();
+        mUsers.setValue(mRepo.getFireStoreUsersFromRepo());
     }
 
     public void addNewValue(final User user) {
@@ -32,10 +34,10 @@ public class AdminListViewModel extends ViewModel {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                ArrayList<User> users = mUsers.getValue();
-                users.add(user);
-                mUsers.postValue(users);
-                mIsUpdating.postValue(false);
+//                ArrayList<User> users = mUsers.getValue();
+//                users.add(user);
+//                mUsers.postValue(users);
+//                mIsUpdating.postValue(false);
             }
 
             @Override
@@ -51,11 +53,11 @@ public class AdminListViewModel extends ViewModel {
         }.execute();
     }
 
-    public LiveData<ArrayList<User>> getUsers() {
+    public MutableLiveData<FirestoreRecyclerOptions<User>> getUsers() {
         return mUsers;
     }
 
-    public LiveData<Boolean> getIsUpdating() {
+    public MutableLiveData<Boolean> getIsUpdating() {
         return mIsUpdating;
     }
 }

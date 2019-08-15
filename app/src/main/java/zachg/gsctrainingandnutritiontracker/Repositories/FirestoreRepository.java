@@ -42,7 +42,7 @@ public class FirestoreRepository {
     public Query messageQuery = messageColRef.orderBy("date");
 
     // fill out workouts from workoutDays subcollection
-    public static ArrayList<User> sUsers = new ArrayList<>();
+//    public static ArrayList<User> sUsers = new ArrayList<>();
     public static ArrayList<Report> sReports = new ArrayList<>();
     public static ArrayList<Workout> sWorkouts = new ArrayList<>();
     public static ArrayList<Message> sMessages = new ArrayList<>();
@@ -54,13 +54,13 @@ public class FirestoreRepository {
         return instance;
     }
 
-    // Get data from a webservice or online source
-    public MutableLiveData<ArrayList<User>> getUsers(){
-        setUsers();
-        MutableLiveData<ArrayList<User>> data = new MutableLiveData<>();
-        data.setValue(sUsers);
-        return data;
-    }
+//    // Get data from a webservice or online source
+//    public MutableLiveData<ArrayList<User>> getUsers(){
+//        getFireStoreUsersFromRepo();
+//        MutableLiveData<ArrayList<User>> data = new MutableLiveData<>();
+//        data.setValue(sUsers);
+//        return data;
+//    }
 
     public MutableLiveData<ArrayList<Report>> getReports() {
         setReports();
@@ -83,27 +83,28 @@ public class FirestoreRepository {
         return data;
     }
 
-    public FirestoreRecyclerOptions<User> setUsers() {
+    public FirestoreRecyclerOptions<User> getFireStoreUsersFromRepo() {
         // Build the database
-        FirestoreRecyclerOptions<User> mUserOptions = new FirestoreRecyclerOptions.Builder<User>()
+        //
+//        //Maybe you don't need to do this query stuff when you're getting from the repo
+//        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    //You don't need these fucking users
+////                    User user = new User();
+//                    for (QueryDocumentSnapshot doc : task.getResult()) {
+////                        user = doc.toObject(User.class);
+////                        sUsers.add(user);
+//                    }
+//                } else {
+//                    Log.d("mReports", "failed to make mUsers");
+//                }
+//            }
+//        });
+        return new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(userQuery, User.class)
                 .build();
-
-        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    User user = new User();
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        user = doc.toObject(User.class);
-                        sUsers.add(user);
-                    }
-                } else {
-                    Log.d("mReports", "failed to make mUsers");
-                }
-            }
-        });
-        return mUserOptions;
     }
 
     public FirestoreRecyclerOptions<Report> setReports() {
