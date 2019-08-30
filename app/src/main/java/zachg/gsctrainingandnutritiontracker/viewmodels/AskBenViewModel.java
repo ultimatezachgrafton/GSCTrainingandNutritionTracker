@@ -13,7 +13,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class AskBenViewModel extends ViewModel {
 
-    private FirestoreRepository mRepo;
+    private FirestoreRepository mRepo = new FirestoreRepository();
 
     public void init() {
         mRepo = FirestoreRepository.getInstance();

@@ -1,14 +1,11 @@
 package zachg.gsctrainingandnutritiontracker.repositories;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -20,18 +17,14 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.utils.LoginListener;
 
-import static android.content.ContentValues.TAG;
-
 public class FirestoreRepository {
 
     private static FirestoreRepository instance;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LoginListener mLoginListener;
 
-    // mCurrentSelectedUser is the user selected by the admin in AdminList
     private User mCurrentUser = new User();
     private Workout mCurrentWorkout = new Workout();
-    private int mCurrentWorkoutDay;
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
