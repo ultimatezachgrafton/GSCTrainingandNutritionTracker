@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="10dp"
     android:id="@+id/fragment_register"
-    tools:context=".UI.Activities.SingleFragmentActivity">
+    tools:context=".ui.activities.SingleFragmentActivity">
 
     <TextView
         android:layout_width="wrap_content"

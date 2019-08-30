@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/msgListItem"
+    android:id="@+id/rvinbox_item"
     android:background="@android:color/holo_orange_light">
 
     <TextView
