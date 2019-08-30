@@ -40,9 +40,9 @@ public class DatePickerFragment extends Fragment {
     private TextView tvTextView;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public Date mSelectedDate = new Date();
-    public String mSelectedDateString = new String();
-    public Report mCurrentReport = new Report();
+    private Date mSelectedDate = new Date();
+    private String mSelectedDateString;
+    private Report mCurrentReport = new Report();
     private User mCurrentUser = new User();
 
     public DatePickerFragment() {
@@ -62,7 +62,7 @@ public class DatePickerFragment extends Fragment {
         mDatePickerViewModel = ViewModelProviders.of(getActivity()).get(DatePickerViewModel.class);
         mDatePickerViewModel.init(mCurrentUser);
         getGreeting(v);
-        Log.d("mReports", "user: " + String.valueOf(mCurrentUser.getClientName()));
+        Log.d("mReports", "user: " + mCurrentUser.getClientName());
 
         mCalendarView = v.findViewById(R.id.calendarView);
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -90,17 +90,19 @@ public class DatePickerFragment extends Fragment {
                         }
                     }
                 });
+
+                // observer
             }
         });
 
         return v;
     }
 
-    public void getGreeting(View v) {
+    private void getGreeting(View v) {
         mFirstName = mCurrentUser.getFirstName();
         mGreetingFormat = getResources().getString(R.string.select_date_greeting);
         mGreetingMsg = String.format(mGreetingFormat, mFirstName);
-        tvTextView = v.findViewById(R.id.tvGreeting);
+        tvTextView = v.findViewById(R.id.tv_select_date);
         tvTextView.setText(mGreetingMsg);
     }
 

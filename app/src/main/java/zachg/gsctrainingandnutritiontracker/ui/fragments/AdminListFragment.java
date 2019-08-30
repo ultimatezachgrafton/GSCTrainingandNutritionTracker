@@ -22,9 +22,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
+import zachg.gsctrainingandnutritiontracker.ui.fragments.InboxFragment;
+import zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment;
+import zachg.gsctrainingandnutritiontracker.ui.fragments.RegisterFragment;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminListViewModel;
+import zachg.gsctrainingandnutritiontracker.ui.fragments.ClientProfileFragment;
 
 // AdminListFragment displays the list of Users which the admin accesses upon logging in
 
@@ -33,9 +38,9 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
     private AdminListViewModel mAdminListViewModel;
     private UserListAdapter mUserListAdapter;
 
+    private User mCurrentUser = new User();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    public User mCurrentUser = new User();
+    private FirestoreRepository mRepo = new FirestoreRepository();
 
     public AdminListFragment() {}
 
@@ -47,35 +52,40 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_admin_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_admin_list, container, false);
+        // TODO: super necessary or in singlefragmentactivity?
+        // super.onCreateView(inflater, container, savedInstanceState);
 
         mAdminListViewModel = ViewModelProviders.of(getActivity()).get(AdminListViewModel.class);
+
         mAdminListViewModel.init();
 
-        // Observes User data from FirestoreRepository
         mAdminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
-            public void onChanged(FirestoreRecyclerOptions<User> userOptions) {
-                initRecyclerView(v, userOptions);
-                mUserListAdapter.startListening();
+            public void onChanged(@Nullable FirestoreRecyclerOptions<User> mUsers) {
+                mUserListAdapter.notifyDataSetChanged();
             }
         });
 
         mAdminListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if (!aBoolean) {
-                    mUserRecyclerView.smoothScrollToPosition(mAdminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
-                }
+//                if (!aBoolean) {
+//                    mUserRecyclerView.smoothScrollToPosition(mAdminListViewModel.getUsers().getValue().getSize() - 1);
+//                }
             }
 
         });
 
+        initRecyclerView(v);
+
         return v;
     }
 
-    private void initRecyclerView(View v, final FirestoreRecyclerOptions<User> users) {
-        mUserListAdapter = new UserListAdapter(users);
+    private void initRecyclerView(View v) {
+
+        FirestoreRecyclerOptions<User> mUserOptions = mRepo.getUsersFromRepo();
+        mUserListAdapter = new UserListAdapter(mUserOptions);
 
         mUserRecyclerView = v.findViewById(R.id.rvUser);
         mUserRecyclerView.setHasFixedSize(true);
@@ -83,19 +93,23 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
         mUserRecyclerView.setAdapter(mUserListAdapter);
 
         // Click on User name in RecyclerView item, go to their profile
-        mUserListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot doc, int position) {
-                mCurrentUser = mUserListAdapter.getUserAtPosition(users.getSnapshots().get(position));
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientProfileFragment(mCurrentUser)).addToBackStack(null).commit();
-            }
-        });
+        if (mCurrentUser != null) {
+            mUserListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(DocumentSnapshot doc, int position) {
+                    mUserListAdapter.getUserAtPosition(mCurrentUser);
+                    // get the doc's ID
+                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                            new ClientProfileFragment(mCurrentUser)).addToBackStack(null).commit();
+                }
+            });
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        mUserListAdapter.startListening();
     }
 
     public void onStop() {
