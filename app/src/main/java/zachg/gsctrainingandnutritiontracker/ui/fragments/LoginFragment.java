@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     private EditText etPassword, etEmail;
     private LoginListener mLoginListener;
     private LoginViewModel mLoginViewModel = new LoginViewModel(mLoginListener);
-    private User mCurrentSelectedUser = new User();
+    private User mCurrentUser = new User();
 
     public LoginFragment() {
         // Required empty public constructor
@@ -58,7 +59,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
 
     public void goToProfile() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientProfileFragment(mCurrentSelectedUser)).addToBackStack(null).commit();
+                new ClientProfileFragment(mCurrentUser)).addToBackStack(null).commit();
     }
 
     public void goToAdminList() {

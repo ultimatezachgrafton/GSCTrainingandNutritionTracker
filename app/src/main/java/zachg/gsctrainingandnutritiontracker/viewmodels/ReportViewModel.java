@@ -20,8 +20,8 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 public class ReportViewModel extends ViewModel {
 
     private FirestoreRepository mRepo;
-    private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
-    private MutableLiveData<FirestoreRecyclerOptions<Workout>> mWorkouts = new MutableLiveData<>();
+    //private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
+    private FirestoreRecyclerOptions<Workout> mWorkouts;
 
     public String mClientName;
     public String mDateString;
@@ -31,7 +31,8 @@ public class ReportViewModel extends ViewModel {
     // init getting null data for user
     public void init(User mCurrentUser) {
         mRepo = FirestoreRepository.getInstance();
-        mWorkouts.setValue(mRepo.getWorkoutsFromRepo(mCurrentUser));
+        mWorkouts = mRepo.getWorkoutsFromRepo(mCurrentUser);
+        Log.d("mReports", "mWorkouts:" + mWorkouts);
     }
 
     // iterateWorkouts after loading this workout;
@@ -54,13 +55,5 @@ public class ReportViewModel extends ViewModel {
                     }
                 });
         // write iterated workoutNum to user's fstore data
-    }
-
-    public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {
-        return mWorkouts;
-    }
-
-    public LiveData<Boolean> getIsUpdating() {
-        return mIsUpdating;
     }
 }

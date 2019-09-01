@@ -33,6 +33,7 @@ import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
+import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.utils.OnSwipeTouchListener;
@@ -89,6 +90,10 @@ public class ReportFragment extends Fragment {
         mReportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
         mReportViewModel.init(mCurrentUser);
 
+        FirestoreRepository mRepo = new FirestoreRepository();
+        FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(mCurrentUser);
+        initRecyclerView(v, workoutOptions);
+
         mDateString = String.valueOf(Calendar.getInstance().getTime());
         String mDateFormat = getResources().getString(R.string.date);
         final String mDateMsg = String.format(mDateFormat, mDate);
@@ -124,24 +129,6 @@ public class ReportFragment extends Fragment {
 
         mPhotoView = v.findViewById(R.id.client_photo);
         updatePhotoView();
-
-        // Sets observer on the workouts
-        mReportViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
-            @Override
-            public void onChanged(FirestoreRecyclerOptions<Workout> workoutOptions) {
-                initRecyclerView(v, workoutOptions);
-                mWorkoutListAdapter.startListening();
-            }
-        });
-
-        mReportViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (!aBoolean) {
-                    mReportRecyclerView.smoothScrollToPosition(mReportViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
-                }
-            }
-        });
 
         return v;
     }
@@ -182,6 +169,7 @@ public class ReportFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        mWorkoutListAdapter.startListening();
     }
 
     @Override

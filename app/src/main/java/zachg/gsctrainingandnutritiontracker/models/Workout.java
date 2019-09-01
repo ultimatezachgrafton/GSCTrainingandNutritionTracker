@@ -8,7 +8,7 @@ public class Workout {
 
     private String clientName;
     private String exName;
-    private int exNumber;
+    private String exNumber;
     private int reps;
     private int mExerciseWeight;
     private int day;
@@ -55,8 +55,8 @@ public class Workout {
 
     public void setWorkoutDay(int prevNum) { day = prevNum + 1; }
 
-    public int getExNumber() { return exNumber; }
+    public String getExNumber() { return exNumber; }
 
-    public void setExNumber(int exNum) { exNumber = exNum; }
+    public void setExNumber(String exNum) { exNumber = exNum; }
 
 }

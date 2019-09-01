@@ -23,7 +23,15 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
         Log.d("mReports", "adapter constructor");
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
+        holder.tvExerciseName.setText("karatel");//workout.getExName());
+        //holder.bind(workout);
+        Log.d("mReports", "onBindViewHolder: workout name:" + workout.getExName());
+    }
+
     @NonNull
+    @Override
     public WorkoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvworkout_item, parent, false);
         Log.d("mReports", "onCreateViewHolder");
@@ -35,13 +43,13 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
     // ReportViewHolder defines the views that hold the Workout data
     class WorkoutViewHolder extends RecyclerView.ViewHolder {
        // private final RvworkoutItemBinding binding;
-        private TextView exName;
+        private TextView tvExerciseName;
 //        private TextView tvReps;
 //        private EditText etWeightUsed;
 
         public WorkoutViewHolder(View itemView) {//RvworkoutItemBinding binding) {
             super(itemView);
-            exName = itemView.findViewById(R.id.tvExerciseName);
+            tvExerciseName = itemView.findViewById(R.id.tvExerciseName);
 //            super(binding.getRoot());
             //this.binding = binding;
         }
@@ -50,17 +58,5 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
 //            binding.setWorkout(workout);
 //            binding.executePendingBindings();
 //        }
-    }
-
-//    public int getItemCount() {
-//        //Log.d("mReports", String.format("getItemCount: %d", workouts.size()));
-//        return 1;//workouts.size();
-//    }
-
-    @Override
-    public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
-        holder.exName.setText(workout.getExName());
-        //holder.bind(workout);
-        Log.d("mReports", "onBindViewHolder: workout name:" + workout.getExName());
     }
 }

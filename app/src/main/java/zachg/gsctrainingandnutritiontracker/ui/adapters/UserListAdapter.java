@@ -13,6 +13,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
+
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.R;
 
@@ -62,6 +64,7 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
 
     public User getUserAtPosition(User user) {
         mCurrentUser = user;
+        Log.d("mReports", String.valueOf(mCurrentUser));
         return mCurrentUser;
     }
 

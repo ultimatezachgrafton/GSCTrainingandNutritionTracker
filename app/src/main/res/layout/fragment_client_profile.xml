@@ -75,6 +75,5 @@
             android:clickable="true"
             android:text="@string/toDatePicker" />
 
-
 </LinearLayout>
 </layout>

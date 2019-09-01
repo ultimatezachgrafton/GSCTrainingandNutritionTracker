@@ -39,11 +39,13 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
     private ImageView mPhotoView;
     private final String ARG_USER_ID = "user_id";
 
-    private User mCurrentUser;
+    private User mCurrentUser = new User();
 
-    public ClientProfileFragment(User currentUser) {
-        mClientProfileViewModel = new ClientProfileViewModel(currentUser);
-        this.mCurrentUser = currentUser;
+    public ClientProfileFragment() {}
+
+    public ClientProfileFragment(User user) {
+        mClientProfileViewModel = new ClientProfileViewModel(user);
+        this.mCurrentUser = user;
     }
 
     @Override
@@ -51,8 +53,8 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
         //Inflate the layout for this fragment
         mBinding = FragmentClientProfileBinding.inflate(inflater, container, false);
         final View v = mBinding.getRoot();
-
         mBinding.setUser(mCurrentUser);
+
         bToDatePicker = v.findViewById(R.id.bToDatePicker);
         bToDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override

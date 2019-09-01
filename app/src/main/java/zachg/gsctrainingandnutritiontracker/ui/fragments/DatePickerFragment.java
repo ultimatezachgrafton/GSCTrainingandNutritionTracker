@@ -61,7 +61,8 @@ public class DatePickerFragment extends Fragment {
 
         mDatePickerViewModel = ViewModelProviders.of(getActivity()).get(DatePickerViewModel.class);
         mDatePickerViewModel.init(mCurrentUser);
-        getGreeting(v);
+
+        createGreeting(v);
         Log.d("mReports", "user: " + mCurrentUser.getClientName());
 
         mCalendarView = v.findViewById(R.id.calendarView);
@@ -98,12 +99,12 @@ public class DatePickerFragment extends Fragment {
         return v;
     }
 
-    private void getGreeting(View v) {
+    private void createGreeting(View v) {
         mFirstName = mCurrentUser.getFirstName();
         mGreetingFormat = getResources().getString(R.string.select_date_greeting);
         mGreetingMsg = String.format(mGreetingFormat, mFirstName);
         tvTextView = v.findViewById(R.id.tv_select_date);
-        tvTextView.setText(mGreetingMsg);
+        tvTextView.setText(R.string.select_date);
     }
 
     @Override

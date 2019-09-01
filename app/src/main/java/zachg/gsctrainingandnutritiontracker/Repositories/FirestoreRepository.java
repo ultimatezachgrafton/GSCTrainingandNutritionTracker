@@ -1,5 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.repositories;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -76,8 +78,9 @@ public class FirestoreRepository {
 
     public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
         CollectionReference workoutColRef = db.collection("workouts").document(user.getClientName())
-                .collection(String.valueOf(user.getWorkoutNum()));
+                .collection(user.getWorkoutNum());
         Query workoutQuery = workoutColRef.orderBy("exNumber");
+        Log.d("mReports", "workout: " + String.valueOf(workoutColRef));
         return new FirestoreRecyclerOptions.Builder<Workout>()
                 .setQuery(workoutQuery, Workout.class)
                 .build();
