@@ -15,9 +15,6 @@
             name="adapter"
             type="zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter"/>
         <variable
-            name="EditTextViewModel"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.EditTextViewModel"/>
-        <variable
             name="dailyWeight"
             type="String"/>
     </data>

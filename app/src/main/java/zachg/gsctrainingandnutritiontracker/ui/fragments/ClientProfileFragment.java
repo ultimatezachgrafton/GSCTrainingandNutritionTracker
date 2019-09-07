@@ -30,42 +30,42 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
 
 public class ClientProfileFragment extends Fragment implements View.OnClickListener {
 
-    FragmentClientProfileBinding mBinding;
+    FragmentClientProfileBinding binding;
 
-    private ClientProfileViewModel mClientProfileViewModel;
+    private ClientProfileViewModel clientProfileViewModel;
     private final int REQUEST_PHOTO = 2;
     private Button bToDatePicker;
-    private File mPhotoFile;
-    private ImageView mPhotoView;
+    private File photoFile;
+    private ImageView photoView;
     private final String ARG_USER_ID = "user_id";
 
-    private User mCurrentUser = new User();
+    private User currentUser = new User();
 
     public ClientProfileFragment() {}
 
     public ClientProfileFragment(User user) {
-        mClientProfileViewModel = new ClientProfileViewModel(user);
-        this.mCurrentUser = user;
+        clientProfileViewModel = new ClientProfileViewModel(user);
+        this.currentUser = user;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment
-        mBinding = FragmentClientProfileBinding.inflate(inflater, container, false);
-        final View v = mBinding.getRoot();
-        mBinding.setUser(mCurrentUser);
+        binding = FragmentClientProfileBinding.inflate(inflater, container, false);
+        final View v = binding.getRoot();
+        binding.setUser(currentUser);
 
         bToDatePicker = v.findViewById(R.id.bToDatePicker);
         bToDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new DatePickerFragment(mCurrentUser)).addToBackStack(null).commit();
+                        new DatePickerFragment(currentUser)).addToBackStack(null).commit();
             }
         });
 
-        mClientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
-        mPhotoView = v.findViewById(R.id.profile_photo);
+        clientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
+        photoView = v.findViewById(R.id.profile_photo);
         updatePhotoView();
 
         return v;
@@ -74,7 +74,7 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
     public void takePhoto() {
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Uri uri = FileProvider.getUriForFile(getActivity(),
-                "zachg.bensfitnessapp.fileprovider", mPhotoFile);
+                "zachg.bensfitnessapp.fileprovider", photoFile);
         captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
                 queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
@@ -87,15 +87,15 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
     }
 
     private void updatePhotoView() {
-        if (mPhotoFile == null || !mPhotoFile.exists()) {
-            mPhotoView.setImageDrawable(null);
-            mPhotoView.setContentDescription(
+        if (photoFile == null || !photoFile.exists()) {
+            photoView.setImageDrawable(null);
+            photoView.setContentDescription(
                     getString(R.string.report_photo_no_image_description)
             );
         } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
-            mPhotoView.setContentDescription(
+            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
+            photoView.setImageBitmap(bitmap);
+            photoView.setContentDescription(
                     getString(R.string.report_photo_image_description)
             );
         }

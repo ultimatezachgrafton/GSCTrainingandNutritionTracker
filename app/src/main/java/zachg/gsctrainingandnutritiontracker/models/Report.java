@@ -2,6 +2,9 @@ package zachg.gsctrainingandnutritiontracker.models;
 
 import android.widget.EditText;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Date;
 
 // Report is the class that will comprise the individual reports from clients
@@ -9,7 +12,7 @@ import java.util.Date;
 public class Report {
 
     private String reportId; // unique ID
-    private Date date = new Date(); // date of report
+    private LocalDate date; // date of report
     private String dateString; // date converted to string
     private String clientName; // client's name
     private String dailyWeight; // client's weight
@@ -20,7 +23,7 @@ public class Report {
 
     public Report() {}
 
-    public Report(User user, Date date) {
+    public Report(User user, LocalDate date) {
         this.date = date;
         this.clientName = user.getClientName();
     }
@@ -37,16 +40,16 @@ public class Report {
             return reportId;
         }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
     public String getDateString() {
-        dateString = date.toString();
+        dateString = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
         return dateString;
     }
 

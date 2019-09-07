@@ -108,7 +108,7 @@ public class User {
     public String getIsAdminString() {return isAdminString; }
 
     public void setIsAdminString(boolean isAdmin) {
-        if (isAdmin) { isAdminString = "Admin"; } else { isAdminString= "User"; }
+        if (isAdmin) { this.isAdminString = "Admin"; } else { isAdminString = "User"; }
     }
 
     public void setDateJoined(String dateJoined) { this.dateJoined = dateJoined; }

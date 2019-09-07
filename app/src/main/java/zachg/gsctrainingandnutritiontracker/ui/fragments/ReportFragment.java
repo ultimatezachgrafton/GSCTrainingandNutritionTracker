@@ -81,12 +81,12 @@ public class ReportFragment extends Fragment {
         final View v = binding.getRoot();
         binding.setReport(currentReport);
 
-        reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init();
-
         FirestoreRepository mRepo = new FirestoreRepository();
         FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(currentUser);
         initRecyclerView(v, workoutOptions);
+
+        reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
+        reportViewModel.init(workoutOptions);
 
         // TODO: viewModel
         dateString = String.valueOf(Calendar.getInstance().getTime());
@@ -107,17 +107,6 @@ public class ReportFragment extends Fragment {
         bAddUpdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 reportViewModel.writeReport(currentReport);
-            }
-        });
-
-        v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
-            public void onSwipeLeft() {
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
-            }
-            public void onSwipeRight() {
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
             }
         });
 

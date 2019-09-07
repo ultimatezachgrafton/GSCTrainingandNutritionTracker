@@ -22,7 +22,7 @@
     <string name="clientName">%1$s</string>
     <string name="email">Email</string>
     <string name="login">Login</string>
-    <string name="cage">Age</string>
+    <string name="age">Age</string>
     <string name="gender">GENDER: %1$s</string>
     <string name="register">Register</string>
     <string name="logout">Logout</string>

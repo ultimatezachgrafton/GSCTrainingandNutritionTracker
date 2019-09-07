@@ -23,8 +23,6 @@ public class PagerActivity extends AppCompatActivity {
     private static final String EXTRA_REPORT_ID = "zachg.gsctrainingandnutritiontracker";
 
     private ViewPager mViewPager;
-    private ArrayList<Report> mReports;
-
     public static Intent newIntent(Context packageContext, int reportId) {
         Intent intent = new Intent(packageContext, PagerActivity.class);
         intent.putExtra(EXTRA_REPORT_ID, reportId);
@@ -46,18 +44,18 @@ public class PagerActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                Report report = mReports.get(position);
+                Report report = reports.get(position);
                 return new Fragment();
             }
 
             @Override
             public int getCount() {
-                return mReports.size();
+                return reports.size();
             }
         });
 
-        for (int i = 0; i < mReports.size(); i++) {
-            if (mReports.get(i).getReportId().equals(reportId)) {
+        for (int i = 0; i < reports.size(); i++) {
+            if (reports.get(i).getReportId().equals(reportId)) {
                 mViewPager.setCurrentItem(i);
                 break;
             }

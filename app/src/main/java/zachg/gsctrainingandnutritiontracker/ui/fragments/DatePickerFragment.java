@@ -20,6 +20,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.models.Report;
@@ -32,25 +35,22 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.DatePickerViewModel;
 
 public class DatePickerFragment extends Fragment {
 
-    private DatePickerViewModel mDatePickerViewModel;
-    private CalendarView mCalendarView;
-    private String mFirstName;
-    private String mGreetingFormat;
-    private String mGreetingMsg;
+    private DatePickerViewModel datePickerViewModel;
+    private CalendarView calendarView;
+    private String firstName, greetingFormat, greetingMsg;
     private TextView tvTextView;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    private Date mSelectedDate = new Date();
-    private String mSelectedDateString;
-    private Report mCurrentReport = new Report();
-    private User mCurrentUser = new User();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private Report currentReport = new Report();
+    private User currentUser = new User();
 
     public DatePickerFragment() {
         //empty required constructor
     }
 
     public DatePickerFragment(User user) {
-        mCurrentUser = user;
+        currentUser = user;
     }
 
     @Nullable
@@ -59,33 +59,29 @@ public class DatePickerFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_date, container, false);
         super.onCreateView(inflater, container, savedInstanceState);
 
-        mDatePickerViewModel = ViewModelProviders.of(getActivity()).get(DatePickerViewModel.class);
-        mDatePickerViewModel.init(mCurrentUser);
+        datePickerViewModel = ViewModelProviders.of(getActivity()).get(DatePickerViewModel.class);
+        datePickerViewModel.init(currentUser);
 
         createGreeting(v);
-        Log.d("mReports", "user: " + mCurrentUser.getClientName());
 
-        mCalendarView = v.findViewById(R.id.calendarView);
-        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        calendarView = v.findViewById(R.id.calendarView);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
                 // sets date format
                 String date = (i1 + 1) + "/" + i2 + "/" + i;
-                Log.d("mReports", "onSelectedDayChange: mm/dd/yyyy: " + date);
 
-                mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
                         // search Reports for report that matches user and date
-                        Date date = new Date(year - 1900, month, dayOfMonth);
-                        mSelectedDateString = DateFormat.format("MM.dd.yy", date).toString();
+                        LocalDate date = LocalDate.now();
+                        currentReport = new Report(currentUser, date);
 
-                        mCurrentReport = new Report(mCurrentUser, date);
-
-                        if (mCurrentReport != null) {
+                        if (currentReport != null) {
                             SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                    new ReportFragment(mCurrentReport, mCurrentUser)).addToBackStack(null).commit();
+                                    new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
                         }
                     }
                 });
@@ -98,9 +94,9 @@ public class DatePickerFragment extends Fragment {
     }
 
     private void createGreeting(View v) {
-        mFirstName = mCurrentUser.getFirstName();
-        mGreetingFormat = getResources().getString(R.string.select_date_greeting);
-        mGreetingMsg = String.format(mGreetingFormat, mFirstName);
+        firstName = currentUser.getFirstName();
+        greetingFormat = getResources().getString(R.string.select_date_greeting);
+        greetingMsg = String.format(greetingFormat, firstName);
         tvTextView = v.findViewById(R.id.tv_select_date);
         tvTextView.setText(R.string.select_date);
     }
@@ -114,7 +110,7 @@ public class DatePickerFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (mCurrentUser.getIsAdmin()) {
+        if (currentUser.getIsAdmin()) {
             inflater.inflate(R.menu.admin_menu, menu);
         } else {
            inflater.inflate(R.menu.user_menu, menu);
@@ -137,7 +133,7 @@ public class DatePickerFragment extends Fragment {
                         new InboxFragment()).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
-                mAuth.signOut();
+                auth.signOut();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
