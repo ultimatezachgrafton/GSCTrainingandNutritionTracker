@@ -15,8 +15,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.databinding.RvuserItemBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
 
@@ -28,23 +30,26 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         super(options);
     }
 
+    @Override
+    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
+        holder.bind(user);
+    }
+
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvuser_item,
-                parent, false);
-        return new UserViewHolder(v);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        RvuserItemBinding binding = RvuserItemBinding.inflate(layoutInflater, parent, false);
+        return new UserViewHolder(binding);
     }
 
     // UserViewHolder is the class that defines the views that hold the User data
     class UserViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvEmail;
-        private TextView tvFirstName;
+        private final RvuserItemBinding binding;
 
-        public UserViewHolder(View itemView) {
-            super(itemView);
-            tvFirstName = itemView.findViewById(R.id.tvFirstName);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
+        public UserViewHolder(RvuserItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,6 +61,10 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
                 }
             });
         }
+        public void bind(User user) {
+            binding.setUser(user);
+            binding.executePendingBindings();
+        }
     }
 
     public interface OnItemClickListener {
@@ -64,17 +73,10 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
 
     public User getUserAtPosition(User user) {
         mCurrentUser = user;
-        Log.d("mReports", String.valueOf(mCurrentUser));
         return mCurrentUser;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
-        holder.tvFirstName.setText(user.getFirstName());
-        holder.tvEmail.setText(user.getEmail());
     }
 }

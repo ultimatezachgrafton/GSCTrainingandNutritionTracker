@@ -23,7 +23,7 @@ public class User {
 
     private String dateJoined;
 
-    private String mWorkoutNum = "1"; // tracks which workout day the user is on
+    private int workoutNum = 1; // tracks which workout day the user is on
 
     public User() {}
 
@@ -115,12 +115,12 @@ public class User {
 
     public String getDateJoined() { return dateJoined; }
 
-    public void setWorkoutNum(String workoutNum) {
-        mWorkoutNum = workoutNum;
+    public void setWorkoutNum(int workoutNum) {
+        this.workoutNum = workoutNum;
     }
 
-    public String getWorkoutNum() {
-        return mWorkoutNum;
+    public int getWorkoutNum() {
+        return workoutNum;
     }
 
 //    public void incrementWorkout() {mWorkoutNum = mWorkoutNum++;}

@@ -1,7 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.repositories;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -26,7 +24,6 @@ public class FirestoreRepository {
     private LoginListener mLoginListener;
 
     private User mCurrentUser = new User();
-    private Workout mCurrentWorkout = new Workout();
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
@@ -66,8 +63,7 @@ public class FirestoreRepository {
     }
 
     public FirestoreRecyclerOptions<Report> getReportsFromRepo(User user) {
-        CollectionReference reportColRef = db.collection("users")
-                .document(user.getClientName())
+        CollectionReference reportColRef = userColRef.document(user.getClientName())
                 .collection("reports");
         Query reportQuery = reportColRef.whereEqualTo("clientName", getCurrentUser(user.getEmail()))
                 .orderBy("date");
@@ -77,10 +73,10 @@ public class FirestoreRepository {
     }
 
     public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
-        CollectionReference workoutColRef = db.collection("workouts").document(user.getClientName())
-                .collection(user.getWorkoutNum());
-        Query workoutQuery = workoutColRef.orderBy("exNumber");
-        Log.d("mReports", "workout: " + String.valueOf(workoutColRef));
+        CollectionReference workoutColRef = userColRef.document(user.getClientName()).collection("workouts")
+                .document("exerciseSets").collection(String.valueOf(user.getWorkoutNum()));
+        Query workoutQuery = workoutColRef;
+
         return new FirestoreRecyclerOptions.Builder<Workout>()
                 .setQuery(workoutQuery, Workout.class)
                 .build();

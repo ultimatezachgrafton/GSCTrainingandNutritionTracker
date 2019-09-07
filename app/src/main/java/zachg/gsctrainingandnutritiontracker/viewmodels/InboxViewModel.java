@@ -10,23 +10,23 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class InboxViewModel extends ViewModel {
 
-    private MutableLiveData<FirestoreRecyclerOptions<Message>> mMessages = new MutableLiveData<>();
-    private FirestoreRepository mRepo;
-    private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
+    private MutableLiveData<FirestoreRecyclerOptions<Message>> messages = new MutableLiveData<>();
+    private FirestoreRepository repo;
+    private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
     public void init() {
-        if (mMessages.getValue() != null) {
+        if (messages.getValue() != null) {
             return;
         }
-        mRepo = FirestoreRepository.getInstance();
-        mMessages.setValue(mRepo.getMessagesFromRepo());
+        repo = FirestoreRepository.getInstance();
+        messages.setValue(repo.getMessagesFromRepo());
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Message>> getMessages() {
-        return mMessages;
+        return messages;
     }
 
     public MutableLiveData<Boolean> getIsUpdating() {
-        return mIsUpdating;
+        return isUpdating;
     }
 }

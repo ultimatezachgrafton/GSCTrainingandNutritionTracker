@@ -2,61 +2,53 @@ package zachg.gsctrainingandnutritiontracker.models;
 
 public class Workout {
 
-    // The variable and method names in Workout are a little strange, but this is by design.
-    // They are meant to be as brief and clear as possible to simplify the admin's manual-entry database in Firestore.
-    // Though this, of course, means some of that work falls on the shoulders of the valiant coders.
-
     private String clientName;
-    private String exName;
-    private String exNumber;
-    private int reps;
-    private int mExerciseWeight;
+    private String exerciseName;
+    private int exerciseNum;
+    private String reps;
+    private int exerciseWeight;
     private int day;
-    private User mCurrentSelectedUser = new User();
+    private User currentUser = new User();
 
     public Workout(User user){
-        this.clientName = mCurrentSelectedUser.getClientName();
+        this.clientName = currentUser.getClientName();
     }
 
     public Workout() {}
 
     public String getClientName() {
-        this.clientName = mCurrentSelectedUser.getClientName();
+        this.clientName = currentUser.getClientName();
         return clientName;
     }
 
     public void setClientName(String username) { clientName = username; }
 
-    public String getExName() {
-        return exName;
+    public String getExerciseName() { return exerciseName; }
+
+    public void setExerciseName(String exerciseName) {
+        this.exerciseName = exerciseName;
     }
 
-    public void setExName(String exerciseName) {
-        exName = exerciseName;
-    }
+    public String getReps() { return reps; }
 
-    public int getReps() {
-        return reps;
-    }
-
-    public void setReps(int repsNum) {
-        reps = repsNum;
+    public void setReps(String reps) {
+        this.reps = reps;
     }
 
     public int getExerciseWeight() {
-        return mExerciseWeight;
+        return this.exerciseWeight;
     }
 
     public void setExerciseWeight(int exerciseWeight) {
-        mExerciseWeight = exerciseWeight;
+        this.exerciseWeight = exerciseWeight;
     }
 
     public int getWorkoutDay() { return day; }
 
     public void setWorkoutDay(int prevNum) { day = prevNum + 1; }
 
-    public String getExNumber() { return exNumber; }
+    public int getExerciseNum() { return exerciseNum; }
 
-    public void setExNumber(String exNum) { exNumber = exNum; }
+    public void setExerciseNum(int exerciseNum) { this.exerciseNum = exerciseNum; }
 
 }

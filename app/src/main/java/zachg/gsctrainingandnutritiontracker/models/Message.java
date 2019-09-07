@@ -6,39 +6,39 @@ public class Message {
 
     }
 
-    private String msgId;
-    private String msgTitle;
-    private String msgBody;
-    private String msgDate;
+    private String id;
+    private String title;
+    private String body;
+    private String date;
     private String clientName;
     private boolean isRead;
 
     public String getId() {
-        return msgId;
+        return id;
     }
 
-    public String getMsgTitle() {
-        return msgTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setMsgTitle(String msgTitle) {
-        this.msgTitle = msgTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getMsgDate() {
-        return msgDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setMsgDate(String msgDate) {
-        this.msgDate = msgDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getMsgBody() {
-        return msgBody;
+    public String getBody() {
+        return body;
     }
 
-    public void setMsgBody(String msgBody) {
-        this.msgBody = msgBody;
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public String getClientName() {

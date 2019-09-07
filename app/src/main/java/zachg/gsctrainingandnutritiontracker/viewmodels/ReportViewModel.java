@@ -3,57 +3,60 @@ package zachg.gsctrainingandnutritiontracker.viewmodels;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.SetOptions;
 
 import zachg.gsctrainingandnutritiontracker.models.Report;
-import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class ReportViewModel extends ViewModel {
 
-    private FirestoreRepository mRepo;
-    //private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
-    private FirestoreRecyclerOptions<Workout> mWorkouts;
-
-    public String mClientName;
-    public String mDateString;
+    private FirestoreRepository repo;
+    private ObservableField<String> dailyWeight = new ObservableField<>();
+    private ObservableField<String> comments = new ObservableField<>();
 
     public ReportViewModel() {}
 
     // init getting null data for user
-    public void init(User mCurrentUser) {
-        mRepo = FirestoreRepository.getInstance();
-        mWorkouts = mRepo.getWorkoutsFromRepo(mCurrentUser);
-        Log.d("mReports", "mWorkouts:" + mWorkouts);
+    public void init() {
+        repo = FirestoreRepository.getInstance();
     }
 
-    // iterateWorkouts after loading this workout;
+    // TODO: iterateWorkouts after loading this workout;
 
     // Writes report to the Repository
-    public void writeReport(Report report, User user) {
-        mRepo.db.collection("users").document(report.getClientName()).collection("reports")
+    public void writeReport(Report report) {
+        dailyWeight.set(report.getDailyWeight());
+        comments.set(report.getComments());
+
+        // workouts.get();
+        // getWorkouts();
+
+//        List<Workout> workoutList = new ArrayList<>();
+//        for (int i = 0; i < MAX_WORKOUTS; i++) {
+//            workoutList.add(new Workout(i));
+//        }
+
+        Report generatedReport = new Report(report.getClientName(), report.getDateString(), String.valueOf(dailyWeight.get()), String.valueOf(comments.get()));
+
+        repo.db.collection("users").document(report.getClientName()).collection("reports")
                 .document(report.getDateString())
-                .set(report, SetOptions.merge())
+                .set(generatedReport)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("mReports", "DocumentSnapshot added with ID: ");
+                        Log.d("reports", "DocumentSnapshot added with ID: ");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("mReports", "Error writing document", e);
+                        Log.w("reports", "Error writing document", e);
                     }
                 });
-        // write iterated workoutNum to user's fstore data
+        // TODO: write iterated workoutNum to user's fstore data
     }
 }

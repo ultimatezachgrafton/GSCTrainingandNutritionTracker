@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<layout>
+<layout>
 <data>
     <import type="android.view.View"/>
     <variable
@@ -9,7 +9,6 @@
         name="WorkoutListAdapter"
         type="zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter"/>
 </data>
--->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -20,18 +19,21 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@{workout.exerciseName}"
         android:id="@+id/tvExerciseName" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvReps"
-        android:layout_toRightOf="@+id/tvExerciseName"/>
+        android:text="@{workout.reps}"
+        android:layout_below="@+id/tvExerciseName"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etWeightUsed"
-        android:layout_toRightOf="@+id/tvReps"/>
+        android:autofillHints="@string/workout_weight"
+        android:layout_below="@+id/tvReps"/>
 
-</RelativeLayout>
+</RelativeLayout></layout>

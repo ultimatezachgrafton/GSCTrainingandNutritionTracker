@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
+            name="UserListAdapter"
+            type="zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter"/>
+    </data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,12 +19,15 @@
     <TextView
         android:id="@+id/tvFirstName"
         style="@style/user_title"
+        android:text="@{user.firstName}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/tvEmail"
+        android:text="@{user.email}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>
+</layout>

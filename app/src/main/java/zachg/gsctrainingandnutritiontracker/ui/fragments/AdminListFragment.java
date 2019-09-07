@@ -37,7 +37,6 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     private User mCurrentUser = new User();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirestoreRepository mRepo = new FirestoreRepository();
 
     public AdminListFragment() {}
 
@@ -90,7 +89,6 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
             @Override
             public void onItemClick(DocumentSnapshot doc, int position) {
                 mCurrentUser = mUserListAdapter.getUserAtPosition(users.getSnapshots().get(position));
-                // get the doc's ID
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new ClientProfileFragment(mCurrentUser)).addToBackStack(null).commit();
             }

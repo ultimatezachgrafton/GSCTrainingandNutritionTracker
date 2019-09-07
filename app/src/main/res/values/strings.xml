@@ -40,8 +40,7 @@
     <string name="enter_weight">Enter Today\'s Weight:</string>
     <string name="exercises">Today\'s workout:</string>
     <string name="exercise_num">Exercise 1:</string>
-    <string name="reps">Enter # of reps</string>
-    <string name="workout_weight">Enter weight used:</string>
+    <string name="workout_weight">Weight:</string>
     <string name="comments">Enter comments</string>
 
     <string name="nutrition">Today\'s nutrition:</string>

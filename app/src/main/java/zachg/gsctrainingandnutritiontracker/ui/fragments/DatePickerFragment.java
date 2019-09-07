@@ -83,8 +83,6 @@ public class DatePickerFragment extends Fragment {
 
                         mCurrentReport = new Report(mCurrentUser, date);
 
-                        Log.d("mReports", "isAdmin: " + String.valueOf(mCurrentUser.getClientName()));
-                        Log.d("mReports", "Report: " + String.valueOf(mCurrentReport.getClientName()));
                         if (mCurrentReport != null) {
                             SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                                     new ReportFragment(mCurrentReport, mCurrentUser)).addToBackStack(null).commit();

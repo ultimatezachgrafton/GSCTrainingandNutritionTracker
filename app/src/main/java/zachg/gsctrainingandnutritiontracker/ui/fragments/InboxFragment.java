@@ -87,25 +87,15 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
             // Fetch msg info into Msg object
             @Override
             public void onItemClick(DocumentSnapshot doc, int position) {
-                getMsgAtPosition(position);
-                String msgId = currentMessage.getId();
-
+                currentMessage = mMessageAdapter.getMessageAtPosition(messages.getSnapshots().get(position));
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new MessageFragment()).addToBackStack(null).commit();
+                            new MessageFragment(currentMessage)).addToBackStack(null).commit();
             }
         });
     }
 
-    public Message getMsgAtPosition(int position) {
-        Log.d(TAG, String.valueOf(currentMessage));
-        return currentMessage;
-    }
-
     @Override
-    public void onStart() {
-        super.onStart();
-        //mMessageAdapter.startListening();
-    }
+    public void onStart() { super.onStart(); }
 
     public void onStop() {
         super.onStop();

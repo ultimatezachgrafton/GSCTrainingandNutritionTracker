@@ -2,7 +2,6 @@ package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,10 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
@@ -41,34 +39,34 @@ import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
-    private ReportViewModel mReportViewModel = new ReportViewModel();
-    private RecyclerView mReportRecyclerView;
-    private WorkoutListAdapter mWorkoutListAdapter;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private ReportViewModel reportViewModel = new ReportViewModel();
+    private RecyclerView reportRecyclerView;
+    private WorkoutListAdapter workoutListAdapter;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    //FragmentReportBinding mBinding;
+    private FragmentReportBinding binding;
 
     private Button bReport;
-    private File mPhotoFile;
-    private ImageView mPhotoView;
-    private String mClientName;
+    private File photoFile;
+    private ImageView photoView;
+    private String clientName;
     private TextView tvClientName;
-    private String mDateString;
+    private String dateString;
     private TextView tvDate;
     private Button bAddUpdate; // TODO: temp
 
-    private Report mCurrentReport = new Report();
-    private Date mDate;
-    private User mCurrentUser = new User();
+    private Date date;
+    private User currentUser = new User();
+    private Report currentReport = new Report();
 
     public ReportFragment() {}
 
     public ReportFragment(Report report, User user) {
-        this.mCurrentReport = report;
-        this.mCurrentUser = user;
-        this.mCurrentReport.setClientName(user.getClientName());
-        this.mClientName = mCurrentReport.getClientName();
-        this.mDateString = report.getDateString();
+        this.currentReport = report;
+        this.currentUser = user;
+        this.currentReport.setClientName(user.getClientName());
+        this.clientName = currentReport.getClientName();
+        this.dateString = report.getDateString();
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -79,31 +77,28 @@ public class ReportFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        //mBinding = FragmentReportBinding.inflate(inflater, container, false);
-        final View v = inflater.inflate(R.layout.fragment_report, container, false);
-        //final View v = mBinding.getRoot();
-        //mBinding.setReport(mCurrentReport);
+        binding = FragmentReportBinding.inflate(inflater, container, false);
+        final View v = binding.getRoot();
+        binding.setReport(currentReport);
 
-        Log.d("mReports", "pre-init: name: " + mCurrentUser.getClientName());
-        Log.d("mReports", "pre-init: workout num: " + mCurrentUser.getWorkoutNum());
-
-        mReportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        mReportViewModel.init(mCurrentUser);
+        reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
+        reportViewModel.init();
 
         FirestoreRepository mRepo = new FirestoreRepository();
-        FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(mCurrentUser);
+        FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(currentUser);
         initRecyclerView(v, workoutOptions);
 
-        mDateString = String.valueOf(Calendar.getInstance().getTime());
-        String mDateFormat = getResources().getString(R.string.date);
-        final String mDateMsg = String.format(mDateFormat, mDate);
+        // TODO: viewModel
+        dateString = String.valueOf(Calendar.getInstance().getTime());
+        String dateFormat = getResources().getString(R.string.date);
+        final String dateMsg = String.format(dateFormat, date);
         tvDate = v.findViewById(R.id.tvDate);
-        tvDate.setText(mDateMsg);
+        tvDate.setText(dateMsg);
 
-        bAddUpdate = (Button) v.findViewById(R.id.bAddUpdate);
+        bAddUpdate = v.findViewById(R.id.bAddUpdate);
 
         bReport = v.findViewById(R.id.bSendReport);
-        if (mCurrentReport.getIsNew()) {
+        if (currentReport.getIsNew()) {
             bReport.setText(R.string.send); // sets Send Report button
         } else {
             bReport.setText(R.string.update); // sets Update Report button
@@ -111,56 +106,46 @@ public class ReportFragment extends Fragment {
 
         bAddUpdate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("mReports", "click");
-                mReportViewModel.writeReport(mCurrentReport, mCurrentUser);
+                reportViewModel.writeReport(currentReport);
             }
         });
 
         v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeLeft() {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportFragment(mCurrentReport, mCurrentUser)).addToBackStack(null).commit();
+                        new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
             }
             public void onSwipeRight() {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportFragment(mCurrentReport, mCurrentUser)).addToBackStack(null).commit();
+                        new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
             }
         });
 
-        mPhotoView = v.findViewById(R.id.client_photo);
+        photoView = v.findViewById(R.id.client_photo);
         updatePhotoView();
 
         return v;
     }
 
-//    private void setupBindings(Bundle savedInstanceState) {
-//        mBinding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_report);
-//        mReportViewModel = ViewModelProviders.of(this).get(ReportViewModel.class);
-//        if (savedInstanceState == null) {
-//            mReportViewModel.init();
-//        }
-//        mBinding.setReport(mCurrentReport);
-//    }
-
     private void initRecyclerView(View v, final FirestoreRecyclerOptions<Workout> workouts) {
-        mWorkoutListAdapter = new WorkoutListAdapter(workouts);
+        workoutListAdapter = new WorkoutListAdapter(workouts);
 
-        mReportRecyclerView = v.findViewById(R.id.rvWorkout);
-        mReportRecyclerView.setHasFixedSize(true);
-        mReportRecyclerView.setAdapter(mWorkoutListAdapter);
-        mReportRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        reportRecyclerView = v.findViewById(R.id.rvWorkout);
+        reportRecyclerView.setHasFixedSize(true);
+        reportRecyclerView.setAdapter(workoutListAdapter);
+        reportRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void updatePhotoView() {
-        if (mPhotoFile == null || !mPhotoFile.exists()) {
-            mPhotoView.setImageDrawable(null);
-            mPhotoView.setContentDescription(
+        if (photoFile == null || !photoFile.exists()) {
+            photoView.setImageDrawable(null);
+            photoView.setContentDescription(
                     getString(R.string.report_photo_no_image_description)
             );
         } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
-            mPhotoView.setImageBitmap(bitmap);
-            mPhotoView.setContentDescription(
+            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
+            photoView.setImageBitmap(bitmap);
+            photoView.setContentDescription(
                     getString(R.string.report_photo_image_description)
             );
         }
@@ -169,19 +154,19 @@ public class ReportFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mWorkoutListAdapter.startListening();
+        workoutListAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mWorkoutListAdapter.stopListening();
+        workoutListAdapter.stopListening();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (mCurrentUser.getIsAdmin()) {
+        if (currentUser.getIsAdmin()) {
             inflater.inflate(R.menu.admin_menu, menu);
         } else {
             inflater.inflate(R.menu.user_menu, menu);
@@ -192,7 +177,7 @@ public class ReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientProfileFragment(mCurrentUser)).addToBackStack(null).commit();
+                        new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
             case R.id.bAskBen:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new AskBenFragment()).addToBackStack(null).commit();
@@ -206,7 +191,7 @@ public class ReportFragment extends Fragment {
                         new InboxFragment()).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
-                mAuth.signOut();
+                auth.signOut();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();

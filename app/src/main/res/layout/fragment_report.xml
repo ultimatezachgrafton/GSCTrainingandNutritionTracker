@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="report"
+            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
+        <variable
+            name="ReportFragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.ReportFragment"/>
+        <variable
+            name="ReportViewModel"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel"/>
+        <variable
+            name="adapter"
+            type="zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter"/>
+        <variable
+            name="EditTextViewModel"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.EditTextViewModel"/>
+        <variable
+            name="dailyWeight"
+            type="String"/>
+    </data>
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,8 +73,9 @@
 
     <EditText
         android:id="@+id/etWeight"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@={report.dailyWeight}"
         android:singleLine="true"
         android:layout_toRightOf="@id/separator1"
         android:layout_alignBaseline="@id/separator1"/>
@@ -93,8 +116,8 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <EditText
-        android:id="@+id/etWorkoutComments"
-        android:layout_width="wrap_content"
+        android:id="@+id/etComments"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/comments"
         android:layout_below="@id/rvWorkoutLayout" />
@@ -107,8 +130,9 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_below="@id/etWorkoutComments" />
+        android:layout_below="@id/etComments" />
 
     </RelativeLayout>
 
 </LinearLayout>
+</layout>

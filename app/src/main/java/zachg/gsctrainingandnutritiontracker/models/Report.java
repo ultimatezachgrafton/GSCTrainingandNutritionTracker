@@ -14,22 +14,22 @@ public class Report {
     private String clientName; // client's name
     private String dailyWeight; // client's weight
 
-    private String exerciseName; // name of exercise
-    private int repsAmount; // amount of sets and reps assigned to exercise
-    private int weightAmount; // amount of weight in lbs used in each set
-
-    private EditText etCommentBox; // space for exercise-related comments
     private String comments;
     // photos to include with questions
     private boolean isNew; // determines if report is new
 
-    // This constructor generates a universally unique ID, then initializes it as well as the Date field
-    public Report() { }
+    public Report() {}
 
     public Report(User user, Date date) {
         this.date = date;
-        this.dateString = date.toString();
         this.clientName = user.getClientName();
+    }
+
+    public Report(String clientName, String date, String dailyWeight, String comments) {
+        this.clientName = clientName;
+        this.dateString = date;
+        this.dailyWeight = dailyWeight;
+        this.comments = comments;
     }
 
     // Setters and getters
@@ -62,25 +62,13 @@ public class Report {
 
     public String getDailyWeight() { return dailyWeight; }
 
-    public void setWeight(String weight) { this.dailyWeight = weight; }
+    public void setDailyWeight(String weight) { this.dailyWeight = weight; }
 
     public boolean getIsNew() { return isNew; }
 
     public void setIsNew(boolean isNew) { this.isNew = isNew; }
 
 //    public String getPhotoFilename() { return "IMG_" + getId().toString() + ".jpg"; }
-
-    public void setExerciseName(String exerciseName) { this.exerciseName = exerciseName; }
-
-    public String getExerciseName() { return exerciseName; }
-
-    public void setWeightAmount(int weightAmount) { this.weightAmount = weightAmount; }
-
-    public int getWeightAmount() { return weightAmount; }
-
-    public void setReps(int repsAmount) { this.repsAmount = repsAmount; }
-
-    public int getReps() { return repsAmount; }
 
     public String getComments() { return comments; }
 

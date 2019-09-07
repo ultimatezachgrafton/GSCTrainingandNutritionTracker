@@ -1,10 +1,24 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import androidx.lifecycle.ViewModel;
-//import static sMessages;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
+import zachg.gsctrainingandnutritiontracker.models.Message;
+import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class MessageViewModel extends ViewModel {
 
-    public void init() {}
+    private Message currentMessage;
+
+    public MessageViewModel() {}
+
+    public MessageViewModel(Message message) {
+        this.currentMessage = message;
+        this.currentMessage.setClientName(message.getClientName());
+        this.currentMessage.setBody(message.getBody());
+        this.currentMessage.setTitle(message.getTitle());
+        this.currentMessage.setDate(message.getDate());
+    }
 
 }

@@ -1,23 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="message"
+            type="zachg.gsctrainingandnutritiontracker.models.Message"/>
+        <variable
+            name="MessageFragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.MessageFragment"/>
+        <variable
+            name="adapter"
+            type="zachg.gsctrainingandnutritiontracker.ui.adapters.MessageListAdapter"/>
+    </data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@{message.clientName}"
         android:id="@+id/tvClientName"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvMsgTitle"
-        android:layout_below="@id/tvClientName"/>
+        android:id="@+id/tvTitle"
+        android:text="@{message.title}"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvMsgBody"
-        android:layout_below="@id/tvMsgTitle"/>
+        android:id="@+id/tvDate"
+        android:text="@{message.date}"/>
 
-</LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvBody"
+        android:text="@{message.body}" />
+
+</LinearLayout></layout>
