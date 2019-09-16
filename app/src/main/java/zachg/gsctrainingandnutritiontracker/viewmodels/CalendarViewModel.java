@@ -1,7 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.widget.TextView;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,16 +9,17 @@ import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class DatePickerViewModel extends ViewModel {
+public class CalendarViewModel extends ViewModel {
 
-    private MutableLiveData<FirestoreRecyclerOptions<Report>> mReports = new MutableLiveData<>();
-    private FirestoreRepository mRepo;
+    private MutableLiveData<FirestoreRecyclerOptions<Report>> reports = new MutableLiveData<>();
+    private FirestoreRepository repo;
+    private User currentUser = new User();
 
     public void init(User user) {
-        if (mReports != null) {
+        if (reports != null) {
             return;
         }
-        mRepo = FirestoreRepository.getInstance();
-        mReports.setValue(mRepo.getReportsFromRepo(user));
+        repo = FirestoreRepository.getInstance();
+        reports.setValue(repo.getReportsByUser(user));
     }
 }

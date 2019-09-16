@@ -8,10 +8,10 @@ import zachg.gsctrainingandnutritiontracker.utils.LoginListener;
 
 public class LoginViewModel {
 
-    private FirebaseAuth mAuth;
-    private FirestoreRepository mRepo = new FirestoreRepository();
-    private LoginListener mLoginListener;
-    public User mCurrentUser;
+    private FirebaseAuth auth;
+    private FirestoreRepository repo = new FirestoreRepository();
+    private LoginListener loginListener;
+    public User currentUser;
     public String email;
     public String password;
     public boolean isAdmin;
@@ -19,25 +19,25 @@ public class LoginViewModel {
     public LoginViewModel() {}
 
     public LoginViewModel(LoginListener loginListener) {
-        mLoginListener = loginListener;
+        loginListener = loginListener;
     }
 
     public void init() {
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() != null) {
+        auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
             // create user to
             // go to apropos frag
-            mRepo.getCurrentUser(mAuth.getCurrentUser().getEmail());
+            repo.getCurrentUser(auth.getCurrentUser().getEmail());
         }
     }
 
     public void onClick(String email, String password) {
         // authenticate
         if (email != null && password != null) {
-            mAuth.signInWithEmailAndPassword(email, password);
+            auth.signInWithEmailAndPassword(email, password);
             // TODO: check if successful...
-            mRepo.getCurrentUser(email);
+            repo.getCurrentUser(email);
         }
     }
 }

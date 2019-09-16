@@ -1,14 +1,8 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.widget.TextView;
-
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class ClientProfileViewModel extends ViewModel {
 
@@ -20,7 +14,7 @@ public class ClientProfileViewModel extends ViewModel {
 
     public ClientProfileViewModel(User currentUser) {
         this.mCurrentUser = currentUser;
-        this.mCurrentUser.setClientName(currentUser.getFirstName(), currentUser.getLastName());
+        this.mCurrentUser.setClientName(currentUser.getClientName());
         this.mCurrentUser.setGender(currentUser.getGender());
         this.mCurrentUser.setDateJoined(currentUser.getDateJoined());
         this.mCurrentUser.setBirthdate(currentUser.getBirthdate());

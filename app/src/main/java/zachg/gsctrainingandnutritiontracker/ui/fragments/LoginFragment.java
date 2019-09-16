@@ -1,7 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +19,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
 
     private Button bLogin;
     private EditText etPassword, etEmail;
-    private LoginListener mLoginListener;
-    private LoginViewModel mLoginViewModel = new LoginViewModel(mLoginListener);
-    private User mCurrentUser = new User();
+    private LoginListener loginListener;
+
+    private LoginViewModel loginViewModel = new LoginViewModel(loginListener);
+    private User currentUser = new User();
 
     public LoginFragment() {
         // Required empty public constructor
@@ -31,7 +31,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLoginViewModel.init();
+        loginViewModel.init();
     }
 
     @Override
@@ -52,19 +52,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Log
     }
 
     public void onClick(View view) {
+        // TODO: not recognizing blank values as null
         final String password = etPassword.getText().toString();
         final String email = etEmail.getText().toString();
-        mLoginViewModel.onClick(email, password);
+        if (email != null && password != null) {
+            loginViewModel.onClick(email, password);
+        }
     }
 
+    @Override
     public void goToProfile() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientProfileFragment(mCurrentUser)).addToBackStack(null).commit();
+                new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
     }
 
+    @Override
     public void goToAdminList() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new AdminListFragment()).addToBackStack(null).commit();
+                new AdminUserListFragment()).addToBackStack(null).commit();
     }
 
     @Override

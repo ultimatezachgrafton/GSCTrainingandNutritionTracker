@@ -23,25 +23,26 @@ import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.MessageListAdapter;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminInboxViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.InboxViewModel;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class InboxFragment extends Fragment implements MessageListAdapter.OnItemClickListener {
+public class AdminInboxFragment extends Fragment implements MessageListAdapter.OnItemClickListener {
 
     private RecyclerView msgRecyclerView;
-    private InboxViewModel inboxViewModel;
+    private AdminInboxViewModel adminInboxViewModel;
     private MessageListAdapter messageAdapter;
     private User currentUser = new User();
     private Message currentMessage = new Message();
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    public InboxFragment() {
+    public AdminInboxFragment() {
         // required empty public constructor
     }
 
-    public InboxFragment(User user) {
+    public AdminInboxFragment(User user) {
         this.currentUser = user;
     }
 
@@ -57,11 +58,11 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        inboxViewModel = ViewModelProviders.of(getActivity()).get(InboxViewModel.class);
+        adminInboxViewModel = ViewModelProviders.of(getActivity()).get(AdminInboxViewModel.class);
 
-        inboxViewModel.init();
+        adminInboxViewModel.init();
 
-        inboxViewModel.getMessages().observe(this, new Observer<FirestoreRecyclerOptions<Message>>() {
+        adminInboxViewModel.getMessages().observe(this, new Observer<FirestoreRecyclerOptions<Message>>() {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Message> messageOptions) {
                 initRecyclerView(v, messageOptions);
@@ -69,11 +70,11 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
             }
         });
 
-        inboxViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        adminInboxViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    msgRecyclerView.smoothScrollToPosition(inboxViewModel.getMessages().getValue().getSnapshots().size() - 1);
+                    msgRecyclerView.smoothScrollToPosition(adminInboxViewModel.getMessages().getValue().getSnapshots().size() - 1);
                 }
             }
         });
@@ -95,7 +96,7 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
             public void onItemClick(DocumentSnapshot doc, int position) {
                 currentMessage = messageAdapter.getMessageAtPosition(messages.getSnapshots().get(position));
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new MessageFragment(currentMessage)).addToBackStack(null).commit();
+                        new AdminMessageFragment(currentMessage)).addToBackStack(null).commit();
             }
         });
     }

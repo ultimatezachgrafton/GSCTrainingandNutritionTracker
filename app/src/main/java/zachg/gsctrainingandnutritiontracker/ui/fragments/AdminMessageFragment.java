@@ -10,17 +10,18 @@ import androidx.lifecycle.ViewModelProviders;
 
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentMsgBinding;
 import zachg.gsctrainingandnutritiontracker.models.Message;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminMessageViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.MessageViewModel;
 
-public class MessageFragment extends DialogFragment {
+public class AdminMessageFragment extends DialogFragment {
 
     private FragmentMsgBinding binding;
     private Message currentMessage;
     private String clientName, title, body, date;
-    public MessageViewModel messageViewModel;
+    public AdminMessageViewModel adminMessageViewModel;
 
-    public MessageFragment(Message message) {
-        messageViewModel = new MessageViewModel(message);
+    public AdminMessageFragment(Message message) {
+        adminMessageViewModel = new AdminMessageViewModel(message);
         this.currentMessage = message;
         this.clientName = currentMessage.getClientName();
         this.date = currentMessage.getDate();
@@ -28,12 +29,15 @@ public class MessageFragment extends DialogFragment {
         this.body = currentMessage.getBody();
     }
 
+    // insert To: and he selects from registered users
+    // reply function here and in regular messages
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMsgBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setMessage(currentMessage);
 
-        messageViewModel = ViewModelProviders.of(getActivity()).get(MessageViewModel.class);
+        adminMessageViewModel = ViewModelProviders.of(getActivity()).get(AdminMessageViewModel.class);
 
         return v;
     }

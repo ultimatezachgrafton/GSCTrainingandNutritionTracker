@@ -22,8 +22,8 @@ public class User {
     private boolean isLoggedIn;
 
     private String dateJoined;
-
     private int workoutNum = 1; // tracks which workout day the user is on
+    private int day = 1;
 
     public User() {}
 
@@ -43,6 +43,8 @@ public class User {
         this.email = email;
         this.password = password;
         this.id = getId();
+        this.workoutNum = getWorkoutNum();
+        this.day = getDay();
     }
 
     public String getId() {
@@ -83,11 +85,13 @@ public class User {
 
     public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public String getClientName() {
-        setClientName(this.getFirstName(), this.getLastName());
-        return clientName; }
+    public void setClientName(String clientName) { this.clientName = clientName; }
 
-    public void setClientName(String firstName, String lastName) { this.clientName = (firstName + " " + lastName); }
+    public String getClientName() { return clientName; }
+
+    public String concatClientName() {
+        this.clientName = (this.firstName + " " + this.lastName);
+        return clientName; }
 
     public String getGender() {
         return gender;
@@ -105,7 +109,7 @@ public class User {
 
     public boolean getIsAdmin() { return isAdmin; }
 
-    public String getIsAdminString() {return isAdminString; }
+    public String getIsAdminString() { return isAdminString; }
 
     public void setIsAdminString(boolean isAdmin) {
         if (isAdmin) { this.isAdminString = "Admin"; } else { isAdminString = "User"; }
@@ -123,5 +127,15 @@ public class User {
         return workoutNum;
     }
 
-//    public void incrementWorkout() {mWorkoutNum = mWorkoutNum++;}
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int workoutDay) {
+        this.day = day;
+    }
+
+    public void incrementWorkout() { workoutNum = workoutNum++; }
+
+    public void incrementDay() { day = day++; }
 }

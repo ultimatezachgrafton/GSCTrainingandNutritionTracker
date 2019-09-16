@@ -7,8 +7,8 @@
         android:title="string/viewProfile"/>
 
     <item
-        android:id="@+id/bAskBen"
-        android:title="string/askBen" />
+        android:id="@+id/bInbox"
+        android:title="string/inbox" />
 
     <item
         android:id="@+id/bLogout"

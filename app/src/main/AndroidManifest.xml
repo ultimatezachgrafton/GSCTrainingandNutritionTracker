@@ -16,9 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.activities.PagerActivity"/>
         <provider
-            android:authorities="gsctrainingandnutritiontracker.fileprovider"
+            android:authorities="zachg.gsctrainingandnutritiontracker.fileprovider"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

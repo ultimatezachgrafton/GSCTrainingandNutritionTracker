@@ -10,22 +10,22 @@ import java.util.ArrayList;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class AdminListViewModel extends ViewModel {
+public class AdminUserListViewModel extends ViewModel {
 
-    private MutableLiveData<FirestoreRecyclerOptions<User>> mUsers = new MutableLiveData<>();
-    private FirestoreRepository mRepo;
-    private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
+    private MutableLiveData<FirestoreRecyclerOptions<User>> users = new MutableLiveData<>();
+    private FirestoreRepository repo;
+    private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
     public void init() {
-        mRepo = FirestoreRepository.getInstance();
-        mUsers.setValue(mRepo.getUsersFromRepo());
+        repo = FirestoreRepository.getInstance();
+        users.setValue(repo.getUsersFromRepo());
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<User>> getUsers() {
-        return mUsers;
+        return users;
     }
 
     public MutableLiveData<Boolean> getIsUpdating() {
-        return mIsUpdating;
+        return isUpdating;
     }
 }

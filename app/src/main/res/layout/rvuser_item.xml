@@ -17,9 +17,9 @@
     android:background="@android:color/holo_orange_light">
 
     <TextView
-        android:id="@+id/tvFirstName"
+        android:id="@+id/tvClientName"
         style="@style/user_title"
-        android:text="@{user.firstName}"
+        android:text="@{user.clientName}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

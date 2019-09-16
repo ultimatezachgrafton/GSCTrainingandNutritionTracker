@@ -7,11 +7,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.core.content.FileProvider;
@@ -21,72 +22,81 @@ import androidx.lifecycle.ViewModelProviders;
 import java.io.File;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
-import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
-public class ClientProfileFragment extends Fragment implements View.OnClickListener {
+public class AdminClientProfileFragment extends Fragment {
 
-    FragmentClientProfileBinding binding;
+    // enter values, they go to repo
 
-    private ClientProfileViewModel clientProfileViewModel;
+    FragmentAdminClientProfileBinding binding;
+
+    private AdminClientProfileViewModel adminClientProfileViewModel = new AdminClientProfileViewModel();
     private final int REQUEST_PHOTO = 2;
-    private Button bToDatePicker;
+    private Button bToDatePicker, bAddWorkouts, bWriteWorkouts;
     private File photoFile;
     private ImageView photoView;
-    private ImageButton bCamera;
     private final String ARG_USER_ID = "user_id";
+
+    private EditText etExerciseName, etExerciseNum, etReps, etDay, etWorkoutNum;
+    private String exerciseName, exerciseNum, reps;
+    private int workoutCycle, workoutNum;
 
     private User currentUser = new User();
 
-    public ClientProfileFragment() {}
+    public AdminClientProfileFragment() {}
 
-    public ClientProfileFragment(User user) {
-        clientProfileViewModel = new ClientProfileViewModel(user);
+    public AdminClientProfileFragment(User user) {
         this.currentUser = user;
+        adminClientProfileViewModel = new AdminClientProfileViewModel(user);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment
-        binding = FragmentClientProfileBinding.inflate(inflater, container, false);
+        binding = FragmentAdminClientProfileBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setUser(currentUser);
+        final Workout workout = new Workout(currentUser);
+        binding.setWorkout(workout);
+
+        adminClientProfileViewModel = ViewModelProviders.of(getActivity()).get(AdminClientProfileViewModel.class);
+        adminClientProfileViewModel.init();
 
         bToDatePicker = v.findViewById(R.id.bToDatePicker);
         bToDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new CalendarFragment(currentUser)).addToBackStack(null).commit();
+                        new AdminCalendarFragment(currentUser)).addToBackStack(null).commit();
             }
         });
 
-        clientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
-        photoView = v.findViewById(R.id.profile_photo);
-        updatePhotoView();
-        bCamera = v.findViewById(R.id.bCamera);
-        bCamera.setOnClickListener(new View.OnClickListener() {
+        bWriteWorkouts = v.findViewById(R.id.bWriteWorkouts);
+        bWriteWorkouts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takePhoto();
+                adminClientProfileViewModel.writeToWorkouts(workout);
             }
         });
+
+        adminClientProfileViewModel = ViewModelProviders.of(getActivity()).get(AdminClientProfileViewModel.class);
+        photoView = v.findViewById(R.id.profile_photo);
+        updatePhotoView();
 
         return v;
     }
 
     public void takePhoto() {
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File imagePath = new File(getContext().getFilesDir(), "images");
-        photoFile = new File(imagePath, "default_image.jpg");
         Uri uri = FileProvider.getUriForFile(getActivity(),
-                "zachg.gsctrainingandnutritiontracker.fileprovider", photoFile);
+                "zachg.bensfitnessapp.fileprovider", photoFile);
         captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
                 queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
@@ -111,10 +121,5 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
                     getString(R.string.report_photo_image_description)
             );
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

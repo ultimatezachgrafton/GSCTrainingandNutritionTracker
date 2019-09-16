@@ -33,7 +33,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         // Required empty constructor
     }
 
-    private RegisterViewModel mRegisterViewModel;
+    private RegisterViewModel registerViewModel;
     private Button bRegister;
     private EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail, etGender, etBirthDate;
 
@@ -46,8 +46,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         // inflate layout for fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        mRegisterViewModel = ViewModelProviders.of(getActivity()).get(RegisterViewModel.class);
-        mRegisterViewModel.init();
+        registerViewModel = ViewModelProviders.of(getActivity()).get(RegisterViewModel.class);
+        registerViewModel.init();
 
         etPassword = view.findViewById(R.id.etPassword);
         etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
@@ -65,7 +65,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.bRegister:
                 String firstName = etFirstName.getText().toString();
                 String lastName = etLastName.getText().toString();
@@ -76,47 +76,47 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 String birthDate = etBirthDate.getText().toString();
 
                 if (password.equals(confirmPassword)) {
-                    // AND password != an existing password
+                    if (registerViewModel.validate(email)) {
+                        // Access a Cloud Firestore instance
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                    // Access a Cloud Firestore instance
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        // Create a new user
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("firstName", firstName);
+                        user.put("lastName", lastName);
+                        user.put("email", email);
+                        user.put("password", password);
+                        user.put("gender", gender);
+                        user.put("birthdate", birthDate);
 
-                    // Create a new user
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("firstName", firstName);
-                    user.put("lastName", lastName);
-                    user.put("email", email);
-                    user.put("password", password);
-                    user.put("gender", gender);
-                    user.put("birthdate", birthDate);
+                        // Add user as a new document with a generated ID
+                        db.collection("users")
+                                .add(user)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error adding document", e);
+                                    }
+                                });
+                        // set mCurrentSelectedUser
+                        // send user to CalendarFragment
+                        // pass in date/user to constructor and that sets all the data to display
+                        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                                new CalendarFragment()).addToBackStack(null).commit();
 
-                    // Add user as a new document with a generated ID
-                    db.collection("users")
-                        .add(user)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
-                            }
-                        });
-                    // set mCurrentSelectedUser
-                    // send user to DatePickerFragment
-                    // pass in date/user to constructor and that sets all the data to display
-                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new DatePickerFragment()).addToBackStack(null).commit();
-
-                } else {
-                    // alert user if passwords do not match
-                    Toast.makeText(getActivity(), "Passwords do not match. " + password + " " + confirmPassword,
-                            Toast.LENGTH_SHORT).show();
+                    } else {
+                        // alert user if passwords do not match
+                        Toast.makeText(getActivity(), "Passwords do not match. " + password + " " + confirmPassword,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    break;
                 }
-                break;
         }
     }
 }

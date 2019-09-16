@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -21,7 +20,6 @@ public class ReportViewModel extends ViewModel {
     private ObservableField<String> dailyWeight = new ObservableField<>();
     private ObservableField<String> comments = new ObservableField<>();
     private FirestoreRecyclerOptions<Workout> workouts;
-    private Workout workout = new Workout();
 
     public ReportViewModel() {}
 
@@ -29,7 +27,6 @@ public class ReportViewModel extends ViewModel {
     public void init(FirestoreRecyclerOptions<Workout> options) {
         repo = FirestoreRepository.getInstance();
         this.workouts = options;
-        //this.workout = currentWorkout;
     }
 
     // TODO: iterateWorkouts after loading this workout;
@@ -37,16 +34,10 @@ public class ReportViewModel extends ViewModel {
     // Writes report to the Repository
     public void writeReport(Report report) {
         dailyWeight.set(report.getDailyWeight());
+
+        Log.d("mReports", String.valueOf(dailyWeight.get()));
+
         comments.set(report.getComments());
-
-        // workoutOptions.get();
-        // getWorkouts();
-
-//        List<Workout> workoutList = new ArrayList<>();
-//        for (int i = 0; i < MAX_WORKOUTS; i++) {
-//            workoutList.add(new Workout(i));
-//        }
-
         Report generatedReport = new Report(report.getClientName(), report.getDateString(), String.valueOf(dailyWeight.get()), String.valueOf(comments.get()));
 
         repo.db.collection("users").document(report.getClientName()).collection("reports")

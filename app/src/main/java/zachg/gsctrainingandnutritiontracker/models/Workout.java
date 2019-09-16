@@ -2,16 +2,20 @@ package zachg.gsctrainingandnutritiontracker.models;
 
 public class Workout {
 
-    private String clientName;
-    private String exerciseName;
-    private int exerciseNum;
-    private String reps;
-    private int exerciseWeight;
-    private int day;
+    private String clientName, exerciseName, exerciseNum, reps, exerciseWeight, day;
     private User currentUser = new User();
 
     public Workout(User user){
-        this.clientName = currentUser.getClientName();
+        this.currentUser = user;
+        this.clientName = user.getClientName();
+    }
+
+    public Workout(String clientName, String exerciseName, String exerciseNum, String reps, String day) {
+        this.clientName = clientName;
+        this.exerciseName = exerciseName;
+        this.exerciseNum = exerciseNum;
+        this.reps = reps;
+        this.day = day;
     }
 
     public Workout() {}
@@ -35,20 +39,20 @@ public class Workout {
         this.reps = reps;
     }
 
-    public int getExerciseWeight() {
+    public String getExerciseWeight() {
         return this.exerciseWeight;
     }
 
-    public void setExerciseWeight(int exerciseWeight) {
+    public void setExerciseWeight(String exerciseWeight) {
         this.exerciseWeight = exerciseWeight;
     }
 
-    public int getWorkoutDay() { return day; }
+    public String getDay() { return day; }
 
-    public void setWorkoutDay(int prevNum) { day = prevNum + 1; }
+    public void setDay(String day) { this.day = day; }
 
-    public int getExerciseNum() { return exerciseNum; }
+    public String getExerciseNum() { return exerciseNum; }
 
-    public void setExerciseNum(int exerciseNum) { this.exerciseNum = exerciseNum; }
+    public void setExerciseNum(String exerciseNum) { this.exerciseNum = exerciseNum; }
 
 }

@@ -11,7 +11,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class AskBenViewModel extends ViewModel {
+public class SendMessageViewModel extends ViewModel {
 
     private FirestoreRepository mRepo = new FirestoreRepository();
 
@@ -35,6 +35,5 @@ public class AskBenViewModel extends ViewModel {
                         Log.w("mReports", "Error writing document", e);
                     }
                 });
-
     }
 }

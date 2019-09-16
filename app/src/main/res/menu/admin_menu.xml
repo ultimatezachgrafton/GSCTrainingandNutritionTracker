@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/bInbox"
-        android:title="Inbox" />
+        android:title="@string/inbox" />
 
     <item
         android:id="@+id/bLogout"

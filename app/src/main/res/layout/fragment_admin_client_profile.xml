@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
+            name="AdminClientProfileFragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminClientProfileFragment"/>
+        <variable
+            name="workout"
+            type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
+        <variable
+            name="report"
+            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
+        <variable
+            name="AdminClientProfileViewModel"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
+        <variable
+            name="exerciseName"
+            type="String"/>
+        <variable
+            name="exerciseNum"
+            type="String"/>
+        <variable
+            name="reps"
+            type="String"/>
+        <variable
+            name="day"
+            type="String"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/profile_photo"
+            android:background="@android:color/darker_gray" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bCamera"
+            android:layout_below="@id/client_photo"/>
+
+        <TextView
+            android:id="@+id/tvClientName"
+            android:text="@{user.clientName}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bCamera"
+            />
+
+        <TextView
+            android:id="@+id/tvGender"
+            android:text="@{user.gender}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvClientName"
+            />
+
+        <TextView
+            android:id="@+id/tvDateJoined"
+            android:text="@{user.dateJoined}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvGender"
+            />
+
+        <TextView
+            android:id="@+id/tvBirthDate"
+            android:text="@{user.birthdate}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvDateJoined"
+            />
+
+        <TextView
+            android:id="@+id/tvIsAdmin"
+            android:text="@{user.isAdminString}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvBirthDate"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etDay"
+            android:singleLine="true"
+            android:hint="Enter day"/>
+
+        <EditText
+            android:id="@+id/etExerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etExerciseNum"
+            android:hint="Enter exercise number"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etReps"
+            android:hint="enter reps"/>
+
+        <Button
+            android:id="@+id/bMoreWorkouts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="more workouts"/>
+
+        <Button
+            android:id="@+id/bWriteWorkouts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="write workouts"/>
+
+        <Button
+            android:id="@+id/bToDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvIsAdmin"
+            android:clickable="true"
+            android:text="@string/toDatePicker" />
+
+    </LinearLayout>
+</layout>

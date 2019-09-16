@@ -11,28 +11,22 @@ import zachg.gsctrainingandnutritiontracker.utils.LoginListener;
 
 public class SplashScreenActivity extends FragmentActivity implements LoginListener {
 
-    private SplashScreenViewModel mSplashScreenViewModel = new SplashScreenViewModel();
+    private SplashScreenViewModel splashScreenViewModel = new SplashScreenViewModel();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mSplashScreenViewModel = new SplashScreenViewModel();
-        mSplashScreenViewModel.init();
+        splashScreenViewModel = new SplashScreenViewModel();
+        splashScreenViewModel.init();
     }
 
     @Override
-    public void goToProfile() {
-
-    }
+    public void goToProfile() { }
 
     @Override
-    public void goToAdminList() {
-
-    }
+    public void goToAdminList() { }
 
     @Override
-    public void goToLogin() {
-
-    }
+    public void goToLogin() { }
 }

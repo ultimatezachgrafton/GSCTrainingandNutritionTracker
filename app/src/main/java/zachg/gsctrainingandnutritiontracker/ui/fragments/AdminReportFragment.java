@@ -8,58 +8,44 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.io.File;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
-import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminReportViewModel;
 
-public class ReportFragment extends Fragment {
-    private ReportViewModel reportViewModel = new ReportViewModel();
+public class AdminReportFragment extends Fragment {
+
+    private AdminReportViewModel adminReportViewModel;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    private FragmentReportBinding binding;
+    private FragmentAdminReportBinding binding;
 
-    private Button bReport;
     private File photoFile;
     private ImageView photoView;
-    private String clientName;
-    private TextView tvClientName;
-    private String dateString;
-    private TextView tvDate;
-
-    private Date date;
     private User currentUser = new User();
     private Report currentReport = new Report();
 
-    public ReportFragment() {}
+    public AdminReportFragment() {}
 
-    public ReportFragment(Report report, User user) {
+    public AdminReportFragment(Report report, User user) {
         this.currentReport = report;
         this.currentUser = user;
-        this.currentReport.setClientName(user.getClientName());
-        this.clientName = currentReport.getClientName();
-        this.dateString = report.getDateString();
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -70,37 +56,22 @@ public class ReportFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        binding = FragmentReportBinding.inflate(inflater, container, false);
+        binding = FragmentAdminReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setReport(currentReport);
+        adminReportViewModel = ViewModelProviders.of(getActivity()).get(AdminReportViewModel.class);
+        adminReportViewModel.init(currentUser, currentReport);
 
-        FirestoreRepository mRepo = new FirestoreRepository();
-        FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(currentUser);
-
-        reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(workoutOptions);
-
-        // TODO: viewModel
-        LocalDate date = LocalDate.now();
-        dateString = String.valueOf(Calendar.getInstance().getTime());
-        String dateFormat = getResources().getString(R.string.date);
-        final String dateMsg = String.format(dateFormat, date);
-        tvDate = v.findViewById(R.id.tvDate);
-        tvDate.setText(dateMsg);
-
-            bReport = v.findViewById(R.id.bSendReport);
-            bReport.setText(R.string.send); // sets Send Report button
-            bReport.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    reportViewModel.writeReport(currentReport);
-                    currentUser.incrementWorkout();
-                    currentUser.incrementDay();
-                    currentReport.setIsNew(false);
-                }
-            });
-
+        // if user has sent a report on this day, it displays the data sent
         photoView = v.findViewById(R.id.client_photo);
         updatePhotoView();
+
+        adminReportViewModel.getReport().observe(this, new Observer<Report>() {
+            @Override
+            public void onChanged(@Nullable Report report) {
+                //
+            }
+        });
 
         return v;
     }
@@ -123,7 +94,7 @@ public class ReportFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.user_menu, menu);
+        inflater.inflate(R.menu.admin_menu, menu);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -131,6 +102,10 @@ public class ReportFragment extends Fragment {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
+            case R.id.bAddNewClient:
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new RegisterFragment()).addToBackStack(null).commit();
+                return true;
             case R.id.bInbox:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new InboxFragment()).addToBackStack(null).commit();

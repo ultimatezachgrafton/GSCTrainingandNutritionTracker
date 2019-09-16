@@ -10,9 +10,9 @@
     <string name="report_report_text">Send Report</string>
     <string name="report_report_client">Client name.</string>
     <string name="report_report_subject">Ben\'s Fitness App Report</string>
-    <string name="send_report">Send report via</string>
+    <string name="send_report">Send Report</string>
     <string name="show_subtitle">subtitle</string>
-    <string name="select_date_greeting">Hi, %1$s!</string>
+    <string name="date_greeting">Hi, %s!</string>
     <string name="select_date">Select Workout Date:</string>
 
     <string name="add_email">Email</string>
@@ -49,7 +49,11 @@
     <string name="fats">Amount of fat in grams:</string>
     <string name="carbs">Amount of carbs in grams:</string>
     <string name="protein">Amount of protein in grams:</string>
-    <string name="send">\"Send Report\"</string>
+    <string name="send">\Send Report\</string>
+    <string name="date_admin_greeting">Hi, Ben!</string>
     <string name="update">\"Update Report\"</string>
+    <string name="inbox">Inbox</string>
+    <string name="addUpdate">Add/Update</string>
+    <string name="admin_weight">Today\'s Weight:</string>
 
 </resources>

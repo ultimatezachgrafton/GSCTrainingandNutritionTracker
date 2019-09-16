@@ -12,10 +12,10 @@
             name="ReportViewModel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel"/>
         <variable
-            name="adapter"
-            type="zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter"/>
-        <variable
             name="dailyWeight"
+            type="String"/>
+        <variable
+            name="comments"
             type="String"/>
     </data>
 
@@ -85,39 +85,12 @@
         android:text="@string/exercises"
         android:layout_below="@id/etWeight"/>
 
-        <Button
-            android:id="@+id/bAddUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="Add/Update"
-            android:layout_below="@id/separator2" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvWorkoutLayout"
-        android:layout_below="@+id/separator2"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvWorkout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
-            tools:listitem="@layout/rvworkout_item"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
     <EditText
         android:id="@+id/etComments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/comments"
-        android:layout_below="@id/rvWorkoutLayout" />
+        android:layout_below="@id/separator2" />
 
     <Button
         android:id="@+id/bSendReport"
@@ -127,7 +100,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_below="@id/etComments" />
+        android:text="@string/send_report"
+        android:layout_below="@id/etWeight" />
 
     </RelativeLayout>
 

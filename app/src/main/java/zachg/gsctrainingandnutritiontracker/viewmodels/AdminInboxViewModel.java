@@ -9,7 +9,7 @@ import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class InboxViewModel extends ViewModel {
+public class AdminInboxViewModel extends ViewModel {
 
     private MutableLiveData<FirestoreRecyclerOptions<Message>> messages = new MutableLiveData<>();
     private FirestoreRepository repo;

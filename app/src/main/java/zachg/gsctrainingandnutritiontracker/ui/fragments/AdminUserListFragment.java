@@ -23,22 +23,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
-import zachg.gsctrainingandnutritiontracker.viewmodels.AdminListViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
-// AdminListFragment displays the list of Users which the admin accesses upon logging in
+// AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
-public class AdminListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
-    private RecyclerView mUserRecyclerView;
-    private AdminListViewModel mAdminListViewModel;
-    private UserListAdapter mUserListAdapter;
+public class AdminUserListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
+    private RecyclerView userRecyclerView;
+    private AdminUserListViewModel adminListViewModel;
+    private UserListAdapter userListAdapter;
 
-    private User mCurrentUser = new User();
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private User currentUser = new User();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    public AdminListFragment() {}
+    public AdminUserListFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,25 +47,25 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_admin_list, container, false);
+        final View v = inflater.inflate(R.layout.fragment_admin_user_list, container, false);
 
-        mAdminListViewModel = ViewModelProviders.of(getActivity()).get(AdminListViewModel.class);
+        adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
 
-        mAdminListViewModel.init();
+        adminListViewModel.init();
 
-        mAdminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
+        adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
-            public void onChanged(@Nullable FirestoreRecyclerOptions<User> userFirestoreRecyclerOptions) {
-                initRecyclerView(v, userFirestoreRecyclerOptions);
-                mUserListAdapter.startListening();
+            public void onChanged(@Nullable FirestoreRecyclerOptions<User> users) {
+                initRecyclerView(v, users);
+                userListAdapter.startListening();
             }
         });
 
-        mAdminListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        adminListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    mUserRecyclerView.smoothScrollToPosition(mAdminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
+                    userRecyclerView.smoothScrollToPosition(adminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
                 }
             }
 
@@ -77,20 +76,20 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     private void initRecyclerView(View v, final FirestoreRecyclerOptions<User> users) {
 
-        mUserListAdapter = new UserListAdapter(users);
+        userListAdapter = new UserListAdapter(users);
 
-        mUserRecyclerView = v.findViewById(R.id.rvUser);
-        mUserRecyclerView.setHasFixedSize(true);
-        mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mUserRecyclerView.setAdapter(mUserListAdapter);
+        userRecyclerView = v.findViewById(R.id.rvUser);
+        userRecyclerView.setHasFixedSize(true);
+        userRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        userRecyclerView.setAdapter(userListAdapter);
 
         // Click on User name in RecyclerView item, go to their profile
-        mUserListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot doc, int position) {
-                mCurrentUser = mUserListAdapter.getUserAtPosition(users.getSnapshots().get(position));
+                currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientProfileFragment(mCurrentUser)).addToBackStack(null).commit();
+                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
             }
         });
     }
@@ -102,7 +101,7 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
 
     public void onStop() {
         super.onStop();
-        mUserListAdapter.stopListening();
+        userListAdapter.stopListening();
     }
 
     @Override
@@ -123,7 +122,7 @@ public class AdminListFragment extends Fragment implements UserListAdapter.OnIte
                         new InboxFragment()).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
-                mAuth.signOut();
+                auth.signOut();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();

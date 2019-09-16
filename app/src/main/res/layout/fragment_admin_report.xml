@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="report"
+            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
+        <variable
+            name="viewmodel"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminReportViewModel"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/client_photo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@android:color/darker_gray"
+                android:contentDescription="@string/report_photo_no_image_description"
+                android:cropToPadding="true"
+                android:focusable="true"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:id="@+id/client_name"
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/client_photo"
+                android:text="@{report.clientName}"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvDate"
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/client_name"
+                android:layout_toRightOf="@id/client_photo"
+                android:text="@{report.dateString}"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvFullReport"
+                android:text="@{report.fullReport"
+                android:layout_below="@id/tvDate"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

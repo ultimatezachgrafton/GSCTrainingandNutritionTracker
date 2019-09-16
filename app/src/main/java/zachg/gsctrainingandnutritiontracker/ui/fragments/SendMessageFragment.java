@@ -28,23 +28,17 @@ import java.util.List;
 import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
-import zachg.gsctrainingandnutritiontracker.viewmodels.AskBenViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.SendMessageViewModel;
 
-public class AskBenFragment extends Fragment {
+public class SendMessageFragment extends Fragment {
 
     private Button bSend;
-    private File mPhotoFile;
-    private ImageButton mPhotoButton;
+    private File photoFile;
+    private ImageButton bPhotoButton;
     private static final int REQUEST_PHOTO = 2;
-    private AskBenViewModel mAskBenViewModel;
+    private SendMessageViewModel sendMessageViewModel;
 
-    private MutableLiveData<ArrayList<Message>> mMessages;
-    private FirestoreRepository mRepo = new FirestoreRepository();;
-    private MutableLiveData<Boolean> mIsUpdating = new MutableLiveData<>();
-
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    public AskBenFragment() {
+    public SendMessageFragment() {
         // required empty constructor
     }
 
@@ -56,28 +50,28 @@ public class AskBenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstancestate) {
         View v = inflater.inflate(R.layout.fragment_ask_ben, container, false);
 
-        mAskBenViewModel = ViewModelProviders.of(getActivity()).get(AskBenViewModel.class);
-        mAskBenViewModel.init();
+        sendMessageViewModel = ViewModelProviders.of(getActivity()).get(SendMessageViewModel.class);
+        sendMessageViewModel.init();
 
         bSend = v.findViewById(R.id.bSend);
         bSend.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mAskBenViewModel.sendMessage();
+                sendMessageViewModel.sendMessage();
                 Toast.makeText(getActivity(), "Message sent!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        mPhotoButton = (ImageButton) v.findViewById(R.id.report_camera);
+        bPhotoButton = (ImageButton) v.findViewById(R.id.report_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        boolean canTakePhoto = mPhotoFile != null;
-        mPhotoButton.setEnabled(canTakePhoto);
+        boolean canTakePhoto = photoFile != null;
+        bPhotoButton.setEnabled(canTakePhoto);
 
-        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+        bPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri uri = FileProvider.getUriForFile(getActivity(),
-                        "zachg.bensfitnessapp.fileprovider", mPhotoFile);
+                        "zachg.bensfitnessapp.fileprovider", photoFile);
                 captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
                         queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
@@ -88,9 +82,6 @@ public class AskBenFragment extends Fragment {
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
-
-        final EditText etMsgTitle = v.findViewById(R.id.etMsgTitle);
-        final EditText etMsgBody = v.findViewById(R.id.etMsgBody);
 
         return v;
     }
