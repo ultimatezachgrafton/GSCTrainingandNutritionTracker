@@ -6,7 +6,8 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
-import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Report extends BaseObservable {
 
@@ -18,22 +19,12 @@ public class Report extends BaseObservable {
     private String exerciseNum;
     private String exerciseReps;
     private String exerciseWeight;
+    private String exerciseName;
 
     private String comments;
     private boolean isNew; // determines if report is new
 
-    private String exerciseName;
-
-    @Bindable
-    public String getFullReport() {
-        return fullReport;
-    }
-
-    public void setFullReport(String fullReport) {
-        this.fullReport = fullReport;
-        notifyPropertyChanged(BR.fullReport);
-    }
-
+    private ArrayList<Workout> workoutLists;
     private String fullReport;
     private String day;
 
@@ -132,14 +123,31 @@ public class Report extends BaseObservable {
 
     public void setDailyWeight(String weight) {
         this.dailyWeight = weight;
-        notifyPropertyChanged(BR.dailyWeight);}
+        notifyPropertyChanged(BR.dailyWeight); }
 
     public boolean getIsNew() { return isNew; }
 
     public void setIsNew(boolean isNew) { this.isNew = isNew; }
 
-//    public String getPhotoFilename() { return "IMG_" + getId().toString() + ".jpg"; }
+    public String getPhotoFilename() { return "IMG_" + getReportId().toString() + ".jpg"; }
 
     public String getComments() { return comments; }
 
+    @Bindable
+    public String getFullReport() {
+        return fullReport;
+    }
+
+    public void setFullReport(String fullReport) {
+        this.fullReport = fullReport;
+        notifyPropertyChanged(BR.fullReport);
+    }
+
+    @Bindable
+    public List getWorkoutLists() { return workoutLists; }
+
+    public void setWorkoutLists(ArrayList workoutLists) {
+        this.workoutLists = workoutLists;
+        notifyPropertyChanged(BR.workoutLists);
+    }
 }

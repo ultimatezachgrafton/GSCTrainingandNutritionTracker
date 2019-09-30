@@ -55,5 +55,8 @@
     <string name="inbox">Inbox</string>
     <string name="addUpdate">Add/Update</string>
     <string name="admin_weight">Today\'s Weight:</string>
+    <string name="reply">Reply</string>
+    <string name="select_user">Select User</string>
+    <string name="select">Select</string>
 
 </resources>

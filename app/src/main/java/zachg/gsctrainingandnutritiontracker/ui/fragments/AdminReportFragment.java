@@ -63,7 +63,6 @@ public class AdminReportFragment extends Fragment {
         adminReportViewModel.init(currentUser, currentReport);
 
         // if user has sent a report on this day, it displays the data sent
-        photoView = v.findViewById(R.id.client_photo);
         updatePhotoView();
 
         adminReportViewModel.getReport().observe(this, new Observer<Report>() {

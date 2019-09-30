@@ -41,4 +41,11 @@
         android:id="@+id/tvBody"
         android:text="@{message.body}" />
 
+    <Button
+        android:id="@+id/bReply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reply"
+        android:onClick="bReply"/>
+
 </LinearLayout></layout>

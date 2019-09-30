@@ -1,4 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="etPassword"
+            type="android.widget.EditText" />
+        <variable
+            name="etConfirmPassword"
+            type="android.widget.EditText" />
+        <variable
+            name="etFirstName"
+            type="android.widget.EditText" />
+        <variable
+            name="etLastName"
+            type="android.widget.EditText" />
+        <variable
+            name="etEmail"
+            type="android.widget.EditText" />
+        <variable
+            name="etGender"
+            type="android.widget.EditText" />
+        <variable
+            name="etBirthDate"
+            type="android.widget.EditText" />
+        <variable
+            name="bRegister"
+            type="android.widget.Button" />
+        <variable
+            name="viewModel"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel" />
+        <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.RegisterFragment" />
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User" />
+    </data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,7 +55,8 @@
         android:id="@+id/etFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:text="@={user.firstName}"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +67,8 @@
         android:id="@+id/etLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:text="@={user.lastName}"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,7 +79,8 @@
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:text="@={user.email}"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:text="@={user.password}"
         android:layout_marginBottom="10dp" />
 
     <TextView
@@ -63,6 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:text="@={user.confirmPassword}"
         android:layout_marginBottom="10dp" />
 
     <TextView
@@ -74,6 +117,7 @@
         android:id="@+id/etGender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@={user.gender}"
         android:layout_marginBottom="10dp" />
 
     <TextView
@@ -85,6 +129,7 @@
         android:id="@+id/etBirthDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@={user.birthdate}"
         android:layout_marginBottom="10dp" />
 
     <Button
@@ -95,3 +140,4 @@
         />
 
 </LinearLayout>
+</layout>

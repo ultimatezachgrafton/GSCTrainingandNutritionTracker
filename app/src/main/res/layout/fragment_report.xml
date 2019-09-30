@@ -101,6 +101,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/send_report"
+        android:onClick="@()->ReportFragment.sendReport()"
         android:layout_below="@id/etWeight" />
 
     </RelativeLayout>

@@ -1,7 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -18,15 +16,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.MessageListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminInboxViewModel;
-import zachg.gsctrainingandnutritiontracker.viewmodels.InboxViewModel;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminInboxFragment extends Fragment implements MessageListAdapter.OnItemClickListener {
 
@@ -34,6 +29,7 @@ public class AdminInboxFragment extends Fragment implements MessageListAdapter.O
     private AdminInboxViewModel adminInboxViewModel;
     private MessageListAdapter messageAdapter;
     private User currentUser = new User();
+    private User user = new User();
     private Message currentMessage = new Message();
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -85,9 +81,6 @@ public class AdminInboxFragment extends Fragment implements MessageListAdapter.O
     public void initRecyclerView(View v, final FirestoreRecyclerOptions<Message> messages) {
 
         messageAdapter = new MessageListAdapter(messages);
-        msgRecyclerView = v.findViewById(R.id.rv_inbox);
-        msgRecyclerView.setHasFixedSize(true);
-        msgRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         msgRecyclerView.setAdapter(messageAdapter);
 
         messageAdapter.setOnItemClickListener(new MessageListAdapter.OnItemClickListener() {
@@ -96,7 +89,7 @@ public class AdminInboxFragment extends Fragment implements MessageListAdapter.O
             public void onItemClick(DocumentSnapshot doc, int position) {
                 currentMessage = messageAdapter.getMessageAtPosition(messages.getSnapshots().get(position));
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminMessageFragment(currentMessage)).addToBackStack(null).commit();
+                        new AdminMessageFragment(currentMessage, user)).addToBackStack(null).commit();
             }
         });
     }

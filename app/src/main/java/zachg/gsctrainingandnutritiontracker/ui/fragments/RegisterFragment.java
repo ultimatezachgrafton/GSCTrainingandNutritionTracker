@@ -22,20 +22,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentRegisterBinding;
+import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
 import static android.content.ContentValues.TAG;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
-    public RegisterFragment() {
-        // Required empty constructor
-    }
+    public RegisterFragment() {}
 
-    private RegisterViewModel registerViewModel;
-    private Button bRegister;
-    private EditText etPassword, etConfirmPassword, etFirstName, etLastName, etEmail, etGender, etBirthDate;
+    private FragmentRegisterBinding binding;
+    private RegisterViewModel registerViewModel = new RegisterViewModel();
+    private User user = new User();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,80 +44,24 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // inflate layout for fragment
-        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        binding = FragmentRegisterBinding.inflate(inflater, container, false);
+        final View v = binding.getRoot();
 
         registerViewModel = ViewModelProviders.of(getActivity()).get(RegisterViewModel.class);
         registerViewModel.init();
 
-        etPassword = view.findViewById(R.id.etPassword);
-        etConfirmPassword = view.findViewById(R.id.etConfirmPassword);
-        bRegister = view.findViewById(R.id.bRegister);
-        etFirstName = view.findViewById(R.id.etFirstName);
-        etLastName = view.findViewById(R.id.etLastName);
-        etEmail = view.findViewById(R.id.etEmail);
-        etGender = view.findViewById(R.id.etGender);
-        etBirthDate = view.findViewById(R.id.etBirthDate);
+        //bRegister.setOnClickListener(this);
 
-        bRegister.setOnClickListener(this);
+        // TODO: observable boolean sends Toast if passwords don't match
+//        registerViewModel.isValid.observe(this, Observer { isValid -> isValid?.let {
+//
+//        });
 
-        return view;
+        return v;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bRegister:
-                String firstName = etFirstName.getText().toString();
-                String lastName = etLastName.getText().toString();
-                String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
-                String confirmPassword = etConfirmPassword.getText().toString();
-                String gender = etGender.getText().toString();
-                String birthDate = etBirthDate.getText().toString();
-
-                if (password.equals(confirmPassword)) {
-                    if (registerViewModel.validate(email)) {
-                        // Access a Cloud Firestore instance
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                        // Create a new user
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("firstName", firstName);
-                        user.put("lastName", lastName);
-                        user.put("email", email);
-                        user.put("password", password);
-                        user.put("gender", gender);
-                        user.put("birthdate", birthDate);
-
-                        // Add user as a new document with a generated ID
-                        db.collection("users")
-                                .add(user)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error adding document", e);
-                                    }
-                                });
-                        // set mCurrentSelectedUser
-                        // send user to CalendarFragment
-                        // pass in date/user to constructor and that sets all the data to display
-                        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                new CalendarFragment()).addToBackStack(null).commit();
-
-                    } else {
-                        // alert user if passwords do not match
-                        Toast.makeText(getActivity(), "Passwords do not match. " + password + " " + confirmPassword,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                }
-        }
+        registerViewModel.registerUser(user);
     }
 }

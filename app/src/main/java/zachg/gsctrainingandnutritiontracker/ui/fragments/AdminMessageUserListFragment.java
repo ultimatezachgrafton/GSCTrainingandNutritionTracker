@@ -21,42 +21,43 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminMessageUserListBinding;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminMessageUserListViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
-public class AdminUserListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
+public class AdminMessageUserListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
 
-    private FragmentAdminUserListBinding binding;
-    private RecyclerView userRecyclerView;
-    private AdminUserListViewModel adminListViewModel;
+    private FragmentAdminMessageUserListBinding binding;
+
+    private RecyclerView messageUserRecyclerView;
+    private AdminMessageUserListViewModel adminMessageViewModel;
     private UserListAdapter userListAdapter;
 
     private User currentUser = new User();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    public AdminUserListFragment() {}
+    public AdminMessageUserListFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
+        binding = FragmentAdminMessageUserListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
-        adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
+        adminMessageViewModel = ViewModelProviders.of(getActivity()).get(AdminMessageUserListViewModel.class);
 
-        adminListViewModel.init();
+        adminMessageViewModel.init();
 
-        adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
+        adminMessageViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<User> users) {
                 initRecyclerView(v, users);
@@ -64,11 +65,11 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
             }
         });
 
-        adminListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        adminMessageViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    userRecyclerView.smoothScrollToPosition(adminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
+                    messageUserRecyclerView.smoothScrollToPosition(adminMessageViewModel.getUsers().getValue().getSnapshots().size() - 1);
                 }
             }
 
@@ -80,8 +81,7 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
     private void initRecyclerView(View v, final FirestoreRecyclerOptions<User> users) {
 
         userListAdapter = new UserListAdapter(users);
-        //binding.setUserListAdapter(userListAdapter);
-        userRecyclerView.setAdapter(userListAdapter);
+        binding.setUserListAdapter(userListAdapter);
 
         // Click on User name in RecyclerView item, go to their profile
         userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
@@ -89,7 +89,7 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
             public void onItemClick(DocumentSnapshot doc, int position) {
                 currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
+                        new SendMessageFragment(currentUser)).addToBackStack(null).commit();
             }
         });
     }
@@ -105,34 +105,7 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.admin_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bAddNewClient:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new RegisterFragment()).addToBackStack(null).commit();
-                return true;
-            case R.id.bInbox:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment()).addToBackStack(null).commit();
-                return true;
-            case R.id.bLogout:
-                auth.signOut();
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).addToBackStack(null).commit();
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                return true;
-        } return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onItemClick(DocumentSnapshot doc, int position) {
-        // go to client's profile
     }
 
 }

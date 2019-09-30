@@ -10,33 +10,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentSendMessageBinding;
+import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.viewmodels.SendMessageViewModel;
 
 public class SendMessageFragment extends Fragment {
 
+    private FragmentSendMessageBinding binding;
+
     private Button bSend;
     private File photoFile;
     private ImageButton bPhotoButton;
+    private User currentUser = new User();
     private static final int REQUEST_PHOTO = 2;
     private SendMessageViewModel sendMessageViewModel;
+
+    public SendMessageFragment(User user) {
+        this.currentUser = user;
+    }
 
     public SendMessageFragment() {
         // required empty constructor
@@ -48,12 +50,11 @@ public class SendMessageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstancestate) {
-        View v = inflater.inflate(R.layout.fragment_ask_ben, container, false);
-
+        binding = FragmentSendMessageBinding.inflate(inflater, container, false);
+        View v = binding.getRoot();
         sendMessageViewModel = ViewModelProviders.of(getActivity()).get(SendMessageViewModel.class);
         sendMessageViewModel.init();
 
-        bSend = v.findViewById(R.id.bSend);
         bSend.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendMessageViewModel.sendMessage();
@@ -61,7 +62,6 @@ public class SendMessageFragment extends Fragment {
             }
         });
 
-        bPhotoButton = (ImageButton) v.findViewById(R.id.report_camera);
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         boolean canTakePhoto = photoFile != null;

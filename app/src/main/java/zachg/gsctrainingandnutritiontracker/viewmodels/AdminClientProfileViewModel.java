@@ -50,10 +50,6 @@ public class AdminClientProfileViewModel extends ViewModel {
         Workout generatedWorkout = new Workout(workout.getClientName(), exerciseName.get(), exerciseNum.get(), reps.get(),
                 day.get());
 
-        Log.d("mReports", workout.getClientName());
-        Log.d("mReports", generatedWorkout.getDay());
-        Log.d("mReports", generatedWorkout.getExerciseNum());
-
         repo.db.collection("users").document(workout.getClientName()).collection("workouts")
                 .document("exerciseSets").collection(String.valueOf(generatedWorkout.getDay()))
                 .document(String.valueOf(generatedWorkout.getExerciseNum()))
@@ -70,6 +66,5 @@ public class AdminClientProfileViewModel extends ViewModel {
                         Log.w("reports", "Error writing document", e);
                     }
                 });
-        // TODO: write iterated workoutNum to user's fstore data
     }
 }

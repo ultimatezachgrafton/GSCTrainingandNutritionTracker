@@ -18,21 +18,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentInboxBinding;
 import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.MessageListAdapter;
+import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.InboxViewModel;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class InboxFragment extends Fragment implements MessageListAdapter.OnItemClickListener {
 
-    private RecyclerView msgRecyclerView;
+    private FragmentInboxBinding binding;
+    private RecyclerView messageRV;
     private InboxViewModel inboxViewModel;
     private MessageListAdapter messageAdapter;
     private User currentUser = new User();
+    private User user = new User();
     private Message currentMessage = new Message();
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -55,7 +59,8 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.fragment_inbox, container, false);
+        binding = FragmentInboxBinding.inflate(inflater, container, false);
+        final View v = binding.getRoot();
 
         inboxViewModel = ViewModelProviders.of(getActivity()).get(InboxViewModel.class);
 
@@ -73,7 +78,7 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    msgRecyclerView.smoothScrollToPosition(inboxViewModel.getMessages().getValue().getSnapshots().size() - 1);
+                    //msgRecyclerView.smoothScrollToPosition(inboxViewModel.getMessages().getValue().getSnapshots().size() - 1);
                 }
             }
         });
@@ -84,10 +89,7 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
     public void initRecyclerView(View v, final FirestoreRecyclerOptions<Message> messages) {
 
         messageAdapter = new MessageListAdapter(messages);
-        msgRecyclerView = v.findViewById(R.id.rv_inbox);
-        msgRecyclerView.setHasFixedSize(true);
-        msgRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        msgRecyclerView.setAdapter(messageAdapter);
+        //binding.setMessageAdapter(messageAdapter);
 
         messageAdapter.setOnItemClickListener(new MessageListAdapter.OnItemClickListener() {
             // Fetch msg info into Msg object
@@ -95,7 +97,7 @@ public class InboxFragment extends Fragment implements MessageListAdapter.OnItem
             public void onItemClick(DocumentSnapshot doc, int position) {
                 currentMessage = messageAdapter.getMessageAtPosition(messages.getSnapshots().get(position));
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new MessageFragment(currentMessage)).addToBackStack(null).commit();
+                            new MessageFragment(currentMessage, user)).addToBackStack(null).commit();
             }
         });
     }

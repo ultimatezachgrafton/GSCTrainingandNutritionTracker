@@ -16,14 +16,17 @@ public class User {
     private String birthday;
     @NonNull
     private String password;
+    private String confirmPassword;
     private String gender;
     private String isAdminString;
     private boolean isAdmin;
     private boolean isLoggedIn;
 
     private String dateJoined;
+
+    // Under new system, workoutDay is whichever they select when they pick the date
     private int workoutNum = 1; // tracks which workout day the user is on
-    private int day = 1;
+    private int workoutDay = 1;
 
     public User() {}
 
@@ -44,7 +47,7 @@ public class User {
         this.password = password;
         this.id = getId();
         this.workoutNum = getWorkoutNum();
-        this.day = getDay();
+        this.workoutDay = getWorkoutDay();
     }
 
     public String getId() {
@@ -115,9 +118,19 @@ public class User {
         if (isAdmin) { this.isAdminString = "Admin"; } else { isAdminString = "User"; }
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public void setDateJoined(String dateJoined) { this.dateJoined = dateJoined; }
 
     public String getDateJoined() { return dateJoined; }
+
+    public String getPhotoFilename() { return "IMG_" + getId() + ".jpg"; }
 
     public void setWorkoutNum(int workoutNum) {
         this.workoutNum = workoutNum;
@@ -127,15 +140,15 @@ public class User {
         return workoutNum;
     }
 
-    public int getDay() {
-        return day;
+    public int getWorkoutDay() {
+        return workoutDay;
     }
 
-    public void setDay(int workoutDay) {
-        this.day = day;
+    public void setWorkoutDay(int workoutDay) {
+        this.workoutDay = workoutDay;
     }
 
     public void incrementWorkout() { workoutNum = workoutNum++; }
 
-    public void incrementDay() { day = day++; }
+    public void incrementWorkoutDay() { workoutDay = workoutDay++; }
 }

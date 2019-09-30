@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="workout"
+            type="zachg.gsctrainingandnutritiontracker.models.Workout" />
+        <variable
+            name="viewModel"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.ChooseWorkoutViewModel" />
+        <variable
+            name="bSubmit"
+            type="android.widget.Button" />
+        <variable
+            name="spinner"
+            type="android.widget.Spinner" />
+    </data>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/edit_name"
+android:layout_width="wrap_content" android:layout_height="wrap_content"
+android:layout_gravity="center" android:orientation="vertical"  >
+
+    <Spinner
+        android:id="@+id/workout_spinner"
+        android:entries="@{viewModel.workoutItems}"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/bSelect"
+        android:text="@string/select"
+        android:layout_below="@id/workout_spinner"
+        android:onClick="@()->ChooseWorkoutFragment.onClick()"/>
+
+</LinearLayout>
+</layout>

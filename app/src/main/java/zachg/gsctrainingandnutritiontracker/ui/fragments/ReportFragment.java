@@ -43,10 +43,8 @@ public class ReportFragment extends Fragment {
     private Button bReport;
     private File photoFile;
     private ImageView photoView;
-    private String clientName;
-    private TextView tvClientName;
-    private String dateString;
-    private TextView tvDate;
+    private String clientName, dateString;
+    private TextView tvClientName, tvDate;
 
     private Date date;
     private User currentUser = new User();
@@ -85,24 +83,16 @@ public class ReportFragment extends Fragment {
         dateString = String.valueOf(Calendar.getInstance().getTime());
         String dateFormat = getResources().getString(R.string.date);
         final String dateMsg = String.format(dateFormat, date);
-        tvDate = v.findViewById(R.id.tvDate);
         tvDate.setText(dateMsg);
 
-            bReport = v.findViewById(R.id.bSendReport);
-            bReport.setText(R.string.send); // sets Send Report button
-            bReport.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    reportViewModel.writeReport(currentReport);
-                    currentUser.incrementWorkout();
-                    currentUser.incrementDay();
-                    currentReport.setIsNew(false);
-                }
-            });
-
-        photoView = v.findViewById(R.id.client_photo);
         updatePhotoView();
 
         return v;
+    }
+
+    private void sendReport() {
+        reportViewModel.writeReport(currentReport);
+        currentReport.setIsNew(false);
     }
 
     private void updatePhotoView() {

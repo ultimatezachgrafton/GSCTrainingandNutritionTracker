@@ -4,23 +4,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
-import zachg.gsctrainingandnutritiontracker.utils.LoginListener;
 
 public class LoginViewModel {
 
     private FirebaseAuth auth;
     private FirestoreRepository repo = new FirestoreRepository();
-    private LoginListener loginListener;
     public User currentUser;
     public String email;
     public String password;
     public boolean isAdmin;
 
     public LoginViewModel() {}
-
-    public LoginViewModel(LoginListener loginListener) {
-        loginListener = loginListener;
-    }
 
     public void init() {
         // Initialize Firebase Auth

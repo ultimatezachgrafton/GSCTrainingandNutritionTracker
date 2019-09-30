@@ -56,7 +56,6 @@ public class AdminCalendarFragment extends Fragment {
         adminCalendarViewModel = ViewModelProviders.of(getActivity()).get(AdminCalendarViewModel.class);
         adminCalendarViewModel.init();
 
-        adminCalendarView = v.findViewById(R.id.admin_calendar_view);
         adminCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {

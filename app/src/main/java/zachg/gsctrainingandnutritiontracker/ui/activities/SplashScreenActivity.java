@@ -1,32 +1,14 @@
 package zachg.gsctrainingandnutritiontracker.ui.activities;
 
-import android.os.Bundle;
+import androidx.fragment.app.Fragment;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
+import zachg.gsctrainingandnutritiontracker.ui.fragments.SplashScreenFragment;
 
-import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.viewmodels.SplashScreenViewModel;
-import zachg.gsctrainingandnutritiontracker.utils.LoginListener;
-
-public class SplashScreenActivity extends FragmentActivity implements LoginListener {
-
-    private SplashScreenViewModel splashScreenViewModel = new SplashScreenViewModel();
-
+// Provides a splash graphic while the app checks if the user is logged in.
+// If the user is logged in, they go directly to their profile. Otherwise, LoginFragment is loaded.
+public class SplashScreenActivity extends SingleFragmentActivity {
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        splashScreenViewModel = new SplashScreenViewModel();
-        splashScreenViewModel.init();
+    protected Fragment createFragment() {
+        return new SplashScreenFragment();
     }
-
-    @Override
-    public void goToProfile() { }
-
-    @Override
-    public void goToAdminList() { }
-
-    @Override
-    public void goToLogin() { }
 }

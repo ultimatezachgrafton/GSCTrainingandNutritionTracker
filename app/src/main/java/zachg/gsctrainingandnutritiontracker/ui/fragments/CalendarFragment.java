@@ -14,13 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentCalendarBinding;
@@ -31,7 +28,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.CalendarViewModel;
 
 // The fragment to host the calendar widget to select workout dates
 
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements ChooseWorkoutFragment.ChooseWorkoutListener {
 
     FragmentCalendarBinding binding;
 
@@ -39,6 +36,7 @@ public class CalendarFragment extends Fragment {
     private CalendarView calendarView;
     private String firstName, greetingFormat, greetingMsg;
     private TextView tvTextView;
+    private boolean outdated;
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -61,25 +59,29 @@ public class CalendarFragment extends Fragment {
         calendarViewModel = ViewModelProviders.of(getActivity()).get(CalendarViewModel.class);
         calendarViewModel.init(currentUser);
 
-        calendarView = v.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
 
                 // sets date format
                 final String date = (i1 + 1) + "-" + i2 + "-" + i;
+
+                // If date == null, it cannot be picked
                 currentReport = new Report(currentUser, date);
                 currentReport.setDateString(date);
 
-                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
-                    @Override
-                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                // TODO: this takes user to workout dialog choice
-                        if (currentReport != null) {
-                            SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                    new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
-                        }
-                    }
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                       @Override
+                       public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                           // TODO: this takes user to workout dialog choice
+                           currentReport = new Report(currentUser, date);
+                           currentReport.setDateString(date);
+                           if (currentReport != null) {
+                               chooseWorkoutDialog();
+//                               SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                                       new ChooseWorkoutFragment(currentUser, currentReport)).addToBackStack(null).commit();
+                           }
+                       }
                 });
             }
         });
@@ -91,6 +93,25 @@ public class CalendarFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    // Launches ChooseWorkout DialogFragment
+    private void chooseWorkoutDialog() {
+        FragmentManager fm = getFragmentManager();
+        ChooseWorkoutFragment chooseWorkoutFragment = ChooseWorkoutFragment.newInstance();
+        // SETS the target fragment for use later when sending results
+        chooseWorkoutFragment.setTargetFragment(this, 300);
+        chooseWorkoutFragment.show(fm, "fragment_edit_name");
+    }
+
+    // Called when the dialog is completed and the results have been passed
+    public void onFinishChooseWorkout(int workout) {
+        Toast.makeText(getActivity(), "Hi, " + workout, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFinishDialog(int workout) {
+
     }
 
     @Override

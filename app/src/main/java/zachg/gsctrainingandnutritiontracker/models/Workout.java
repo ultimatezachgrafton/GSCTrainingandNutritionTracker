@@ -1,8 +1,14 @@
 package zachg.gsctrainingandnutritiontracker.models;
 
-public class Workout {
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
+import androidx.databinding.library.baseAdapters.BR;
+
+public class Workout extends BaseObservable {
 
     private String clientName, exerciseName, exerciseNum, reps, exerciseWeight, day;
+    private int selectedItemPosition;
     private User currentUser = new User();
 
     public Workout(User user){
@@ -27,6 +33,7 @@ public class Workout {
 
     public void setClientName(String username) { clientName = username; }
 
+    @Bindable
     public String getExerciseName() { return exerciseName; }
 
     public void setExerciseName(String exerciseName) {
@@ -54,5 +61,15 @@ public class Workout {
     public String getExerciseNum() { return exerciseNum; }
 
     public void setExerciseNum(String exerciseNum) { this.exerciseNum = exerciseNum; }
+
+    @Bindable
+    public int getSelectedItemPosition() {
+        return selectedItemPosition;
+    }
+
+    public void setSelectedItemPosition(int selectedItemPosition) {
+        this.selectedItemPosition = selectedItemPosition;
+        notifyPropertyChanged(BR.selectedItemPosition);
+    }
 
 }

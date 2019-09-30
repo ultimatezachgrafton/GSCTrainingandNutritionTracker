@@ -34,6 +34,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 public class AdminClientProfileFragment extends Fragment {
 
     // enter values, they go to repo
+    // Ben overwrites old workouts when he sets new workouts in-app, no need to track workoutday
 
     FragmentAdminClientProfileBinding binding;
 
@@ -69,7 +70,6 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel = ViewModelProviders.of(getActivity()).get(AdminClientProfileViewModel.class);
         adminClientProfileViewModel.init();
 
-        bToDatePicker = v.findViewById(R.id.bToDatePicker);
         bToDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +78,6 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
-        bWriteWorkouts = v.findViewById(R.id.bWriteWorkouts);
         bWriteWorkouts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,10 +86,15 @@ public class AdminClientProfileFragment extends Fragment {
         });
 
         adminClientProfileViewModel = ViewModelProviders.of(getActivity()).get(AdminClientProfileViewModel.class);
-        photoView = v.findViewById(R.id.profile_photo);
+        photoFile = getPhotoFile(currentUser);
         updatePhotoView();
 
         return v;
+    }
+
+    public File getPhotoFile(User user) {
+        File filesDir = getActivity().getFilesDir();
+        return new File(filesDir, user.getPhotoFilename());
     }
 
     public void takePhoto() {
