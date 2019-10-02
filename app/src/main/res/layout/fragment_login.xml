@@ -19,6 +19,15 @@
     <variable
         name="etEmail"
         type="android.widget.EditText"/>
+    <variable
+        name="fragment"
+        type="zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment" />
+    <variable
+        name="user"
+        type="zachg.gsctrainingandnutritiontracker.models.User" />
+     <variable
+         name="model"
+         type="zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel" />
 </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -56,14 +65,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login"
-        android:onClick="()->LoginFragment.goToLogin()"/>
+        android:onClick="@{() -> fragment.goToProfile(user)}"/>
 
     <Button
         android:id="@+id/bRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        android:onClick="()->LoginFragment.goToRegister()"/>
+        android:onClick="@{() -> fragment.goToRegister()}" />
 
 </LinearLayout>
 </layout>
