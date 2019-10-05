@@ -17,7 +17,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private String email, password;
@@ -36,6 +36,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         // Gets ViewModel instance to observe its LiveData
         loginViewModel = ViewModelProviders.of(getActivity()).get(LoginViewModel.class);
         loginViewModel.init();
+        binding.setModel(loginViewModel);
 
         final Observer<Boolean> logInObserver = new Observer<Boolean>() {
             @Override
@@ -86,10 +87,5 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         Log.d("plum", "plum");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new RegisterFragment()).addToBackStack(null).commit();
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

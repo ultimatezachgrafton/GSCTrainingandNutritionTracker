@@ -1,18 +1,12 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment;
-import zachg.gsctrainingandnutritiontracker.ui.fragments.RegisterFragment;
 
 public class LoginViewModel extends ViewModel {
 
@@ -64,13 +58,6 @@ public class LoginViewModel extends ViewModel {
         } else {
             isAdmin.setValue(false);
             return isAdmin;
-        }
-    }
-
-    public class ClickHandlers {
-        public void onClickLogIn() {
-            LoginFragment frag = new LoginFragment();
-            frag.goToProfile(currentUser);
         }
     }
 }
