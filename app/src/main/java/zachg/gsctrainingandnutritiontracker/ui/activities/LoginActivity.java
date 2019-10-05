@@ -11,5 +11,4 @@ public class LoginActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
         return new LoginFragment();
     }
-
 }

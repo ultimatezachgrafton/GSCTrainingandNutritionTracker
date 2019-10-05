@@ -28,6 +28,9 @@
      <variable
          name="model"
          type="zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel" />
+        <variable
+            name="handlers"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel.ClickHandlers" />
 </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -65,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login"
-        android:onClick="@{() -> fragment.goToProfile(user)}"/>
+        android:onClick="@{handlers::onClickLogIn}"/>
 
     <Button
         android:id="@+id/bRegister"
