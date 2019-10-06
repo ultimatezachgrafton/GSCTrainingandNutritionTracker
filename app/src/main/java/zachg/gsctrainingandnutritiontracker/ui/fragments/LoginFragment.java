@@ -67,7 +67,6 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
-    // auth
     public void authenticate() {
         if (email != null && password != null) {
             loginViewModel.onClick(email, password);
