@@ -58,23 +58,23 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
         final View v = binding.getRoot();
         binding.setUser(currentUser);
 
-        bToDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new CalendarFragment(currentUser)).addToBackStack(null).commit();
-            }
-        });
+//        bToDatePicker.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new CalendarFragment(currentUser)).addToBackStack(null).commit();
+//            }
+//        });
 
         clientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
         photoFile = getPhotoFile(currentUser);
         updatePhotoView();
-        bCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePhoto();
-            }
-        });
+//        bCamera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                takePhoto();
+//            }
+//        });
 
         return v;
     }
@@ -104,10 +104,10 @@ public class ClientProfileFragment extends Fragment implements View.OnClickListe
 
     private void updatePhotoView() {
         if (photoFile == null || !photoFile.exists()) {
-            photoView.setImageDrawable(null);
-            photoView.setContentDescription(
-                    getString(R.string.report_photo_no_image_description)
-            );
+//            photoView.setImageDrawable(null);
+//            photoView.setContentDescription(
+//                    getString(R.string.report_photo_no_image_description)
+//            );
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
             photoView.setImageBitmap(bitmap);

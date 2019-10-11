@@ -32,14 +32,15 @@ public class RegisterViewModel extends ViewModel {
     public void init() {
     }
 
-    public boolean validate(String email) {
-        boolean isValid = repo.validate(email);
+    public boolean validate(String email, String password) {
+        boolean isValid = repo.validate(email, password);
         return isValid;
     }
 
     public void registerUser(User user) {
+        //auth.createUserWithEmailPassword();
         if (user.getPassword().equals(user.getConfirmPassword())) {
-            if (this.validate(user.getEmail())) {
+            if (this.validate(user.getEmail(), user.getPassword())) {
                 // Access a Cloud Firestore instance
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 

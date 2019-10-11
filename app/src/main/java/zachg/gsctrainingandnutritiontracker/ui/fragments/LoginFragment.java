@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentLoginBinding;
+import zachg.gsctrainingandnutritiontracker.handlers.EventHandlers;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
@@ -20,9 +21,9 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
-    private String email, password;
     private User user = new User();
     LoginViewModel loginViewModel = new LoginViewModel();
+    Boolean isLoggedIn;
 
     public LoginFragment() {}
 
@@ -35,14 +36,26 @@ public class LoginFragment extends Fragment {
 
         // Gets ViewModel instance to observe its LiveData
         loginViewModel = ViewModelProviders.of(getActivity()).get(LoginViewModel.class);
-        loginViewModel.init();
         binding.setModel(loginViewModel);
+        loginViewModel.init();
 
-        final Observer<Boolean> logInObserver = new Observer<Boolean>() {
+        // Bind User
+        binding.setUser(user);
+
+        // Binds EventHandler for onClick events
+        EventHandlers handlers = new EventHandlers();
+        binding.setHandlers(handlers);
+
+        final Observer<Boolean> isLoggedInObserver = new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable final Boolean newBoolean) {
-                if (newBoolean == true) {
-                    goToProfile(user);
+            public void onChanged(Boolean bool) {
+                if (true) {
+                    isLoggedIn = true;
+                    if (user.getIsAdmin()) {
+                        goToAdminList();
+                    } else if (!user.getIsAdmin()){
+                        goToProfile();
+                    }
                 }
             }
         };
@@ -51,29 +64,20 @@ public class LoginFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final User newUser) {
                 user = newUser;
+                isLoggedIn = true;
+                Log.d("plum", "user changed");
             }
         };
 
-        final Observer<Boolean> adminObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (true) {
-                    goToAdminList();
-                } else {
-                    goToProfile(user);
-                }
-            }
-        };
         return v;
     }
 
-    public void authenticate() {
-        if (email != null && password != null) {
-            loginViewModel.onClick(email, password);
-        }
+    public void goToRegister() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new RegisterFragment()).addToBackStack(null).commit();
     }
 
-    public void goToProfile(User user) {
+    public void goToProfile() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ClientProfileFragment(user)).addToBackStack(null).commit();
     }
@@ -81,11 +85,5 @@ public class LoginFragment extends Fragment {
     public void goToAdminList() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUserListFragment()).addToBackStack(null).commit();
-    }
-
-    public void goToRegister() {
-        Log.d("plum", "plum");
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new RegisterFragment()).addToBackStack(null).commit();
     }
 }

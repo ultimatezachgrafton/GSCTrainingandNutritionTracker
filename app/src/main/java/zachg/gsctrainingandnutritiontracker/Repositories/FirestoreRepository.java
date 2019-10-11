@@ -8,6 +8,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,10 +29,11 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FirestoreRepository {
 
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private static FirestoreRepository instance;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private User currentUser = new User();
+    private User user = new User();
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
@@ -44,7 +47,16 @@ public class FirestoreRepository {
         return instance;
     }
 
-    public User getCurrentUser(String email) {
+    public FirebaseUser getUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return user; // User is signed in
+        } else {
+            return null; // No user is signed in
+        }
+    }
+
+    public User getUserByEmail(String email) {
         // Fetches "users" from Firestore database
         CollectionReference userColRef = db.collection("users");
         // Queries the users for matching email
@@ -55,17 +67,36 @@ public class FirestoreRepository {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot doc : task.getResult()) {
-                    currentUser = doc.toObject(User.class);
+                    user = doc.toObject(User.class);
                 }
             }
         });
-        return currentUser;
+        return user;
     }
 
     public FirestoreRecyclerOptions<User> getUsersFromRepo() {
         return new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(userQuery, User.class)
                 .build();
+    }
+
+    public User getUserByEmailPassword(String email, String password) {
+        Query userQuery = userColRef.whereEqualTo("email", email).whereEqualTo("password", password);
+        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    user = doc.toObject(User.class);
+                }
+            }
+        });
+        return user;
+    }
+
+    // Validate that registered User's email is not currently in use
+    public boolean validate(String email) {
+        Query validateQuery = userColRef.whereEqualTo("email", email);
+        if (validateQuery == null) { return true; } else { return false;}
     }
 
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user) {
@@ -109,11 +140,6 @@ public class FirestoreRepository {
         return new FirestoreRecyclerOptions.Builder<Message>()
                 .setQuery(messageQuery, Message.class)
                 .build();
-    }
-
-    public boolean validate(String email) {
-        Query validateQuery = userColRef.whereEqualTo("email", email);
-        if (validateQuery == null) { return true; } else { return false;}
     }
 
     public ArrayList<Workout> getWorkoutListFromRepo(User user) {

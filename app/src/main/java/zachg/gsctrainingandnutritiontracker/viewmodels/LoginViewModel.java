@@ -1,63 +1,52 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Observable;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class LoginViewModel extends ViewModel {
 
-    private FirebaseAuth auth;
     private FirestoreRepository repo = new FirestoreRepository();
-    public User currentUser;
-    public String email;
-    public String password;
-    private MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>(), isAdmin = new MutableLiveData<>(), isValid = new MutableLiveData<>();
+    public ObservableField<String> email = new ObservableField<>(), password = new ObservableField<>();
+    private MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
     private MutableLiveData<User> user = new MutableLiveData<>();
 
     public LoginViewModel() {}
 
     public void init() {
-        auth = FirebaseAuth.getInstance();   // Initialize FirebaseAuth
-        if (auth.getCurrentUser() == null) { // If User is not logged in, set isLoggedIn to false
-            getIsLoggedIn();
-        } else {                             // Get User
-            getUser();
+        FirebaseUser fUser = repo.getUser();
+        if (fUser == null) {                                        // Check to see if a user is logged in
+            setIsLoggedIn(false);                                   // If a user is not logged in, set isLoggedIn to false
+        } else {
+            setIsLoggedIn(true);
+            user.setValue(repo.getUserByEmail(fUser.getEmail()));   // If a user is logged in, get that User's information
         }
     }
 
-    public void onClick(String email, String password) {
-        // authenticate
-        if (email != null && password != null) {
-            auth.signInWithEmailAndPassword(email, password);
-            // TODO: check if successful...
-            repo.getCurrentUser(email);
-        }
-    }
-
-    public MutableLiveData<Boolean> getIsLoggedIn() {
-        isLoggedIn.setValue(false);
+    public MutableLiveData<Boolean> setIsLoggedIn(Boolean bool) {
+        isLoggedIn.setValue(bool);
         return isLoggedIn;
     }
 
-    private MutableLiveData<User> getUser() {
-        User currentUser = new User();
-        currentUser = repo.getCurrentUser(auth.getCurrentUser().getEmail());
-        user.setValue(currentUser);
-        setIsAdminBool(currentUser);
-        return user;
-    }
-
-    public MutableLiveData<Boolean> setIsAdminBool(User currentUser) {
-        if (currentUser.getIsAdmin()) {
-            isAdmin.setValue(true);
-            return isAdmin;
+    public void logIn() {
+        Log.d("plum", ": " + email.get() + password.get());
+        if (email.get() != null && password.get() != null) {
+            user.setValue(repo.getUserByEmailPassword(String.valueOf(email), String.valueOf(password)));
+            // TODO: if user == null...
+            // Toast: this person doesn't exist, please register
+            Log.d("plum", "isvalid");
         } else {
-            isAdmin.setValue(false);
-            return isAdmin;
+            // Toast: Please enter user information
+            Log.d("plum", "not valid");
         }
     }
 }

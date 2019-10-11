@@ -2,23 +2,11 @@
 <layout>
     <data>
     <variable
-        name="email"
-        type="String" />
-    <variable
-        name="password"
-        type="String" />
-    <variable
         name="bLogin"
         type="android.widget.Button" />
     <variable
         name="bRegister"
         type="android.widget.Button" />
-    <variable
-        name="etPassword"
-        type="android.widget.EditText" />
-    <variable
-        name="etEmail"
-        type="android.widget.EditText"/>
     <variable
         name="fragment"
         type="zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment" />
@@ -28,6 +16,9 @@
     <variable
         name="model"
         type="zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel" />
+    <variable
+        name="handlers"
+        type="zachg.gsctrainingandnutritiontracker.handlers.EventHandlers" />
 </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -46,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="@={email}"/>
+        android:text="@{user.email}"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,21 +49,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:text="@{user.password}"/>
 
     <Button
         android:id="@+id/bLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login"
-        android:onClick="@{()->fragment.goToProfile(user)}"/>
+        android:clickable="true"
+        android:onClick="@{handlers::logIn}"/>
 
     <Button
         android:id="@+id/bRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        android:onClick="@{() -> fragment.goToRegister()}" />
+        android:clickable="true"
+        android:onClick="@{handlers::goToRegister}" />
 
 </LinearLayout>
 </layout>

@@ -1,8 +1,11 @@
 package zachg.gsctrainingandnutritiontracker.models;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
-public class User {
+public class User extends BaseObservable {
 
     @NonNull
     private String id;
@@ -56,9 +59,13 @@ public class User {
 
     public void setId(String id) { this.id = id; }
 
+    @Bindable
     public String getEmail() { return email; }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email;
+        notifyPropertyChanged(BR.email);
+    }
 
     public String getBirthdate() {
         return birthday;
@@ -68,12 +75,14 @@ public class User {
         this.birthday = birthday;
     }
 
+    @Bindable
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+        notifyPropertyChanged(BR.password);
     }
 
     public String getFirstName() {
