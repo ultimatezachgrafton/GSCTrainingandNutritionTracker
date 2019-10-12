@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -24,6 +25,7 @@ public class LoginFragment extends Fragment {
     private User user = new User();
     LoginViewModel loginViewModel = new LoginViewModel();
     Boolean isLoggedIn;
+    String email, password;
 
     public LoginFragment() {}
 
@@ -67,8 +69,6 @@ public class LoginFragment extends Fragment {
                 Log.d("plum", "user changed");
             }
         });
-
-//        loginViewModel.getEmail().observe
 
         binding.setModel(loginViewModel);
 
