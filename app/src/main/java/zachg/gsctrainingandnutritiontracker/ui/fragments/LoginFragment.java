@@ -36,7 +36,6 @@ public class LoginFragment extends Fragment {
 
         // Gets ViewModel instance to observe its LiveData
         loginViewModel = ViewModelProviders.of(getActivity()).get(LoginViewModel.class);
-        binding.setModel(loginViewModel);
         loginViewModel.init();
 
         // Bind User
@@ -60,14 +59,18 @@ public class LoginFragment extends Fragment {
             }
         };
 
-        final Observer<User> userObserver = new Observer<User>() {
+        loginViewModel.getUser().observe(getActivity(), new Observer<User>() {
             @Override
-            public void onChanged(@Nullable final User newUser) {
+            public void onChanged(@Nullable User newUser) {
                 user = newUser;
                 isLoggedIn = true;
                 Log.d("plum", "user changed");
             }
-        };
+        });
+
+//        loginViewModel.getEmail().observe
+
+        binding.setModel(loginViewModel);
 
         return v;
     }

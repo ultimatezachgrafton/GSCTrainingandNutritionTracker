@@ -33,7 +33,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public boolean validate(String email, String password) {
-        boolean isValid = repo.validate(email, password);
+        boolean isValid = repo.validate(email);
         return isValid;
     }
 

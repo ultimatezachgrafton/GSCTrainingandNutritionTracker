@@ -8,17 +8,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Observable;
-
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class LoginViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
-    public ObservableField<String> email = new ObservableField<>(), password = new ObservableField<>();
-    private MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
-    private MutableLiveData<User> user = new MutableLiveData<>();
+    public MutableLiveData<String> email = new MutableLiveData<>(), password = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
+    public MutableLiveData<User> userMutable = new MutableLiveData<>();
 
     public LoginViewModel() {}
 
@@ -28,7 +26,7 @@ public class LoginViewModel extends ViewModel {
             setIsLoggedIn(false);                                   // If a user is not logged in, set isLoggedIn to false
         } else {
             setIsLoggedIn(true);
-            user.setValue(repo.getUserByEmail(fUser.getEmail()));   // If a user is logged in, get that User's information
+            userMutable.setValue(repo.getUserByEmail(fUser.getEmail()));   // If a user is logged in, get that User's information
         }
     }
 
@@ -37,10 +35,21 @@ public class LoginViewModel extends ViewModel {
         return isLoggedIn;
     }
 
+    public MutableLiveData<User> getUser() {
+        if (userMutable == null) {
+            userMutable = new MutableLiveData<>();
+        }
+        return userMutable;
+    }
+
     public void logIn() {
-        Log.d("plum", ": " + email.get() + password.get());
-        if (email.get() != null && password.get() != null) {
-            user.setValue(repo.getUserByEmailPassword(String.valueOf(email), String.valueOf(password)));
+        email.setValue(email.getValue());
+        password.setValue("b");
+        User user = new User(email.getValue(), password.getValue());
+        userMutable.setValue(user);
+        Log.d("plum", ": " + email.getValue() + password.getValue());
+        if (email.getValue() != null && password.getValue() != null) {
+            userMutable.setValue(repo.getUserByEmailPassword(String.valueOf(email), String.valueOf(password)));
             // TODO: if user == null...
             // Toast: this person doesn't exist, please register
             Log.d("plum", "isvalid");
