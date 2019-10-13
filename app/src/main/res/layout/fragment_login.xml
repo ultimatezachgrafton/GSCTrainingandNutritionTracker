@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="@{model.email}"/>
+        android:text="@={user.email}"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:layout_marginBottom="10dp"
-        android:text="@{model.password}"/>
+        android:text="@={user.password}"/>
 
     <Button
         android:id="@+id/bLogin"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:clickable="true"
-        android:onClick="@{handlers::logIn}"/>
+        android:onClick="@{()->fragment.onLoginClick(user.email, user.password)}"/>
 
     <Button
         android:id="@+id/bRegister"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:clickable="true"
-        android:onClick="@{handlers::goToRegister}" />
+        android:onClick="@{()->fragment.onRegisterClick()}" />
 
 </LinearLayout>
 </layout>

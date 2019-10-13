@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 
 public class User extends BaseObservable {
 
@@ -27,7 +29,7 @@ public class User extends BaseObservable {
 
     private String dateJoined;
 
-    // Under new system, workoutDay is whichever they select when they pick the date
+    // TODO: WorkoutDay is whichever they select when they pick the date
     private int workoutNum = 1; // tracks which workout day the user is on
     private int workoutDay = 1;
 
@@ -160,4 +162,5 @@ public class User extends BaseObservable {
     public void incrementWorkout() { workoutNum = workoutNum++; }
 
     public void incrementWorkoutDay() { workoutDay = workoutDay++; }
+
 }

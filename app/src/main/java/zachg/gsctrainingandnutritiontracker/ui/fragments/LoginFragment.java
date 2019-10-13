@@ -19,13 +19,14 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 
+import static androidx.databinding.library.baseAdapters.BR.email;
+import static androidx.databinding.library.baseAdapters.BR.etEmail;
+
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private User user = new User();
     LoginViewModel loginViewModel = new LoginViewModel();
-    Boolean isLoggedIn;
-    String email, password;
 
     public LoginFragment() {}
 
@@ -37,8 +38,12 @@ public class LoginFragment extends Fragment {
         View v = binding.getRoot();
 
         // Gets ViewModel instance to observe its LiveData
+        binding.setModel(loginViewModel);
         loginViewModel = ViewModelProviders.of(getActivity()).get(LoginViewModel.class);
         loginViewModel.init();
+
+        // Bind this fragment
+        binding.setFragment(this);
 
         // Bind User
         binding.setUser(user);
@@ -51,7 +56,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onChanged(Boolean bool) {
                 if (true) {
-                    isLoggedIn = true;
                     if (user.getIsAdmin()) {
                         goToAdminList();
                     } else if (!user.getIsAdmin()){
@@ -61,18 +65,25 @@ public class LoginFragment extends Fragment {
             }
         };
 
-        loginViewModel.getUser().observe(getActivity(), new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User newUser) {
-                user = newUser;
-                isLoggedIn = true;
-                Log.d("plum", "user changed");
-            }
-        });
+//        loginViewModel.getUser().observe(getActivity(), new Observer<User>() {
+//            @Override
+//            public void onChanged(@Nullable User newUser) {
+//                user = newUser;
+//                isLoggedIn = true;
+//                Log.d("plum", "user changed");
+//            }
+//        });
 
-        binding.setModel(loginViewModel);
 
         return v;
+    }
+
+    public void onLoginClick(String e, String p) {
+        Log.d("plum", binding.getUser().getEmail() + binding.getUser().getPassword());
+    }
+
+    public void onRegisterClick() {
+        Log.d("plum", "eat it");
     }
 
     public void goToRegister() {

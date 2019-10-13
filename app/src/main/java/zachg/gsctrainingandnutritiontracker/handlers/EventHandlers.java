@@ -2,6 +2,7 @@ package zachg.gsctrainingandnutritiontracker.handlers;
 
 import android.view.View;
 
+import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 
