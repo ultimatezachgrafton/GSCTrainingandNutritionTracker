@@ -18,12 +18,6 @@
             name="etEmail"
             type="android.widget.EditText" />
         <variable
-            name="etGender"
-            type="android.widget.EditText" />
-        <variable
-            name="etBirthDate"
-            type="android.widget.EditText" />
-        <variable
             name="bRegister"
             type="android.widget.Button" />
         <variable
@@ -108,36 +102,13 @@
         android:text="@={user.confirmPassword}"
         android:layout_marginBottom="10dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/etGender" />
-
-    <EditText
-        android:id="@+id/etGender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@={user.gender}"
-        android:layout_marginBottom="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/etBirthDate" />
-
-    <EditText
-        android:id="@+id/etBirthDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@={user.birthdate}"
-        android:layout_marginBottom="10dp" />
-
     <Button
         android:id="@+id/bRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        />
+        android:clickable="true"
+        android:onClick="@{()->fragment.onRegisterClick()}" />
 
 </LinearLayout>
 </layout>

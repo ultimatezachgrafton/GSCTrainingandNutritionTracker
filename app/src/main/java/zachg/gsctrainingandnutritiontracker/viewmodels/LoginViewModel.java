@@ -1,7 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
-import android.widget.EditText;
 
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 
-import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
@@ -28,7 +26,7 @@ public class LoginViewModel extends ViewModel {
             setIsLoggedIn(false);                                   // If a user is not logged in, set isLoggedIn to false
         } else {
             setIsLoggedIn(true);
-            user = repo.getUserByEmail(fUser.getEmail());   // If a user is logged in, get that User's information
+            user = repo.getUserByEmail(fUser.getEmail());           // If a user is logged in, get that User's information
         }
     }
 
@@ -37,32 +35,20 @@ public class LoginViewModel extends ViewModel {
         return isLoggedIn;
     }
 
-    public void logIn() {
-        Log.d("plum", ": " + user.getPassword() + user.getEmail());
-        if (email.get() != null && password.get() != null) {
-            user = repo.getUserByEmailPassword(String.valueOf(email), String.valueOf(password));
-            // TODO: if user == null...
-            // Toast: this person doesn't exist, please register
-            Log.d("plum", "isvalid");
+    public User verifyUser(String email, String password) {
+        user = repo.getUserByEmailPassword(email, password);
+        if (user.getClientName() == null) {
+            return null;
         } else {
-            // Toast: Please enter user information
-            Log.d("plum", "not valid");
+            return user;
         }
     }
 
-    public void getEmail() {
-
-    }
-
-    public void setEmail() {
-
-    }
-
-    public void setPassword() {
-
-    }
-
-    public void getPassword() {
-
+    public Boolean verifyLogin(String email, String password) {
+        if (email != null && password != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

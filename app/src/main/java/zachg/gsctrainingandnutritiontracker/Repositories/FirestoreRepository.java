@@ -1,11 +1,13 @@
 package zachg.gsctrainingandnutritiontracker.repositories;
 
+import android.content.ContentValues;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,10 +22,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
+import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.ui.fragments.CalendarFragment;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -80,13 +85,18 @@ public class FirestoreRepository {
                 .build();
     }
 
+    // Fetches User data from email and password provided by user at login
     public User getUserByEmailPassword(String email, String password) {
         Query userQuery = userColRef.whereEqualTo("email", email).whereEqualTo("password", password);
         userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    user = doc.toObject(User.class);
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        user = doc.toObject(User.class);
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
@@ -164,5 +174,25 @@ public class FirestoreRepository {
                     }
                 });
         return workoutList;
+    }
+
+    public void registerUser(User user) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Add user as a new document with a generated ID
+        db.collection("users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) { Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: " + documentReference.getId()); }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(ContentValues.TAG, "Error adding document", e);
+                    }
+                });
+
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new CalendarFragment()).addToBackStack(null).commit();
     }
 }

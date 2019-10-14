@@ -30,7 +30,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
 import static android.content.ContentValues.TAG;
 
-public class RegisterFragment extends Fragment implements View.OnClickListener {
+public class RegisterFragment extends Fragment {
 
     public RegisterFragment() {}
 
@@ -38,30 +38,52 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private RegisterViewModel registerViewModel = new RegisterViewModel();
     private User user = new User();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Inflate and biond the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
-        final View v = binding.getRoot();
+        View v = binding.getRoot();
 
+        // Bind this fragment
+        binding.setFragment(this);
+
+        // Bind user
+        binding.setUser(user);
+
+        // Bind ViewModel
+        binding.setViewModel(registerViewModel);
+
+        // Get ViewModel instance
         registerViewModel = ViewModelProviders.of(getActivity()).get(RegisterViewModel.class);
-        registerViewModel.init();
-
-        //bRegister.setOnClickListener(this);
-
-        // TODO: observable boolean sends Toast if passwords don't match
-//        registerViewModel.isValid.observe(this, Observer { isValid -> isValid?.let {
-//
-//        });
 
         return v;
     }
 
-    @Override
-    public void onClick(View v) {
-        registerViewModel.registerUser(user);
+    public void onRegisterClick() {
+        if (validate()) {
+            if (user.getPassword() != user.getConfirmPassword()) {
+                onError("Passwords entered do not match.");
+                Log.d("plum", user.getPassword() + user.getConfirmPassword());
+            } else if (registerViewModel.duplicateUserCheck(user.getEmail())) {
+                registerViewModel.registerUser(user);
+            } else {
+                onError("This email is already in use.");
+            }
+        } else {
+            onError("Please fill out all fields");
+        }
+    }
+
+    public boolean validate() {
+        if (user.getFirstName() != null && user.getLastName() != null && user.getEmail() != null
+                && user.getPassword() != null && user.getConfirmPassword() != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void onError(String e) {
+        Toast.makeText(getContext(), e, Toast.LENGTH_SHORT).show();
     }
 }
