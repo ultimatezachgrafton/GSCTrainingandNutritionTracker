@@ -39,6 +39,7 @@ public class FirestoreRepository {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private User user = new User();
+    private boolean exists;
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
@@ -104,9 +105,25 @@ public class FirestoreRepository {
     }
 
     // Validate that registered User's email is not currently in use
-    public boolean validate(String email) {
-        Query validateQuery = userColRef.whereEqualTo("email", email);
-        if (validateQuery == null) { return true; } else { return false;}
+    public Boolean duplicateEmailCheck(final String email) {
+        userColRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        String emailCheck = document.getString("email");
+                        if (emailCheck.equals(email)) {
+                            exists = true;
+                        } else {
+                            exists = false;
+                        }
+                    }
+                } else {
+                    Log.d("TAG", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+        return exists;
     }
 
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user) {
@@ -132,9 +149,8 @@ public class FirestoreRepository {
 
     //TODO: change clientName to ID or email
     public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
-        CollectionReference workoutColRef = userColRef.document(user.getClientName()).collection("workouts")
-                .document("exerciseSets").collection(String.valueOf(user.getWorkoutDay()));
-        Query workoutQuery = workoutColRef.whereEqualTo("workoutNum", user.getWorkoutNum());
+        CollectionReference workoutColRef = userColRef.document(user.getClientName()).collection("workouts");
+        Query workoutQuery = workoutColRef;
 
         return new FirestoreRecyclerOptions.Builder<Workout>()
                 .setQuery(workoutQuery, Workout.class)
@@ -156,8 +172,6 @@ public class FirestoreRepository {
         final ArrayList<Workout> workoutList = new ArrayList<>();
         workoutList.add(new Workout());
         userColRef.document(user.getClientName()).collection("workouts")
-                .document(String.valueOf(user.getWorkoutDay()))
-                .collection(String.valueOf(user.getWorkoutDay()))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -183,7 +197,8 @@ public class FirestoreRepository {
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) { Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: " + documentReference.getId()); }
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: " + documentReference.getId()); }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override

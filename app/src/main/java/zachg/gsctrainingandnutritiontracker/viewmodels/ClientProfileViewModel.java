@@ -6,18 +6,14 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 
 public class ClientProfileViewModel extends ViewModel {
 
-    private User mCurrentUser = new User();
+    private User currentUser = new User();
 
-    public ClientProfileViewModel() {
-        // required empty constructor
-    }
+    public ClientProfileViewModel() {}
 
-    public ClientProfileViewModel(User currentUser) {
-        this.mCurrentUser = currentUser;
-        this.mCurrentUser.setClientName(currentUser.getClientName());
-        this.mCurrentUser.setGender(currentUser.getGender());
-        this.mCurrentUser.setDateJoined(currentUser.getDateJoined());
-        this.mCurrentUser.setBirthdate(currentUser.getBirthdate());
-        this.mCurrentUser.setIsAdminString(currentUser.getIsAdmin());
+    public ClientProfileViewModel(User user) {
+        this.currentUser = currentUser;
+        this.currentUser.setClientName(user.getClientName());
+        this.currentUser.setDateJoined(user.getDateJoined());
+        this.currentUser.setIsAdminString(user.getIsAdmin());
     }
 }

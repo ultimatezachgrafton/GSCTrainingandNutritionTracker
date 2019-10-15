@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Calendar;
+
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentCalendarBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
@@ -32,7 +34,7 @@ public class CalendarFragment extends Fragment implements ChooseWorkoutFragment.
 
     FragmentCalendarBinding binding;
 
-    private CalendarViewModel calendarViewModel;
+    private CalendarViewModel calendarViewModel = new CalendarViewModel();
     private CalendarView calendarView;
     private String firstName, greetingFormat, greetingMsg;
     private TextView tvTextView;

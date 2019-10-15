@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 
 public class User extends BaseObservable {
 
@@ -22,16 +20,12 @@ public class User extends BaseObservable {
     @NonNull
     private String password;
     private String confirmPassword;
-    private String gender;
+
     private String isAdminString;
     private boolean isAdmin;
     private boolean isLoggedIn;
 
     private String dateJoined;
-
-    // TODO: WorkoutDay is whichever they select when they pick the date
-    private int workoutNum = 1; // tracks which workout day the user is on
-    private int workoutDay = 1;
 
     public User() {}
 
@@ -51,8 +45,6 @@ public class User extends BaseObservable {
         this.email = email;
         this.password = password;
         this.id = getId();
-        this.workoutNum = getWorkoutNum();
-        this.workoutDay = getWorkoutDay();
     }
 
     public String getId() {
@@ -67,14 +59,6 @@ public class User extends BaseObservable {
     public void setEmail(String email) {
         this.email = email;
         notifyPropertyChanged(BR.email);
-    }
-
-    public String getBirthdate() {
-        return birthday;
-    }
-
-    public void setBirthdate(String birthday) {
-        this.birthday = birthday;
     }
 
     @Bindable
@@ -107,14 +91,6 @@ public class User extends BaseObservable {
         this.clientName = (this.firstName + " " + this.lastName);
         return clientName; }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public boolean getIsLoggedIn() { return isLoggedIn; }
 
     public void setIsLoggedIn(boolean isLoggedIn) { this.isLoggedIn = false; }
@@ -142,25 +118,5 @@ public class User extends BaseObservable {
     public String getDateJoined() { return dateJoined; }
 
     public String getPhotoFilename() { return "IMG_" + getId() + ".jpg"; }
-
-    public void setWorkoutNum(int workoutNum) {
-        this.workoutNum = workoutNum;
-    }
-
-    public int getWorkoutNum() {
-        return workoutNum;
-    }
-
-    public int getWorkoutDay() {
-        return workoutDay;
-    }
-
-    public void setWorkoutDay(int workoutDay) {
-        this.workoutDay = workoutDay;
-    }
-
-    public void incrementWorkout() { workoutNum = workoutNum++; }
-
-    public void incrementWorkoutDay() { workoutDay = workoutDay++; }
 
 }

@@ -60,11 +60,13 @@ public class RegisterFragment extends Fragment {
     }
 
     public void onRegisterClick() {
+        // Checks if all required fields are filled in
         if (validate()) {
-            if (user.getPassword() != user.getConfirmPassword()) {
+            // Checks if passwords match
+            if (!user.getPassword().equals(user.getConfirmPassword())) {
                 onError("Passwords entered do not match.");
                 Log.d("plum", user.getPassword() + user.getConfirmPassword());
-            } else if (registerViewModel.duplicateUserCheck(user.getEmail())) {
+            } else if (!registerViewModel.duplicateUserCheck(user.getEmail())) {
                 registerViewModel.registerUser(user);
             } else {
                 onError("This email is already in use.");
@@ -74,6 +76,7 @@ public class RegisterFragment extends Fragment {
         }
     }
 
+    // Checks if all required fields are filled in
     public boolean validate() {
         if (user.getFirstName() != null && user.getLastName() != null && user.getEmail() != null
                 && user.getPassword() != null && user.getConfirmPassword() != null) {
@@ -83,6 +86,7 @@ public class RegisterFragment extends Fragment {
         }
     }
 
+    // Shows error
     public void onError(String e) {
         Toast.makeText(getContext(), e, Toast.LENGTH_SHORT).show();
     }

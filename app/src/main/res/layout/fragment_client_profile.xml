@@ -36,35 +36,11 @@
     />
 
     <TextView
-        android:id="@+id/tvGender"
-        android:text="@{user.gender}"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvClientName"
-        />
-
-    <TextView
-        android:id="@+id/tvDateJoined"
-        android:text="@{user.dateJoined}"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvGender"
-    />
-
-    <TextView
-        android:id="@+id/tvBirthDate"
-        android:text="@{user.birthdate}"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvDateJoined"
-        />
-
-    <TextView
         android:id="@+id/tvIsAdmin"
         android:text="@{user.isAdminString}"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvBirthDate"
+        android:layout_below="@id/tvClientName"
         />
 
         <Button

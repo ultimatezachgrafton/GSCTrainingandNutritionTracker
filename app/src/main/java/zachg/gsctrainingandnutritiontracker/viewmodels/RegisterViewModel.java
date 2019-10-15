@@ -13,10 +13,6 @@ public class RegisterViewModel extends ViewModel {
         repo.registerUser(user);
     }
 
-    public void validate() {
-
-    }
-
     public boolean confirmPassword(String password, String confirm) {
         if (password == confirm) {
             return true;
@@ -25,8 +21,9 @@ public class RegisterViewModel extends ViewModel {
         }
     }
 
+    // Checks if User's email is already used
     public boolean duplicateUserCheck(String email) {
-        if (repo.validate(email)) {
+        if (repo.duplicateEmailCheck(email)) {
             return true;
         } else {
             return false;
