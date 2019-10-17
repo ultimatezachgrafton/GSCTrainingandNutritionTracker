@@ -51,7 +51,7 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
-        final View v = binding.getRoot();
+        View v = binding.getRoot();
         adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
 
         adminListViewModel.init();
@@ -59,7 +59,7 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
         adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<User> users) {
-                initRecyclerView(v, users);
+                initRecyclerView(users);
                 userListAdapter.startListening();
             }
         });
@@ -77,11 +77,10 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
         return v;
     }
 
-    private void initRecyclerView(View v, final FirestoreRecyclerOptions<User> users) {
+    private void initRecyclerView(final FirestoreRecyclerOptions<User> users) {
 
         userListAdapter = new UserListAdapter(users);
-        //binding.setUserListAdapter(userListAdapter);
-        userRecyclerView.setAdapter(userListAdapter);
+        binding.setAdapter(userListAdapter);
 
         // Click on User name in RecyclerView item, go to their profile
         userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {

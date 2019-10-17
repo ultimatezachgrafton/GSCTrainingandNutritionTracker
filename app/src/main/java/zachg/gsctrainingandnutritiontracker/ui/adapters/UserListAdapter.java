@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,18 +12,14 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
-
 import zachg.gsctrainingandnutritiontracker.databinding.RvuserItemBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.models.Workout;
 
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
 
 public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
     private OnItemClickListener listener;
-    private User mCurrentUser = new User();
+    private User currentUser = new User();
 
     public UserListAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
         super(options);
@@ -32,6 +27,8 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
 
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
+        Log.d("plum", "bind");
+        user = getUserForPosition(position);
         holder.bind(user);
     }
 
@@ -51,6 +48,7 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
             super(binding.getRoot());
             this.binding = binding;
 
+            // TODO: put in xml
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,8 +70,8 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
     }
 
     public User getUserAtPosition(User user) {
-        mCurrentUser = user;
-        return mCurrentUser;
+        currentUser = user;
+        return currentUser;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
