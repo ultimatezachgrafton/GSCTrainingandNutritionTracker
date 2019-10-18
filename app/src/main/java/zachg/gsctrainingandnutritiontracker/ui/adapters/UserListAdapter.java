@@ -18,7 +18,6 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
 
 public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
-    private OnItemClickListener listener;
     private User currentUser = new User();
 
     public UserListAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
@@ -27,9 +26,9 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
 
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
+        holder.textViewTitle.setText(user.getClientName());
         Log.d("plum", "bind");
-        user = getUserForPosition(position);
-        holder.bind(user);
+        //holder.bind(user);
     }
 
     @NonNull
@@ -48,16 +47,6 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
             super(binding.getRoot());
             this.binding = binding;
 
-            // TODO: put in xml
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
-                    }
-                }
-            });
         }
         public void bind(User user) {
             binding.setUser(user);
@@ -65,16 +54,9 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         }
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(DocumentSnapshot doc, int position);
-    }
-
     public User getUserAtPosition(User user) {
         currentUser = user;
         return currentUser;
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
 }

@@ -8,6 +8,9 @@
         <variable
             name="UserListAdapter"
             type="zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter"/>
+        <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminUserListFragment"/>
     </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,7 +24,9 @@
         style="@style/user_title"
         android:text="@{user.clientName}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:onClick="@{()->fragment.onClick()}"/>
 
     <TextView
         android:id="@+id/tvEmail"
