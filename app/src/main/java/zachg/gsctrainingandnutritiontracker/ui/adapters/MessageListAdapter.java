@@ -44,15 +44,15 @@ public class MessageListAdapter extends FirestoreRecyclerAdapter<Message, Messag
             super(binding.getRoot());
             this.binding = binding;
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
-                    }
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int position = getAdapterPosition();
+//                    if (position != RecyclerView.NO_POSITION && listener != null) {
+//                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+//                    }
+//                }
+//            });
         }
         public void bind(Message message) {
             binding.setMessage(message);

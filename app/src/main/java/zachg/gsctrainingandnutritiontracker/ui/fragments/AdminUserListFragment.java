@@ -30,7 +30,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
-public class AdminUserListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
+public class AdminUserListFragment extends Fragment {
 
     private FragmentAdminUserListBinding binding;
     private RecyclerView userRecyclerView;
@@ -82,15 +82,14 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
         userListAdapter = new UserListAdapter(users);
         binding.setAdapter(userListAdapter);
 
-        // Click on User name in RecyclerView item, go to their profile
-        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot doc, int position) {
-                currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
-            }
-        });
+//        // Click on User name in RecyclerView item, go to their profile
+//        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+//            public void onItemClick(DocumentSnapshot doc, int position) {
+//                currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
+//            }
+//        });
     }
 
     @Override
@@ -129,7 +128,6 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
         } return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public void onItemClick(DocumentSnapshot doc, int position) {
         // go to client's profile
     }

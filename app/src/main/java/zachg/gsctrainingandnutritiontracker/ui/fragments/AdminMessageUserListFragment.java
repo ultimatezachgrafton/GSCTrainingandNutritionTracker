@@ -32,7 +32,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
-public class AdminMessageUserListFragment extends Fragment implements UserListAdapter.OnItemClickListener {
+public class AdminMessageUserListFragment extends Fragment {
 
     private FragmentAdminMessageUserListBinding binding;
 
@@ -84,14 +84,13 @@ public class AdminMessageUserListFragment extends Fragment implements UserListAd
         binding.setUserListAdapter(userListAdapter);
 
         // Click on User name in RecyclerView item, go to their profile
-        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot doc, int position) {
-                currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new SendMessageFragment(currentUser)).addToBackStack(null).commit();
-            }
-        });
+//        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+//            public void onItemClick(DocumentSnapshot doc, int position) {
+//                currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new SendMessageFragment(currentUser)).addToBackStack(null).commit();
+//            }
+//        });
     }
 
     @Override
@@ -104,7 +103,6 @@ public class AdminMessageUserListFragment extends Fragment implements UserListAd
         userListAdapter.stopListening();
     }
 
-    @Override
     public void onItemClick(DocumentSnapshot doc, int position) {
     }
 
