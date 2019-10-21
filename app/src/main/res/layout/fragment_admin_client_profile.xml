@@ -52,8 +52,7 @@
             android:text="@{user.clientName}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/bCamera"
-            />
+            android:layout_below="@id/bCamera" />
 
         <TextView
             android:id="@+id/tvIsAdmin"

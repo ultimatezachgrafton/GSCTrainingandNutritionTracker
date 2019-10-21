@@ -19,11 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
@@ -33,12 +37,14 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 public class AdminUserListFragment extends Fragment {
 
     private FragmentAdminUserListBinding binding;
-    private RecyclerView userRecyclerView;
     private AdminUserListViewModel adminListViewModel;
     private UserListAdapter userListAdapter;
 
     private User currentUser = new User();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference usersRef = db.collection("users");
 
     public AdminUserListFragment() {}
 
@@ -52,6 +58,9 @@ public class AdminUserListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
+
+        initRecyclerView();
+
         adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
 
         adminListViewModel.init();
@@ -59,7 +68,6 @@ public class AdminUserListFragment extends Fragment {
         adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<User> users) {
-                initRecyclerView(users);
                 userListAdapter.startListening();
             }
         });
@@ -68,7 +76,7 @@ public class AdminUserListFragment extends Fragment {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    userRecyclerView.smoothScrollToPosition(adminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
+                    binding.rvUser.smoothScrollToPosition(adminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
                 }
             }
 
@@ -77,19 +85,16 @@ public class AdminUserListFragment extends Fragment {
         return v;
     }
 
-    private void initRecyclerView(final FirestoreRecyclerOptions<User> users) {
-
+    private void initRecyclerView() {
+        Query query = usersRef.orderBy("email", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query, User.class)
+                .build();
         userListAdapter = new UserListAdapter(users);
-        binding.setAdapter(userListAdapter);
+        binding.rvUser.setAdapter(userListAdapter);
 
-//        // Click on User name in RecyclerView item, go to their profile
-//        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
-//            public void onItemClick(DocumentSnapshot doc, int position) {
-//                currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
-//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
-//            }
-//        });
+        binding.rvUser.setHasFixedSize(true);
+        binding.rvUser.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override

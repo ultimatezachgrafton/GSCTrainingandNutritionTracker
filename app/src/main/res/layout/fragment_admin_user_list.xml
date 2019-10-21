@@ -1,12 +1,4 @@
 <layout xmlns:bind="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable
-            name="adapter"
-            type="zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter" />
-        <variable
-            name="user"
-            type="zachg.gsctrainingandnutritiontracker.models.User"/>
-    </data>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

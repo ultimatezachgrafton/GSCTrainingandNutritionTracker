@@ -18,7 +18,6 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
 
 public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
-    private ArrayList<User> users;
     User currentUser = new User();
 
     // Listens for a Firestore query
@@ -28,23 +27,8 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position, User user) {
-        User currentUser = users.get(position);
-        holder.binding.setUser(currentUser);
+        holder.bind(user);
         Log.d("plum", "onbind");
-    }
-
-    @Override
-    public int getItemCount() {
-        if (users != null) {
-            return users.size(); }
-        else {
-            return 0;
-        }
-    }
-
-    public void setUserList(ArrayList<User> users) {
-        this.users = users;
-        notifyDataSetChanged();
     }
 
     @NonNull
