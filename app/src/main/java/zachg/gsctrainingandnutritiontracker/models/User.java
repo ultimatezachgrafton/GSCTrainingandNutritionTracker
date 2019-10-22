@@ -16,16 +16,12 @@ public class User extends BaseObservable {
     @NonNull
     private String lastName;
     private String clientName;
-    private String birthday;
     @NonNull
     private String password;
     private String confirmPassword;
 
-    private String isAdminString;
     private boolean isAdmin;
     private boolean isLoggedIn;
-
-    private String dateJoined;
 
     public User() {}
 
@@ -95,15 +91,13 @@ public class User extends BaseObservable {
 
     public void setIsLoggedIn(boolean isLoggedIn) { this.isLoggedIn = false; }
 
-    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
-
-    public boolean getIsAdmin() { return isAdmin; }
-
-    public String getIsAdminString() { return isAdminString; }
-
-    public void setIsAdminString(boolean isAdmin) {
-        if (isAdmin) { this.isAdminString = "Admin"; } else { isAdminString = "User"; }
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+        notifyPropertyChanged(BR.isAdmin);
     }
+
+    @Bindable
+    public boolean getIsAdmin() { return isAdmin; }
 
     public String getConfirmPassword() {
         return confirmPassword;
@@ -112,10 +106,6 @@ public class User extends BaseObservable {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
-
-    public void setDateJoined(String dateJoined) { this.dateJoined = dateJoined; }
-
-    public String getDateJoined() { return dateJoined; }
 
     public String getPhotoFilename() { return "IMG_" + getId() + ".jpg"; }
 

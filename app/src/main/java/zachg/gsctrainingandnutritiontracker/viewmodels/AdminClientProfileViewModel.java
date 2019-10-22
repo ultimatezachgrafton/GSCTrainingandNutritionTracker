@@ -30,8 +30,6 @@ public class AdminClientProfileViewModel extends ViewModel {
     public AdminClientProfileViewModel(User user) {
         this.currentUser = user;
         this.currentUser.setClientName(user.getClientName());
-        this.currentUser.setDateJoined(user.getDateJoined());
-        this.currentUser.setIsAdminString(user.getIsAdmin());
     }
 
     public void init() {

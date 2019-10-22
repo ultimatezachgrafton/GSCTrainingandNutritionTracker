@@ -1,7 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,10 +22,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
@@ -40,11 +37,7 @@ public class AdminUserListFragment extends Fragment {
     private AdminUserListViewModel adminListViewModel;
     private UserListAdapter userListAdapter;
 
-    private User currentUser = new User();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference usersRef = db.collection("users");
 
     public AdminUserListFragment() {}
 
@@ -68,6 +61,7 @@ public class AdminUserListFragment extends Fragment {
         adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<User> users) {
+                userListAdapter = new UserListAdapter(users);
                 userListAdapter.startListening();
             }
         });
@@ -86,11 +80,6 @@ public class AdminUserListFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        Query query = usersRef.orderBy("email", Query.Direction.DESCENDING);
-        FirestoreRecyclerOptions<User> users = new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(query, User.class)
-                .build();
-        userListAdapter = new UserListAdapter(users);
         binding.rvUser.setAdapter(userListAdapter);
 
         binding.rvUser.setHasFixedSize(true);
@@ -133,8 +122,10 @@ public class AdminUserListFragment extends Fragment {
         } return super.onOptionsItemSelected(item);
     }
 
-    public void onItemClick(DocumentSnapshot doc, int position) {
+    public void onItemClick(User user) {
         // go to client's profile
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new ClientProfileFragment(user)).addToBackStack(null).commit();
     }
 
 }

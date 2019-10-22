@@ -82,15 +82,6 @@ public class AdminMessageUserListFragment extends Fragment {
 
         userListAdapter = new UserListAdapter(users);
         binding.setUserListAdapter(userListAdapter);
-
-        // Click on User name in RecyclerView item, go to their profile
-//        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
-//            public void onItemClick(DocumentSnapshot doc, int position) {
-//                currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
-//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new SendMessageFragment(currentUser)).addToBackStack(null).commit();
-//            }
-//        });
     }
 
     @Override
@@ -104,6 +95,9 @@ public class AdminMessageUserListFragment extends Fragment {
     }
 
     public void onItemClick(DocumentSnapshot doc, int position) {
+        //currentUser = userListAdapter.getUserAtPosition(users.getSnapshots().get(position));
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new SendMessageFragment(currentUser)).addToBackStack(null).commit();
     }
 
 }

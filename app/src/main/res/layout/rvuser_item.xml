@@ -7,22 +7,23 @@
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminUserListFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminUserListFragment" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rvuser_item"
-        android:background="@android:color/holo_orange_light">
+        android:background="@android:color/holo_orange_light"
+        android:clickable="true"
+        android:onClick="@{()->fragment.onItemClick(user)}">
 
         <TextView
             android:id="@+id/tvClientName"
             style="@style/user_title"
             android:text="@{user.clientName}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tvEmail"

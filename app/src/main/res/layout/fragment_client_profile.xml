@@ -35,19 +35,11 @@
         android:layout_below="@id/bCamera"
     />
 
-    <TextView
-        android:id="@+id/tvIsAdmin"
-        android:text="@{user.isAdminString}"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvClientName"
-        />
-
         <Button
             android:id="@+id/bToDatePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvIsAdmin"
+            android:layout_below="@id/tvClientName"
             android:clickable="true"
             android:text="@string/toDatePicker" />
 

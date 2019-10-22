@@ -65,7 +65,6 @@ public class RegisterFragment extends Fragment {
             // Checks if passwords match
             if (!user.getPassword().equals(user.getConfirmPassword())) {
                 onError("Passwords entered do not match.");
-                Log.d("plum", user.getPassword() + user.getConfirmPassword());
             } else if (!registerViewModel.duplicateUserCheck(user.getEmail())) {
                 registerViewModel.registerUser(user);
             } else {

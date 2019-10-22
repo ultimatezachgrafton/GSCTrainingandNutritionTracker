@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,8 +58,9 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
-    public void onLoginClick(String email, String password) {
-        // check if login values are valid
+    public void onLoginClick(final String email, final String password) {
+        Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_SHORT).show();
+        // Check if login values are valid
         if (loginViewModel.verifyLogin(email, password)) {
             user = loginViewModel.verifyUser(email, password);
             if (user == null) {

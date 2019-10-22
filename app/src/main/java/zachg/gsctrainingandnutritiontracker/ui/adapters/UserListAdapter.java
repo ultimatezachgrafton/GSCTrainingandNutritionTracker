@@ -1,6 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.ui.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
-import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.databinding.RvuserItemBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -28,7 +25,6 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position, User user) {
         holder.bind(user);
-        Log.d("plum", "onbind");
     }
 
     @NonNull

@@ -53,10 +53,9 @@ public class FirestoreRepository {
         return instance;
     }
 
-    public FirebaseUser getUser() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            return user; // User is signed in
+    public FirebaseUser getFireBaseUser() {
+        if (auth.getCurrentUser() != null) {
+            return auth.getCurrentUser(); // User is signed in
         } else {
             return null; // No user is signed in
         }
@@ -206,8 +205,5 @@ public class FirestoreRepository {
                         Log.w(ContentValues.TAG, "Error adding document", e);
                     }
                 });
-
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new CalendarFragment()).addToBackStack(null).commit();
     }
 }
