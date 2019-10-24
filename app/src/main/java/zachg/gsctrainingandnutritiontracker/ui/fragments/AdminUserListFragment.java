@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,10 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
@@ -31,7 +28,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
-public class AdminUserListFragment extends Fragment {
+public class AdminUserListFragment extends Fragment implements UserListAdapter.OnClickListener {
 
     private FragmentAdminUserListBinding binding;
     private AdminUserListViewModel adminListViewModel;
@@ -50,18 +47,17 @@ public class AdminUserListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
-        View v = binding.getRoot();
+        final View v = binding.getRoot();
 
-        initRecyclerView();
-
+        // Gets ViewModel instance to observe its LiveData
+        binding.setModel(adminListViewModel);
         adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
-
         adminListViewModel.init();
 
         adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<User> users) {
-                userListAdapter = new UserListAdapter(users);
+                initRecyclerView(users);
                 userListAdapter.startListening();
             }
         });
@@ -79,7 +75,8 @@ public class AdminUserListFragment extends Fragment {
         return v;
     }
 
-    private void initRecyclerView() {
+    private void initRecyclerView(FirestoreRecyclerOptions<User> users) {
+        userListAdapter = new UserListAdapter(users);
         binding.rvUser.setAdapter(userListAdapter);
 
         binding.rvUser.setHasFixedSize(true);
@@ -122,10 +119,7 @@ public class AdminUserListFragment extends Fragment {
         } return super.onOptionsItemSelected(item);
     }
 
-    public void onItemClick(User user) {
-        // go to client's profile
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientProfileFragment(user)).addToBackStack(null).commit();
+    public void onItemClick() {
+        Log.d("plum", "click");
     }
-
 }

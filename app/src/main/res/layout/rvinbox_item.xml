@@ -7,15 +7,19 @@
             name="message"
             type="zachg.gsctrainingandnutritiontracker.models.Message"/>
         <variable
-            name="MessageListAdapter"
-            type="zachg.gsctrainingandnutritiontracker.ui.adapters.MessageListAdapter"/>
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.InboxFragment"/>
     </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/rvinbox_item"
-    android:background="@android:color/holo_orange_light">
+    android:background="@android:color/holo_orange_light"
+    android:onClick="@{()->fragment.onItemClick(message, user)}">
 
     <TextView
         android:id="@+id/tvMsgTitle"

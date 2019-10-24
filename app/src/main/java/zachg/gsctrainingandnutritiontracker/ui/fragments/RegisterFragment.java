@@ -1,34 +1,21 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import java.lang.ref.WeakReference;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentRegisterBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
-
-import static android.content.ContentValues.TAG;
 
 public class RegisterFragment extends Fragment {
 
@@ -60,15 +47,19 @@ public class RegisterFragment extends Fragment {
     }
 
     public void onRegisterClick() {
+        //startAsyncTask();
         // Checks if all required fields are filled in
         if (validate()) {
             // Checks if passwords match
             if (!user.getPassword().equals(user.getConfirmPassword())) {
                 onError("Passwords entered do not match.");
+
+            // Checks if entered email is already in use
             } else if (!registerViewModel.duplicateUserCheck(user.getEmail())) {
                 registerViewModel.registerUser(user);
+                Log.d("plum", "duplicate false, proceeding " + user.getEmail());
             } else {
-                onError("This email is already in use.");
+                onError("This email is already in use: " + user.getEmail());
             }
         } else {
             onError("Please fill out all fields");
@@ -89,4 +80,25 @@ public class RegisterFragment extends Fragment {
     public void onError(String e) {
         Toast.makeText(getContext(), e, Toast.LENGTH_SHORT).show();
     }
+
+//    public void startAsyncTask() {
+//        RegisterAsyncTask task = new RegisterAsyncTask(this);
+//        task.execute();
+//    }
+//
+//    private static class RegisterAsyncTask extends AsyncTask<User, User, User> {
+////        private WeakReference<RegisterFragment> fragmentWeakReference;
+//        RegisterAsyncTask(RegisterFragment registerFragment) {
+////            fragmentWeakReference = new WeakReference<RegisterFragment>(registerFragment);
+//        }
+//        @Override
+//        protected User doInBackground(User... users) {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//    }
 }

@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-    <variable
-        name="bLogin"
-        type="android.widget.Button" />
-    <variable
-        name="bRegister"
-        type="android.widget.Button" />
+
     <variable
         name="fragment"
         type="zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment" />

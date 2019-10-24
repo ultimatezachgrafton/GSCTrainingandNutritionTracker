@@ -5,12 +5,6 @@
         <variable
             name="message"
             type="zachg.gsctrainingandnutritiontracker.models.Message"/>
-        <variable
-            name="MessageFragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.MessageFragment"/>
-        <variable
-            name="adapter"
-            type="zachg.gsctrainingandnutritiontracker.ui.adapters.MessageListAdapter"/>
     </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

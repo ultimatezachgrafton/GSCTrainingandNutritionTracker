@@ -39,7 +39,7 @@ public class FirestoreRepository {
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private User user = new User();
-    private boolean exists;
+    private boolean duplicate;
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
@@ -105,24 +105,27 @@ public class FirestoreRepository {
 
     // Validate that registered User's email is not currently in use
     public Boolean duplicateEmailCheck(final String email) {
-        userColRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot document : task.getResult()) {
-                        String emailCheck = document.getString("email");
-                        if (emailCheck.equals(email)) {
-                            exists = true;
-                        } else {
-                            exists = false;
+        userColRef.whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int count = 0;          // count number of uses of email in database
+                            for (DocumentSnapshot document : task.getResult()) {
+                                count++;
+                                Log.d("plum", String.valueOf(count));
+                                break;
+                            } if (count == 0) {
+                                duplicate = false;
+                            } else {
+                                duplicate = true;
+                            }
                         }
                     }
-                } else {
-                    Log.d("TAG", "Error getting documents: ", task.getException());
-                }
-            }
-        });
-        return exists;
+                });
+        Log.d("plum", String.valueOf(duplicate));
+        return duplicate;
     }
 
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user) {

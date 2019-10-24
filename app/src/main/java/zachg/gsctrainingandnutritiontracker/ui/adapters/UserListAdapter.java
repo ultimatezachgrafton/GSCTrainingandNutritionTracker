@@ -1,15 +1,22 @@
 package zachg.gsctrainingandnutritiontracker.ui.adapters;
 
+import android.util.EventLog;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.util.EventListener;
+
 import zachg.gsctrainingandnutritiontracker.databinding.RvuserItemBinding;
+import zachg.gsctrainingandnutritiontracker.generated.callback.OnClickListener;
 import zachg.gsctrainingandnutritiontracker.models.User;
 
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
@@ -22,16 +29,12 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         super(options);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position, User user) {
-        holder.bind(user);
-    }
-
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         RvuserItemBinding binding = RvuserItemBinding.inflate(layoutInflater, parent, false);
+
         return new UserViewHolder(binding);
     }
 
@@ -49,4 +52,14 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
             binding.executePendingBindings();
         }
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position, User user) {
+        holder.bind(user);
+    }
+
+    public interface OnClickListener{
+        void onItemClick();
+    }
+
 }

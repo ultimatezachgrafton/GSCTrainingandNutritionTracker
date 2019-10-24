@@ -16,7 +16,7 @@
         android:id="@+id/rvuser_item"
         android:background="@android:color/holo_orange_light"
         android:clickable="true"
-        android:onClick="@{()->fragment.onItemClick(user)}">
+        android:onClick="@{()->fragment.onItemClick()}">
 
         <TextView
             android:id="@+id/tvClientName"

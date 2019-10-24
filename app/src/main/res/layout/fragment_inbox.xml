@@ -1,7 +1,5 @@
 <layout>
-    <data>
 
-    </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,4 +17,5 @@
         tools:listitem="@layout/rvinbox_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

@@ -1,5 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -23,10 +25,6 @@ public class RegisterViewModel extends ViewModel {
 
     // Checks if User's email is already used
     public boolean duplicateUserCheck(String email) {
-        if (repo.duplicateEmailCheck(email)) {
-            return true;
-        } else {
-            return false;
-        }
+        return repo.duplicateEmailCheck(email);
     }
 }
