@@ -39,8 +39,9 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
     }
 
     // UserViewHolder is the class that defines the views that hold the User data
-    class UserViewHolder extends RecyclerView.ViewHolder {
+    class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private RvuserItemBinding binding;
+        OnClickListener onClickListener;
 
         public UserViewHolder(@NonNull RvuserItemBinding binding) {
             super(binding.getRoot());
@@ -50,6 +51,10 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
         public void bind(User user) {
             binding.setUser(user);
             binding.executePendingBindings();
+        }
+        public void onClick(View v) {
+            onClickListener.onItemClick();
+
         }
     }
 

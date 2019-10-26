@@ -43,7 +43,15 @@ public class LoginViewModel extends ViewModel {
 
     // Verifies user exists by the email and password provided
     public User verifyUser(String email, String password) {
-        user = repo.getUserByEmailPassword(email, password);
+        user = repo.getUserByEmailPassword(email, password); // <--- new callback
+//        readData(new MyCallback() {
+//            @Override
+//            public void onCallback(UserAccountSettings settings) {
+//                Log.d("TAG", settings.getDisplay_name());
+//            }
+//        });
+        //getUserByEmailPassword(email, password);
+
         if (user.getClientName() == null) {
             return null;
         } else {
