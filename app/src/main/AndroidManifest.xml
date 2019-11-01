@@ -37,11 +37,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.AdminListActivity"
-            android:theme="@style/AppTheme">
-        </activity>
-
-
     </application>
 
 </manifest>

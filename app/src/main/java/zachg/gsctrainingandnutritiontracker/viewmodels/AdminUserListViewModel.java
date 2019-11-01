@@ -1,5 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import androidx.lifecycle.MutableLiveData;
@@ -27,5 +29,9 @@ public class AdminUserListViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getIsUpdating() {
         return isUpdating;
+    }
+
+    public void onItemClicked() {
+        Log.d("plum", "clicked in vm");
     }
 }

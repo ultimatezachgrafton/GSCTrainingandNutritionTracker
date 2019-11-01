@@ -54,6 +54,8 @@ public class RegisterFragment extends Fragment {
             if (!user.getPassword().equals(user.getConfirmPassword())) {
                 onError("Passwords entered do not match.");
 
+                // ASYNC
+
             // Checks if entered email is already in use
             } else if (!registerViewModel.duplicateUserCheck(user.getEmail())) {
                 registerViewModel.registerUser(user);

@@ -1,47 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View"/>
         <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
-            name="ClientProfileFragment"
+            name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.ClientProfileFragment"/>
+        <variable
+            name="report"
+            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
+        <variable
+            name="testDate"
+            type="androidx.arch.lifecycle.MutableLiveData&lt;Long&gt;"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/profile_photo"
-        android:background="@android:color/darker_gray" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bCamera"
-        android:onClick="@()->ClientProfileFragment.takePhoto()"
-        android:layout_below="@id/client_photo"/>
-
-    <TextView
-        android:id="@+id/tvClientName"
-        android:text="@{user.clientName}"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/bCamera"
-    />
-
-        <Button
-            android:id="@+id/bToDatePicker"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvGreeting"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvClientName"
-            android:clickable="true"
-            android:text="@string/toDatePicker" />
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="15dp"
+            android:text="@{@string/date_greeting(user.ClientName)}"
+            android:gravity="center"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_select_date"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_select_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/select_date}"
+            android:gravity="center"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@+id/calendarView"
+            app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
+
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:date="@={testDate}"
+            android:layout_width="match_parent"
+            android:layout_height="338dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="119dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 </LinearLayout>
 </layout>

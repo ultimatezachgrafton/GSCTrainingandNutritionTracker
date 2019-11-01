@@ -120,6 +120,6 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
     }
 
     public void onItemClick() {
-        Log.d("plum", "click");
+        Log.d("plum", "clicked in frag");
     }
 }

@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminCalendarBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
@@ -30,7 +29,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.AdminCalendarViewModel;
 
 public class AdminCalendarFragment extends Fragment {
 
-    FragmentAdminCalendarBinding binding;
+//    FragmentAdminCalendarBinding binding;
 
     private AdminCalendarViewModel adminCalendarViewModel;
     private CalendarView adminCalendarView;
@@ -48,39 +47,39 @@ public class AdminCalendarFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentAdminCalendarBinding.inflate(inflater, container, false);
-        final View v = binding.getRoot();
-        binding.setUser(currentUser);
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+////        binding = FragmentAdminCalendarBinding.inflate(inflater, container, false);
+////        final View v = binding.getRoot();
+////        binding.setUser(currentUser);
+//
+//        adminCalendarViewModel = ViewModelProviders.of(getActivity()).get(AdminCalendarViewModel.class);
+//        adminCalendarViewModel.init();
+//
+//        adminCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
+//                // sets date format
+//                final String date = (i1 + 1) + "-" + i2 + "-" + i;
+//                final Report currentReport = new Report(currentUser, date);
+//
+//                Log.d("mReports", currentReport.getDateString());
+//
+//                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
+//                    @Override
+//                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+//                        if (currentReport != null) {
+//                            SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                                    new AdminReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//        return v;
+//    }
 
-        adminCalendarViewModel = ViewModelProviders.of(getActivity()).get(AdminCalendarViewModel.class);
-        adminCalendarViewModel.init();
 
-        adminCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
-                // sets date format
-                final String date = (i1 + 1) + "-" + i2 + "-" + i;
-                final Report currentReport = new Report(currentUser, date);
-
-                Log.d("mReports", currentReport.getDateString());
-
-                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
-                    @Override
-                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                        if (currentReport != null) {
-                            SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                                    new AdminReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
-                        }
-                    }
-                });
-            }
-        });
-
-        return v;
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);

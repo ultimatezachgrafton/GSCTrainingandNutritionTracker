@@ -22,13 +22,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ui.fragments.CalendarFragment;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -209,4 +206,5 @@ public class FirestoreRepository {
                     }
                 });
     }
+
 }
