@@ -26,6 +26,8 @@ import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity
 import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
 public class AdminUserListFragment extends Fragment implements UserListAdapter.OnClickListener {
@@ -35,6 +37,7 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
     private UserListAdapter userListAdapter;
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+    public String TAG = "AdminUserListFragment";
 
     public AdminUserListFragment() {}
 
@@ -120,6 +123,6 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
     }
 
     public void onItemClick() {
-        Log.d("plum", "clicked in frag");
+        Log.d(TAG, "clicked in frag");
     }
 }

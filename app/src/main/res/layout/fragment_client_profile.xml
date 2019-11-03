@@ -9,16 +9,19 @@
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.ClientProfileFragment"/>
         <variable
-            name="report"
-            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
+            name="caldate"
+            type="zachg.gsctrainingandnutritiontracker.models.CalDate"/>
         <variable
-            name="testDate"
-            type="androidx.arch.lifecycle.MutableLiveData&lt;Long&gt;"/>
+            name="viewmodel"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel" />
+        <variable
+            name="handlers"
+            type="zachg.gsctrainingandnutritiontracker.handlers.OnClickHandlers"/>
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tvGreeting"
@@ -42,17 +45,24 @@
             app:layout_constraintBottom_toTopOf="@+id/calendarView"
             app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
 
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:date="@={testDate}"
-            android:layout_width="match_parent"
-            android:layout_height="338dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="119dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <DatePicker
+            android:id="@+id/datepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:day="@{caldate.day}"
+            android:month="@{caldate.month}"
+            android:onDateChanged="@{caldate.dateChanged}"
+            android:year="@{caldate.year}"/>
+
+        <Button
+            android:id="@+id/bSelectWorkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/datepicker"
+            android:text="@string/selectWorkout"
+            android:clickable="true"
+            android:onClick="@{()-> fragment.getWorkoutSpinner()}" />
 
 </LinearLayout>
 </layout>

@@ -1,17 +1,15 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,26 +18,20 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
-import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class ClientProfileFragment extends Fragment implements ChooseWorkoutFragment.ChooseWorkoutListener {
 
     FragmentClientProfileBinding binding;
-    private String firstName, greetingFormat, greetingMsg;
-    private TextView tvTextView;
-    private boolean outdated;
-
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-
-    private Report currentReport = new Report();
     private User currentUser = new User();
-
     private ClientProfileViewModel clientProfileViewModel;
-
-    public ClientProfileFragment() {}
+    public String TAG = "ClientProfileFragment";
 
     public ClientProfileFragment(User user) {
         clientProfileViewModel = new ClientProfileViewModel(user);
@@ -51,37 +43,17 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
         //Inflate the layout for this fragment
         binding = FragmentClientProfileBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
+
         binding.setUser(currentUser);
 
+        CalDate date = new CalDate();
+        binding.setCaldate(date);
+
+        binding.setFragment(this);
+
+        binding.setViewmodel(clientProfileViewModel);
         clientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
         clientProfileViewModel.init(currentUser);
-
-//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
-//
-//                // sets date format
-//                final String date = (i1 + 1) + "-" + i2 + "-" + i;
-//
-//                // If date == null, it cannot be picked
-//                currentReport = new Report(currentUser, date);
-//                currentReport.setDateString(date);
-//
-//                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//                    @Override
-//                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-//                        // TODO: this takes user to workout dialog choice
-//                        currentReport = new Report(currentUser, date);
-//                        currentReport.setDateString(date);
-//                        if (currentReport != null) {
-//                            chooseWorkoutDialog();
-////                               SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-////                                       new ChooseWorkoutFragment(currentUser, currentReport)).addToBackStack(null).commit();
-//                        }
-//                    }
-//                });
-//            }
-//        });
 
         return v;
     }
@@ -95,7 +67,7 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
     // Launches ChooseWorkout DialogFragment
     private void chooseWorkoutDialog() {
         FragmentManager fm = getFragmentManager();
-        ChooseWorkoutFragment chooseWorkoutFragment = ChooseWorkoutFragment.newInstance();
+        ChooseWorkoutFragment chooseWorkoutFragment = ChooseWorkoutFragment.newInstance(currentUser);
         // SETS the target fragment for use later when sending results
         chooseWorkoutFragment.setTargetFragment(this, 300);
         chooseWorkoutFragment.show(fm, "fragment_edit_name");
@@ -133,4 +105,9 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
         }
         return true;
     }
+
+    public void getWorkoutSpinner(){
+        chooseWorkoutDialog();
+    };
+
 }

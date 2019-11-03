@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-
-    <variable
-        name="fragment"
-        type="zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment" />
-    <variable
-        name="user"
-        type="zachg.gsctrainingandnutritiontracker.models.User" />
-    <variable
-        name="model"
-        type="zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel" />
+        <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment" />
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User" />
+        <variable
+            name="model"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

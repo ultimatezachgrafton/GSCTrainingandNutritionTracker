@@ -12,11 +12,14 @@ import java.util.ArrayList;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class AdminUserListViewModel extends ViewModel {
 
-    private MutableLiveData<FirestoreRecyclerOptions<User>> users = new MutableLiveData<>();
     private FirestoreRepository repo;
+    private MutableLiveData<FirestoreRecyclerOptions<User>> users = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
+    public String TAG = "AdminUserListViewModel";
 
     public void init() {
         repo = FirestoreRepository.getInstance();
@@ -32,6 +35,6 @@ public class AdminUserListViewModel extends ViewModel {
     }
 
     public void onItemClicked() {
-        Log.d("plum", "clicked in vm");
+        Log.d(TAG, "clicked in vm");
     }
 }

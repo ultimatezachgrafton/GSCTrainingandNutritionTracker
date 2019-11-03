@@ -1,5 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
 import androidx.databinding.ObservableArrayList;
 
 import java.util.ArrayList;
@@ -8,21 +10,26 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class ChooseWorkoutViewModel {
     private FirestoreRepository repo;
-    private User user = new User();
+    private User currentUser = new User();
     public ArrayList<Workout> workoutArray = new ArrayList<>();
     public final ObservableArrayList<String> workoutItems = new ObservableArrayList<>();
+    public String TAG = "ChooseWorkoutViewModel";
 
     public ChooseWorkoutViewModel(User user) {
         repo = FirestoreRepository.getInstance();
-        this.user = user;
-        workoutArray = repo.getWorkoutListFromRepo(user);
+        this.currentUser = user;
+        workoutArray = repo.getWorkoutListFromRepo(currentUser);
 
-        // TODO: don't let names be null
-        for (int i = 0; i < workoutArray.size() - 1; i++) {
-            //workoutArray.get(i).setExerciseName(workoutArray.get(i).getExerciseName());
+        Log.d(TAG, "pre-array: " + workoutArray.size());
+
+        // TODO: deal with names being null
+        for (int i = 0; i < workoutArray.size(); i++) {
             workoutItems.add(String.valueOf(workoutArray.get(i).getExerciseName()));
+//            Log.d(TAG, workoutArray.get(i).getExerciseName());
         }
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 public class Report extends BaseObservable {
 
     private String reportId; // unique ID
+    private int date;
     private String dateString; // date converted to string
     private String clientName; // client's name
     private String dailyWeight; // client's weight
@@ -44,6 +45,16 @@ public class Report extends BaseObservable {
         this.dateString = date;
         this.dailyWeight = dailyWeight;
         this.comments = comments;
+    }
+
+    @Bindable
+    public int getDate() {
+        return date;
+    }
+
+    public void setDate(int date) {
+        this.date = date;
+        notifyPropertyChanged(BR.date);
     }
 
     public void setComments(String comments) {

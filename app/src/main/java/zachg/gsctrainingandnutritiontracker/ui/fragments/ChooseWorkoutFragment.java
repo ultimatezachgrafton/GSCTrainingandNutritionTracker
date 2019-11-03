@@ -29,7 +29,9 @@ public class ChooseWorkoutFragment extends DialogFragment implements View.OnClic
     private Workout workout = new Workout();
     private int workoutDay;
 
-    ChooseWorkoutFragment() {}
+    ChooseWorkoutFragment(User user) {
+        this.user = user;
+    }
 
     // Define listener interface
     public interface ChooseWorkoutListener {
@@ -43,8 +45,8 @@ public class ChooseWorkoutFragment extends DialogFragment implements View.OnClic
         dismiss();
     }
 
-    public static ChooseWorkoutFragment newInstance() {
-        ChooseWorkoutFragment frag = new ChooseWorkoutFragment();
+    public static ChooseWorkoutFragment newInstance(User user) {
+        ChooseWorkoutFragment frag = new ChooseWorkoutFragment(user);
         return frag;
     }
 
@@ -53,8 +55,8 @@ public class ChooseWorkoutFragment extends DialogFragment implements View.OnClic
         binding = FragmentChooseWorkoutBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
-        // TODO: get user
-        this.user = user;
+        binding.setUser(user);
+
         chooseWorkoutViewModel = new ChooseWorkoutViewModel(user);
 
         binding.setViewModel(chooseWorkoutViewModel);

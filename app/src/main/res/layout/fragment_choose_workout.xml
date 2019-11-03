@@ -14,6 +14,12 @@
         <variable
             name="spinner"
             type="android.widget.Spinner" />
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.ChooseWorkoutFragment" />
     </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:id="@+id/edit_name"
@@ -32,7 +38,7 @@ android:layout_gravity="center" android:orientation="vertical"  >
         android:id="@+id/bSelect"
         android:text="@string/select"
         android:layout_below="@id/workout_spinner"
-        android:onClick="@()->ChooseWorkoutFragment.onClick()"/>
+        android:onClick="@()->fragment.onClick()"/>
 
 </LinearLayout>
 </layout>

@@ -59,5 +59,6 @@
     <string name="select_user">Select User</string>
     <string name="select">Select</string>
     <string name="register_new">Register New User</string>
+    <string name="selectWorkout">Select Workout</string>
 
 </resources>
