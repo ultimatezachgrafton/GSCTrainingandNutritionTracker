@@ -17,15 +17,12 @@ import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ChooseWorkoutViewModel;
 
-public class ChooseWorkoutFragment extends DialogFragment implements View.OnClickListener {
+public class ChooseWorkoutFragment extends DialogFragment {
 
     FragmentChooseWorkoutBinding binding;
     ChooseWorkoutViewModel chooseWorkoutViewModel;
     private User user = new User();
     private Report report = new Report();
-    private Spinner spinner;
-    private String string;
-    private Button bSubmit;
     private Workout workout = new Workout();
     private int workoutDay;
 
@@ -64,8 +61,7 @@ public class ChooseWorkoutFragment extends DialogFragment implements View.OnClic
         return v;
     }
 
-    @Override
-    public void onClick(View v) {
+    public void onClick() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(report, user)).addToBackStack(null).commit();
     }

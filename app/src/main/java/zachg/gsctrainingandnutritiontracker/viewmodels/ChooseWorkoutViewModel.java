@@ -27,6 +27,9 @@ public class ChooseWorkoutViewModel {
         Log.d(TAG, "pre-array: " + workoutArray.size());
 
         // TODO: deal with names being null
+        // Is this an Async issue?
+
+        // adding workoutarray items to workoutItems to be observed
         for (int i = 0; i < workoutArray.size(); i++) {
             workoutItems.add(String.valueOf(workoutArray.get(i).getExerciseName()));
 //            Log.d(TAG, workoutArray.get(i).getExerciseName());

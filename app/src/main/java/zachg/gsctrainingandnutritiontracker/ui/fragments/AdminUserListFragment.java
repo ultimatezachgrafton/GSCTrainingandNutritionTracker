@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
@@ -30,7 +31,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
-public class AdminUserListFragment extends Fragment implements UserListAdapter.OnClickListener {
+public class AdminUserListFragment extends Fragment {
 
     private FragmentAdminUserListBinding binding;
     private AdminUserListViewModel adminListViewModel;
@@ -84,6 +85,17 @@ public class AdminUserListFragment extends Fragment implements UserListAdapter.O
 
         binding.rvUser.setHasFixedSize(true);
         binding.rvUser.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                User user = documentSnapshot.toObject(User.class);
+                String id = documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                Toast.makeText(getContext(),
+                        "Position: " + position + " ID: " + id, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

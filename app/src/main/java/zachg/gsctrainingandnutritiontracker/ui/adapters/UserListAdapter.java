@@ -1,28 +1,26 @@
 package zachg.gsctrainingandnutritiontracker.ui.adapters;
 
-import android.util.EventLog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.EventListener;
-
-import zachg.gsctrainingandnutritiontracker.databinding.RvuserItemBinding;
-import zachg.gsctrainingandnutritiontracker.generated.callback.OnClickListener;
+import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.User;
 
 // UserListAdapter adapts the RecyclerView list items of Users for viewing
 
 public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
+    private OnItemClickListener listener;
     User currentUser = new User();
+    public String TAG = "UserListAdapter";
 
     // Listens for a Firestore query
     public UserListAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
@@ -32,39 +30,45 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        RvuserItemBinding binding = RvuserItemBinding.inflate(layoutInflater, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvuser_item, parent, false);
 
-        return new UserViewHolder(binding);
+        return new UserViewHolder(v);
     }
 
     // UserViewHolder is the class that defines the views that hold the User data
-    class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private RvuserItemBinding binding;
-        OnClickListener onClickListener;
+    class UserViewHolder extends RecyclerView.ViewHolder {
+        TextView tvClientName;
+        TextView tvEmail;
 
-        public UserViewHolder(@NonNull RvuserItemBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
+        public UserViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvClientName = itemView.findViewById(R.id.tvClientName);
+            tvEmail = itemView.findViewById(R.id.tvEmail);
 
-        public void bind(User user) {
-            binding.setUser(user);
-            binding.executePendingBindings();
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
         }
-        public void onClick(View v) {
-            onClickListener.onItemClick();
+    }
 
-        }
+    public interface OnItemClickListener {
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position, User user) {
-        holder.bind(user);
-    }
-
-    public interface OnClickListener{
-        void onItemClick();
+        holder.tvClientName.setText(user.getClientName());
+        holder.tvEmail.setText(user.getEmail());
     }
 
 }

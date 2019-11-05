@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 

@@ -43,6 +43,8 @@ public class FirestoreRepository {
     public final CollectionReference messageColRef = db.collection("messages");
     public Query messageQuery = messageColRef.orderBy("date");
 
+    public String TAG = "FirestoreRepository";
+
     public static FirestoreRepository getInstance(){
         if(instance == null){
             instance = new FirestoreRepository();
@@ -180,6 +182,7 @@ public class FirestoreRepository {
                                 Workout workout = document.toObject(Workout.class);
                                 workout.setExerciseName(workout.getExerciseName());
                                 workoutList.add(workout);
+                                Log.d(TAG, workout.getExerciseName());
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

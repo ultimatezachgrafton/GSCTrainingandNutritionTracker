@@ -1,38 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data>
-        <import type="android.view.View"/>
-        <variable
-            name="user"
-            type="zachg.gsctrainingandnutritiontracker.models.User"/>
-        <variable
-            name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminUserListFragment" />
-        <variable
-            name="viewmodel"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel"/>
-    </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rvuser_item"
         android:background="@android:color/holo_orange_light"
-        android:clickable="true"
-        android:onClick="@{()->viewmodel.onItemClicked()}">
+        android:clickable="true">
 
         <TextView
             android:id="@+id/tvClientName"
             style="@style/user_title"
-            android:text="@{user.clientName}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tvEmail"
-            android:text="@{user.email}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
-</layout>
