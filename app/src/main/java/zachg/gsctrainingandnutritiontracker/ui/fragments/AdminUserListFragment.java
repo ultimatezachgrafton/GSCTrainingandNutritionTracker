@@ -1,7 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,10 +54,12 @@ public class AdminUserListFragment extends Fragment {
         binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
+        binding.setUser(currentUser);
+
         // Gets ViewModel instance to observe  LiveData
         binding.setModel(adminListViewModel);
         adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
-        adminListViewModel.init();
+        adminListViewModel.init(currentUser);
 
         adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
             @Override
@@ -133,9 +134,5 @@ public class AdminUserListFragment extends Fragment {
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return super.onOptionsItemSelected(item);
-    }
-
-    public void onItemClick() {
-        Log.d(TAG, "clicked in frag");
     }
 }

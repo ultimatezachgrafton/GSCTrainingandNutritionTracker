@@ -11,7 +11,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import zachg.gsctrainingandnutritiontracker.databinding.RvinboxItemBinding;
 import zachg.gsctrainingandnutritiontracker.models.Message;
 
 public class MessageListAdapter extends FirestoreRecyclerAdapter<Message, MessageListAdapter.MessageViewHolder> {

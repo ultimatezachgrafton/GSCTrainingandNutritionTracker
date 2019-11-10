@@ -26,6 +26,10 @@ public class MessageFragment extends DialogFragment {
     public Button bReply;
     private User user;
 
+    public MessageFragment() {
+        // empty message to be populated
+    }
+
     public MessageFragment(final Message message, final User user) {
         messageViewModel = new MessageViewModel(message);
         this.currentMessage = message;

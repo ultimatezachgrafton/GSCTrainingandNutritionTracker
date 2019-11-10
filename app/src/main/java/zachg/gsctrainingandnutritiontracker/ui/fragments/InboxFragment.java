@@ -49,6 +49,7 @@ public class InboxFragment extends Fragment {
         final View v = binding.getRoot();
 
         binding.setUser(currentUser);
+        binding.setFragment(this);
 
         // Gets ViewModel instance to observe LiveData
         binding.setModel(inboxViewModel);
@@ -88,7 +89,7 @@ public class InboxFragment extends Fragment {
                 currentMessage = inboxViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to appropriate Message fragment
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
+                        new MessageFragment(currentMessage, currentUser)).addToBackStack(null).commit();
             }
         });
     }
@@ -99,5 +100,10 @@ public class InboxFragment extends Fragment {
     public void onStop() {
         super.onStop();
         messageAdapter.stopListening();
+    }
+
+    public void onFABClicked() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new MessageFragment()).addToBackStack(null).commit();
     }
 }

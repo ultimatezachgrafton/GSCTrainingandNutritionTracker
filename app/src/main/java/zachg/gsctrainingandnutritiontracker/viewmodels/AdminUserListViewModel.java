@@ -16,12 +16,13 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 public class AdminUserListViewModel extends ViewModel {
 
     private FirestoreRepository repo;
+    private User currentUser = new User();
     private MutableLiveData<FirestoreRecyclerOptions<User>> users = new MutableLiveData<>();
-    private MutableLiveData<User> mutableUser = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
     public String TAG = "AdminUserListViewModel";
 
-    public void init() {
+    public void init(User user) {
+        this.currentUser = user;
         repo = FirestoreRepository.getInstance();
         users.setValue(repo.getUsersFromRepo());
     }
@@ -35,11 +36,10 @@ public class AdminUserListViewModel extends ViewModel {
     }
 
     public User onItemClicked(DocumentSnapshot documentSnapshot, int position) {
-        // Gets currentUser
+        // Fetches currentUser
         User currentUser = documentSnapshot.toObject(User.class);
         String id = documentSnapshot.getId();
         String path = documentSnapshot.getReference().getPath();
-        Log.d(TAG, "clicked in vm");
         return currentUser;
     }
 }

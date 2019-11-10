@@ -5,6 +5,9 @@
         type="zachg.gsctrainingandnutritiontracker.models.User"/>
     <variable name="model"
         type="zachg.gsctrainingandnutritiontracker.viewmodels.InboxViewModel"/>
+    <variable
+        name="fragment"
+        type="zachg.gsctrainingandnutritiontracker.ui.fragments.InboxFragment" />
 </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,6 +24,11 @@
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
         tools:listitem="@layout/rvinbox_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->fragment.onFABClicked()"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

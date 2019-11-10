@@ -24,11 +24,6 @@ public class InboxViewModel extends ViewModel {
 
     public void init(User user) {
         this.currentUser = user;
-        Log.d(TAG, currentUser.getClientName());
-
-        if (messages.getValue() != null) {
-            return;
-        }
         repo = FirestoreRepository.getInstance();
         messages.setValue(repo.getMessagesFromRepo(currentUser));
     }
@@ -41,9 +36,8 @@ public class InboxViewModel extends ViewModel {
         return isUpdating;
     }
 
-
     public Message onItemClicked(DocumentSnapshot documentSnapshot, int position) {
-        // gets currentMessage
+        // Fetches currentMessage
         Message currentMessage = documentSnapshot.toObject(Message.class);
         String id = documentSnapshot.getId();
         String path = documentSnapshot.getReference().getPath();

@@ -165,6 +165,7 @@ public class FirestoreRepository {
 
     // Fetches a User's messages
     public FirestoreRecyclerOptions<Message> getMessagesFromRepo(User user) {
+        Log.d(TAG, user.getEmail());
         CollectionReference messageColRef = userColRef.document(user.getEmail()).collection("messages");
         Query messageQuery = messageColRef.orderBy("date");
 
