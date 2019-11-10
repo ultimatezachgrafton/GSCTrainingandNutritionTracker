@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +19,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminCalendarBinding;
+import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
@@ -29,10 +30,11 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.AdminCalendarViewModel;
 
 public class AdminCalendarFragment extends Fragment {
 
-//    FragmentAdminCalendarBinding binding;
+    FragmentAdminCalendarBinding binding;
 
     private AdminCalendarViewModel adminCalendarViewModel;
     private CalendarView adminCalendarView;
+    CalDate date = new CalDate();
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -47,22 +49,25 @@ public class AdminCalendarFragment extends Fragment {
 
     @Nullable
     @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-////        binding = FragmentAdminCalendarBinding.inflate(inflater, container, false);
-////        final View v = binding.getRoot();
-////        binding.setUser(currentUser);
-//
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentAdminCalendarBinding.inflate(inflater, container, false);
+        final View v = binding.getRoot();
+        binding.setUser(currentUser);
+
+        binding.setCaldate(date);
+
+        binding.setFragment(this);
+        binding.setViewmodel(adminCalendarViewModel);
+
 //        adminCalendarViewModel = ViewModelProviders.of(getActivity()).get(AdminCalendarViewModel.class);
-//        adminCalendarViewModel.init();
-//
+        adminCalendarViewModel.init();
+
 //        adminCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 //            @Override
 //            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
 //                // sets date format
 //                final String date = (i1 + 1) + "-" + i2 + "-" + i;
 //                final Report currentReport = new Report(currentUser, date);
-//
-//                Log.d("mReports", currentReport.getDateString());
 //
 //                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
 //                    @Override
@@ -75,9 +80,9 @@ public class AdminCalendarFragment extends Fragment {
 //                });
 //            }
 //        });
-//
-//        return v;
-//    }
+
+        return v;
+    }
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +104,7 @@ public class AdminCalendarFragment extends Fragment {
                 return true;
             case R.id.bInbox:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment()).addToBackStack(null).commit();
+                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();
@@ -110,5 +115,12 @@ public class AdminCalendarFragment extends Fragment {
             //TODO: ask ben and logged out are strings in res
         }
         return true;
+    }
+
+
+    // TODO: when date is changed in CalDate, call this
+    public void onDateChanged() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new AdminReportFragment(date, currentUser)).addToBackStack(null).commit();
     }
 }

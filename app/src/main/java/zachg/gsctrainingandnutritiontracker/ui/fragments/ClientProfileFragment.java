@@ -52,7 +52,7 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
         binding.setFragment(this);
 
         binding.setViewmodel(clientProfileViewModel);
-        clientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
+//        clientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
         clientProfileViewModel.init(currentUser);
 
         return v;
@@ -93,7 +93,7 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
         switch (item.getItemId()) {
             case R.id.bInbox:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment()).addToBackStack(null).commit();
+                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();

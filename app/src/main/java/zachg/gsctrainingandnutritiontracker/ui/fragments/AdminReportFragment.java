@@ -23,6 +23,7 @@ import java.io.File;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminReportBinding;
+import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
@@ -40,11 +41,12 @@ public class AdminReportFragment extends Fragment {
     private ImageView photoView;
     private User currentUser = new User();
     private Report currentReport = new Report();
+    private CalDate date = new CalDate();
 
     public AdminReportFragment() {}
 
-    public AdminReportFragment(Report report, User user) {
-        this.currentReport = report;
+    public AdminReportFragment(CalDate date, User user) {
+        this.date = date;//currentReport = report;
         this.currentUser = user;
     }
 
@@ -107,7 +109,7 @@ public class AdminReportFragment extends Fragment {
                 return true;
             case R.id.bInbox:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment()).addToBackStack(null).commit();
+                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();

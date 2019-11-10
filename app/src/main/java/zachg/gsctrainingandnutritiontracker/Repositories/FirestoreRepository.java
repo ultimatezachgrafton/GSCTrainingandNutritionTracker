@@ -45,6 +45,7 @@ public class FirestoreRepository {
 
     public String TAG = "FirestoreRepository";
 
+    // Gets singleton instance of FirestoreRepository
     public static FirestoreRepository getInstance(){
         if(instance == null){
             instance = new FirestoreRepository();
@@ -52,6 +53,7 @@ public class FirestoreRepository {
         return instance;
     }
 
+    // Gets FirebaseUser for authentification
     public FirebaseUser getFireBaseUser() {
         if (auth.getCurrentUser() != null) {
             return auth.getCurrentUser(); // User is signed in
@@ -60,6 +62,7 @@ public class FirestoreRepository {
         }
     }
 
+    // Gets User by searching for email
     public User getUserByEmail(String email) {
         // Fetches "users" from Firestore database
         CollectionReference userColRef = db.collection("users");
@@ -78,6 +81,7 @@ public class FirestoreRepository {
         return user;
     }
 
+    // Gets all Users
     public FirestoreRecyclerOptions<User> getUsersFromRepo() {
         return new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(userQuery, User.class)
@@ -127,6 +131,7 @@ public class FirestoreRepository {
         return duplicate;
     }
 
+    // Gets all Reports for a single User
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user) {
         CollectionReference reportColRef = userColRef.document(user.getClientName())
                 .collection("reports");
@@ -136,6 +141,7 @@ public class FirestoreRepository {
                 .build();
     }
 
+    // Gets all of a single User's reports on a specific date
     public DocumentReference getReportByDate(User user, String date) {
         DocumentReference docRef = userColRef.document(user.getClientName())
                 .collection("reports").document(date);
@@ -148,9 +154,8 @@ public class FirestoreRepository {
         return docRef;
     }
 
-    //TODO: change clientName to ID or email
     public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
-        CollectionReference workoutColRef = userColRef.document(user.getClientName()).collection("workouts");
+        CollectionReference workoutColRef = userColRef.document(user.getEmail()).collection("workouts");
         Query workoutQuery = workoutColRef;
 
         return new FirestoreRecyclerOptions.Builder<Workout>()
@@ -158,17 +163,17 @@ public class FirestoreRepository {
                 .build();
     }
 
+    // Fetches a User's messages
     public FirestoreRecyclerOptions<Message> getMessagesFromRepo(User user) {
-        CollectionReference messageColRef = userColRef.document(user.getClientName()).collection("messages");
+        CollectionReference messageColRef = userColRef.document(user.getEmail()).collection("messages");
         Query messageQuery = messageColRef.orderBy("date");
-
-        // TODO: if null, don't crash
 
         return new FirestoreRecyclerOptions.Builder<Message>()
                 .setQuery(messageQuery, Message.class)
                 .build();
     }
 
+    // Fetches a User's List of Workouts
     public ArrayList<Workout> getWorkoutListFromRepo(User user) {
         final ArrayList<Workout> workoutList = new ArrayList<>();
         workoutList.add(new Workout());
@@ -210,4 +215,21 @@ public class FirestoreRepository {
                 });
     }
 
+    public void writeWorkoutsToRepo(Workout workout) {
+        db.collection("users").document(workout.getEmail()).collection("workouts")
+                .document(String.valueOf(workout.getExerciseNum()))
+                .set(workout)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("reports", "DocumentSnapshot added with ID: ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("reports", "Error writing document", e);
+                    }
+                });
+    }
 }

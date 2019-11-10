@@ -19,8 +19,6 @@ public class AdminCalendarViewModel extends ViewModel {
         this.currentUser = user;
     }
 
-    public AdminCalendarViewModel() {}
-
     public void init() {
         if (reports != null) {
             return;

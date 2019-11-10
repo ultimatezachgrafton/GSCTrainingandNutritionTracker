@@ -6,29 +6,14 @@
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
-            name="AdminClientProfileFragment"
+            name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminClientProfileFragment"/>
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
-            name="report"
-            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
-        <variable
-            name="AdminClientProfileViewModel"
+            name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
-        <variable
-            name="exerciseName"
-            type="String"/>
-        <variable
-            name="exerciseNum"
-            type="String"/>
-        <variable
-            name="reps"
-            type="String"/>
-        <variable
-            name="day"
-            type="String"/>
     </data>
 
     <LinearLayout
@@ -82,24 +67,19 @@
             android:hint="enter reps"/>
 
         <Button
-            android:id="@+id/bMoreWorkouts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="more workouts"/>
-
-        <Button
             android:id="@+id/bWriteWorkouts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="write workouts"/>
+            android:text="write workouts"
+            android:onClick="@{()->viewmodel.writeToWorkouts()}"/>
 
         <Button
             android:id="@+id/bToDatePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvClientName"
-            android:clickable="true"
-            android:text="@string/toDatePicker" />
+            android:text="@string/toDatePicker"
+            android:onClick="@{()->fragment.toDatePicker()}"/>
 
     </LinearLayout>
 </layout>

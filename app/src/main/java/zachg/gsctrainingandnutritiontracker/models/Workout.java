@@ -7,6 +7,7 @@ import androidx.databinding.library.baseAdapters.BR;
 
 public class Workout extends BaseObservable {
 
+    private String email;
     private String clientName, exerciseName, exerciseNum, reps, exerciseWeight, day;
     private int selectedItemPosition;
     private User currentUser = new User();
@@ -16,8 +17,9 @@ public class Workout extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Workout(String clientName, String exerciseName, String exerciseNum, String reps, String day) {
+    public Workout(String clientName, String email, String exerciseName, String exerciseNum, String reps, String day) {
         this.clientName = clientName;
+        this.email = email;
         this.exerciseName = exerciseName;
         this.exerciseNum = exerciseNum;
         this.reps = reps;
@@ -70,6 +72,16 @@ public class Workout extends BaseObservable {
     public void setSelectedItemPosition(int selectedItemPosition) {
         this.selectedItemPosition = selectedItemPosition;
         notifyPropertyChanged(BR.selectedItemPosition);
+    }
+
+    @Bindable
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+        notifyPropertyChanged(BR.email);
     }
 
 }

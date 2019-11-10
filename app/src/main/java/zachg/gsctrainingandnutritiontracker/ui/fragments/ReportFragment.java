@@ -123,7 +123,7 @@ public class ReportFragment extends Fragment {
                         new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
             case R.id.bInbox:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment()).addToBackStack(null).commit();
+                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();

@@ -40,6 +40,8 @@ public class AdminUserListFragment extends Fragment {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     public String TAG = "AdminUserListFragment";
 
+    User currentUser = new User();
+
     public AdminUserListFragment() {}
 
     @Override
@@ -53,7 +55,7 @@ public class AdminUserListFragment extends Fragment {
         binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
-        // Gets ViewModel instance to observe its LiveData
+        // Gets ViewModel instance to observe  LiveData
         binding.setModel(adminListViewModel);
         adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
         adminListViewModel.init();
@@ -89,11 +91,10 @@ public class AdminUserListFragment extends Fragment {
         userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                User user = documentSnapshot.toObject(User.class);
-                String id = documentSnapshot.getId();
-                String path = documentSnapshot.getReference().getPath();
-                Toast.makeText(getContext(),
-                        "Position: " + position + " ID: " + id, Toast.LENGTH_SHORT).show();
+                currentUser = adminListViewModel.onItemClicked(documentSnapshot, position);
+                // Goes to client's profile fragment
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
             }
         });
     }
@@ -123,7 +124,7 @@ public class AdminUserListFragment extends Fragment {
                 return true;
             case R.id.bInbox:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment()).addToBackStack(null).commit();
+                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();

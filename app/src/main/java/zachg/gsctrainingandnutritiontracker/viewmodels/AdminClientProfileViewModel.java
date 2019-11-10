@@ -36,31 +36,17 @@ public class AdminClientProfileViewModel extends ViewModel {
         repo = FirestoreRepository.getInstance();
     }
 
-    public void writeToWorkouts(Workout workout) {
+    public void writeToWorkouts() {
+        Workout workout = new Workout();
         exerciseName.set(workout.getExerciseName());
         exerciseNum.set(workout.getExerciseNum());
         reps.set(workout.getReps());
         day.set(workout.getDay());
 
-//        TODO: getClientEmail, not name
-        Workout generatedWorkout = new Workout(workout.getClientName(), exerciseName.get(), exerciseNum.get(), reps.get(),
+        // TODO: getClientEmail, not name
+        Workout generatedWorkout = new Workout(currentUser.getClientName(), currentUser.getEmail(), exerciseName.get(), exerciseNum.get(), reps.get(),
                 day.get());
 
-        repo.db.collection("users").document(workout.getClientName()).collection("workouts")
-                .document("exerciseSets").collection(String.valueOf(generatedWorkout.getDay()))
-                .document(String.valueOf(generatedWorkout.getExerciseNum()))
-                .set(generatedWorkout)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("reports", "DocumentSnapshot added with ID: ");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("reports", "Error writing document", e);
-                    }
-                });
+        repo.writeWorkoutsToRepo(generatedWorkout);
     }
 }

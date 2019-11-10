@@ -18,11 +18,6 @@ public class ClientProfileViewModel extends ViewModel {
     private MutableLiveData<String> date = new MutableLiveData<>();
     private FirestoreRepository repo;
     private User currentUser = new User();
-    private String dateString;
-
-    public ClientProfileViewModel() {
-
-    }
 
     public ClientProfileViewModel(User user) {
         this.currentUser = user;
