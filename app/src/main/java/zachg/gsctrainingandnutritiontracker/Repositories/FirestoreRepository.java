@@ -45,6 +45,12 @@ public class FirestoreRepository {
 
     public String TAG = "FirestoreRepository";
 
+    private OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener;
+
+    public void setSnapshotOnCompleteListener(OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener) {
+        this.snapshotOnCompleteListener = snapshotOnCompleteListener;
+    }
+
     // Gets singleton instance of FirestoreRepository
     public static FirestoreRepository getInstance(){
         if(instance == null){
@@ -89,21 +95,9 @@ public class FirestoreRepository {
     }
 
     // Fetches User data from email and password provided by user at login
-    public User getUserByEmailPassword(String email, String password) {
+    public void queryUserByEmailPassword(String email, String password) {
         Query userQuery = userColRef.whereEqualTo("email", email).whereEqualTo("password", password);
-        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        user = doc.toObject(User.class);
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-        return user;
+        userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
     // Validate that registered User's email is not currently in use
