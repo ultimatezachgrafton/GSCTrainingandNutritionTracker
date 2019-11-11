@@ -56,4 +56,9 @@ public class MessageFragment extends DialogFragment {
 
         return v;
     }
+
+    public void onReplyClicked() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new SendMessageFragment()).addToBackStack(null).commit();
+    }
 }

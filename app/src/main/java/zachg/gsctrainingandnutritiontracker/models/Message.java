@@ -1,8 +1,10 @@
 package zachg.gsctrainingandnutritiontracker.models;
 
-public class Message {
+import androidx.databinding.BaseObservable;
 
-    public void Msg() {
+public class Message extends BaseObservable {
+
+    public void Message() {
 
     }
 

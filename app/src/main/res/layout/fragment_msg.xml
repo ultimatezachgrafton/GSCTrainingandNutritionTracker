@@ -3,6 +3,9 @@
     <data>
         <import type="android.view.View"/>
         <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.MessageFragment" />
+        <variable
             name="message"
             type="zachg.gsctrainingandnutritiontracker.models.Message"/>
     </data>
@@ -40,6 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/reply"
-        android:onClick="bReply"/>
+        android:onClick="@{()->fragment.onReplyClicked()}"/>
 
 </LinearLayout></layout>

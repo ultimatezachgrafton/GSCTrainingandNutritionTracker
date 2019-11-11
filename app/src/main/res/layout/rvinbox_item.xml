@@ -8,14 +8,14 @@
     android:clickable="true">
 
     <TextView
-        android:id="@+id/tvMsgTitle"
+        android:id="@+id/tvSenderName"
         style="@style/user_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
     <TextView
-        android:id="@+id/tvMsgBody"
+        android:id="@+id/tvMessageTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
