@@ -2,17 +2,24 @@ package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class LoginViewModel extends ViewModel {
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
+public class LoginViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public final ObservableField<String> email = new ObservableField<>(), password = new ObservableField<>();
@@ -33,6 +40,8 @@ public class LoginViewModel extends ViewModel {
             user = repo.getUserByEmail(fUser.getEmail());
             Log.d("plum", "loggedintrue");                // If a user is logged in, get that User's information
         }
+
+        repo.setSnapshotOnCompleteListener(this);
     }
 
     // Sets logged in state for observer
@@ -42,30 +51,25 @@ public class LoginViewModel extends ViewModel {
     }
 
     // Verifies user exists by the email and password provided
-    public User verifyUser(String email, String password) {
-        user = repo.getUserByEmailPassword(email, password); // <--- new callback
-//        readData(new MyCallback() {
-//            @Override
-//            public void onCallback(UserAccountSettings settings) {
-//                Log.d("TAG", settings.getDisplay_name());
-//            }
-//        });
-        //getUserByEmailPassword(email, password);
-
-        if (user.getClientName() == null) {
-            return null;
-        } else {
-            return user;
-        }
+    public void verifyUser(String email, String password) {
+        if (!isLoginReady(email, password)) return;
+        repo.queryUserByEmailPassword(email, password); // <--- new callback
     }
 
     // Verifies login fields are not null
-    public Boolean verifyLogin(String email, String password) {
-        if (email != null && password != null) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean isLoginReady(String email, String password) {
+        return email != null && password != null;
     }
 
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot doc : task.getResult()) {
+                user = doc.toObject(User.class);
+                currentUser.setValue(user);
+            }
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,7 @@ public class LoginFragment extends Fragment {
 
         // Gets ViewModel instance to observe its LiveData
         binding.setModel(loginViewModel);
-        loginViewModel = ViewModelProviders.of(getActivity()).get(LoginViewModel.class);
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.init();
 
         // Bind this fragment
@@ -49,30 +48,32 @@ public class LoginFragment extends Fragment {
                 if (true) {
                     if (user.getIsAdmin()) {
                         goToAdminList();
-                    } else if (!user.getIsAdmin()){
+                    } else if (!user.getIsAdmin()) {
                         goToProfile(user);
                     }
                 }
             }
         };
+
+        loginViewModel.currentUser.observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                if (user == null) {
+                    Toast.makeText(getContext(), "That user does not exist.", Toast.LENGTH_SHORT).show();
+                } else if (user.getIsAdmin()) {
+                    goToAdminList();
+                } else if (!user.getIsAdmin()) {
+                    goToProfile(user);
+                }
+            }
+        });
         return v;
     }
 
     public void onLoginClick(final String email, final String password) {
         Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_SHORT).show();
         // Check if login values are valid
-        if (loginViewModel.verifyLogin(email, password)) {
-            user = loginViewModel.verifyUser(email, password);
-            if (user == null) {
-                Toast.makeText(getContext(), "That user does not exist.", Toast.LENGTH_SHORT).show();
-            } else if (user.getIsAdmin()) {
-                goToAdminList();
-            } else if (!user.getIsAdmin()) {
-                goToProfile(user);
-            }
-        } else {
-            Toast.makeText(getContext(), "Please enter user information.", Toast.LENGTH_SHORT).show();
-        }
+        loginViewModel.verifyUser(email, password);
     }
 
     public void onRegisterClick() {
@@ -86,7 +87,8 @@ public class LoginFragment extends Fragment {
     }
 
     public void goToAdminList() {
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+        loginViewModel.currentUser.removeObservers(this);
+        SingleFragmentActivity.fm.beginTransaction().add(R.id.fragment_container,
                 new AdminUserListFragment()).addToBackStack(null).commit();
     }
 }
