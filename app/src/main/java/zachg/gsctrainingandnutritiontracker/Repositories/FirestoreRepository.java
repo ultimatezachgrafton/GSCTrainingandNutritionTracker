@@ -100,8 +100,9 @@ public class FirestoreRepository {
         Log.d(TAG, "query successful");
     }
 
+    // TODO: make this wait for data
     // Validate that registered User's email is not currently in use
-    public Boolean duplicateEmailCheck(final String email) {
+    public boolean duplicateEmailCheck(final String email) {
         userColRef.whereEqualTo("email", email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -111,7 +112,6 @@ public class FirestoreRepository {
                             int count = 0;          // count number of uses of email in database
                             for (DocumentSnapshot document : task.getResult()) {
                                 count++;
-                                Log.d("plum", String.valueOf(count));
                                 break;
                             } if (count == 0) {
                                 duplicate = false;
@@ -121,7 +121,7 @@ public class FirestoreRepository {
                         }
                     }
                 });
-        Log.d("plum", String.valueOf(duplicate));
+        Log.d(TAG, String.valueOf(duplicate));
         return duplicate;
     }
 
@@ -193,6 +193,7 @@ public class FirestoreRepository {
     }
 
     public void registerUser(User user) {
+        Log.d(TAG, "repo");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Add user as a new document with a generated ID
         db.collection("users")

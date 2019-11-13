@@ -18,10 +18,7 @@ public class AdminClientProfileViewModel extends ViewModel {
     private FirestoreRepository repo;
     private User currentUser = new User();
 
-    private ObservableField<String> exerciseName = new ObservableField<>();
-    private ObservableField<String> exerciseNum = new ObservableField<>();
-    private ObservableField<String> reps = new ObservableField<>();
-    private ObservableField<String> day = new ObservableField<>();
+    private ObservableField<String> exerciseName, exerciseNum, reps, day = new ObservableField<>();
 
     public AdminClientProfileViewModel() {
         // required empty constructor
@@ -43,7 +40,6 @@ public class AdminClientProfileViewModel extends ViewModel {
         reps.set(workout.getReps());
         day.set(workout.getDay());
 
-        // TODO: getClientEmail, not name
         Workout generatedWorkout = new Workout(currentUser.getClientName(), currentUser.getEmail(), exerciseName.get(), exerciseNum.get(), reps.get(),
                 day.get());
 

@@ -31,7 +31,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     // Checks if user is logged in
     public void init() {
         FirebaseUser fUser = repo.getFireBaseUser();
-        if (fUser == null) {                                        // Check to see if a user is logged in
+        if (fUser == null) {                                // Check to see if a user is logged in
             setIsLoggedIn(false);
             Log.d(TAG, "loggedinfalse");               // If a user is not logged in, set isLoggedIn to false
         } else {

@@ -13,11 +13,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentRegisterBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
-import static androidx.databinding.library.baseAdapters.BR.etLastName;
 
 public class RegisterFragment extends Fragment {
 
@@ -30,7 +28,7 @@ public class RegisterFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        // Inflate and biond the layout for this fragment
+        // Inflate and bind the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
 
@@ -67,6 +65,10 @@ public class RegisterFragment extends Fragment {
     }
 
     public void onRegisterClick(String firstName, String lastName, String email, String password, String confirmPassword) {
-        registerViewModel.registerUser(firstName, lastName, email, password, confirmPassword);
+        Log.d(TAG, "oRC : " + firstName);
+
+        // setValues?
+
+        registerViewModel.registerUserCheck(firstName, lastName, email, password, confirmPassword);
     }
 }

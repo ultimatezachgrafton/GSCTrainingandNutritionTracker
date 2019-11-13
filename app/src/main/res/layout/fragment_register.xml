@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:text="@string/register"
             android:clickable="true"
-            android:onClick="@{()->fragment.onRegisterClick()}" />
+            android:onClick="@{()->fragment.onRegisterClick(user.firstName, user.lastName, user.email, user.password, user.confirmPassword)}" />
 
     </LinearLayout>
 </layout>
