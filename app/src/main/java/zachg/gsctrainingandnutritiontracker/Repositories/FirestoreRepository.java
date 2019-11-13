@@ -2,6 +2,7 @@ package zachg.gsctrainingandnutritiontracker.repositories;
 
 import android.content.ContentValues;
 import android.util.Log;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 import androidx.annotation.NonNull;
 
@@ -35,6 +36,8 @@ public class FirestoreRepository {
     private static FirestoreRepository instance;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener;
+
     private User user = new User();
     private boolean duplicate;
 
@@ -43,14 +46,16 @@ public class FirestoreRepository {
     public final CollectionReference messageColRef = db.collection("messages");
     public Query messageQuery = messageColRef.orderBy("date");
 
-    public String TAG = "FirestoreRepository";
-
     // Gets singleton instance of FirestoreRepository
     public static FirestoreRepository getInstance(){
         if(instance == null){
             instance = new FirestoreRepository();
         }
         return instance;
+    }
+
+    public void setSnapshotOnCompleteListener(OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener) {
+        this.snapshotOnCompleteListener = snapshotOnCompleteListener;
     }
 
     // Gets FirebaseUser for authentification
@@ -89,21 +94,10 @@ public class FirestoreRepository {
     }
 
     // Fetches User data from email and password provided by user at login
-    public User getUserByEmailPassword(String email, String password) {
+    public void queryUserByEmailPassword(String email, String password) {
         Query userQuery = userColRef.whereEqualTo("email", email).whereEqualTo("password", password);
-        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        user = doc.toObject(User.class);
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-        return user;
+        userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        Log.d(TAG, "query successful");
     }
 
     // Validate that registered User's email is not currently in use
