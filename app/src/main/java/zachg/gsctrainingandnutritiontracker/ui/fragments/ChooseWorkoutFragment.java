@@ -19,6 +19,8 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ChooseWorkoutViewModel;
 
 public class ChooseWorkoutFragment extends DialogFragment {
 
+    // TODO: if Admin, show list of client's previous workouts to be chosen from
+
     FragmentChooseWorkoutBinding binding;
     ChooseWorkoutViewModel chooseWorkoutViewModel;
     private User user = new User();

@@ -27,17 +27,18 @@ public class MessageFragment extends DialogFragment {
 
     public MessageFragment() {
         // empty message to be populated
+        // TODO: if Admin, you may change the recipient name
+        // on click, pull up AdminUserList - click a name -
     }
 
-    public MessageFragment(final Message message, final User user) {
+    public MessageFragment(final Message message, final User sender) {
         messageViewModel = new MessageViewModel(message);
         this.currentMessage = message;
         this.clientName = currentMessage.getClientName();
         this.date = currentMessage.getDate();
         this.title = currentMessage.getTitle();
         this.body = currentMessage.getBody();
-
-        // TODO: if Admin, you may change the recipient name
+        // reply text body
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class MessageFragment extends DialogFragment {
     }
 
     public void onReplyClicked() {
+        // onSendClicked
         // send Message to original client
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new MessageFragment()).addToBackStack(null).commit();

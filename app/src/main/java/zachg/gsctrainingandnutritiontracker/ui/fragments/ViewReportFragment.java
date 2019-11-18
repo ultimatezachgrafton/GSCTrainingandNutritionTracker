@@ -30,7 +30,11 @@ import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminReportViewModel;
 
-public class AdminReportFragment extends Fragment {
+// TODO: change to dialog fragment that shows the info
+
+public class ViewReportFragment extends Fragment {
+
+    // fragment for viewing past reports
 
     private AdminReportViewModel adminReportViewModel;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -43,9 +47,9 @@ public class AdminReportFragment extends Fragment {
     private Report currentReport = new Report();
     private CalDate date = new CalDate();
 
-    public AdminReportFragment() {}
+    public ViewReportFragment() {}
 
-    public AdminReportFragment(CalDate date, User user) {
+    public ViewReportFragment(CalDate date, User user) {
         this.date = date;//currentReport = report;
         this.currentUser = user;
     }

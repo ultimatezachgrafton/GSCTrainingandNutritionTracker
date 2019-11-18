@@ -26,8 +26,6 @@ import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity
 import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
 
 public class AdminUserListFragment extends Fragment {
@@ -118,7 +116,6 @@ public class AdminUserListFragment extends Fragment {
         inflater.inflate(R.menu.admin_menu, menu);
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.bAddNewClient:
@@ -135,6 +132,6 @@ public class AdminUserListFragment extends Fragment {
                         new LoginFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
-        } return super.onOptionsItemSelected(item);
+        } return true;
     }
 }

@@ -26,8 +26,6 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     public MutableLiveData<User> currentUser = new MutableLiveData<>();
     public User user = new User();
 
-    public LoginViewModel() {}
-
     // Checks if user is logged in
     public void init() {
         FirebaseUser fUser = repo.getFireBaseUser();

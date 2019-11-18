@@ -1,21 +1,17 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.util.Log;
-import android.widget.Toast;
-
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class AdminUserListViewModel extends ViewModel {
 
-    private FirestoreRepository repo;
+    private FirestoreRepository repo = new FirestoreRepository();
     private User currentUser = new User();
     private MutableLiveData<FirestoreRecyclerOptions<User>> users = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
@@ -35,7 +31,6 @@ public class AdminUserListViewModel extends ViewModel {
         return isUpdating;
     }
 
-    // TODO: onComplete
     public User onItemClicked(DocumentSnapshot documentSnapshot, int position) {
         // Fetches currentUser
         User currentUser = documentSnapshot.toObject(User.class);

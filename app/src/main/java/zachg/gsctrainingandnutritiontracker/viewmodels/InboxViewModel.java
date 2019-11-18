@@ -32,7 +32,8 @@ public class InboxViewModel extends ViewModel implements OnCompleteListener<Quer
     public void init(User user) {
         this.currentUser = user;
         repo = FirestoreRepository.getInstance();
-        repo.getMessagesFromRepo(currentUser);
+        messagesLiveData.setValue(repo.getMessagesFromRepo(currentUser));
+        Log.d(TAG, currentUser.getClientName() + " message #: " + String.valueOf(messagesLiveData));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Message>> getMessages() {
@@ -50,7 +51,6 @@ public class InboxViewModel extends ViewModel implements OnCompleteListener<Quer
                 message = doc.toObject(Message.class);
                 // Add to list
                 messageList.add(message);
-                messagesLiveData.setValue();
                 Log.d(TAG, currentUser.getClientName() + " message #: " + String.valueOf(messageList.size()));
             }
         } else {

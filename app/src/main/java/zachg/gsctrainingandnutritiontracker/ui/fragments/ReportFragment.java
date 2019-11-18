@@ -35,6 +35,9 @@ import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
+
+    // fragment for Users to fill out their current workout
+
     private ReportViewModel reportViewModel = new ReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 

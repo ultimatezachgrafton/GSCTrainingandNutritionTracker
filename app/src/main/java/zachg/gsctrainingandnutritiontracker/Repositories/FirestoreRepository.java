@@ -106,9 +106,13 @@ public class FirestoreRepository {
     }
 
     // Fetches a User's messages
-    public void getMessagesFromRepo(User user) {
+    public FirestoreRecyclerOptions<Message> getMessagesFromRepo(User user) {
         Query messageQuery = userColRef.document(user.getEmail()).collection("messages").orderBy("date");
         messageQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+
+        return new FirestoreRecyclerOptions.Builder<Message>()
+                .setQuery(messageQuery, Message.class)
+                .build();
     }
 
     // Gets all Reports for a single User

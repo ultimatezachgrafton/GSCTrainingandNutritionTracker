@@ -102,8 +102,7 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
             //TODO: ask ben and logged out are strings in res
-        }
-        return true;
+        } return true;
     }
 
     public void getWorkoutSpinner(){
