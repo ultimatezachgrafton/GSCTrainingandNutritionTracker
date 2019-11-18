@@ -41,7 +41,9 @@ public class AdminUserListFragment extends Fragment {
 
     User currentUser = new User();
 
-    public AdminUserListFragment() {}
+    public AdminUserListFragment(User user) {
+        this.currentUser = user;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

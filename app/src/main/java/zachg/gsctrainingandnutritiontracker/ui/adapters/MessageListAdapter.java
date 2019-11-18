@@ -21,8 +21,8 @@ public class MessageListAdapter extends FirestoreRecyclerAdapter<Message, Messag
     public String TAG = "MessageListAdapter";
 
     // Listens for Firestore query
-    public MessageListAdapter(@NonNull FirestoreRecyclerOptions<Message> msgs) {
-        super(msgs);
+    public MessageListAdapter(@NonNull FirestoreRecyclerOptions<Message> options) {
+        super(options);
     }
 
     @NonNull
@@ -61,11 +61,6 @@ public class MessageListAdapter extends FirestoreRecyclerAdapter<Message, Messag
         // switch boolean from unread to read
         // if msg is read, show check
         // setIsRead(true);
-    }
-
-    public Message getMessageAtPosition(Message message) {
-        currentMessage = message;
-        return currentMessage;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

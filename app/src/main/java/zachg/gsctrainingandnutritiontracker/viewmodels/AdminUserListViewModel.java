@@ -35,6 +35,7 @@ public class AdminUserListViewModel extends ViewModel {
         return isUpdating;
     }
 
+    // TODO: onComplete
     public User onItemClicked(DocumentSnapshot documentSnapshot, int position) {
         // Fetches currentUser
         User currentUser = documentSnapshot.toObject(User.class);

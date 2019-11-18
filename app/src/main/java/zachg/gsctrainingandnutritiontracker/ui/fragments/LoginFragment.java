@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment {
             public void onChanged(Boolean bool) {
                 if (true) {
                     if (user.getIsAdmin()) {
-                        goToAdminList();
+                        goToAdminList(user);
                     } else if (!user.getIsAdmin()) {
                         goToProfile(user);
                     }
@@ -65,7 +65,7 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getContext(), "That user does not exist.", Toast.LENGTH_SHORT).show();
                 } else if (user.getIsAdmin()) {
                     Log.d(TAG, "isAdmin");
-                    goToAdminList();
+                    goToAdminList(user);
                 } else if (!user.getIsAdmin()) {
                     Log.d(TAG, "notAdmin");
                     goToProfile(user);
@@ -83,18 +83,22 @@ public class LoginFragment extends Fragment {
     }
 
     public void onRegisterClick() {
+        loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
     public void goToProfile(User user) {
+        Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
+        loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ClientProfileFragment(user)).addToBackStack(null).commit();
     }
 
-    public void goToAdminList() {
+    public void goToAdminList(User user) {
+        Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
         loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new AdminUserListFragment()).addToBackStack(null).commit();
+                new AdminUserListFragment(user)).addToBackStack(null).commit();
     }
 }

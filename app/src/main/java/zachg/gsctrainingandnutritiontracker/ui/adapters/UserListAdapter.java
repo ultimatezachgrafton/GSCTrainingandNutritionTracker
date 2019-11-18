@@ -19,7 +19,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 
 public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
     private OnItemClickListener listener;
-    User currentUser = new User();
+    private User currentUser = new User();
     public String TAG = "UserListAdapter";
 
     // Listens for a Firestore query

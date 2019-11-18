@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentRegisterBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -49,7 +51,7 @@ public class RegisterFragment extends Fragment {
         registerViewModel.newUser.observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                Log.d(TAG, "newUser changed");
+                returnToLogin();
             }
         });
 
@@ -57,7 +59,7 @@ public class RegisterFragment extends Fragment {
         registerViewModel.onError.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -65,10 +67,14 @@ public class RegisterFragment extends Fragment {
     }
 
     public void onRegisterClick(String firstName, String lastName, String email, String password, String confirmPassword) {
-        Log.d(TAG, "oRC : " + firstName);
-
-        // setValues?
-
         registerViewModel.registerUserCheck(firstName, lastName, email, password, confirmPassword);
     }
+
+    public void returnToLogin() {
+        registerViewModel.newUser.removeObservers(this);
+        registerViewModel.onError.removeObservers(this);
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new LoginFragment()).addToBackStack(null).commit();
+    }
+
 }

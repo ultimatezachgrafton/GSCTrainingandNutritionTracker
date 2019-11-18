@@ -97,32 +97,18 @@ public class FirestoreRepository {
     public void queryUserByEmailPassword(String email, String password) {
         Query userQuery = userColRef.whereEqualTo("email", email).whereEqualTo("password", password);
         userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
-        Log.d(TAG, "query successful");
     }
 
-    // TODO: make this wait for data
     // Validate that registered User's email is not currently in use
-    public boolean duplicateEmailCheck(final String email) {
-        userColRef.whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int count = 0;          // count number of uses of email in database
-                            for (DocumentSnapshot document : task.getResult()) {
-                                count++;
-                                break;
-                            } if (count == 0) {
-                                duplicate = false;
-                            } else {
-                                duplicate = true;
-                            }
-                        }
-                    }
-                });
-        Log.d(TAG, String.valueOf(duplicate));
-        return duplicate;
+    public void duplicateEmailCheck(final String email) {
+        Query userQuery = userColRef.whereEqualTo("email", email);
+        userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+    }
+
+    // Fetches a User's messages
+    public void getMessagesFromRepo(User user) {
+        Query messageQuery = userColRef.document(user.getEmail()).collection("messages").orderBy("date");
+        messageQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
     // Gets all Reports for a single User
@@ -157,17 +143,6 @@ public class FirestoreRepository {
                 .build();
     }
 
-    // Fetches a User's messages
-    public FirestoreRecyclerOptions<Message> getMessagesFromRepo(User user) {
-        Log.d(TAG, user.getEmail());
-        CollectionReference messageColRef = userColRef.document(user.getEmail()).collection("messages");
-        Query messageQuery = messageColRef.orderBy("date");
-
-        return new FirestoreRecyclerOptions.Builder<Message>()
-                .setQuery(messageQuery, Message.class)
-                .build();
-    }
-
     // Fetches a User's List of Workouts
     public ArrayList<Workout> getWorkoutListFromRepo(User user) {
         final ArrayList<Workout> workoutList = new ArrayList<>();
@@ -193,7 +168,6 @@ public class FirestoreRepository {
     }
 
     public void registerUser(User user) {
-        Log.d(TAG, "repo");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Add user as a new document with a generated ID
         db.collection("users")

@@ -23,7 +23,6 @@ public class MessageFragment extends DialogFragment {
     private Message currentMessage;
     private String clientName, title, body, date;
     public MessageViewModel messageViewModel;
-    public Button bReply;
     private User user;
 
     public MessageFragment() {
@@ -37,14 +36,8 @@ public class MessageFragment extends DialogFragment {
         this.date = currentMessage.getDate();
         this.title = currentMessage.getTitle();
         this.body = currentMessage.getBody();
-        bReply.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new MessageFragment(message, user)).addToBackStack(null).commit();
-            }
-        });
+        // TODO: if Admin, you may change the recipient name
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +51,8 @@ public class MessageFragment extends DialogFragment {
     }
 
     public void onReplyClicked() {
+        // send Message to original client
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new SendMessageFragment()).addToBackStack(null).commit();
+                new MessageFragment()).addToBackStack(null).commit();
     }
 }
