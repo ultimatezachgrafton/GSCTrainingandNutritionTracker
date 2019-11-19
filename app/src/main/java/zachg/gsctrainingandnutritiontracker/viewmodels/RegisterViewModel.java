@@ -26,6 +26,8 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userColRef = db.collection("users");
 
+    public String firstName, lastName, email, password;
+
     public ObservableField<String> etFirstName = new ObservableField<>();
     public ObservableField<String> etLastName = new ObservableField<>();
     public ObservableField<String> etEmail = new ObservableField<>();
@@ -33,7 +35,7 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     public ObservableField<String> etConfirmPassword = new ObservableField<>();
     public MutableLiveData<User> newUser = new MutableLiveData<>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
-    public boolean isDuplicate;
+    public MutableLiveData<Boolean> isDuplicate;
 
     private static String REGISTER_ERROR = "Please fill in all fields";
     private static String PASSWORD_ERROR = "Passwords do not match.";
@@ -53,37 +55,15 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
             onError.setValue(PASSWORD_ERROR);
             return;
         }
-
-        // TODO: way to get this inside repo? or is it ok here?
-        userColRef.whereEqualTo("email", email).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "task size:" + String.valueOf(task.getResult().size()));
-                    if (task.getResult().size() > 0) {
-                        isDuplicate = true;
-                    } else {
-                        isDuplicate = false;
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-                if (!isDuplicate) {
-                    User user = new User(firstName, lastName, email, password);
-                    Log.d(TAG, String.valueOf(isDuplicate));
-                    registerUser(user);
-                    onError.setValue(CLIENT_ADDED);
-                } else {
-                    onError.setValue(DUPLICATE_ERROR);
-                    return;
-                }
-            }
-        });
+        setUserValues(firstName, lastName, email, password);
+        duplicateUserCheck(email);
     }
 
-    public void registerUser(User user) {
+    public void registerUser() {
+        User user = new User(firstName, lastName, email, password);
         repo.registerUser(user);
         newUser.setValue(user);
+        onError.setValue(CLIENT_ADDED);
     }
 
     // Checks if all required fields are filled in
@@ -103,8 +83,30 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         repo.duplicateEmailCheck(email);
     }
 
+    public void setUserValues(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public void setDuplicateTrue() {
+        onError.setValue(DUPLICATE_ERROR);
+        return;
+    }
+
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         Log.d(TAG, "oncomplete");
+        if (task.isSuccessful()) {
+            Log.d(TAG, "task size:" + String.valueOf(task.getResult().size()));
+            if (task.getResult().size() > 0) {
+                isDuplicate.setValue(true);
+            } else {
+                isDuplicate.setValue(false);
+            }
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+        }
     }
 }

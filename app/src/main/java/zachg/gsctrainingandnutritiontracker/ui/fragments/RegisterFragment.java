@@ -63,6 +63,17 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+        registerViewModel.isDuplicate.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (!aBoolean) {
+                    registerViewModel.registerUser();
+                } else {
+                    registerViewModel.setDuplicateTrue();
+                }
+            }
+        });
+
         return v;
     }
 
