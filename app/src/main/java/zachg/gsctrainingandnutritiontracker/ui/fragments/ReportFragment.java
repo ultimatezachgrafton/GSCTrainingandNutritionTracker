@@ -76,10 +76,10 @@ public class ReportFragment extends Fragment {
         binding.setReport(currentReport);
 
         FirestoreRepository mRepo = new FirestoreRepository();
-        FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(currentUser);
+        //FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(currentUser);
 
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(workoutOptions);
+        //reportViewModel.init(workoutOptions);
 
         // TODO: viewModel
         LocalDate date = LocalDate.now();

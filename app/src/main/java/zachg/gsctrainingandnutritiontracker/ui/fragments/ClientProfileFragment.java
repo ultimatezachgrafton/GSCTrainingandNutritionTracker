@@ -12,29 +12,32 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.viewmodels.ChooseWorkoutViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class ClientProfileFragment extends Fragment implements ChooseWorkoutFragment.ChooseWorkoutListener {
 
     FragmentClientProfileBinding binding;
+    private ArrayList<String> workoutTitleArray = new ArrayList<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
 
     public ClientProfileFragment(User user) {
-        clientProfileViewModel = new ClientProfileViewModel(user);
         this.currentUser = user;
     }
 
@@ -52,8 +55,20 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
         binding.setFragment(this);
 
         binding.setViewmodel(clientProfileViewModel);
-//        clientProfileViewModel = ViewModelProviders.of(getActivity()).get(ClientProfileViewModel.class);
+        clientProfileViewModel = ViewModelProviders.of(this).get(ClientProfileViewModel.class);
         clientProfileViewModel.init(currentUser);
+
+        clientProfileViewModel.workoutLiveData.observe(this, new Observer<ArrayList<Workout>>() {
+            @Override
+            public void onChanged(ArrayList<Workout> array) {
+                if (array == null) {
+                    Toast.makeText(getContext(), "That array does not exist.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "array time");
+                    chooseWorkoutDialog();
+                }
+            }
+        });
 
         return v;
     }
@@ -105,8 +120,16 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
         } return true;
     }
 
-    public void getWorkoutSpinner(){
-        chooseWorkoutDialog();
-    };
+    public void onSelectWorkoutClick() {
+        clientProfileViewModel.getWorkouts(currentUser);
+    }
+
+    public void onSelectReportClick() {
+        // go to report
+    }
+
+    public ArrayList<String> getWorkoutTitleArray() {
+        return workoutTitleArray;
+    }
 
 }

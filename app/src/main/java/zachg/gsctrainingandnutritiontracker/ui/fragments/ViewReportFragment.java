@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,8 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 
 import zachg.gsctrainingandnutritiontracker.R;
@@ -28,7 +27,7 @@ import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
-import zachg.gsctrainingandnutritiontracker.viewmodels.AdminReportViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel;
 
 // TODO: change to dialog fragment that shows the info
 
@@ -36,7 +35,7 @@ public class ViewReportFragment extends Fragment {
 
     // fragment for viewing past reports
 
-    private AdminReportViewModel adminReportViewModel;
+    private ViewReportViewModel adminReportViewModel;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     private FragmentAdminReportBinding binding;
@@ -65,7 +64,7 @@ public class ViewReportFragment extends Fragment {
         binding = FragmentAdminReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setReport(currentReport);
-        adminReportViewModel = ViewModelProviders.of(getActivity()).get(AdminReportViewModel.class);
+        adminReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
         adminReportViewModel.init(currentUser, currentReport);
 
         // if user has sent a report on this day, it displays the data sent

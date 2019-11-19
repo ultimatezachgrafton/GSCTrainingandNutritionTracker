@@ -62,7 +62,15 @@
             android:layout_below="@id/datepicker"
             android:text="@string/selectWorkout"
             android:clickable="true"
-            android:onClick="@{()-> fragment.getWorkoutSpinner()}" />
+            android:onClick="@{()-> fragment.onSelectWorkoutClick()}" />
+
+        <Button
+            android:id="@+id/bSelectReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="@string/selectReport"
+            android:onClick="@{()-> fragment.onSelectReportClick()}"/>
 
 </LinearLayout>
 </layout>

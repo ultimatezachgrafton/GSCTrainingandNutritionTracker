@@ -1,13 +1,17 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
+import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentChooseWorkoutBinding;
@@ -19,14 +23,14 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ChooseWorkoutViewModel;
 
 public class ChooseWorkoutFragment extends DialogFragment {
 
-    // TODO: if Admin, show list of client's previous workouts to be chosen from
-
     FragmentChooseWorkoutBinding binding;
     ChooseWorkoutViewModel chooseWorkoutViewModel;
+    private ArrayList<Workout> workoutArray;
     private User user = new User();
     private Report report = new Report();
     private Workout workout = new Workout();
     private int workoutDay;
+    private String TAG = "ChooseWorkoutFragment";
 
     ChooseWorkoutFragment(User user) {
         this.user = user;
@@ -57,13 +61,37 @@ public class ChooseWorkoutFragment extends DialogFragment {
         binding.setUser(user);
 
         chooseWorkoutViewModel = new ChooseWorkoutViewModel(user);
-
         binding.setViewModel(chooseWorkoutViewModel);
 
+        chooseWorkoutViewModel.workoutLiveData.observe(this, new Observer<ArrayList<Workout>>() {
+            @Override
+            public void onChanged(ArrayList<Workout> w) {
+                if (workout == null) {
+                    Toast.makeText(getContext(), "That array does not exist.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "array time");
+                    workoutArray = w;
+                }
+            }
+        });
+
+        chooseWorkoutViewModel.workoutSelected.observe(this, new Observer<Workout>() {
+            @Override
+            public void onChanged(Workout w) {
+                goToReport(w);
+            }
+        });
         return v;
     }
 
-    public void onClick() {
+    public void onSelectClicked() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new ReportFragment(report, user)).addToBackStack(null).commit();
+    }
+
+    public void goToReport(Workout workout) {
+        Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
+        chooseWorkoutViewModel.workoutLiveData.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(report, user)).addToBackStack(null).commit();
     }

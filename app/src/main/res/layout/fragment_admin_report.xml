@@ -7,7 +7,7 @@
             type="zachg.gsctrainingandnutritiontracker.models.Report"/>
         <variable
             name="viewmodel"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminReportViewModel"/>
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel"/>
     </data>
 
     <LinearLayout

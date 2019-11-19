@@ -65,7 +65,7 @@ public class AdminClientProfileFragment extends Fragment {
     }
 
     public void toDatePicker() {
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new AdminCalendarFragment(currentUser)).addToBackStack(null).commit();
+//        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                new AdminCalendarFragment(currentUser)).addToBackStack(null).commit();
     }
 }

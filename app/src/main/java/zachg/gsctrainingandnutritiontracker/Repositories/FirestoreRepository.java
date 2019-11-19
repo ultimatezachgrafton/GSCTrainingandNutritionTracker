@@ -35,11 +35,9 @@ public class FirestoreRepository {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private static FirestoreRepository instance;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     private OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener;
-
     private User user = new User();
-    private boolean duplicate;
+    public String TAG = "FirestoreRepository";
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
@@ -138,37 +136,13 @@ public class FirestoreRepository {
         return docRef;
     }
 
-    public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
-        CollectionReference workoutColRef = userColRef.document(user.getEmail()).collection("workouts");
+    // Returns Workouts as assigned by admin
+    public void getWorkoutsFromRepo(User user) {
+        DocumentReference workoutDocRef = userColRef.document(user.getEmail());
+        CollectionReference workoutColRef = workoutDocRef.collection("workouts");
         Query workoutQuery = workoutColRef;
-
-        return new FirestoreRecyclerOptions.Builder<Workout>()
-                .setQuery(workoutQuery, Workout.class)
-                .build();
-    }
-
-    // Fetches a User's List of Workouts
-    public ArrayList<Workout> getWorkoutListFromRepo(User user) {
-        final ArrayList<Workout> workoutList = new ArrayList<>();
-        workoutList.add(new Workout());
-        userColRef.document(user.getClientName()).collection("workouts")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Workout workout = document.toObject(Workout.class);
-                                workout.setExerciseName(workout.getExerciseName());
-                                workoutList.add(workout);
-                                Log.d(TAG, workout.getExerciseName());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-        return workoutList;
+        Log.d(TAG, "inside workouts getter");
+        workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
     public void registerUser(User user) {

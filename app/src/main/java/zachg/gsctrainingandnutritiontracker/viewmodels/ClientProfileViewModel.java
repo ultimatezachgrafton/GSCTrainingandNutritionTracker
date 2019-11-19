@@ -1,31 +1,67 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.ObservableArrayList;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class ClientProfileViewModel extends ViewModel {
+public class ClientProfileViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
+    private FirestoreRepository repo;
+    public ArrayList<Workout> workoutArray = new ArrayList<>();
+    public ArrayList<String> workoutTitleArray = new ArrayList<>();
+    public MutableLiveData<ArrayList<String>> workoutTitleLiveData = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<Workout>> workoutLiveData = new MutableLiveData<>();
     private MutableLiveData<FirestoreRecyclerOptions<Report>> reports = new MutableLiveData<>();
     private MutableLiveData<String> date = new MutableLiveData<>();
-    private FirestoreRepository repo;
     private User currentUser = new User();
-
-    public ClientProfileViewModel(User user) {
-        this.currentUser = user;
-        this.currentUser.setClientName(user.getClientName());
-    }
+    public String TAG = "ClientProfileViewModel";
 
     public void init(User user) {
+        this.currentUser = user;
+        this.currentUser.setClientName(user.getClientName());
+        repo = FirestoreRepository.getInstance();
+        repo.setSnapshotOnCompleteListener(this);
+
         if (reports != null) {
             return;
         }
-        repo = FirestoreRepository.getInstance();
         reports.setValue(repo.getReportsByUser(user));
+    }
+
+    public void getWorkouts(User user) {
+        repo.getWorkoutsFromRepo(user);
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot doc : task.getResult()) {
+                Workout workout = doc.toObject(Workout.class);
+                workoutArray.add(workout);
+                workoutTitleArray.add(workout.getExerciseName());
+                workoutTitleLiveData.setValue(workoutTitleArray);
+                workoutLiveData.setValue(workoutArray);
+                Log.d(TAG, workout.getExerciseName());
+            }
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+        }
     }
 }
