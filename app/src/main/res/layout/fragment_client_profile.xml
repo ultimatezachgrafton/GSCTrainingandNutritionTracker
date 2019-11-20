@@ -56,15 +56,6 @@
             android:year="@{caldate.year}"/>
 
         <Button
-            android:id="@+id/bSelectWorkout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/datepicker"
-            android:text="@string/selectWorkout"
-            android:clickable="true"
-            android:onClick="@{()-> fragment.onSelectWorkoutClick()}" />
-
-        <Button
             android:id="@+id/bSelectReport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

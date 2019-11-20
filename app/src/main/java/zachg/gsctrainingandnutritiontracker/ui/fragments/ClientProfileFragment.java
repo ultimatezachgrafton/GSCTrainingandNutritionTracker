@@ -18,17 +18,16 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.viewmodels.ChooseWorkoutViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
 
-public class ClientProfileFragment extends Fragment implements ChooseWorkoutFragment.ChooseWorkoutListener {
+public class ClientProfileFragment extends Fragment {
 
     FragmentClientProfileBinding binding;
     private ArrayList<String> workoutTitleArray = new ArrayList<>();
@@ -58,14 +57,13 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
         clientProfileViewModel = ViewModelProviders.of(this).get(ClientProfileViewModel.class);
         clientProfileViewModel.init(currentUser);
 
-        clientProfileViewModel.workoutLiveData.observe(this, new Observer<ArrayList<Workout>>() {
+        clientProfileViewModel.dateLiveData.observe(this, new Observer<Date>() {
             @Override
-            public void onChanged(ArrayList<Workout> array) {
-                if (array == null) {
-                    Toast.makeText(getContext(), "That array does not exist.", Toast.LENGTH_SHORT).show();
+            public void onChanged(Date d) {
+                if (d == null) {
+                    Toast.makeText(getContext(), "That date does not exist.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d(TAG, "array time");
-                    chooseWorkoutDialog();
+                    Log.d(TAG, "array changed");
                 }
             }
         });
@@ -77,25 +75,6 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    // Launches ChooseWorkout DialogFragment
-    private void chooseWorkoutDialog() {
-        FragmentManager fm = getFragmentManager();
-        ChooseWorkoutFragment chooseWorkoutFragment = ChooseWorkoutFragment.newInstance(currentUser);
-        // SETS the target fragment for use later when sending results
-        chooseWorkoutFragment.setTargetFragment(this, 300);
-        chooseWorkoutFragment.show(fm, "fragment_edit_name");
-    }
-
-    // Called when the dialog is completed and the results have been passed
-    public void onFinishChooseWorkout(int workout) {
-        Toast.makeText(getActivity(), "Hi, " + workout, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFinishDialog(int workout) {
-
     }
 
     @Override
@@ -116,7 +95,7 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
                         new LoginFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
-            //TODO: ask ben and logged out are strings in res
+            // TODO: ask ben and logged out are strings in res
         } return true;
     }
 
@@ -126,10 +105,6 @@ public class ClientProfileFragment extends Fragment implements ChooseWorkoutFrag
 
     public void onSelectReportClick() {
         // go to report
-    }
-
-    public ArrayList<String> getWorkoutTitleArray() {
-        return workoutTitleArray;
     }
 
 }

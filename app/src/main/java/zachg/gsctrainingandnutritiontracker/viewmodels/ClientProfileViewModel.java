@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -24,8 +25,10 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 public class ClientProfileViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo;
-    public ArrayList<Workout> workoutArray = new ArrayList<>();
-    public ArrayList<String> workoutTitleArray = new ArrayList<>();
+
+    public MutableLiveData<Date> dateLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<Workout> workoutSelected = new MutableLiveData<>();
     public MutableLiveData<ArrayList<String>> workoutTitleLiveData = new MutableLiveData<>();
     public MutableLiveData<ArrayList<Workout>> workoutLiveData = new MutableLiveData<>();
     private MutableLiveData<FirestoreRecyclerOptions<Report>> reports = new MutableLiveData<>();
@@ -39,10 +42,10 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
         repo = FirestoreRepository.getInstance();
         repo.setSnapshotOnCompleteListener(this);
 
-        if (reports != null) {
-            return;
-        }
-        reports.setValue(repo.getReportsByUser(user));
+//        if (reports != null) {
+//            return;
+//        }
+//        reports.setValue(repo.getReportsByUser(user));
     }
 
     public void getWorkouts(User user) {
@@ -54,14 +57,13 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
         if (task.isSuccessful()) {
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 Workout workout = doc.toObject(Workout.class);
-                workoutArray.add(workout);
-                workoutTitleArray.add(workout.getExerciseName());
-                workoutTitleLiveData.setValue(workoutTitleArray);
-                workoutLiveData.setValue(workoutArray);
+                //workoutArray.add(workout);
                 Log.d(TAG, workout.getExerciseName());
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());
+            return;
         }
     }
+
 }

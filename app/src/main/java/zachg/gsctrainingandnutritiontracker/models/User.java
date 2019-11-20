@@ -7,6 +7,8 @@ import androidx.databinding.library.baseAdapters.BR;
 
 public class User extends BaseObservable {
 
+    // add previousWorkoutNum
+
     @NonNull
     private String id;
     @NonNull
