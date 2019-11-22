@@ -52,6 +52,8 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
         repo.getWorkoutsFromRepo(user);
     }
 
+    public void getReports(User user, Date date) { repo.getReportByDate(user, String.valueOf(date)); }
+
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {

@@ -17,6 +17,10 @@
         <variable
             name="handlers"
             type="zachg.gsctrainingandnutritiontracker.handlers.OnClickHandlers"/>
+        <variable
+            name="adapter"
+            type="zachg.gsctrainingandnutritiontracker.ui.adapters.DatePickerAdapter"/>
+
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -56,12 +60,12 @@
             android:year="@{caldate.year}"/>
 
         <Button
-            android:id="@+id/bSelectReport"
+            android:id="@+id/bSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="@string/selectReport"
-            android:onClick="@{()-> fragment.onSelectReportClick()}"/>
+            android:onClick="@{()-> fragment.onSelectClicked()}"/>
 
 </LinearLayout>
 </layout>

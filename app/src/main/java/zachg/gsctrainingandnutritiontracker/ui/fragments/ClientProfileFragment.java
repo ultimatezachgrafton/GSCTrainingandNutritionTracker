@@ -23,6 +23,8 @@ import java.util.Date;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.CalDate;
+import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.ui.adapters.DatePickerAdapter;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
@@ -33,6 +35,7 @@ public class ClientProfileFragment extends Fragment {
     private ArrayList<String> workoutTitleArray = new ArrayList<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
+    private Report currentReport = new Report();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
 
@@ -103,8 +106,9 @@ public class ClientProfileFragment extends Fragment {
         clientProfileViewModel.getWorkouts(currentUser);
     }
 
-    public void onSelectReportClick() {
-        // go to report
+    public void onSelectClicked() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }
 
 }
