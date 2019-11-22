@@ -8,23 +8,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.Report;
-import zachg.gsctrainingandnutritiontracker.ui.adapters.DatePickerAdapter;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
@@ -35,6 +35,8 @@ public class ClientProfileFragment extends Fragment {
     private ArrayList<String> workoutTitleArray = new ArrayList<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
+    private CalDate date = new CalDate();
+    private DatePicker datePicker;
     private Report currentReport = new Report();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
@@ -49,10 +51,11 @@ public class ClientProfileFragment extends Fragment {
         binding = FragmentClientProfileBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
+        final Date date = new Date();
+
         binding.setUser(currentUser);
 
-        CalDate date = new CalDate();
-        binding.setCaldate(date);
+        //binding.setCaldate(date);
 
         binding.setFragment(this);
 
@@ -72,6 +75,17 @@ public class ClientProfileFragment extends Fragment {
         });
 
         return v;
+    }
+
+    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year =  datePicker.getYear();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        return calendar.getTime();
     }
 
     @Override
@@ -102,11 +116,9 @@ public class ClientProfileFragment extends Fragment {
         } return true;
     }
 
-    public void onSelectWorkoutClick() {
-        clientProfileViewModel.getWorkouts(currentUser);
-    }
-
     public void onSelectClicked() {
+        getDateFromDatePicker(datePicker);
+        Log.d(TAG, String.valueOf(date.day));
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }

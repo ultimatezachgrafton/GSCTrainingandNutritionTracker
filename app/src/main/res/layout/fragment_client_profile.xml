@@ -17,9 +17,6 @@
         <variable
             name="handlers"
             type="zachg.gsctrainingandnutritiontracker.handlers.OnClickHandlers"/>
-        <variable
-            name="adapter"
-            type="zachg.gsctrainingandnutritiontracker.ui.adapters.DatePickerAdapter"/>
 
     </data>
 
@@ -49,15 +46,10 @@
             app:layout_constraintBottom_toTopOf="@+id/datepicker"
             app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
 
-        <DatePicker
-            android:id="@+id/datepicker"
+        <CalendarView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:day="@{caldate.day}"
-            android:month="@{caldate.month}"
-            android:onDateChanged="@{caldate.dateChanged}"
-            android:year="@{caldate.year}"/>
+            android:id="@+id/cal" />
 
         <Button
             android:id="@+id/bSelect"
