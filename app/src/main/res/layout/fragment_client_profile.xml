@@ -9,8 +9,8 @@
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.ClientProfileFragment"/>
         <variable
-            name="caldate"
-            type="zachg.gsctrainingandnutritiontracker.models.CalDate"/>
+            name="date"
+            type="java.util.Date"/>
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel" />
@@ -49,7 +49,8 @@
         <CalendarView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cal" />
+            android:id="@+id/cal"
+            android:onSelectedDayChange="@{()->fragment.onSelectClicked()}"/>
 
         <Button
             android:id="@+id/bSelect"

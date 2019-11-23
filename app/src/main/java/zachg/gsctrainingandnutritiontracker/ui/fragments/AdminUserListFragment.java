@@ -123,8 +123,8 @@ public class AdminUserListFragment extends Fragment {
                         new RegisterFragment()).addToBackStack(null).commit();
                 return true;
             case R.id.bInbox:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment(currentUser)).addToBackStack(null).commit();
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();

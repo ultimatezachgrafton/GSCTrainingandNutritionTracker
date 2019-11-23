@@ -22,7 +22,6 @@ import java.io.File;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminReportBinding;
-import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
@@ -111,8 +110,8 @@ public class ViewReportFragment extends Fragment {
                         new RegisterFragment()).addToBackStack(null).commit();
                 return true;
             case R.id.bInbox:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment(currentUser)).addToBackStack(null).commit();
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();

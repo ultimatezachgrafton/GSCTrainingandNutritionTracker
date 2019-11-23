@@ -86,9 +86,9 @@ public class ReportFragment extends Fragment {
         dateString = String.valueOf(Calendar.getInstance().getTime());
         String dateFormat = getResources().getString(R.string.date);
         final String dateMsg = String.format(dateFormat, date);
-        tvDate.setText(dateMsg);
+//        tvDate.setText(dateMsg);
 
-        updatePhotoView();
+//        updatePhotoView();
 
         return v;
     }
@@ -98,20 +98,20 @@ public class ReportFragment extends Fragment {
         currentReport.setIsNew(false);
     }
 
-    private void updatePhotoView() {
-        if (photoFile == null || !photoFile.exists()) {
-            photoView.setImageDrawable(null);
-            photoView.setContentDescription(
-                    getString(R.string.report_photo_no_image_description)
-            );
-        } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
-            photoView.setImageBitmap(bitmap);
-            photoView.setContentDescription(
-                    getString(R.string.report_photo_image_description)
-            );
-        }
-    }
+//    private void updatePhotoView() {
+//        if (photoFile == null || !photoFile.exists()) {
+//            photoView.setImageDrawable(null);
+//            photoView.setContentDescription(
+//                    getString(R.string.report_photo_no_image_description)
+//            );
+//        } else {
+//            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
+//            photoView.setImageBitmap(bitmap);
+//            photoView.setContentDescription(
+//                    getString(R.string.report_photo_image_description)
+//            );
+//        }
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -125,8 +125,8 @@ public class ReportFragment extends Fragment {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
             case R.id.bInbox:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment(currentUser)).addToBackStack(null).commit();
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();

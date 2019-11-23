@@ -23,7 +23,6 @@ import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
-import zachg.gsctrainingandnutritiontracker.models.CalDate;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
@@ -35,8 +34,6 @@ public class ClientProfileFragment extends Fragment {
     private ArrayList<String> workoutTitleArray = new ArrayList<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
-    private CalDate date = new CalDate();
-    private DatePicker datePicker;
     private Report currentReport = new Report();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
@@ -55,7 +52,7 @@ public class ClientProfileFragment extends Fragment {
 
         binding.setUser(currentUser);
 
-        //binding.setCaldate(date);
+        binding.setDate(date);
 
         binding.setFragment(this);
 
@@ -103,8 +100,8 @@ public class ClientProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.bInbox:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new InboxFragment(currentUser)).addToBackStack(null).commit();
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
             case R.id.bLogout:
                 auth.signOut();
@@ -117,8 +114,8 @@ public class ClientProfileFragment extends Fragment {
     }
 
     public void onSelectClicked() {
-        getDateFromDatePicker(datePicker);
-        Log.d(TAG, String.valueOf(date.day));
+        // send date to currentReport
+        currentReport.setDate(9);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }
