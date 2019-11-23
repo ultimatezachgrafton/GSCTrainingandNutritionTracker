@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
+import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminReportBinding;
@@ -43,11 +44,11 @@ public class ViewReportFragment extends Fragment {
     private ImageView photoView;
     private User currentUser = new User();
     private Report currentReport = new Report();
-    private CalDate date = new CalDate();
+    private Date date = new Date();
 
     public ViewReportFragment() {}
 
-    public ViewReportFragment(CalDate date, User user) {
+    public ViewReportFragment(Date date, User user) {
         this.date = date;//currentReport = report;
         this.currentUser = user;
     }
