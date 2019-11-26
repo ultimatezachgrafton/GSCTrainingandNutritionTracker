@@ -34,6 +34,7 @@ public class ClientProfileFragment extends Fragment {
     private ArrayList<String> workoutTitleArray = new ArrayList<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
+    Date date = new Date();
     private Report currentReport = new Report();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
@@ -48,11 +49,11 @@ public class ClientProfileFragment extends Fragment {
         binding = FragmentClientProfileBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
-        final Date date = new Date();
-
         binding.setUser(currentUser);
 
         binding.setDate(date);
+
+        binding.setReport(currentReport);
 
         binding.setFragment(this);
 
@@ -66,23 +67,26 @@ public class ClientProfileFragment extends Fragment {
                 if (d == null) {
                     Toast.makeText(getContext(), "That date does not exist.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d(TAG, "array changed");
+                    Log.d(TAG, "date changed");
+                    date = d;
+                }
+            }
+        });
+
+        // TODO: set live data and observer for Report
+        clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
+            @Override
+            public void onChanged(Report r) {
+                if (r == null) {
+                    Toast.makeText(getContext(), "That report does not exist.", Toast.LENGTH_SHORT).show();
+                } else {
+                    currentReport = r;
+                    Log.d(TAG, "report changed");
                 }
             }
         });
 
         return v;
-    }
-
-    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year =  datePicker.getYear();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-
-        return calendar.getTime();
     }
 
     @Override
@@ -100,6 +104,7 @@ public class ClientProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.bInbox:
+                // TODO: go to texting interface
 //                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
 //                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
@@ -113,9 +118,8 @@ public class ClientProfileFragment extends Fragment {
         } return true;
     }
 
-    public void onSelectClicked() {
-        // send date to currentReport
-        currentReport.setDate(9);
+    public void onDateSelected(User user, Date date) {
+        clientProfileViewModel.getReportByDate(user, date);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }

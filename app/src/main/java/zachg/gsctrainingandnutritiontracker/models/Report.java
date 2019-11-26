@@ -117,11 +117,13 @@ public class Report extends BaseObservable {
             return reportId;
         }
 
+    @Bindable
     public String getDateString() {
         return dateString;
     }
 
-    public void setDateString(String date) { this.dateString = date; }
+    public void setDateString(String date) { this.dateString = date;
+        notifyPropertyChanged(BR.email); }
 
     public String getClientName() {
         return clientName;

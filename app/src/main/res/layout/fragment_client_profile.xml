@@ -3,6 +3,9 @@
     <data>
         <import type="android.view.View"/>
         <variable
+            name="report"
+            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
+        <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
@@ -43,14 +46,14 @@
             android:text="@{@string/select_date}"
             android:gravity="center"
             android:textSize="22sp"
-            app:layout_constraintBottom_toTopOf="@+id/datepicker"
+            app:layout_constraintBottom_toTopOf="@+id/cal"
             app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
 
         <CalendarView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cal"
-            android:onSelectedDayChange="@{()->fragment.onSelectClicked()}"/>
+            android:onSelectedDayChange="@{()->fragment.onDateSelected(user, date)}"/>
 
         <Button
             android:id="@+id/bSelect"
@@ -58,7 +61,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="@string/selectReport"
-            android:onClick="@{()-> fragment.onSelectClicked()}"/>
+            android:onClick="@{()-> fragment.onDateSelected(user, date)}"/>
 
 </LinearLayout>
 </layout>

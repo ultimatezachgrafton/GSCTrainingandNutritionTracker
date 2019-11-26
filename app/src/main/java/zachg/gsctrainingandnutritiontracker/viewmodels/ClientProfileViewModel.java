@@ -31,8 +31,8 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
     public MutableLiveData<Workout> workoutSelected = new MutableLiveData<>();
     public MutableLiveData<ArrayList<String>> workoutTitleLiveData = new MutableLiveData<>();
     public MutableLiveData<ArrayList<Workout>> workoutLiveData = new MutableLiveData<>();
-    private MutableLiveData<FirestoreRecyclerOptions<Report>> reports = new MutableLiveData<>();
-    private MutableLiveData<String> date = new MutableLiveData<>();
+    public MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
+    public MutableLiveData<Date> date = new MutableLiveData<>();
     private User currentUser = new User();
     public String TAG = "ClientProfileViewModel";
 
@@ -41,26 +41,19 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
         this.currentUser.setClientName(user.getClientName());
         repo = FirestoreRepository.getInstance();
         repo.setSnapshotOnCompleteListener(this);
-
-//        if (reports != null) {
-//            return;
-//        }
-//        reports.setValue(repo.getReportsByUser(user));
     }
 
     public void getWorkouts(User user) {
         repo.getWorkoutsFromRepo(user);
     }
 
-    public void getReports(User user, Date date) { repo.getReportByDate(user, String.valueOf(date)); }
+    public void getReportByDate(User user, Date date) { repo.getReportByDate(user, String.valueOf(date)); }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {
             for (QueryDocumentSnapshot doc : task.getResult()) {
-                Workout workout = doc.toObject(Workout.class);
-                //workoutArray.add(workout);
-                Log.d(TAG, workout.getExerciseName());
+                Report report = doc.toObject(Report.class);
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());

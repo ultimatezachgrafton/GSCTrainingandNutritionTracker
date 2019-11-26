@@ -2,6 +2,7 @@ package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,6 +54,8 @@ public class ReportFragment extends Fragment {
     private User currentUser = new User();
     private Report currentReport = new Report();
 
+    public String TAG = "ReportFragment";
+
     public ReportFragment() {}
 
     public ReportFragment(Report report, User user) {
@@ -61,6 +64,7 @@ public class ReportFragment extends Fragment {
         this.currentReport.setClientName(user.getClientName());
         this.clientName = currentReport.getClientName();
         this.dateString = report.getDateString();
+        Log.d(TAG, dateString);
     }
 
     public void onCreate(Bundle savedInstanceState) {
