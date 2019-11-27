@@ -63,8 +63,8 @@ public class ReportFragment extends Fragment {
         this.currentUser = user;
         this.currentReport.setClientName(user.getClientName());
         this.clientName = currentReport.getClientName();
-        this.dateString = report.getDateString();
-        Log.d(TAG, dateString);
+//        this.date = report.getDate();
+//        Log.d(TAG, String.valueOf(date));
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,7 @@ public class ReportFragment extends Fragment {
         final View v = binding.getRoot();
         binding.setReport(currentReport);
 
-        FirestoreRepository mRepo = new FirestoreRepository();
+        FirestoreRepository repo = new FirestoreRepository();
         //FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(currentUser);
 
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);

@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -17,8 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
@@ -31,10 +28,9 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
 public class ClientProfileFragment extends Fragment {
 
     FragmentClientProfileBinding binding;
-    private ArrayList<String> workoutTitleArray = new ArrayList<>();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
-    Date date = new Date();
+    public Date date = new Date();
     private Report currentReport = new Report();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
@@ -48,41 +44,18 @@ public class ClientProfileFragment extends Fragment {
         //Inflate the layout for this fragment
         binding = FragmentClientProfileBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
-
         binding.setUser(currentUser);
-
-        binding.setDate(date);
-
         binding.setReport(currentReport);
-
         binding.setFragment(this);
-
         binding.setViewmodel(clientProfileViewModel);
+
         clientProfileViewModel = ViewModelProviders.of(this).get(ClientProfileViewModel.class);
         clientProfileViewModel.init(currentUser);
 
-        clientProfileViewModel.dateLiveData.observe(this, new Observer<Date>() {
-            @Override
-            public void onChanged(Date d) {
-                if (d == null) {
-                    Toast.makeText(getContext(), "That date does not exist.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.d(TAG, "date changed");
-                    date = d;
-                }
-            }
-        });
-
-        // TODO: set live data and observer for Report
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                if (r == null) {
-                    Toast.makeText(getContext(), "That report does not exist.", Toast.LENGTH_SHORT).show();
-                } else {
-                    currentReport = r;
-                    Log.d(TAG, "report changed");
-                }
+                    goToReport();
             }
         });
 
@@ -118,10 +91,15 @@ public class ClientProfileFragment extends Fragment {
         } return true;
     }
 
-    public void onDateSelected(User user, Date date) {
-        clientProfileViewModel.getReportByDate(user, date);
+    public void onDateSelected() {
+        // TODO: get date from binding adapter
+        Log.d(TAG, "onDateSelected: " + date);
+        clientProfileViewModel.getReportByDate(currentUser, date);
+    }
+
+    public void goToReport() {
+        Log.d(TAG, "report");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }
-
 }

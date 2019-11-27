@@ -7,8 +7,6 @@ import androidx.databinding.library.baseAdapters.BR;
 
 public class User extends BaseObservable {
 
-    // add previousWorkoutNum
-
     @NonNull
     private String id;
     @NonNull
@@ -24,6 +22,10 @@ public class User extends BaseObservable {
 
     private boolean isAdmin;
     private boolean isLoggedIn;
+
+    private int currentWorkoutNum;
+    private int previousLoopWorkoutNum;     // tracks which workout of previous loop the user has yet to complete
+    private boolean isFinishingPreviousLoop; // tracks if the user is still in process of completing the previous workout loop
 
     public User() {}
 
@@ -107,6 +109,32 @@ public class User extends BaseObservable {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public int getCurrentWorkoutNum() {
+        return currentWorkoutNum;
+    }
+
+    public void setCurrentWorkoutNum(int currentWorkoutNum) {
+        this.currentWorkoutNum = currentWorkoutNum;
+    }
+
+
+    // TODO: incorporate previous loop operations where applicable - in registerUser(), and writeReport()
+    public int getPreviousLoopWorkoutNum() {
+        return previousLoopWorkoutNum;
+    }
+
+    public void setPreviousLoopWorkoutNum(int previousLoopWorkoutNum) {
+        this.previousLoopWorkoutNum = previousLoopWorkoutNum;
+    }
+
+    public boolean getIsFinishingPreviousLoop() {
+        return isFinishingPreviousLoop;
+    }
+
+    public void setIsFinishingPreviousLoop(boolean isFinishingPreviousLoop) {
+        this.isFinishingPreviousLoop = isFinishingPreviousLoop;
     }
 
     public String getPhotoFilename() { return "IMG_" + getId() + ".jpg"; }

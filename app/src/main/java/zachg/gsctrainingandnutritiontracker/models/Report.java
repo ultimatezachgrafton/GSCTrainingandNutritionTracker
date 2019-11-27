@@ -7,13 +7,13 @@ import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Report extends BaseObservable {
 
     private String reportId; // unique ID
-    private int date;
-    private String dateString; // date converted to string
+    private Date date;
     private String clientName; // client's name
     private String dailyWeight; // client's weight
 
@@ -35,24 +35,24 @@ public class Report extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Report(User user, String date) {
-        setDateString(date);
+    public Report(User user, Date date) {
+        this.date = date;
         this.clientName = user.getClientName();
     }
 
-    public Report(String clientName, String date, String dailyWeight, String comments) {
+    public Report(String clientName, Date date, String dailyWeight, String comments) {
         this.clientName = clientName;
-        this.dateString = date;
+        this.date = date;
         this.dailyWeight = dailyWeight;
         this.comments = comments;
     }
 
     @Bindable
-    public int getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(Date date) {
         this.date = date;
         notifyPropertyChanged(BR.date);
     }
@@ -116,14 +116,6 @@ public class Report extends BaseObservable {
     public String getReportId() {
             return reportId;
         }
-
-    @Bindable
-    public String getDateString() {
-        return dateString;
-    }
-
-    public void setDateString(String date) { this.dateString = date;
-        notifyPropertyChanged(BR.email); }
 
     public String getClientName() {
         return clientName;

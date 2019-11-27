@@ -26,14 +26,9 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
 
     private FirestoreRepository repo;
 
-    public MutableLiveData<Date> dateLiveData = new MutableLiveData<>();
-
-    public MutableLiveData<Workout> workoutSelected = new MutableLiveData<>();
-    public MutableLiveData<ArrayList<String>> workoutTitleLiveData = new MutableLiveData<>();
-    public MutableLiveData<ArrayList<Workout>> workoutLiveData = new MutableLiveData<>();
     public MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
-    public MutableLiveData<Date> date = new MutableLiveData<>();
     private User currentUser = new User();
+    private Report report = new Report();
     public String TAG = "ClientProfileViewModel";
 
     public void init(User user) {
@@ -43,17 +38,18 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
         repo.setSnapshotOnCompleteListener(this);
     }
 
-    public void getWorkouts(User user) {
-        repo.getWorkoutsFromRepo(user);
-    }
-
-    public void getReportByDate(User user, Date date) { repo.getReportByDate(user, String.valueOf(date)); }
+    public void getReportByDate(User user, Date date) {
+        Log.d(TAG, "getReport" + user + date);
+        repo.getReportByDate(user, date); }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        Log.d(TAG, "in onComplete pre success"); // THIS IS AS FAR AS IT GETS
         if (task.isSuccessful()) {
             for (QueryDocumentSnapshot doc : task.getResult()) {
-                Report report = doc.toObject(Report.class);
+                Log.d(TAG, "onComplete");
+                report = doc.toObject(Report.class);
+                reportLiveData.setValue(report);
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());

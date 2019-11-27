@@ -2,7 +2,6 @@ package zachg.gsctrainingandnutritiontracker.repositories;
 
 import android.content.ContentValues;
 import android.util.Log;
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 import androidx.annotation.NonNull;
 
@@ -15,20 +14,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import java.util.Date;
 
-import zachg.gsctrainingandnutritiontracker.models.Message;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FirestoreRepository {
 
@@ -41,8 +36,6 @@ public class FirestoreRepository {
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
-    public final CollectionReference messageColRef = db.collection("messages");
-    public Query messageQuery = messageColRef.orderBy("date");
 
     // Gets singleton instance of FirestoreRepository
     public static FirestoreRepository getInstance(){
@@ -103,19 +96,9 @@ public class FirestoreRepository {
         userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
-    // Fetches a User's messages
-    public FirestoreRecyclerOptions<Message> getMessagesFromRepo(User user) {
-        Query messageQuery = userColRef.document(user.getEmail()).collection("messages").orderBy("date");
-        messageQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
-
-        return new FirestoreRecyclerOptions.Builder<Message>()
-                .setQuery(messageQuery, Message.class)
-                .build();
-    }
-
     // Gets all Reports for a single User
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user) {
-        CollectionReference reportColRef = userColRef.document(user.getClientName())
+        CollectionReference reportColRef = userColRef.document(user.getEmail())
                 .collection("reports");
         Query reportQuery = reportColRef.orderBy("date");
         return new FirestoreRecyclerOptions.Builder<Report>()
@@ -124,16 +107,11 @@ public class FirestoreRepository {
     }
 
     // Gets all of a single User's reports on a specific date
-    public DocumentReference getReportByDate(User user, String date) {
-        DocumentReference docRef = userColRef.document(user.getClientName())
-                .collection("reports").document(date);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Report report = documentSnapshot.toObject(Report.class);
-            }
-        });
-        return docRef;
+    public void getReportByDate(User user, Date date) {
+        Log.d(TAG, "in repo now" + date);
+        Query reportQuery = userColRef.document(user.getEmail())
+                .collection("reports").whereEqualTo("date", date);
+        reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
     // Returns Workouts as assigned by admin

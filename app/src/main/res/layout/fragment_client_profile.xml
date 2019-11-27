@@ -9,17 +9,14 @@
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
+            name="cal"
+            type="android.widget.CalendarView"/>
+        <variable
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.ClientProfileFragment"/>
         <variable
-            name="date"
-            type="java.util.Date"/>
-        <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel" />
-        <variable
-            name="handlers"
-            type="zachg.gsctrainingandnutritiontracker.handlers.OnClickHandlers"/>
 
     </data>
 
@@ -53,15 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cal"
-            android:onSelectedDayChange="@{()->fragment.onDateSelected(user, date)}"/>
-
-        <Button
-            android:id="@+id/bSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="@string/selectReport"
-            android:onClick="@{()-> fragment.onDateSelected(user, date)}"/>
+            android:onSelectedDayChange="@{()->fragment.onDateSelected()}"/>
 
 </LinearLayout>
 </layout>

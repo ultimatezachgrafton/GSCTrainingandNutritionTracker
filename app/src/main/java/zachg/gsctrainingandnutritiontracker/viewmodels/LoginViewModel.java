@@ -66,6 +66,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());
+            return;
         }
     }
 }

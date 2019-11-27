@@ -38,10 +38,10 @@ public class ReportViewModel extends ViewModel {
         Log.d("mReports", String.valueOf(dailyWeight.get()));
 
         comments.set(report.getComments());
-        Report generatedReport = new Report(report.getClientName(), report.getDateString(), String.valueOf(dailyWeight.get()), String.valueOf(comments.get()));
+        Report generatedReport = new Report(report.getClientName(), report.getDate(), String.valueOf(dailyWeight.get()), String.valueOf(comments.get()));
 
         repo.db.collection("users").document(report.getClientName()).collection("reports")
-                .document(report.getDateString())
+                .document(String.valueOf(report.getDate()))
                 .set(generatedReport)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

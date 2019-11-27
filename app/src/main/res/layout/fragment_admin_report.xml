@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/client_name"
                 android:layout_toRightOf="@id/client_photo"
-                android:text="@{report.dateString}"
                 android:textSize="18sp" />
 
             <TextView

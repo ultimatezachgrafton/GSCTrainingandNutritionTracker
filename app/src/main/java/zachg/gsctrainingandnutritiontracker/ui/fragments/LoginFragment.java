@@ -64,10 +64,8 @@ public class LoginFragment extends Fragment {
                 if (user == null) {
                     Toast.makeText(getContext(), "That user does not exist.", Toast.LENGTH_SHORT).show();
                 } else if (user.getIsAdmin()) {
-                    Log.d(TAG, "isAdmin");
                     goToAdminList(user);
                 } else if (!user.getIsAdmin()) {
-                    Log.d(TAG, "notAdmin");
                     goToProfile(user);
                 }
             }
@@ -77,6 +75,7 @@ public class LoginFragment extends Fragment {
     }
 
     public void onLoginClick(final String email, final String password) {
+        // TODO: make toast into accurate progress bar
         Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
         // Check if login values are valid
         loginViewModel.verifyUser(email, password);
