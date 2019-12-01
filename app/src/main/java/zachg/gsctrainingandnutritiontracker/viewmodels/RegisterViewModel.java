@@ -9,22 +9,16 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class RegisterViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference userColRef = db.collection("users");
 
     public String firstName, lastName, email, password;
 
@@ -35,12 +29,14 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     public ObservableField<String> etConfirmPassword = new ObservableField<>();
     public MutableLiveData<User> newUser = new MutableLiveData<>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isDuplicate;
+    public MutableLiveData<Boolean> isDuplicate = new MutableLiveData<>();
 
     private static String REGISTER_ERROR = "Please fill in all fields";
     private static String PASSWORD_ERROR = "Passwords do not match.";
     private static String DUPLICATE_ERROR = "This email is already in use.";
     private static String CLIENT_ADDED = "Registering client! Please give us a moment...";
+
+    private String TAG = "RegisterViewModel";
 
     public void init() {
         repo.setSnapshotOnCompleteListener(this);
@@ -83,6 +79,7 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         repo.duplicateEmailCheck(email);
     }
 
+    // sets user values
     public void setUserValues(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
