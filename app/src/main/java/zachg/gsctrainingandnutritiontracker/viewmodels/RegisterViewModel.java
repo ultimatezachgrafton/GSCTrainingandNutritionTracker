@@ -15,6 +15,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class RegisterViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
@@ -40,6 +42,7 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
 
     public void init() {
         repo.setSnapshotOnCompleteListener(this);
+        isDuplicate.setValue(true);
     }
 
     public void registerUserCheck(final String firstName, final String lastName, final String email, final String password, String confirmPassword) {
@@ -52,7 +55,8 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
             return;
         }
         setUserValues(firstName, lastName, email, password);
-        duplicateUserCheck(email);
+        isDuplicate.setValue(false);
+        //duplicateUserCheck(email);
     }
 
     public void registerUser() {
@@ -87,19 +91,11 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         this.password = password;
     }
 
-    public void setDuplicateTrue() {
-        onError.setValue(DUPLICATE_ERROR);
-        return;
-    }
-
+    // TODO: FIX THIS
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        Log.d(TAG, "oncomplete");
         if (task.isSuccessful()) {
-            Log.d(TAG, "task size:" + String.valueOf(task.getResult().size()));
-            if (task.getResult().size() > 0) {
-                isDuplicate.setValue(true);
-            } else {
+            if (!(task.getResult().size() > 0)) {
                 isDuplicate.setValue(false);
             }
         } else {

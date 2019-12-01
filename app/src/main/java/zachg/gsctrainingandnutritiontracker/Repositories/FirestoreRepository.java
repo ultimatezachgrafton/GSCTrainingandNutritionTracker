@@ -25,6 +25,8 @@ import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class FirestoreRepository {
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -91,7 +93,7 @@ public class FirestoreRepository {
     }
 
     // Validate that registered User's email is not currently in use
-    public void duplicateEmailCheck(final String email) {
+    public void duplicateEmailCheck(String email) {
         Query userQuery = userColRef.whereEqualTo("email", email);
         userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }

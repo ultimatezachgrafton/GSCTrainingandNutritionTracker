@@ -67,9 +67,8 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (!aBoolean) {
+                    Log.d(TAG, "observer");
                     registerViewModel.registerUser();
-                } else {
-                    registerViewModel.setDuplicateTrue();
                 }
             }
         });

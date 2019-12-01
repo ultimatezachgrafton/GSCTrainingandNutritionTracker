@@ -6,7 +6,7 @@
             name="report"
             type="zachg.gsctrainingandnutritiontracker.models.Report"/>
         <variable
-            name="ReportFragment"
+            name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.ReportFragment"/>
         <variable
             name="ReportViewModel"
@@ -57,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/client_name"
         android:layout_toRightOf="@id/client_photo"
+        android:text="@{report.dateString}"
         android:textSize="18sp" />
 
     <TextView
@@ -95,13 +96,10 @@
         android:id="@+id/bSendReport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/send_report"
-        android:onClick="@()->ReportFragment.sendReport()"
-        android:layout_below="@id/etWeight" />
+        android:layout_below="@id/etComments"
+        android:clickable="true"
+        android:onClick="@{()->fragment.sendReport()}" />
 
     </RelativeLayout>
 

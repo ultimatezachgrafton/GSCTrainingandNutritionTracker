@@ -1,6 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
@@ -29,10 +27,8 @@ import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
@@ -79,43 +75,17 @@ public class ReportFragment extends Fragment {
         final View v = binding.getRoot();
         binding.setReport(currentReport);
 
-        FirestoreRepository repo = new FirestoreRepository();
-        //FirestoreRecyclerOptions<Workout> workoutOptions = mRepo.getWorkoutsFromRepo(currentUser);
-
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        //reportViewModel.init(workoutOptions);
-
-        // TODO: viewModel
-        LocalDate date = LocalDate.now();
-        dateString = String.valueOf(Calendar.getInstance().getTime());
-        String dateFormat = getResources().getString(R.string.date);
-        final String dateMsg = String.format(dateFormat, date);
-//        tvDate.setText(dateMsg);
-
-//        updatePhotoView();
+        reportViewModel.init(currentUser);
 
         return v;
     }
 
-    private void sendReport() {
+    public void sendReport() {
+        Log.d(TAG, "send Report");
         reportViewModel.writeReport(currentReport);
         currentReport.setIsNew(false);
     }
-
-//    private void updatePhotoView() {
-//        if (photoFile == null || !photoFile.exists()) {
-//            photoView.setImageDrawable(null);
-//            photoView.setContentDescription(
-//                    getString(R.string.report_photo_no_image_description)
-//            );
-//        } else {
-//            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
-//            photoView.setImageBitmap(bitmap);
-//            photoView.setContentDescription(
-//                    getString(R.string.report_photo_image_description)
-//            );
-//        }
-//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

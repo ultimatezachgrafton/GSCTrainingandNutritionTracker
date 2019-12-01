@@ -4,38 +4,50 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class ReportViewModel extends ViewModel {
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
+public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo;
     private ObservableField<String> dailyWeight = new ObservableField<>();
     private ObservableField<String> comments = new ObservableField<>();
-    private FirestoreRecyclerOptions<Workout> workouts;
+    private MutableLiveData<User> currentUser = new MutableLiveData<>();
+    private MutableLiveData<Workout> workouts;
+    public String TAG = "ReportViewModel";
 
     public ReportViewModel() {}
 
     // init getting null data for user
-    public void init(FirestoreRecyclerOptions<Workout> options) {
+    public void init(User user) {
         repo = FirestoreRepository.getInstance();
-        this.workouts = options;
+        currentUser.setValue(user);
+        repo.setSnapshotOnCompleteListener(this);
+        getWorkouts();
     }
 
-    // TODO: iterateWorkouts after loading this workout;
+    public void getWorkouts() {
+        repo.getWorkoutsFromRepo(currentUser.getValue());
+    }
 
     // Writes report to the Repository
     public void writeReport(Report report) {
+        Log.d(TAG, "write Report");
         dailyWeight.set(report.getDailyWeight());
-
-        Log.d("mReports", String.valueOf(dailyWeight.get()));
 
         comments.set(report.getComments());
         Report generatedReport = new Report(report.getClientName(), report.getDate(), String.valueOf(dailyWeight.get()), String.valueOf(comments.get()));
@@ -56,5 +68,21 @@ public class ReportViewModel extends ViewModel {
                     }
                 });
         // TODO: write iterated workoutNum to user's fstore data
+    }
+
+
+    // TODO: iterateWorkouts after saving workout;
+
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot doc : task.getResult()) {
+                Workout workout = doc.toObject(Workout.class);
+                workouts.setValue(workout);
+            }
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+            return;
+        }
     }
 }

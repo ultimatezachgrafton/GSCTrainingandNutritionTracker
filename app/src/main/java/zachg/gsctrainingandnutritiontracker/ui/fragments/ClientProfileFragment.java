@@ -55,10 +55,12 @@ public class ClientProfileFragment extends Fragment {
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                    goToReport();
+                goToReport();
             }
         });
 
+        // TODO: TEMP MEASURE BYPASS
+        goToReport();
         return v;
     }
 
@@ -92,7 +94,7 @@ public class ClientProfileFragment extends Fragment {
     }
 
     public void onDateSelected() {
-        // TODO: get date from binding adapter
+        // TODO: get date from binding adapter, currently gives current date
         Log.d(TAG, "onDateSelected: " + date);
         clientProfileViewModel.getReportByDate(currentUser, date);
     }

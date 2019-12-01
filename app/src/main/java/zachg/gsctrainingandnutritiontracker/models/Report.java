@@ -7,6 +7,7 @@ import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class Report extends BaseObservable {
 
     private String reportId; // unique ID
     private Date date;
+    private String dateString;
     private String clientName; // client's name
     private String dailyWeight; // client's weight
 
@@ -55,6 +57,17 @@ public class Report extends BaseObservable {
     public void setDate(Date date) {
         this.date = date;
         notifyPropertyChanged(BR.date);
+    }
+
+    // date string to view in TextViews
+    @Bindable
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = String.valueOf(getDate());
+        notifyPropertyChanged(BR.dateString);
     }
 
     public void setComments(String comments) {
