@@ -30,11 +30,11 @@ public class RegisterFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        // Inflate and bind the layout for this fragment
+        // Inflate and bind the layout for this fragment_report_list
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
 
-        // Bind this fragment
+        // Bind this fragment_report_list
         binding.setFragment(this);
 
         // Bind user

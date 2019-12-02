@@ -41,7 +41,7 @@ public class ClientProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Inflate the layout for this fragment
+        //Inflate the layout for this fragment_report_list
         binding = FragmentClientProfileBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setUser(currentUser);

@@ -30,7 +30,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        //Inflate and bind the layout for this fragment
+        //Inflate and bind the layout for this fragment_report_list
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
 
@@ -39,7 +39,7 @@ public class LoginFragment extends Fragment {
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.init();
 
-        // Bind this fragment
+        // Bind this fragment_report_list
         binding.setFragment(this);
 
         // Bind User

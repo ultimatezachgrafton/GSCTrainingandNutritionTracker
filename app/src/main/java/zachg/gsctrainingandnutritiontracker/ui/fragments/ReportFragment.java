@@ -13,30 +13,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
 
-    // fragment for Users to fill out their current workout
+    // fragment_report_list for Users to fill out their current workout
 
     private ReportViewModel reportViewModel = new ReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private WorkoutListAdapter workoutListAdapter;
 
     private FragmentReportBinding binding;
 
@@ -70,15 +74,61 @@ public class ReportFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
         binding = FragmentReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setReport(currentReport);
 
+        binding.setReportViewModel(reportViewModel);
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(currentUser);
+        reportViewModel.init(currentUser, currentReport);
+
+        reportViewModel.getWorkouts(currentUser).observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
+            @Override
+            public void onChanged(FirestoreRecyclerOptions<Workout> workouts) {
+                initRecyclerView(workouts);
+                workoutListAdapter.startListening();
+            }
+        });
+
+//        reportViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(@Nullable Boolean aBoolean) {
+//                if (!aBoolean) {
+//                    binding.rvWorkout.smoothScrollToPosition(reportViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
+//                }
+//            }
+//
+//        });
 
         return v;
+    }
+
+    private void initRecyclerView(FirestoreRecyclerOptions<Workout> workouts) {
+        workoutListAdapter = new WorkoutListAdapter(workouts);
+        binding.rvWorkout.setAdapter(workoutListAdapter);
+
+        binding.rvWorkout.setHasFixedSize(true);
+        binding.rvWorkout.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//        workoutListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+//               // currentUser = reportViewModel.onItemClicked(documentSnapshot, position);
+//                // Goes to client's profile fragment_report_list
+//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
+//            }
+//        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    public void onStop() {
+        super.onStop();
+        workoutListAdapter.stopListening();
     }
 
     public void sendReport() {

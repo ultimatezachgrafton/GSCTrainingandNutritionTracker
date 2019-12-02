@@ -53,7 +53,6 @@ public class AdminUserListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
-
         binding.setUser(currentUser);
 
         // Gets ViewModel instance to observe  LiveData
@@ -93,7 +92,7 @@ public class AdminUserListFragment extends Fragment {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 currentUser = adminListViewModel.onItemClicked(documentSnapshot, position);
-                // Goes to client's profile fragment
+                // Goes to client's profile fragment_report_list
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
             }

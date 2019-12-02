@@ -85,13 +85,20 @@
         android:text="@string/exercises"
         android:layout_below="@id/etWeight"/>
 
-    <EditText
-        android:id="@+id/etComments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/comments"
-        android:layout_below="@id/separator2" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvWorkout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/separator2"
+                android:background="@android:color/darker_gray"
+                tools:listitem="@layout/rvuser_item" />
 
+        <EditText
+            android:id="@+id/etComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/comments"
+            android:layout_below="@id/rvWorkout" />
     <Button
         android:id="@+id/bSendReport"
         android:layout_width="match_parent"

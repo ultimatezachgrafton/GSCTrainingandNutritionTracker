@@ -118,10 +118,7 @@ public class FirestoreRepository {
 
     // Returns Workouts as assigned by admin
     public void getWorkoutsFromRepo(User user) {
-        DocumentReference workoutDocRef = userColRef.document(user.getEmail());
-        CollectionReference workoutColRef = workoutDocRef.collection("workouts");
-        Query workoutQuery = workoutColRef;
-        Log.d(TAG, "inside workouts getter");
+        Query workoutQuery = userColRef.whereEqualTo("email", user.getEmail());
         workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 

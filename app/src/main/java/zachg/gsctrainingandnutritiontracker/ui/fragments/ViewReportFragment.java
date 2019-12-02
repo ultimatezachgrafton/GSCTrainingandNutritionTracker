@@ -29,11 +29,11 @@ import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel;
 
-// TODO: change to dialog fragment that shows the info
+// TODO: change to dialog fragment_report_list that shows the info
 
 public class ViewReportFragment extends Fragment {
 
-    // fragment for viewing past reports
+    // fragment_report_list for viewing past reports
 
     private ViewReportViewModel adminReportViewModel;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
