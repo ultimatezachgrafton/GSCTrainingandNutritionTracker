@@ -61,5 +61,6 @@
     <string name="register_new">Register New User</string>
     <string name="selectWorkout">Select Workout</string>
     <string name="selectReport">Select Report</string>
+    <string name="exercise1">Exercise 1:</string>
 
 </resources>

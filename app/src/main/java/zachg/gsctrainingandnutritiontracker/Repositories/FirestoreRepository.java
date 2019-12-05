@@ -117,9 +117,12 @@ public class FirestoreRepository {
     }
 
     // Returns Workouts as assigned by admin
-    public void getWorkoutsFromRepo(User user) {
+    public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
         Query workoutQuery = userColRef.whereEqualTo("email", user.getEmail());
-        workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        //workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        return new FirestoreRecyclerOptions.Builder<Workout>()
+                .setQuery(workoutQuery, Workout.class)
+                .build();
     }
 
     public void registerUser(User user) {
@@ -140,9 +143,9 @@ public class FirestoreRepository {
                 });
     }
 
-    public void writeWorkoutsToRepo(Workout workout) {
-        db.collection("users").document(workout.getEmail()).collection("workouts")
-                .document(String.valueOf(workout.getExerciseNum()))
+    public void writeWorkoutsToRepo(User user, Workout workout) {
+        db.collection("users").document(user.getEmail()).collection("workouts")
+                .document(String.valueOf(workout.getWorkoutTitle()))
                 .set(workout)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

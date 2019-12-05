@@ -19,17 +19,13 @@
             type="String"/>
     </data>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_margin="16dp">Relative
 
     <ImageView
         android:id="@+id/client_photo"
@@ -77,6 +73,7 @@
         android:layout_toRightOf="@id/separator1"
         android:layout_alignBaseline="@id/separator1"/>
 
+
     <TextView
         android:id="@+id/separator2"
         style="?android:listSeparatorTextViewStyle"
@@ -85,23 +82,25 @@
         android:text="@string/exercises"
         android:layout_below="@id/etWeight"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvWorkout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/separator2"
-                android:background="@android:color/darker_gray"
-                tools:listitem="@layout/rvuser_item" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator2"
+        android:background="@android:color/darker_gray"
+        tools:listitem="@layout/rvuser_item"
+        android:layout_weight="1"/>
 
-        <EditText
-            android:id="@+id/etComments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/comments"
-            android:layout_below="@id/rvWorkout" />
+    <EditText
+        android:id="@+id/etComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/comments"
+        android:layout_below="@id/rvWorkout" />
+
     <Button
         android:id="@+id/bSendReport"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/send_report"
         android:layout_below="@id/etComments"
@@ -110,5 +109,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
 </layout>

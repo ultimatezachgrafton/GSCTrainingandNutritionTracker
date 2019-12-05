@@ -4,11 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
@@ -18,7 +20,10 @@ public class AdminClientProfileViewModel extends ViewModel {
     private FirestoreRepository repo;
     private User currentUser = new User();
 
-    private ObservableField<String> exerciseName, exerciseNum, reps, day = new ObservableField<>();
+    private ObservableField<String> exerciseName = new ObservableField<>();
+    private ObservableField<String> workoutTitle = new ObservableField<>();
+    private ObservableField<String> reps = new ObservableField<>();
+    private ObservableField<String> day = new ObservableField<>();
 
     public AdminClientProfileViewModel() {
         // required empty constructor
@@ -35,14 +40,22 @@ public class AdminClientProfileViewModel extends ViewModel {
 
     public void writeToWorkouts() {
         Workout workout = new Workout();
-        exerciseName.set(workout.getExerciseName());
-        exerciseNum.set(workout.getExerciseNum());
-        reps.set(workout.getReps());
-        day.set(workout.getDay());
+        Exercise exercise = new Exercise();
+        exerciseName.set(exercise.getExerciseName());
+        reps.set(exercise.getReps());
+        day.set(exercise.getDay());
 
-        Workout generatedWorkout = new Workout(currentUser.getClientName(), currentUser.getEmail(), exerciseName.get(), exerciseNum.get(), reps.get(),
-                day.get());
+        workout.setWorkoutTitle("karate");
+        workout.setExerciseListItem(exercise);
+        repo.writeWorkoutsToRepo(currentUser, workout);
 
-        repo.writeWorkoutsToRepo(generatedWorkout);
+        // TODO: write exercise to workout array at value == exerciseNum
+//        for (int i = 0; i < workout.getArraySize(); i++) {
+//            workout.setExerciseListItem(i, exercise);
+//        }
+
+//        // creates a collection with the collection id named after the workoutTitle
+//        Workout generatedWorkout = new Workout(currentUser.getClientName(), currentUser.getEmail(), exerciseName.get(), exerciseNum.get(), reps.get(),
+//                day.get());
     }
 }

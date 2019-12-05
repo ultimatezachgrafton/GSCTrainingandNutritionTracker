@@ -39,6 +39,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/bCamera" />
 
+        <TextView
+            android:id="@+id/tvExerciseNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exercise1"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,12 +61,6 @@
             android:hint="Enter name"
             android:inputType="text"
             android:singleLine="true" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etExerciseNum"
-            android:hint="Enter exercise number"/>
 
         <EditText
             android:layout_width="match_parent"

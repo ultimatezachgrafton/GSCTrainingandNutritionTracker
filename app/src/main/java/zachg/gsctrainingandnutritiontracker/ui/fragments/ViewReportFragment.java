@@ -68,7 +68,7 @@ public class ViewReportFragment extends Fragment {
         adminReportViewModel.init(currentUser, currentReport);
 
         // if user has sent a report on this day, it displays the data sent
-        updatePhotoView();
+//        updatePhotoView();
 
         adminReportViewModel.getReport().observe(this, new Observer<Report>() {
             @Override
@@ -80,20 +80,20 @@ public class ViewReportFragment extends Fragment {
         return v;
     }
 
-    private void updatePhotoView() {
-        if (photoFile == null || !photoFile.exists()) {
-            photoView.setImageDrawable(null);
-            photoView.setContentDescription(
-                    getString(R.string.report_photo_no_image_description)
-            );
-        } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
-            photoView.setImageBitmap(bitmap);
-            photoView.setContentDescription(
-                    getString(R.string.report_photo_image_description)
-            );
-        }
-    }
+//    private void updatePhotoView() {
+//        if (photoFile == null || !photoFile.exists()) {
+//            photoView.setImageDrawable(null);
+//            photoView.setContentDescription(
+//                    getString(R.string.report_photo_no_image_description)
+//            );
+//        } else {
+//            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
+//            photoView.setImageBitmap(bitmap);
+//            photoView.setContentDescription(
+//                    getString(R.string.report_photo_image_description)
+//            );
+//        }
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -1,5 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-
-import static zachg.gsctrainingandnutritiontracker.BR.workout;
 
 public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, WorkoutListAdapter.WorkoutViewHolder> {
     private OnItemClickListener listener;
@@ -68,8 +66,8 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
 
     @Override
     public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
-//        holder.tvClientName.setText(workout.getExerciseName());
-//        holder.tvEmail.setText(user.getEmail());
+        Log.d("bind", "Bind");
+//        holder.tvClientName.setText(workout.getWorkoutTitle());
     }
 
 }

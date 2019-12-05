@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,7 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
 
-    // fragment_report_list for Users to fill out their current workout
+    // For Users to fill out their workout as they complete it
 
     private ReportViewModel reportViewModel = new ReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -44,7 +43,6 @@ public class ReportFragment extends Fragment {
 
     private FragmentReportBinding binding;
 
-    private Button bReport;
     private File photoFile;
     private ImageView photoView;
     private String clientName, dateString;
@@ -82,23 +80,24 @@ public class ReportFragment extends Fragment {
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
         reportViewModel.init(currentUser, currentReport);
 
-        reportViewModel.getWorkouts(currentUser).observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
+        reportViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Workout> workouts) {
+                Log.d(TAG, "listening");
                 initRecyclerView(workouts);
                 workoutListAdapter.startListening();
             }
         });
 
-//        reportViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(@Nullable Boolean aBoolean) {
-//                if (!aBoolean) {
-//                    binding.rvWorkout.smoothScrollToPosition(reportViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
-//                }
-//            }
-//
-//        });
+        reportViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (!aBoolean) {
+                    binding.rvWorkout.smoothScrollToPosition(reportViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
+                }
+            }
+
+        });
 
         return v;
     }
@@ -107,18 +106,8 @@ public class ReportFragment extends Fragment {
         workoutListAdapter = new WorkoutListAdapter(workouts);
         binding.rvWorkout.setAdapter(workoutListAdapter);
 
-        binding.rvWorkout.setHasFixedSize(true);
+//        binding.rvWorkout.setHasFixedSize(true);
         binding.rvWorkout.setLayoutManager(new LinearLayoutManager(getContext()));
-
-//        workoutListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-//               // currentUser = reportViewModel.onItemClicked(documentSnapshot, position);
-//                // Goes to client's profile fragment_report_list
-//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
-//            }
-//        });
     }
 
     @Override

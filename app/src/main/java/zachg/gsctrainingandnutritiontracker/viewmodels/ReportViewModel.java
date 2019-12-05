@@ -7,10 +7,12 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -22,12 +24,12 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo;
-    private ObservableField<String> dailyWeight = new ObservableField<>();
-    private ObservableField<String> comments = new ObservableField<>();
-    private MutableLiveData<Workout> workouts = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
-    private Report currentReport = new Report();
-    private User currentUser = new User();
+    public ObservableField<String> dailyWeight = new ObservableField<>();
+    public ObservableField<String> comments = new ObservableField<>();
+    public MutableLiveData<FirestoreRecyclerOptions<Workout>> workouts = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
+    public Report currentReport = new Report();
+    public User currentUser = new User();
     public String TAG = "ReportViewModel";
 
     public ReportViewModel() {}
@@ -38,11 +40,15 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         this.currentUser = user;
         this.currentReport = report;
         repo.setSnapshotOnCompleteListener(this);
-        getWorkouts(user);
+        workouts.setValue(repo.getWorkoutsFromRepo(user));
     }
 
-    public void getWorkouts(User user) {
-        repo.getWorkoutsFromRepo(user);
+    public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {
+        return workouts;
+    }
+
+    public MutableLiveData<Boolean> getIsUpdating() {
+        return isUpdating;
     }
 
     // Writes report to the Repository
@@ -71,7 +77,6 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         // TODO: write iterated workoutNum to user's fstore data
     }
 
-
     // TODO: iterateWorkouts after saving workout;
 
     @Override
@@ -79,7 +84,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         if (task.isSuccessful()) {
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 Workout workout = doc.toObject(Workout.class);
-                workouts.setValue(workout);
+                //workouts.setValue(workout);
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());

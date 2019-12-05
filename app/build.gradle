@@ -37,7 +37,7 @@ android {
 dependencies {
     def nav_version = "2.1.0-alpha04"
 
-    implementation "androidx.navigation:navigation-fragment_report_list:$nav_version" // For Kotlin use navigation-fragment_report_list-ktx
+    implementation "androidx.navigation:navigation-fragment:$nav_version" // For Kotlin use navigation-fragment_report_list-ktx
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation 'com.google.firebase:firebase-firestore:19.0.0'

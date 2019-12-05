@@ -2,14 +2,18 @@ package zachg.gsctrainingandnutritiontracker.models;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Workout extends BaseObservable {
 
-    private String email;
-    private String clientName, exerciseName, exerciseNum, reps, exerciseWeight, day;
+    private String email, clientName, workoutTitle;
     private int selectedItemPosition;
+    private boolean prevWorkout = false;
+    private List<Exercise> exerciseList = new ArrayList<>();
     private User currentUser = new User();
 
     public Workout(User user){
@@ -17,13 +21,10 @@ public class Workout extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Workout(String clientName, String email, String exerciseName, String exerciseNum, String reps, String day) {
+    public Workout(String clientName, String email, String workoutTitle) {
         this.clientName = clientName;
         this.email = email;
-        this.exerciseName = exerciseName;
-        this.exerciseNum = exerciseNum;
-        this.reps = reps;
-        this.day = day;
+        this.workoutTitle = workoutTitle;
     }
 
     public Workout() {}
@@ -34,35 +35,6 @@ public class Workout extends BaseObservable {
     }
 
     public void setClientName(String username) { clientName = username; }
-
-    @Bindable
-    public String getExerciseName() { return exerciseName; }
-
-    public void setExerciseName(String exerciseName) {
-        this.exerciseName = exerciseName;
-    }
-
-    public String getReps() { return reps; }
-
-    public void setReps(String reps) {
-        this.reps = reps;
-    }
-
-    public String getExerciseWeight() {
-        return this.exerciseWeight;
-    }
-
-    public void setExerciseWeight(String exerciseWeight) {
-        this.exerciseWeight = exerciseWeight;
-    }
-
-    public String getDay() { return day; }
-
-    public void setDay(String day) { this.day = day; }
-
-    public String getExerciseNum() { return exerciseNum; }
-
-    public void setExerciseNum(String exerciseNum) { this.exerciseNum = exerciseNum; }
 
     @Bindable
     public int getSelectedItemPosition() {
@@ -84,4 +56,31 @@ public class Workout extends BaseObservable {
         notifyPropertyChanged(BR.email);
     }
 
+    @Bindable
+    public String getWorkoutTitle() {
+        return workoutTitle;
+    }
+
+    public void setWorkoutTitle(String workoutTitle) {
+        this.workoutTitle = workoutTitle;
+        notifyPropertyChanged(BR.workoutTitle);
+    }
+
+    @Bindable
+    public List<Exercise> getExerciseList() {
+        return exerciseList;
+    }
+
+    public void setExerciseList(List<Exercise> exerciseList) {
+        this.exerciseList = exerciseList;
+        notifyPropertyChanged(BR.exerciseList);
+    }
+
+    public void setExerciseListItem(Exercise exercise) {
+        exerciseList.add(exercise);
+    }
+
+    public int getArraySize() {
+        return exerciseList.size();
+    }
 }
