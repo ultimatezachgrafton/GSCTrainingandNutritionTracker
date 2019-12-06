@@ -76,14 +76,13 @@ public class ReportFragment extends Fragment {
         final View v = binding.getRoot();
         binding.setReport(currentReport);
 
-        binding.setReportViewModel(reportViewModel);
+        binding.setModel(reportViewModel);
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
         reportViewModel.init(currentUser, currentReport);
 
         reportViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Workout> workouts) {
-                Log.d(TAG, "listening");
                 initRecyclerView(workouts);
                 workoutListAdapter.startListening();
             }
@@ -105,8 +104,6 @@ public class ReportFragment extends Fragment {
     private void initRecyclerView(FirestoreRecyclerOptions<Workout> workouts) {
         workoutListAdapter = new WorkoutListAdapter(workouts);
         binding.rvWorkout.setAdapter(workoutListAdapter);
-
-//        binding.rvWorkout.setHasFixedSize(true);
         binding.rvWorkout.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
@@ -118,12 +115,6 @@ public class ReportFragment extends Fragment {
     public void onStop() {
         super.onStop();
         workoutListAdapter.stopListening();
-    }
-
-    public void sendReport() {
-        Log.d(TAG, "send Report");
-        reportViewModel.writeReport(currentReport);
-        currentReport.setIsNew(false);
     }
 
     @Override

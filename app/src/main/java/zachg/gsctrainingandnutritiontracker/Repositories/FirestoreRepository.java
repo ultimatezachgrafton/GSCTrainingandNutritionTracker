@@ -160,4 +160,22 @@ public class FirestoreRepository {
                     }
                 });
     }
+
+    public void writeReportToRepo(Report currentReport) {
+        db.collection("users").document(currentReport.getClientName()).collection("reports")
+                .document(String.valueOf(currentReport.getDate()))
+                .set(currentReport)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("reports", "DocumentSnapshot added with ID: ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("reports", "Error writing document", e);
+                    }
+                });
+    }
 }
