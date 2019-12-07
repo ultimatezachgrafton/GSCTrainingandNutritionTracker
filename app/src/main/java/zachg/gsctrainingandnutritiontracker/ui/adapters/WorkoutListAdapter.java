@@ -66,7 +66,6 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
 
     @Override
     public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
-        Log.d("bind", "Bind");
 //        holder.tvClientName.setText(workout.getWorkoutTitle());
     }
 

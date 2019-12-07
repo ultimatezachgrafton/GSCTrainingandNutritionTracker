@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -20,7 +18,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ReportViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public ObservableField<String> dailyWeight = new ObservableField<>();
@@ -38,7 +36,8 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         repo = FirestoreRepository.getInstance();
         this.currentUser = user;
         this.currentReport = report;
-        repo.setSnapshotOnCompleteListener(this);
+        Log.d(TAG, "RVM" + this.currentUser.getClientName());
+        //repo.setSnapshotOnCompleteListener(this);
         workouts.setValue(repo.getWorkoutsFromRepo(user));
     }
 
@@ -52,9 +51,9 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
 
     // Writes report to the Repository
     public void writeReport() {
-        Log.d(TAG, "write Report");
         dailyWeight.set(currentReport.getDailyWeight());
 
+        Log.d(TAG, "RVM" + currentUser.getClientName());
         comments.set(currentReport.getComments());
         Report generatedReport = new Report(currentUser.getClientName(), currentReport.getDate(), String.valueOf(dailyWeight.get()), String.valueOf(comments.get()));
 
@@ -63,16 +62,4 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         // TODO: iterateWorkouts after saving workout;
     }
 
-    @Override
-    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot doc : task.getResult()) {
-                Workout workout = doc.toObject(Workout.class);
-                //workouts.setValue(workout);
-            }
-        } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-            return;
-        }
-    }
 }

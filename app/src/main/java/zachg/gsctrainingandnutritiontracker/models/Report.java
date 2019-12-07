@@ -147,7 +147,7 @@ public class Report extends BaseObservable {
 
     public void setIsNew(boolean isNew) { this.isNew = isNew; }
 
-    public String getPhotoFilename() { return "IMG_" + getReportId().toString() + ".jpg"; }
+//    public String getPhotoFilename() { return "IMG_" + getReportId().toString() + ".jpg"; }
 
     public String getComments() { return comments; }
 

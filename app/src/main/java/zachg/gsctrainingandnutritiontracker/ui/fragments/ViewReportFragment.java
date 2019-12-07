@@ -1,6 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,7 +26,6 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminReportBindi
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel;
 
 // TODO: change to dialog fragment_report_list that shows the info
@@ -34,7 +33,6 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel;
 public class ViewReportFragment extends Fragment {
 
     // fragment_report_list for viewing past reports
-
     private ViewReportViewModel adminReportViewModel;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
