@@ -4,10 +4,10 @@ package zachg.gsctrainingandnutritiontracker.models;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,10 +42,11 @@ public class Report extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Report(String clientName, Date date, String dailyWeight, String comments) {
+    public Report(String clientName, String dailyWeight, String exerciseWeight, String comments) {
         this.clientName = clientName;
-        this.date = date;
+        //this.date = date;
         this.dailyWeight = dailyWeight;
+        this.exerciseWeight = exerciseWeight;
         this.comments = comments;
     }
 
@@ -70,8 +71,12 @@ public class Report extends BaseObservable {
         notifyPropertyChanged(BR.dateString);
     }
 
+    @Bindable
+    public String getComments() { return comments; }
+
     public void setComments(String comments) {
         this.comments = comments;
+        notifyPropertyChanged(BR.comments);
     }
 
     public boolean isNew() {
@@ -130,11 +135,15 @@ public class Report extends BaseObservable {
             return reportId;
         }
 
+    @Bindable
     public String getClientName() {
         return clientName;
     }
 
-    public void setClientName(String client) { clientName = client; }
+    public void setClientName(String client) {
+        clientName = client;
+        notifyPropertyChanged(BR.clientName);
+    }
 
     @Bindable
     public String getDailyWeight() { return dailyWeight; }
@@ -148,8 +157,6 @@ public class Report extends BaseObservable {
     public void setIsNew(boolean isNew) { this.isNew = isNew; }
 
 //    public String getPhotoFilename() { return "IMG_" + getReportId().toString() + ".jpg"; }
-
-    public String getComments() { return comments; }
 
     @Bindable
     public String getFullReport() {

@@ -161,9 +161,11 @@ public class FirestoreRepository {
                 });
     }
 
+
+    // TODO: fix date and clientname
     public void writeReportToRepo(Report currentReport) {
-        db.collection("users").document(currentReport.getClientName()).collection("reports")
-                .document(String.valueOf(currentReport.getDate()))
+        db.collection("users").document("pip").collection("reports")
+                .document(String.valueOf("date"))//currentReport.getDate()))
                 .set(currentReport)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

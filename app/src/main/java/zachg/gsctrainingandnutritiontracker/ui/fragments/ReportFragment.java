@@ -1,6 +1,12 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +58,7 @@ public class ReportFragment extends Fragment {
     private User currentUser = new User();
     private Report currentReport = new Report();
 
+    private static final int REQUEST_CONTACT = 1;
     public String TAG = "ReportFragment";
 
     public ReportFragment() {}
@@ -59,10 +66,6 @@ public class ReportFragment extends Fragment {
     public ReportFragment(Report report, User user) {
         this.currentReport = report;
         this.currentUser = user;
-        this.currentReport.setClientName(user.getClientName());
-        this.clientName = currentReport.getClientName();
-//        this.date = report.getDate();
-//        Log.d(TAG, String.valueOf(date));
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -75,10 +78,11 @@ public class ReportFragment extends Fragment {
         binding = FragmentReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setReport(currentReport);
+        binding.setUser(currentUser);
 
         binding.setModel(reportViewModel);
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(currentUser, currentReport);
+        reportViewModel.init(currentUser);
 
         reportViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
@@ -97,6 +101,18 @@ public class ReportFragment extends Fragment {
             }
 
         });
+
+        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult( pickContact, REQUEST_CONTACT);
+        pickContact.addCategory(Intent.CATEGORY_HOME);
+
+        PackageManager packageManager = getActivity().getPackageManager();
+        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {  }
+
+        Intent i = new Intent(Intent.ACTION_SEND); i.setType(" text/ plain");
+        i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+        i.putExtra(Intent.EXTRA_SUBJECT, getString( R.string.crime_report_subject));
+        i = Intent.createChooser( i, getString( R.string.send_report)); startActivity( i);
 
         return v;
     }
@@ -129,6 +145,7 @@ public class ReportFragment extends Fragment {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
             case R.id.bInbox:
+
 //                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
 //                        new InboxFragment(currentUser)).addToBackStack(null).commit();
                 return true;
@@ -139,5 +156,27 @@ public class ReportFragment extends Fragment {
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CONTACT && data != null) {
+            Uri contactUri = data.getData();
+            // Specify which fields you want your query to return values for
+            String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
+            // Perform your query - the contactUri is like a "where" clause here
+            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
+            try {
+                // Double-check that you actually got results
+                if (c.getCount() == 0) {
+                    return;
+                }
+                // Pull out the first column of the first row of data - that is your suspect's name
+                c.moveToFirst();
+                String suspect = c.getString(0);
+            } finally {
+                c.close();
+            }
+        }
     }
 }

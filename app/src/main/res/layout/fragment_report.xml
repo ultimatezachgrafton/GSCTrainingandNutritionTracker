@@ -17,6 +17,9 @@
         <variable
             name="comments"
             type="String"/>
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
     </data>
 
 <RelativeLayout
@@ -25,7 +28,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp">Relative
+    android:layout_margin="16dp">
 
     <ImageView
         android:id="@+id/client_photo"
@@ -68,9 +71,9 @@
         android:id="@+id/etWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@={report.dailyWeight}"
+        android:text="@={model.dailyWeight}"
         android:singleLine="true"
-        android:layout_toRightOf="@id/separator1"
+        android:layout_toEndOf="@id/separator1"
         android:layout_alignBaseline="@id/separator1"/>
 
 
@@ -96,6 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/comments"
+        android:text="@={model.comments}"
         android:layout_below="@id/rvWorkout" />
 
     <Button
@@ -105,7 +109,7 @@
         android:text="@string/send_report"
         android:layout_below="@id/etComments"
         android:clickable="true"
-        android:onClick="@{()->model.writeReport()}" />
+        android:onClick="@{()->model.writeReport(user)}" />
 
     </RelativeLayout>
 
