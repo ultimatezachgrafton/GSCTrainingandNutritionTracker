@@ -15,6 +15,9 @@
             name="etLastName"
             type="android.widget.EditText" />
         <variable
+            name="etPhoneNumber"
+            type="android.widget.EditText"/>
+        <variable
             name="etEmail"
             type="android.widget.EditText" />
         <variable
@@ -69,6 +72,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/add_phone" />
+
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/etPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@={user.phoneNumber}"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/add_email" />
 
         <EditText
@@ -113,7 +129,7 @@
             android:layout_height="wrap_content"
             android:text="@string/register"
             android:clickable="true"
-            android:onClick="@{()->fragment.onRegisterClick(user.firstName, user.lastName, user.email, user.password, user.confirmPassword)}" />
+            android:onClick="@{()->fragment.onRegisterClick(user.firstName, user.lastName, user.phoneNumber, user.email, user.password, user.confirmPassword)}" />
 
     </LinearLayout>
 </layout>

@@ -15,18 +15,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class RegisterViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public String firstName, lastName, email, password;
+    public String firstName, lastName, phoneNumber, email, password;
 
     public ObservableField<String> etFirstName = new ObservableField<>();
     public ObservableField<String> etLastName = new ObservableField<>();
     public ObservableField<String> etEmail = new ObservableField<>();
+    public ObservableField<String> etPhoneNumber = new ObservableField<>();
     public ObservableField<String> etPassword = new ObservableField<>();
     public ObservableField<String> etConfirmPassword = new ObservableField<>();
     public MutableLiveData<User> newUser = new MutableLiveData<>();
@@ -45,7 +44,8 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         isDuplicate.setValue(true);
     }
 
-    public void registerUserCheck(final String firstName, final String lastName, final String email, final String password, String confirmPassword) {
+    public void registerUserCheck(final String firstName, final String lastName, final String phoneNumber,
+                                  final String email, final String password, String confirmPassword) {
         if (!isRegisterReady(firstName, lastName, email, password, confirmPassword)) {
             onError.setValue(REGISTER_ERROR);
             return;
@@ -54,7 +54,7 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
             onError.setValue(PASSWORD_ERROR);
             return;
         }
-        setUserValues(firstName, lastName, email, password);
+        setUserValues(firstName, lastName, phoneNumber, email, password);
         isDuplicate.setValue(false);
         //duplicateUserCheck(email);
     }
@@ -84,14 +84,14 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     }
 
     // sets user values
-    public void setUserValues(String firstName, String lastName, String email, String password) {
+    public void setUserValues(String firstName, String lastName, String phoneNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
     }
 
-    // TODO: FIX THIS
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {

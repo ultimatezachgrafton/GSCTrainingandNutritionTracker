@@ -76,8 +76,8 @@ public class RegisterFragment extends Fragment {
         return v;
     }
 
-    public void onRegisterClick(String firstName, String lastName, String email, String password, String confirmPassword) {
-        registerViewModel.registerUserCheck(firstName, lastName, email, password, confirmPassword);
+    public void onRegisterClick(String firstName, String lastName, String phoneNumber, String email, String password, String confirmPassword) {
+        registerViewModel.registerUserCheck(firstName, lastName, phoneNumber, email, password, confirmPassword);
     }
 
     public void returnToLogin() {

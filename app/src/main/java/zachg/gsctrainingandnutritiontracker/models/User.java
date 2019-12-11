@@ -20,6 +20,9 @@ public class User extends BaseObservable {
     private String password;
     private String confirmPassword;
 
+    @NonNull
+    private String phoneNumber;
+
     private boolean isAdmin;
     private boolean isLoggedIn;
 
@@ -119,6 +122,16 @@ public class User extends BaseObservable {
         this.currentWorkoutNum = currentWorkoutNum;
     }
 
+    @NonNull
+    @Bindable
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(@NonNull String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        notifyPropertyChanged(BR.phoneNumber);
+    }
 
     // TODO: incorporate previous loop operations where applicable - in registerUser(), and writeReport()
     public int getPreviousLoopWorkoutNum() {
