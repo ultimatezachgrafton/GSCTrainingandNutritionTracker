@@ -37,6 +37,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter;
+import zachg.gsctrainingandnutritiontracker.utils.ContactUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
@@ -102,17 +103,12 @@ public class ReportFragment extends Fragment {
 
         });
 
-        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        startActivityForResult( pickContact, REQUEST_CONTACT);
-        pickContact.addCategory(Intent.CATEGORY_HOME);
-
-        PackageManager packageManager = getActivity().getPackageManager();
-        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {  }
-
-        Intent i = new Intent(Intent.ACTION_SEND); i.setType(" text/ plain");
-        i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
-        i.putExtra(Intent.EXTRA_SUBJECT, getString( R.string.crime_report_subject));
-        i = Intent.createChooser( i, getString( R.string.send_report)); startActivity( i);
+        // TODO: add to util
+//        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//        startActivityForResult(pickContact, REQUEST_CONTACT);
+//        pickContact.addCategory(Intent.CATEGORY_HOME);
+//        PackageManager packageManager = getActivity().getPackageManager();
+//        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {  }
 
         return v;
     }
@@ -144,10 +140,10 @@ public class ReportFragment extends Fragment {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
-            case R.id.bInbox:
-
-//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new InboxFragment(currentUser)).addToBackStack(null).commit();
+            case R.id.bInbox: ;
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setData(Uri.parse("smsto:" + currentUser.getPhoneNumber()));
+                startActivity(sendIntent);
                 return true;
             case R.id.bLogout:
                 auth.signOut();

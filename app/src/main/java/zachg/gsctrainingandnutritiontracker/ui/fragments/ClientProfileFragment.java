@@ -1,5 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,9 +81,9 @@ public class ClientProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.bInbox:
-                // TODO: go to texting interface
-//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new InboxFragment(currentUser)).addToBackStack(null).commit();
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setData(Uri.parse("sms:"));
+                startActivity(sendIntent);
                 return true;
             case R.id.bLogout:
                 auth.signOut();
