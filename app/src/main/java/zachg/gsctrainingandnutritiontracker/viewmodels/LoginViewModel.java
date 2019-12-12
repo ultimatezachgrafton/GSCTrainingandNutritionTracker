@@ -16,15 +16,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class LoginViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public ObservableField<String> email, password = new ObservableField<>();
     public MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
+    public MutableLiveData<FirebaseUser> firebaseUser = new MutableLiveData<>();
     public MutableLiveData<User> currentUser = new MutableLiveData<>();
     public User user = new User();
+
+    public String TAG = "LoginViewModel";
 
     // Checks if user is logged in
     public void init() {

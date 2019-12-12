@@ -1,6 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,20 +14,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.concurrent.Executor;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentLoginBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.ui.activities.LoginActivity;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class LoginFragment extends Fragment {
 
@@ -37,6 +30,7 @@ public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private User user = new User();
     LoginViewModel loginViewModel = new LoginViewModel();
+    String TAG = "LoginFragment";
 
     public LoginFragment() {}
 
@@ -50,12 +44,6 @@ public class LoginFragment extends Fragment {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-        // Check if user is logged in
-        if (auth.getCurrentUser() != null) {
-            startActivity(new Intent());
-//            finish();
-        }
-
         // Gets ViewModel instance to observe its LiveData
         binding.setModel(loginViewModel);
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
@@ -66,6 +54,28 @@ public class LoginFragment extends Fragment {
 
         // Bind User
         binding.setUser(user);
+
+        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
+                    Log.d(TAG, "fuser not null");
+                } else {
+                    Log.d(TAG, "fuser yes null");
+                }
+
+//                } else if (user.getIsAdmin()) {
+//                    goToAdminList(user);
+//                } else if (!user.getIsAdmin()) {
+//                    goToProfile(user);
+//                } else {
+//                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                            new LoginFragment()).addToBackStack(null).commit();
+//                }
+
+            }
+        };
 
         final Observer<Boolean> isLoggedInObserver = new Observer<Boolean>() {
             @Override
@@ -96,6 +106,12 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        firebaseUser = auth.getCurrentUser();
+    }
+
     public void onLoginClick(final String email, final String password) {
         // TODO: make toast into accurate progress bar
         Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
@@ -121,5 +137,17 @@ public class LoginFragment extends Fragment {
         loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUserListFragment(user)).addToBackStack(null).commit();
+    }
+
+    public void signOut() {
+        auth.signOut();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = auth.getCurrentUser();
+//        updateUI(currentUser);
     }
 }
