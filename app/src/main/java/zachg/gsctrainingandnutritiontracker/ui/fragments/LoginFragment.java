@@ -1,5 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,13 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.Executor;
+
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentLoginBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.ui.activities.LoginActivity;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 
@@ -21,6 +32,8 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class LoginFragment extends Fragment {
 
+    private FirebaseUser firebaseUser;
+    private FirebaseAuth auth;
     private FragmentLoginBinding binding;
     private User user = new User();
     LoginViewModel loginViewModel = new LoginViewModel();
@@ -33,6 +46,15 @@ public class LoginFragment extends Fragment {
         //Inflate and bind the layout for this fragment_report_list
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
+
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+
+        // Check if user is logged in
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent());
+//            finish();
+        }
 
         // Gets ViewModel instance to observe its LiveData
         binding.setModel(loginViewModel);
