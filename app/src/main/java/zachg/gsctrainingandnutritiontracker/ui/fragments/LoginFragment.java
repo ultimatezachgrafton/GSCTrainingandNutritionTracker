@@ -12,14 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentLoginBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 
@@ -55,40 +54,7 @@ public class LoginFragment extends Fragment {
         // Bind User
         binding.setUser(user);
 
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                firebaseUser = firebaseAuth.getCurrentUser();
-                if (firebaseUser != null) {
-                    Log.d(TAG, "fuser not null");
-                } else {
-                    Log.d(TAG, "fuser yes null");
-                }
-
-//                } else if (user.getIsAdmin()) {
-//                    goToAdminList(user);
-//                } else if (!user.getIsAdmin()) {
-//                    goToProfile(user);
-//                } else {
-//                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                            new LoginFragment()).addToBackStack(null).commit();
-//                }
-
-            }
-        };
-
-        final Observer<Boolean> isLoggedInObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean bool) {
-                if (true) {
-                    if (user.getIsAdmin()) {
-                        goToAdminList(user);
-                    } else if (!user.getIsAdmin()) {
-                        goToProfile(user);
-                    }
-                }
-            }
-        };
+        // TODO: if user doesn't match a profile,
 
         loginViewModel.currentUser.observe(this, new Observer<User>() {
             @Override
@@ -98,6 +64,7 @@ public class LoginFragment extends Fragment {
                 } else if (user.getIsAdmin()) {
                     goToAdminList(user);
                 } else if (!user.getIsAdmin()) {
+                    Log.d(TAG, "user observer " + user.getClientName());
                     goToProfile(user);
                 }
             }
@@ -146,8 +113,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = auth.getCurrentUser();
-//        updateUI(currentUser);
+        // Check if user is signed in (non-null)
+        firebaseUser = auth.getCurrentUser();
     }
 }

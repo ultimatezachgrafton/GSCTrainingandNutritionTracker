@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
             android:layout_marginBottom="15dp"
-            android:text="@{@string/date_greeting(user.ClientName)}"
+            android:text="@{@string/date_greeting(user.firstName)}"
             android:gravity="center"
             android:textSize="32sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_select_date"

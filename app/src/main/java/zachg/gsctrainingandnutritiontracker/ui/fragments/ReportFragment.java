@@ -103,13 +103,6 @@ public class ReportFragment extends Fragment {
 
         });
 
-        // TODO: add to util
-//        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-//        startActivityForResult(pickContact, REQUEST_CONTACT);
-//        pickContact.addCategory(Intent.CATEGORY_HOME);
-//        PackageManager packageManager = getActivity().getPackageManager();
-//        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {  }
-
         return v;
     }
 

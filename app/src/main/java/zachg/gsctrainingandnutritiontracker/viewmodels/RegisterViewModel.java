@@ -1,21 +1,15 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class RegisterViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class RegisterViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -30,19 +24,14 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     public ObservableField<String> etConfirmPassword = new ObservableField<>();
     public MutableLiveData<User> newUser = new MutableLiveData<>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isDuplicate = new MutableLiveData<>();
 
     private static String REGISTER_ERROR = "Please fill in all fields";
     private static String PASSWORD_ERROR = "Passwords do not match.";
-    private static String DUPLICATE_ERROR = "This email is already in use.";
     private static String CLIENT_ADDED = "Registering client! Please give us a moment...";
 
     private String TAG = "RegisterViewModel";
 
-    public void init() {
-        repo.setSnapshotOnCompleteListener(this);
-        isDuplicate.setValue(true);
-    }
+    public void init() {}
 
     public void registerUserCheck(final String firstName, final String lastName, final String phoneNumber,
                                   final String email, final String password, String confirmPassword) {
@@ -55,12 +44,10 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
             return;
         }
         setUserValues(firstName, lastName, phoneNumber, email, password);
-        isDuplicate.setValue(false);
-        //duplicateUserCheck(email);
     }
 
     public void registerUser() {
-        User user = new User(firstName, lastName, email, password);
+        User user = new User(firstName, lastName, phoneNumber, email, password);
         repo.registerUser(user);
         newUser.setValue(user);
         onError.setValue(CLIENT_ADDED);
@@ -78,11 +65,6 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         else return false;
     }
 
-    // Checks if User's email is already used
-    public void duplicateUserCheck(String email) {
-        repo.duplicateEmailCheck(email);
-    }
-
     // sets user values
     public void setUserValues(String firstName, String lastName, String phoneNumber, String email, String password) {
         this.firstName = firstName;
@@ -92,14 +74,5 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         this.password = password;
     }
 
-    @Override
-    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            if (!(task.getResult().size() > 0)) {
-                isDuplicate.setValue(false);
-            }
-        } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-        }
-    }
+    // TODO: if duplicate email, display message
 }

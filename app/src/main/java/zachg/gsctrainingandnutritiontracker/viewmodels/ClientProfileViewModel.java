@@ -33,7 +33,7 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
 
     public void init(User user) {
         this.currentUser = user;
-        this.currentUser.setClientName(user.getClientName());
+        this.currentUser.setClientName(user.getFirstName(), user.getLastName());
         repo = FirestoreRepository.getInstance();
         repo.setSnapshotOnCompleteListener(this);
     }

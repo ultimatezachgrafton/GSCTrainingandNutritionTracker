@@ -39,6 +39,7 @@ public class ClientProfileFragment extends Fragment {
 
     public ClientProfileFragment(User user) {
         this.currentUser = user;
+        Log.d(TAG, "cpf: " +currentUser.getClientName());
     }
 
     @Override
@@ -61,8 +62,8 @@ public class ClientProfileFragment extends Fragment {
             }
         });
 
-        // TODO: TEMP MEASURE BYPASS
-        goToReport();
+//        // TODO: TEMP MEASURE BYPASS
+//        goToReport();
         return v;
     }
 

@@ -31,7 +31,7 @@ public class AdminClientProfileViewModel extends ViewModel {
 
     public AdminClientProfileViewModel(User user) {
         this.currentUser = user;
-        this.currentUser.setClientName(user.getClientName());
+        this.currentUser.setClientName(user.getFirstName(), user.getLastName());
     }
 
     public void init() {

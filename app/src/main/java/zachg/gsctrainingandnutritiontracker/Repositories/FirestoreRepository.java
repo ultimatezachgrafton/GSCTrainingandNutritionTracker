@@ -31,6 +31,8 @@ import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class FirestoreRepository {
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -44,8 +46,8 @@ public class FirestoreRepository {
     public Query userQuery = userColRef;
 
     // Gets singleton instance of FirestoreRepository
-    public static FirestoreRepository getInstance(){
-        if(instance == null){
+    public static FirestoreRepository getInstance() {
+        if (instance == null) {
             instance = new FirestoreRepository();
         }
         return instance;
@@ -56,7 +58,7 @@ public class FirestoreRepository {
     }
 
     // Gets FirebaseUser for authentification
-    public FirebaseUser getFireBaseUser() {
+    public FirebaseUser getFirebaseUser() {
         if (auth.getCurrentUser() != null) {
             Log.d(TAG, "fuser not null: " + String.valueOf(auth.getCurrentUser()));
             return auth.getCurrentUser(); // User is signed in
@@ -67,7 +69,6 @@ public class FirestoreRepository {
     }
 
     public void signIn(String email, String password) {
-        // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -85,9 +86,7 @@ public class FirestoreRepository {
     }
 
     public void signOut() {
-        auth.signOut();
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new LoginFragment()).addToBackStack(null).commit();
+        auth.getInstance().signOut();
     }
 
     // Gets User by searching for email
@@ -156,6 +155,23 @@ public class FirestoreRepository {
     }
 
     public void registerUser(User user) {
+        // Add FirebaseUser to database
+        auth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = auth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.d(TAG, "createUserWithEmail:failure", task.getException());
+                        }
+                    }
+                });
+
+        // Store user's data in a User model object stored in the database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Add user as a new document with a generated ID
         db.collection("users")
@@ -163,7 +179,8 @@ public class FirestoreRepository {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: " + documentReference.getId()); }
+                        Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -172,6 +189,7 @@ public class FirestoreRepository {
                     }
                 });
     }
+
 
     public void writeWorkoutsToRepo(User user, Workout workout) {
         db.collection("users").document(user.getEmail()).collection("workouts")

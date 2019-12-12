@@ -29,22 +29,14 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
 
     // Checks if user is logged in
     public void init() {
-        FirebaseUser fUser = repo.getFireBaseUser();
+        FirebaseUser fUser = repo.getFirebaseUser();
         if (fUser == null) {                                // Check to see if a user is logged in
-            setIsLoggedIn(false);
             Log.d(TAG, "loggedinfalse");               // If a user is not logged in, set isLoggedIn to false
         } else {
-            setIsLoggedIn(true);
             user = repo.getUserByEmail(fUser.getEmail());
             Log.d(TAG, "loggedintrue");                // If a user is logged in, get that User's information
         }
         repo.setSnapshotOnCompleteListener(this);
-    }
-
-    // Sets logged in state for observer
-    public MutableLiveData<Boolean> setIsLoggedIn(Boolean bool) {
-        isLoggedIn.setValue(bool);
-        return isLoggedIn;
     }
 
     // Verifies user exists by the email and password provided
@@ -64,6 +56,8 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 user = doc.toObject(User.class);
                 currentUser.setValue(user);
+                Log.d(TAG, "oncom" + user.getClientName());
+                repo.signIn(user.getEmail(), user.getPassword());
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());
