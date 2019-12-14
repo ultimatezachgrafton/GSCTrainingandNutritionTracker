@@ -39,7 +39,7 @@ public class ClientProfileFragment extends Fragment {
 
     public ClientProfileFragment(User user) {
         this.currentUser = user;
-        Log.d(TAG, "cpf: " +currentUser.getClientName());
+        Log.d(TAG, "cpf: " + currentUser.getClientName());
     }
 
     @Override
@@ -96,6 +96,7 @@ public class ClientProfileFragment extends Fragment {
         } return true;
     }
 
+    // change to listener, as android two-way binding is not supported (though it is listed as if it is)
     public void onDateSelected() {
         // TODO: get date from binding adapter, currently gives current date
         Log.d(TAG, "onDateSelected: " + date);
