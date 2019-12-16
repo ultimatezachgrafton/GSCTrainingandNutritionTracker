@@ -1,13 +1,10 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +34,6 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter;
-import zachg.gsctrainingandnutritiontracker.utils.ContactUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {

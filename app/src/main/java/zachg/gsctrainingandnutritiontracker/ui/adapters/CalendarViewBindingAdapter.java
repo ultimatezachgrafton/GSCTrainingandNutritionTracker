@@ -9,7 +9,7 @@ import androidx.databinding.InverseBindingListener;
 import java.util.Calendar;
 
 public class CalendarViewBindingAdapter {
-    public String TAG = "CalendarViewBindingAdapter";
+    public static String TAG = "CalendarViewBindingAdapter";
 
     @BindingAdapter(value = {"android:onSelectedDayChange", "android:dateAttrChanged"},
             requireAll = false)
@@ -18,6 +18,7 @@ public class CalendarViewBindingAdapter {
         if (attrChange == null) {
             view.setOnDateChangeListener(onDayChange);
         } else {
+            Log.d(TAG, "setListener 3");
             view.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                 @Override
                 public void onSelectedDayChange(CalendarView view, int year, int month,

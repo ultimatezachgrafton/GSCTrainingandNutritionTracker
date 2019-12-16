@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -30,12 +31,14 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
 public class ClientProfileFragment extends Fragment {
 
     FragmentClientProfileBinding binding;
+
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
     public Date date = new Date();
     private Report currentReport = new Report();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
+    public CalendarView calendarView;
 
     public ClientProfileFragment(User user) {
         this.currentUser = user;
@@ -62,8 +65,21 @@ public class ClientProfileFragment extends Fragment {
             }
         });
 
-//        // TODO: TEMP MEASURE BYPASS
-//        goToReport();
+        binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            Log.d(TAG, "aLong: " + new Date(year, month, dayOfMonth).toString());
+        });
+
+        //CalendarView calendarView=findViewById(R.id.calendarView);
+        //calendarView.setOnDateChangeListener(new OnDateChangeListener() {
+//
+//            @Override
+//            public void onSelectedDayChange(CalendarView view, int year, int month,
+//                                            int dayOfMonth) {
+//                Toast.makeText(getApplicationContext(), ""+dayOfMonth, 0).show();// TODO Auto-generated method stub
+//
+//            }
+//        });
+
         return v;
     }
 

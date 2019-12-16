@@ -43,13 +43,13 @@
             android:text="@{@string/select_date}"
             android:gravity="center"
             android:textSize="22sp"
-            app:layout_constraintBottom_toTopOf="@+id/cal"
+            app:layout_constraintBottom_toTopOf="@+id/calendarView"
             app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
 
         <CalendarView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cal"
+            android:id="@+id/calendarView"
             android:onSelectedDayChange="@{()->fragment.onDateSelected()}"/>
 
 </LinearLayout>
