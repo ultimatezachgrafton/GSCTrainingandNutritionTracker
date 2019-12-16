@@ -67,18 +67,12 @@ public class ClientProfileFragment extends Fragment {
 
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             Log.d(TAG, "aLong: " + new Date(year, month, dayOfMonth).toString());
+            binding.setDate(date);
+            String dateString = date.toString();
+            Log.d(TAG, dateString);
         });
 
-        //CalendarView calendarView=findViewById(R.id.calendarView);
-        //calendarView.setOnDateChangeListener(new OnDateChangeListener() {
-//
-//            @Override
-//            public void onSelectedDayChange(CalendarView view, int year, int month,
-//                                            int dayOfMonth) {
-//                Toast.makeText(getApplicationContext(), ""+dayOfMonth, 0).show();// TODO Auto-generated method stub
-//
-//            }
-//        });
+        // TODO format date String
 
         return v;
     }
