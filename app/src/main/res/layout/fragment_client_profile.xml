@@ -12,8 +12,8 @@
             name="cal"
             type="android.widget.CalendarView"/>
         <variable
-            name="date"
-            type="java.util.Date"/>
+            name="dateString"
+            type="String"/>
         <variable
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.ClientProfileFragment"/>

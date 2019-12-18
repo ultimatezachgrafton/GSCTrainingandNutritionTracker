@@ -67,7 +67,7 @@ public class Report extends BaseObservable {
     }
 
     public void setDateString(String dateString) {
-        this.dateString = String.valueOf(getDate());
+        this.dateString = dateString;
         notifyPropertyChanged(BR.dateString);
     }
 

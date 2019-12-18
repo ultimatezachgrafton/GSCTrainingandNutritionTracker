@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,6 +64,7 @@ public class ReportFragment extends Fragment {
     public ReportFragment(Report report, User user) {
         this.currentReport = report;
         this.currentUser = user;
+        Log.d(TAG, report.getDateString());
     }
 
     public void onCreate(Bundle savedInstanceState) {

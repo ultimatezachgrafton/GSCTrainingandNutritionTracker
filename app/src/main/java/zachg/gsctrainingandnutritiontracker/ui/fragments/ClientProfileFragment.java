@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
@@ -34,7 +36,6 @@ public class ClientProfileFragment extends Fragment {
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
-    public Date date = new Date();
     private Report currentReport = new Report();
     private ClientProfileViewModel clientProfileViewModel;
     public String TAG = "ClientProfileFragment";
@@ -65,14 +66,22 @@ public class ClientProfileFragment extends Fragment {
             }
         });
 
+        // listener explicitly called here to address issue that as of this writing android inversebinding
+        // binding is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            Log.d(TAG, "aLong: " + new Date(year, month, dayOfMonth).toString());
-            binding.setDate(date);
-            String dateString = date.toString();
-            Log.d(TAG, dateString);
+            String dayOfMonthStr;
+            // if dayOfMonth is less than 10, put a zero in front of it
+            if (dayOfMonth < 10) {
+                dayOfMonthStr = "0" + String.valueOf(dayOfMonth);
+            } else {
+                dayOfMonthStr = String.valueOf(dayOfMonth);
+            }
+            String dateString = (month + "-" + dayOfMonthStr + "-" + year);
+            currentReport.setDateString(dateString);
+            Log.d(TAG, "dS: " + dateString);
+            Log.d(TAG, "cR: " + currentReport.getDateString());
+            goToReport();
         });
-
-        // TODO format date String
 
         return v;
     }
@@ -106,15 +115,7 @@ public class ClientProfileFragment extends Fragment {
         } return true;
     }
 
-    // change to listener, as android two-way binding is not supported (though it is listed as if it is)
-    public void onDateSelected() {
-        // TODO: get date from binding adapter, currently gives current date
-        Log.d(TAG, "onDateSelected: " + date);
-        clientProfileViewModel.getReportByDate(currentUser, date);
-    }
-
     public void goToReport() {
-        Log.d(TAG, "report");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }
