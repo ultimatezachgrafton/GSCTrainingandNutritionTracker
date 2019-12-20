@@ -48,7 +48,7 @@ public class ViewReportFragment extends Fragment {
 
     public ViewReportFragment() {}
 
-    public ViewReportFragment(Date date, User user) {
+    public ViewReportFragment(User user, String dateString) {
         this.date = date;//currentReport = report;
         this.currentUser = user;
     }

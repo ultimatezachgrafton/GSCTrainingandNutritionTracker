@@ -64,7 +64,7 @@ public class ReportFragment extends Fragment {
     public ReportFragment(Report report, User user) {
         this.currentReport = report;
         this.currentUser = user;
-        Log.d(TAG, report.getDateString());
+        this.dateString = report.getDateString();
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class ReportFragment extends Fragment {
 
         binding.setModel(reportViewModel);
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(currentUser);
+        reportViewModel.init(currentUser, dateString);
 
         reportViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
@@ -145,6 +145,7 @@ public class ReportFragment extends Fragment {
         } return super.onOptionsItemSelected(item);
     }
 
+    // TODO: why is this here
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CONTACT && data != null) {

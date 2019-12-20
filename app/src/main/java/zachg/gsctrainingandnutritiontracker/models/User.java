@@ -15,6 +15,7 @@ public class User extends BaseObservable {
     private String firstName;
     @NonNull
     private String lastName;
+    @NonNull
     private String clientName;
     @NonNull
     private String password;

@@ -2,7 +2,6 @@ package zachg.gsctrainingandnutritiontracker.repositories;
 
 import android.content.ContentValues;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -21,17 +20,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Date;
-import java.util.concurrent.Executor;
-
-import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FirestoreRepository {
 
@@ -128,20 +119,18 @@ public class FirestoreRepository {
     }
 
     // Gets all Reports for a single User
-    public FirestoreRecyclerOptions<Report> getReportsByUser(User user) {
+    public void getReportsByUser(User user, String dateString) {
         CollectionReference reportColRef = userColRef.document(user.getEmail())
                 .collection("reports");
-        Query reportQuery = reportColRef.orderBy("date");
-        return new FirestoreRecyclerOptions.Builder<Report>()
-                .setQuery(reportQuery, Report.class)
-                .build();
+        Query reportQuery = reportColRef.whereEqualTo("date", dateString);
+        reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
     // Gets all of a single User's reports on a specific date
-    public void getReportByDate(User user, Date date) {
-        Log.d(TAG, "in repo now" + date);
+    public void getReportByDate(User user, String dateString) {
+        Log.d(TAG, "in repo now" + dateString);
         Query reportQuery = userColRef.document(user.getEmail())
-                .collection("reports").whereEqualTo("date", date);
+                .collection("reports").whereEqualTo("date", dateString);
         reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
@@ -209,16 +198,15 @@ public class FirestoreRepository {
                 });
     }
 
-
-    // TODO: fix date and clientname
-    public void writeReportToRepo(Report currentReport) {
-        db.collection("users").document("pip").collection("reports")
-                .document(String.valueOf("date"))//currentReport.getDate()))
-                .set(currentReport)
+    public void writeReportToRepo(Report report) {
+        db.collection("users").document(report.getClientName()).collection("reports")
+                .document(report.getDateString())
+                .set(report)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("reports", "DocumentSnapshot added with ID: ");
+                        Log.d("reports", report.getDateString() + report.getClientName());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

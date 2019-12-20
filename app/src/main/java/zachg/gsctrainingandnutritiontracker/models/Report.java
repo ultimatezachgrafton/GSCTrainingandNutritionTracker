@@ -42,12 +42,12 @@ public class Report extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Report(String clientName, String dailyWeight, String exerciseWeight, String comments) {
+    public Report(String clientName, String dailyWeight, String exerciseWeight, String comments, String dateString) {
         this.clientName = clientName;
-        //this.date = date;
         this.dailyWeight = dailyWeight;
         this.exerciseWeight = exerciseWeight;
         this.comments = comments;
+        this.dateString = dateString;
     }
 
     @Bindable

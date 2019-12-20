@@ -13,6 +13,8 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
+import static androidx.databinding.library.baseAdapters.BR.dateString;
+
 public class ReportViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
@@ -26,12 +28,14 @@ public class ReportViewModel extends ViewModel {
     public Report currentReport = new Report();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
+    public String dateString;
 
     public ReportViewModel() {}
 
-    public void init(User user) {
+    public void init(User user, String dateString) {
         repo = FirestoreRepository.getInstance();
         this.currentUser = user;
+        this.dateString = dateString;
         workouts.setValue(repo.getWorkoutsFromRepo(currentUser));
     }
 
@@ -43,9 +47,12 @@ public class ReportViewModel extends ViewModel {
         return isUpdating;
     }
 
+    // TODO: fix
     // Writes report to the Repository
     public void writeReport(User currentUser) {
-        Report generatedReport = new Report(currentUser.getClientName(), dailyWeight.get(), exerciseWeight.get(), comments.get());
+        Report generatedReport = new Report("pip", dailyWeight.get(), exerciseWeight.get(), comments.get(), "p");
+//        Report generatedReport = new Report(currentUser.getClientName(), dailyWeight.get(), exerciseWeight.get(), comments.get(), dateString);
+        Log.d(TAG, generatedReport.getClientName() + generatedReport.getDateString());
         repo.writeReportToRepo(generatedReport);
         // TODO: write iterated workoutNum to user's fstore data
         // TODO: iterateWorkouts after saving workout;

@@ -62,7 +62,11 @@ public class ClientProfileFragment extends Fragment {
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                goToReport();
+                if (r.getDateString() == null) {
+                    goToNewReport();
+                } else {
+                    goToViewReport();
+                }
             }
         });
 
@@ -78,7 +82,7 @@ public class ClientProfileFragment extends Fragment {
             }
             String dateString = (month + "-" + dayOfMonthStr + "-" + year);
             currentReport.setDateString(dateString);
-            goToReport();
+            clientProfileViewModel.getReportByDate(currentUser, currentReport);
         });
 
         return v;
@@ -113,8 +117,13 @@ public class ClientProfileFragment extends Fragment {
         } return true;
     }
 
-    public void goToReport() {
+    public void goToNewReport() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
+    }
+
+    public void goToViewReport() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new ViewReportFragment(currentUser, currentReport.getDateString())).addToBackStack(null).commit();
     }
 }
