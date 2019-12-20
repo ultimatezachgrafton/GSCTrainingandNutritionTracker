@@ -69,7 +69,7 @@ public class ClientProfileFragment extends Fragment {
         // listener explicitly called here to address issue that as of this writing android inversebinding
         // binding is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            String dayOfMonthStr;
+            String dayOfMonthStr, monthStr;
             // if dayOfMonth is less than 10, put a zero in front of it
             if (dayOfMonth < 10) {
                 dayOfMonthStr = "0" + String.valueOf(dayOfMonth);
@@ -78,8 +78,6 @@ public class ClientProfileFragment extends Fragment {
             }
             String dateString = (month + "-" + dayOfMonthStr + "-" + year);
             currentReport.setDateString(dateString);
-            Log.d(TAG, "dS: " + dateString);
-            Log.d(TAG, "cR: " + currentReport.getDateString());
             goToReport();
         });
 
