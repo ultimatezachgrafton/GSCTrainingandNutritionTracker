@@ -19,10 +19,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
@@ -43,7 +39,6 @@ public class ClientProfileFragment extends Fragment {
 
     public ClientProfileFragment(User user) {
         this.currentUser = user;
-        Log.d(TAG, "cpf: " + currentUser.getClientName());
     }
 
     @Override
@@ -63,15 +58,17 @@ public class ClientProfileFragment extends Fragment {
             @Override
             public void onChanged(Report r) {
                 if (r.getDateString() == null) {
+                    Log.d(TAG, "null");
                     goToNewReport();
                 } else {
+                    Log.d(TAG, "not null");
                     goToViewReport();
                 }
             }
         });
 
-        // listener explicitly called here to address issue that as of this writing android inversebinding
-        // binding is not supported for CalendarView (though it is listed in the documentation as if it is)
+        // listener explicitly called to address issue that as of this writing android inversebinding
+        // is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             String dayOfMonthStr, monthStr;
             // if dayOfMonth is less than 10, put a zero in front of it
@@ -80,7 +77,7 @@ public class ClientProfileFragment extends Fragment {
             } else {
                 dayOfMonthStr = String.valueOf(dayOfMonth);
             }
-            String dateString = (month + "-" + dayOfMonthStr + "-" + year);
+            String dateString = ((month + 1) + "-" + dayOfMonthStr + "-" + year);
             currentReport.setDateString(dateString);
             clientProfileViewModel.getReportByDate(currentUser, currentReport);
         });

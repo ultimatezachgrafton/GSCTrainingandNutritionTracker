@@ -64,7 +64,6 @@ public class LoginFragment extends Fragment {
                 } else if (user.getIsAdmin()) {
                     goToAdminList(user);
                 } else if (!user.getIsAdmin()) {
-                    Log.d(TAG, "user observer " + user.getClientName());
                     goToProfile(user);
                 }
             }

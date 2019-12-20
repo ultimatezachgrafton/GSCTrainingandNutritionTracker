@@ -56,7 +56,6 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 user = doc.toObject(User.class);
                 currentUser.setValue(user);
-                Log.d(TAG, "oncom" + user.getClientName());
                 repo.signIn(user.getEmail(), user.getPassword());
             }
         } else {
