@@ -48,8 +48,10 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {
+            Log.d(TAG, "task successful");
             // Does not get past this line -- doesnt do any of this bc theres no doc probably
             for (QueryDocumentSnapshot doc : task.getResult()) {
+                Log.d(TAG, "queryDocSnap");
                 if (doc.exists()) {
                     Log.d(TAG, "onComplete");
                     report = doc.toObject(Report.class);

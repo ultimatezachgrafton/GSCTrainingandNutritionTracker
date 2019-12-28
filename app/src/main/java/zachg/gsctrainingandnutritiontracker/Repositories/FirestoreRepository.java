@@ -141,33 +141,36 @@ public class FirestoreRepository {
 
     // Gets all of a single User's reports on a specific date
     public void getReportByDate(User user, String dateString) {
+
+        // TODO: when registering user, doc id is always user.getemail
+
         Query reportQuery = userColRef.document(user.getEmail())
                 .collection("reports").whereEqualTo("dateString", dateString);
         reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
 
-        CollectionReference reportColRef = userColRef.document(user.getEmail()).collection(("reports"));
-        reportColRef.whereEqualTo("dateString", dateString).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.d(TAG, "Does doc exist? " + dateString + " ");
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "task successful"); // does not get past here
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, "document get result");
-                        if (document.exists()) {
-                            Log.d(TAG, "doc exists");
-                            Query reportQuery = userColRef.document(user.getEmail())
-                                    .collection("reports").whereEqualTo("dateString", dateString);
-                            reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
-                            return;
-                        } else {
-                            Log.d(TAG, "doc no exist");
-                        }
-                    }
-                    Log.d(TAG, "hi");
-                }
-            }
-        });
+//        CollectionReference reportColRef = userColRef.document(user.getEmail()).collection(("reports"));
+//        reportColRef.whereEqualTo("dateString", dateString).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                Log.d(TAG, "Does doc exist? " + dateString + " ");
+//                if (task.isSuccessful()) {
+//                    Log.d(TAG, "task successful"); // does not get past here
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Log.d(TAG, "document get result");
+//                        if (document.exists()) {
+//                            Log.d(TAG, "doc exists");
+//                            Query reportQuery = userColRef.document(user.getEmail())
+//                                    .collection("reports").whereEqualTo("dateString", dateString);
+//                            reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+//                            return;
+//                        } else {
+//                            Log.d(TAG, "doc no exist");
+//                        }
+//                    }
+//                    Log.d(TAG, "hi");
+//                }
+//            }
+//        });
     }
 
     // Returns Workouts as assigned by admin
