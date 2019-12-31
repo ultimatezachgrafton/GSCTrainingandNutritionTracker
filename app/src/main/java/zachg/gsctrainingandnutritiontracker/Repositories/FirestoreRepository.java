@@ -238,7 +238,7 @@ public class FirestoreRepository {
     }
 
     public void writeReportToRepo(Report report) {
-        db.collection("users").document(report.getClientName()).collection("reports")
+        db.collection("users").document(report.getEmail()).collection("reports")
                 .document(report.getDateString())
                 .set(report)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

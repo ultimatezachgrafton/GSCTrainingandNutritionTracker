@@ -64,6 +64,7 @@ public class ReportFragment extends Fragment {
     public ReportFragment(Report report, User user) {
         this.currentReport = report;
         this.currentUser = user;
+        report.setClientName(user.getClientName());
         this.dateString = report.getDateString();
     }
 
@@ -81,7 +82,7 @@ public class ReportFragment extends Fragment {
 
         binding.setModel(reportViewModel);
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(currentUser, dateString);
+        reportViewModel.init(currentUser, currentReport);
 
         reportViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
@@ -145,26 +146,26 @@ public class ReportFragment extends Fragment {
         } return super.onOptionsItemSelected(item);
     }
 
-    // TODO: why is this here
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CONTACT && data != null) {
-            Uri contactUri = data.getData();
-            // Specify which fields you want your query to return values for
-            String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
-            // Perform your query - the contactUri is like a "where" clause here
-            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
-            try {
-                // Double-check that you actually got results
-                if (c.getCount() == 0) {
-                    return;
-                }
-                // Pull out the first column of the first row of data - that is your suspect's name
-                c.moveToFirst();
-                String suspect = c.getString(0);
-            } finally {
-                c.close();
-            }
-        }
-    }
+//    // TODO: why is this here
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == REQUEST_CONTACT && data != null) {
+//            Uri contactUri = data.getData();
+//            // Specify which fields you want your query to return values for
+//            String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
+//            // Perform your query - the contactUri is like a "where" clause here
+//            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
+//            try {
+//                // Double-check that you actually got results
+//                if (c.getCount() == 0) {
+//                    return;
+//                }
+//                // Pull out the first column of the first row of data - that is your suspect's name
+//                c.moveToFirst();
+//                String suspect = c.getString(0);
+//            } finally {
+//                c.close();
+//            }
+//        }
+//    }
 }

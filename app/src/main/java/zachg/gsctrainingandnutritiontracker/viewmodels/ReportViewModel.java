@@ -13,8 +13,6 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-import static androidx.databinding.library.baseAdapters.BR.dateString;
-
 public class ReportViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
@@ -25,17 +23,18 @@ public class ReportViewModel extends ViewModel {
     public ObservableField<String> comments = new ObservableField<>("");
     public ObservableField<String> exerciseWeight = new ObservableField<>("");
 
-    public Report currentReport = new Report();
+    public Report report = new Report();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
 
     public ReportViewModel() {}
 
-    public void init(User user, String dateString) {
+    public void init(User user, Report report) {
         repo = FirestoreRepository.getInstance();
         this.currentUser = user;
-        this.dateString = dateString;
+        this.report = report;
+        this.dateString = report.getDateString();
         workouts.setValue(repo.getWorkoutsFromRepo(currentUser));
     }
 
@@ -47,15 +46,18 @@ public class ReportViewModel extends ViewModel {
         return isUpdating;
     }
 
-    // TODO: fix
     // Writes report to the Repository
-    public void writeReport(User currentUser) {
-        Report generatedReport = new Report("pip", dailyWeight.get(), exerciseWeight.get(), comments.get(), "p");
-//        Report generatedReport = new Report(currentUser.getClientName(), dailyWeight.get(), exerciseWeight.get(), comments.get(), dateString);
+    public void writeReport(User currentUser, Report report) {
+        Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(), dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString());
         Log.d(TAG, generatedReport.getClientName() + generatedReport.getDateString());
         repo.writeReportToRepo(generatedReport);
+
         // TODO: write iterated workoutNum to user's fstore data
-        // TODO: iterateWorkouts after saving workout;
+        //iterateWorkoutNum(currentUser);
+    }
+
+    public void iterateWorkoutNum(User user) {
+        user.setCurrentWorkoutNum(user.getCurrentWorkoutNum()+1);
     }
 
 }

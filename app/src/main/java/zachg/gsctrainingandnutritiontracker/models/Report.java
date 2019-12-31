@@ -17,6 +17,7 @@ public class Report extends BaseObservable {
     private Date date;
     private String dateString;
     private String clientName; // client's name
+    private String email;
     private String dailyWeight; // client's weight
 
     private String exerciseNum;
@@ -42,8 +43,9 @@ public class Report extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Report(String clientName, String dailyWeight, String exerciseWeight, String comments, String dateString) {
+    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString) {
         this.clientName = clientName;
+        this.email = email;
         this.dailyWeight = dailyWeight;
         this.exerciseWeight = exerciseWeight;
         this.comments = comments;
@@ -143,6 +145,16 @@ public class Report extends BaseObservable {
     public void setClientName(String client) {
         clientName = client;
         notifyPropertyChanged(BR.clientName);
+    }
+
+    @Bindable
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+        notifyPropertyChanged(BR.email);
     }
 
     @Bindable

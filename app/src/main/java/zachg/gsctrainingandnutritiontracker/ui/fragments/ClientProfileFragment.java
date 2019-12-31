@@ -57,13 +57,7 @@ public class ClientProfileFragment extends Fragment {
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                if (r.getDateString() == null) {
-                    Log.d(TAG, "null");
-                    goToNewReport();
-                } else {
-                    Log.d(TAG, "not null");
-                    goToViewReport();
-                }
+                goToNewReport();
             }
         });
 
