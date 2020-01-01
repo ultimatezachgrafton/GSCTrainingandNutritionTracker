@@ -45,7 +45,7 @@ public class AdminClientProfileViewModel extends ViewModel {
         reps.set(exercise.getReps());
         day.set(exercise.getDay());
 
-        workout.setWorkoutTitle("karate");
+        workout.setWorkoutTitle(exercise.getExerciseName());
         workout.setExerciseListItem(exercise);
         repo.writeWorkoutsToRepo(currentUser, workout);
 
