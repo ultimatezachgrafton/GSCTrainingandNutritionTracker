@@ -1,14 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -25,9 +18,7 @@ public class AdminClientProfileViewModel extends ViewModel {
     private ObservableField<String> reps = new ObservableField<>();
     private ObservableField<String> day = new ObservableField<>();
 
-    public AdminClientProfileViewModel() {
-        // required empty constructor
-    }
+    public AdminClientProfileViewModel() {}
 
     public AdminClientProfileViewModel(User user) {
         this.currentUser = user;
