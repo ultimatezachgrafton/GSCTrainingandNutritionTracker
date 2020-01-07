@@ -1,18 +1,23 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfileBinding;
+import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminClientProfileFragment extends Fragment {
 
@@ -24,6 +29,7 @@ public class AdminClientProfileFragment extends Fragment {
     private final String ARG_USER_ID = "user_id";
 
     private User currentUser = new User();
+    private Exercise exercise = new Exercise();
 
     public AdminClientProfileFragment() {}
 
@@ -39,10 +45,18 @@ public class AdminClientProfileFragment extends Fragment {
         final View v = binding.getRoot();
         binding.setFragment(this);
         binding.setUser(currentUser);
+        binding.setExercise(exercise);
         final Workout workout = new Workout(currentUser);
         binding.setWorkout(workout);
         adminClientProfileViewModel.init();
         binding.setViewmodel(adminClientProfileViewModel);
+
+        adminClientProfileViewModel.newExercise.observe(this, new Observer<Exercise>() {
+            @Override
+            public void onChanged(Exercise exercise) {
+                    Log.d(TAG, "changed ex");
+            }
+        });
 
         return v;
     }

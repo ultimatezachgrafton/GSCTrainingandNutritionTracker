@@ -218,10 +218,9 @@ public class FirestoreRepository {
                 });
     }
 
-
     public void writeWorkoutsToRepo(User user, Workout workout) {
         db.collection("users").document(user.getEmail()).collection("workouts")
-                .document(String.valueOf(workout.getWorkoutTitle()))
+                .document("workout.getWorkoutTitle()")
                 .set(workout)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

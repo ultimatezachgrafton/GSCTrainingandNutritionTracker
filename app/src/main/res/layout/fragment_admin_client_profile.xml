@@ -6,6 +6,9 @@
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
+            name="exercise"
+            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
+        <variable
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminClientProfileFragment"/>
         <variable
