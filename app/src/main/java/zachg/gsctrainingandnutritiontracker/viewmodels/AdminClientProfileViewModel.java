@@ -43,6 +43,7 @@ public class AdminClientProfileViewModel extends ViewModel {
         Exercise exercise = new Exercise();
 
         // not saving workouts to db
+        Log.d(TAG, "w2workouts");
 
         // exercise gets name
         setExerciseValues(exerciseName, exerciseReps);
