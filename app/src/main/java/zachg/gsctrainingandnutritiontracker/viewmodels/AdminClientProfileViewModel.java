@@ -51,7 +51,7 @@ public class AdminClientProfileViewModel extends ViewModel {
         workout.setClientName("hal");
         repo.writeWorkoutsToRepo(currentUser, workout);
 
-        // TODO: write exercise to workout array at value == exerciseNum
+        // TODO: write exercise to workout array where the value == exerciseNum
 //        for (int i = 0; i < workout.getArraySize(); i++) {
 //            workout.setExerciseListItem(i, exercise);
 //        }
