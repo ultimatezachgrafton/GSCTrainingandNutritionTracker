@@ -42,13 +42,10 @@ public class AdminClientProfileViewModel extends ViewModel {
         Workout workout = new Workout();
         Exercise exercise = new Exercise();
 
-        // not saving workouts to db
-        Log.d(TAG, "w2workouts");
-
         // exercise gets name
         setExerciseValues(exerciseName, exerciseReps);
         // sets user values
-        workout.setClientName("hal");
+        workout.setWorkoutTitle("pow"); // TODO: get workout title from input
         repo.writeWorkoutsToRepo(currentUser, workout);
 
         // TODO: write exercise to workout array where the value == exerciseNum
@@ -56,7 +53,7 @@ public class AdminClientProfileViewModel extends ViewModel {
 //            workout.setExerciseListItem(i, exercise);
 //        }
 
-//        // creates a collection with the collection id named after the workoutTitle
+        // creates a collection with the collection id named after the workoutTitle
 //        Workout generatedWorkout = new Workout(currentUser.getClientName(), currentUser.getEmail(), exerciseName.get(), exerciseNum.get(), reps.get(),
 //                day.get());
     }
