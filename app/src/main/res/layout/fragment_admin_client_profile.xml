@@ -43,6 +43,17 @@
             android:layout_below="@id/bCamera" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvWorkoutTitle"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/etWorkoutTitle"
+            android:hint="Enter workout title"/>
+
+        <TextView
             android:id="@+id/tvExerciseNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

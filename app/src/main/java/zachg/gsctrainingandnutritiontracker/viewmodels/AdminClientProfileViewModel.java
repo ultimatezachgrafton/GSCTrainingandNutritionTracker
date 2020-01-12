@@ -18,7 +18,7 @@ public class AdminClientProfileViewModel extends ViewModel {
     private FirestoreRepository repo;
     private User currentUser = new User();
 
-    public String exerciseName, exerciseReps;
+    public String exerciseName, exerciseReps, workoutTitle, day;
 
     private ObservableField<String> etExerciseName = new ObservableField<>();
     private ObservableField<String> etWorkoutTitle = new ObservableField<>();
@@ -39,28 +39,20 @@ public class AdminClientProfileViewModel extends ViewModel {
 
     // Workout is array of exercises
     public void writeToWorkouts() {
-        Workout workout = new Workout();
-        Exercise exercise = new Exercise();
-
-        // exercise gets name
         setExerciseValues(exerciseName, exerciseReps);
-        // sets user values
-        workout.setWorkoutTitle("pow"); // TODO: get workout title from input
+        setWorkoutValues(workoutTitle);
+        Exercise exercise = new Exercise(exerciseName, exerciseReps);
+        Workout workout = new Workout(currentUser.getClientName(), currentUser.getEmail(), workoutTitle);
         repo.writeWorkoutsToRepo(currentUser, workout);
-
-        // TODO: write exercise to workout array where the value == exerciseNum
-//        for (int i = 0; i < workout.getArraySize(); i++) {
-//            workout.setExerciseListItem(i, exercise);
-//        }
-
-        // creates a collection with the collection id named after the workoutTitle
-//        Workout generatedWorkout = new Workout(currentUser.getClientName(), currentUser.getEmail(), exerciseName.get(), exerciseNum.get(), reps.get(),
-//                day.get());
     }
 
     // sets user values
     public void setExerciseValues(String exerciseName, String exerciseReps) {
         this.exerciseName = exerciseName;
         this.exerciseReps = exerciseReps;
+    }
+
+    public void setWorkoutValues(String workoutTitle) {
+        this.workoutTitle = workoutTitle;
     }
 }

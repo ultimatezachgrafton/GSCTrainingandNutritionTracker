@@ -10,6 +10,11 @@ public class Exercise extends BaseObservable {
     private String exerciseName, exerciseNum, reps, exerciseWeight, day;
     private int selectedItemPosition;
 
+    public Exercise(String exerciseName, String reps) {
+        this.exerciseName = exerciseName;
+        this.reps = reps;
+    }
+
     public Exercise(String exerciseName, String exerciseNum, String reps, String exerciseWeight, String day){
         this.exerciseName = exerciseName;
         this.exerciseNum = exerciseNum;
