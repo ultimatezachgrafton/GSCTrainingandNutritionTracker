@@ -65,14 +65,14 @@ public class AdminClientProfileFragment extends Fragment {
         return v;
     }
 
-//    public void addExercise() {
+    public void addExercise() {
 //        totalEditTexts++;
 //        if (totalEditTexts > 15)
 //            return;
 //        EditText newEditText = new EditText(context); // Pass it an Activity or Context
 //        newEditText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)); // Pass two args; must be LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, or an integer pixel value.
 //        getRoot.addView(newEditText);
-//    }
+    }
 
     public void toDatePicker() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,

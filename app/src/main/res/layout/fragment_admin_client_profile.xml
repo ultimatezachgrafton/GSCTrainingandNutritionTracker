@@ -104,18 +104,19 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etReps"
+            android:id="@+id/etReps2"
             android:hint="enter reps"/>
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvExerciseNum3"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/etDay"
-            android:singleLine="true"
-            android:hint="Enter day"/>
+            android:text="@string/exercise"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/etExerciseName"
+            android:id="@+id/etExerciseName3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter name"
@@ -125,18 +126,19 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etReps"
+            android:id="@+id/etReps3"
             android:hint="enter reps"/>
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvExerciseNum4"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/etDay"
-            android:singleLine="true"
-            android:hint="Enter day"/>
+            android:text="@string/exercise"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/etExerciseName"
+            android:id="@+id/etExerciseName4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter name"
@@ -146,18 +148,19 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etReps"
+            android:id="@+id/etReps4"
             android:hint="enter reps"/>
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvExerciseNum5"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/etDay"
-            android:singleLine="true"
-            android:hint="Enter day"/>
+            android:text="@string/exercise"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/etExerciseName"
+            android:id="@+id/etExerciseName5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter name"
@@ -167,18 +170,19 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etReps"
+            android:id="@+id/etReps5"
             android:hint="enter reps"/>
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvExerciseNum6"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/etDay"
-            android:singleLine="true"
-            android:hint="Enter day"/>
+            android:text="@string/exercise"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/etExerciseName"
+            android:id="@+id/etExerciseName6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter name"
@@ -188,18 +192,19 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etReps"
+            android:id="@+id/etReps6"
             android:hint="enter reps"/>
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvExerciseNum7"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/etDay"
-            android:singleLine="true"
-            android:hint="Enter day"/>
+            android:text="@string/exercise"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/etExerciseName"
+            android:id="@+id/etExerciseName7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter name"
@@ -209,14 +214,14 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etReps"
+            android:id="@+id/etReps7"
             android:hint="enter reps"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bAddExercise"
-            android:onClick="@{()->viewmodel.addExercise()}" />
+            android:onClick="@{()->fragment.addExercise()}" />
 
         <Button
             android:id="@+id/bWriteWorkouts"
