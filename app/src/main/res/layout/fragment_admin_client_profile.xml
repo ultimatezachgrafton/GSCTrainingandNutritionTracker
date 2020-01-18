@@ -17,6 +17,9 @@
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
+        <variable name="data" type="String"/>
+        <variable name="edittext" type="android.widget.EditText"/>
+        <variable name="extra" type="java.util.Map&lt;String, String&gt;"/>
     </data>
 
     <LinearLayout
@@ -53,13 +56,56 @@
             android:id="@+id/etWorkoutTitle"
             android:hint="Enter workout title"/>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etDay"
+            android:singleLine="true"
+            android:hint="@string/enterDay"/>
+
         <TextView
             android:id="@+id/tvExerciseNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter workouts one exercise at a time. @string/exercise1"
+            android:text="@string/exercise"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etExerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etReps"
+            android:hint="enter reps"/>
+
+        <TextView
+            android:id="@+id/tvExerciseNum2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exercise"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etExerciseName2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etReps"
+            android:hint="enter reps"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -81,6 +127,96 @@
             android:layout_height="wrap_content"
             android:id="@+id/etReps"
             android:hint="enter reps"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etDay"
+            android:singleLine="true"
+            android:hint="Enter day"/>
+
+        <EditText
+            android:id="@+id/etExerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etReps"
+            android:hint="enter reps"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etDay"
+            android:singleLine="true"
+            android:hint="Enter day"/>
+
+        <EditText
+            android:id="@+id/etExerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etReps"
+            android:hint="enter reps"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etDay"
+            android:singleLine="true"
+            android:hint="Enter day"/>
+
+        <EditText
+            android:id="@+id/etExerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etReps"
+            android:hint="enter reps"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etDay"
+            android:singleLine="true"
+            android:hint="Enter day"/>
+
+        <EditText
+            android:id="@+id/etExerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter name"
+            android:inputType="text"
+            android:singleLine="true" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etReps"
+            android:hint="enter reps"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bAddExercise"
+            android:onClick="@{()->viewmodel.addExercise()}" />
 
         <Button
             android:id="@+id/bWriteWorkouts"

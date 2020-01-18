@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -30,6 +31,7 @@ public class AdminClientProfileFragment extends Fragment {
 
     private User currentUser = new User();
     private Exercise exercise = new Exercise();
+    private int totalEditTexts;
 
     public AdminClientProfileFragment() {}
 
@@ -42,7 +44,7 @@ public class AdminClientProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment_report_list
         binding = FragmentAdminClientProfileBinding.inflate(inflater, container, false);
-        final View v = binding.getRoot();
+        View v = binding.getRoot();
         binding.setFragment(this);
         binding.setUser(currentUser);
         binding.setExercise(exercise);
@@ -50,6 +52,8 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setWorkout(workout);
         adminClientProfileViewModel.init();
         binding.setViewmodel(adminClientProfileViewModel);
+
+        totalEditTexts = 0;
 
         adminClientProfileViewModel.newExercise.observe(this, new Observer<Exercise>() {
             @Override
@@ -60,6 +64,15 @@ public class AdminClientProfileFragment extends Fragment {
 
         return v;
     }
+
+//    public void addExercise() {
+//        totalEditTexts++;
+//        if (totalEditTexts > 15)
+//            return;
+//        EditText newEditText = new EditText(context); // Pass it an Activity or Context
+//        newEditText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)); // Pass two args; must be LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, or an integer pixel value.
+//        getRoot.addView(newEditText);
+//    }
 
     public void toDatePicker() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
