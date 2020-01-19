@@ -31,6 +31,12 @@ public class AdminClientProfileFragment extends Fragment {
 
     private User currentUser = new User();
     private Exercise exercise = new Exercise();
+    private Exercise exercise2 = new Exercise();
+    private Exercise exercise3 = new Exercise();
+    private Exercise exercise4 = new Exercise();
+    private Exercise exercise5 = new Exercise();
+    private Exercise exercise6 = new Exercise();
+    private Exercise exercise7 = new Exercise();
     private int totalEditTexts;
 
     public AdminClientProfileFragment() {}
@@ -48,7 +54,14 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setFragment(this);
         binding.setUser(currentUser);
         binding.setExercise(exercise);
+        binding.setExercise(exercise2);
+        binding.setExercise(exercise3);
+        binding.setExercise(exercise4);
+        binding.setExercise(exercise5);
+        binding.setExercise(exercise6);
+        binding.setExercise(exercise7);
         final Workout workout = new Workout(currentUser);
+        workout.setWorkoutTitle("awooga");
         binding.setWorkout(workout);
         adminClientProfileViewModel.init();
         binding.setViewmodel(adminClientProfileViewModel);
@@ -63,6 +76,10 @@ public class AdminClientProfileFragment extends Fragment {
         });
 
         return v;
+    }
+
+    public void createExerciseArray() {
+
     }
 
     public void addExercise() {
