@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfileBinding;
@@ -17,6 +18,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -60,18 +62,66 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setExercise(exercise5);
         binding.setExercise(exercise6);
         binding.setExercise(exercise7);
-        final Workout workout = new Workout(currentUser);
-        workout.setWorkoutTitle("awooga");
+        Workout workout = new Workout(currentUser);
         binding.setWorkout(workout);
-        adminClientProfileViewModel.init();
-        binding.setViewmodel(adminClientProfileViewModel);
 
-        totalEditTexts = 0;
+        binding.setViewmodel(adminClientProfileViewModel);
+        //adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
+        adminClientProfileViewModel.init();
 
         adminClientProfileViewModel.newExercise.observe(this, new Observer<Exercise>() {
             @Override
             public void onChanged(Exercise exercise) {
                     Log.d(TAG, "changed ex");
+            }
+        });
+
+        adminClientProfileViewModel.newExercise2.observe(this, new Observer<Exercise>() {
+            @Override
+            public void onChanged(Exercise exercise) {
+                Log.d(TAG, "changed ex");
+            }
+        });
+
+        adminClientProfileViewModel.newExercise3.observe(this, new Observer<Exercise>() {
+            @Override
+            public void onChanged(Exercise exercise) {
+                Log.d(TAG, "changed ex");
+            }
+        });
+
+        adminClientProfileViewModel.newExercise4.observe(this, new Observer<Exercise>() {
+            @Override
+            public void onChanged(Exercise exercise) {
+                Log.d(TAG, "changed ex");
+            }
+        });
+
+        adminClientProfileViewModel.newExercise5.observe(this, new Observer<Exercise>() {
+            @Override
+            public void onChanged(Exercise exercise) {
+                Log.d(TAG, "changed ex");
+            }
+        });
+
+        adminClientProfileViewModel.newExercise6.observe(this, new Observer<Exercise>() {
+            @Override
+            public void onChanged(Exercise exercise) {
+                Log.d(TAG, "changed ex");
+            }
+        });
+
+        adminClientProfileViewModel.newExercise7.observe(this, new Observer<Exercise>() {
+            @Override
+            public void onChanged(Exercise exercise) {
+                Log.d(TAG, "changed ex");
+            }
+        });
+
+        adminClientProfileViewModel.newWorkout.observe(this, new Observer<Workout>() {
+            @Override
+            public void onChanged(Workout workout) {
+                Log.d(TAG, "changed ex");
             }
         });
 
@@ -82,13 +132,11 @@ public class AdminClientProfileFragment extends Fragment {
 
     }
 
-    public void addExercise() {
-//        totalEditTexts++;
-//        if (totalEditTexts > 15)
-//            return;
-//        EditText newEditText = new EditText(context); // Pass it an Activity or Context
-//        newEditText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)); // Pass two args; must be LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, or an integer pixel value.
-//        getRoot.addView(newEditText);
+    public void addExerciseValues(Exercise exercise, Exercise exercise2, Exercise exercise3,
+                                  Exercise exercise4, Exercise exercise5, Exercise exercise6,
+                                  Exercise exercise7, String workoutDay, String workoutTitle) {
+        adminClientProfileViewModel.writeToWorkouts(exercise, exercise2, exercise3, exercise4, exercise5,
+                exercise6, exercise7, workoutDay, workoutTitle);
     }
 
     public void toDatePicker() {

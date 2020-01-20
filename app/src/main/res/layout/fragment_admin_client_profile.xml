@@ -33,11 +33,14 @@
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
+            name="workoutTitle"
+            type="String"/>
+        <variable
+            name="workoutDay"
+            type="String"/>
+        <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
-        <variable name="data" type="String"/>
-        <variable name="edittext" type="android.widget.EditText"/>
-        <variable name="extra" type="java.util.Map&lt;String, String&gt;"/>
     </data>
 
     <ScrollView
@@ -240,17 +243,11 @@
             android:hint="enter reps"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bAddExercise"
-            android:onClick="@{()->fragment.addExercise()}" />
-
-        <Button
             android:id="@+id/bWriteWorkouts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="write workouts"
-            android:onClick="@{()->viewmodel.writeToWorkouts()}"/>
+            android:onClick="@{()->viewmodel.writeToWorkouts(exercise, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, workoutDay, workoutTitle)}"/>
 
         <Button
             android:id="@+id/bToDatePicker"
