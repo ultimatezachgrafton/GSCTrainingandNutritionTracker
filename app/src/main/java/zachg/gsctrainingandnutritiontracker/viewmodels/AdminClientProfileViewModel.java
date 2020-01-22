@@ -19,10 +19,16 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminClientProfileViewModel extends ViewModel {
 
-    private FirestoreRepository repo;
-    private User currentUser = new User();
+    private FirestoreRepository repo = FirestoreRepository.getInstance();
 
     public String exerciseName, exerciseReps, workoutTitle, workoutDay;
+    public Exercise exercise = new Exercise();
+    public Exercise exercise2 = new Exercise();
+    public Exercise exercise3 = new Exercise();
+    public Exercise exercise4 = new Exercise();
+    public Exercise exercise5 = new Exercise();
+    public Exercise exercise6 = new Exercise();
+    public Exercise exercise7 = new Exercise();
     public List<Exercise> exerciseList = new ArrayList();
 
     private ObservableField<String> etExerciseName = new ObservableField<>();
@@ -50,19 +56,12 @@ public class AdminClientProfileViewModel extends ViewModel {
     public MutableLiveData<Exercise> newExercise7 = new MutableLiveData<Exercise>();
     public MutableLiveData<Workout> newWorkout = new MutableLiveData<Workout>();
 
-
     public AdminClientProfileViewModel() {}
 
-    public AdminClientProfileViewModel(User user) {
-        this.currentUser = user;
-        this.currentUser.setClientName(user.getFirstName(), user.getLastName());
-    }
-
     public void init() {
-        repo = FirestoreRepository.getInstance();
     }
 
-    public void writeToWorkouts(Exercise exercise, Exercise exercise2, Exercise exercise3,
+    public void writeToWorkouts(User user, Exercise exercise, Exercise exercise2, Exercise exercise3,
                                 Exercise exercise4, Exercise exercise5, Exercise exercise6,
                                 Exercise exercise7, String workoutDay, String workoutTitle) {
         this.exercise = exercise;
@@ -83,22 +82,10 @@ public class AdminClientProfileViewModel extends ViewModel {
         exerciseList.add(4, exercise5);
         exerciseList.add(5, exercise6);
         exerciseList.add(6, exercise7);
-        Workout workout = new Workout(currentUser.getClientName(), currentUser.getEmail(), workoutTitle);
+
+        Workout workout = new Workout(user.getClientName(), user.getEmail(), workoutTitle);
         workout.setExerciseList(exerciseList);
-        repo.writeWorkoutsToRepo(currentUser, workout);
-    }
-
-    public void addValues() {
-
-    }
-
-    public void setExerciseValues(String exerciseName, String exerciseReps) {
-        this.exerciseName = exerciseName;
-        this.exerciseReps = exerciseReps;
-    }
-
-    public void setWorkoutValues(String workoutTitle, String workoutDay) {
-        this.workoutTitle = workoutTitle;
-        this.workoutDay = workoutDay;
+        workout.setWorkoutTitle(workoutTitle);
+        repo.writeWorkoutsToRepo(user, workout);
     }
 }

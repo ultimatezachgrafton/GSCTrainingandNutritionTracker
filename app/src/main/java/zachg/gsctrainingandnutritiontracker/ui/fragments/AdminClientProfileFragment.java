@@ -24,7 +24,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminClientProfileFragment extends Fragment {
 
-    // Enter workout values and send them to FirestoreRepository
+    // The admin enters workout values and sends them to FirestoreRepository
 
     FragmentAdminClientProfileBinding binding;
 
@@ -45,7 +45,7 @@ public class AdminClientProfileFragment extends Fragment {
 
     public AdminClientProfileFragment(User user) {
         this.currentUser = user;
-        adminClientProfileViewModel = new AdminClientProfileViewModel(user);
+        //adminClientProfileViewModel = new AdminClientProfileViewModel(user); // remove
     }
 
     @Override
@@ -66,7 +66,7 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setWorkout(workout);
 
         binding.setViewmodel(adminClientProfileViewModel);
-        //adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
+        adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
         adminClientProfileViewModel.init();
 
         adminClientProfileViewModel.newExercise.observe(this, new Observer<Exercise>() {
@@ -135,7 +135,7 @@ public class AdminClientProfileFragment extends Fragment {
     public void addExerciseValues(Exercise exercise, Exercise exercise2, Exercise exercise3,
                                   Exercise exercise4, Exercise exercise5, Exercise exercise6,
                                   Exercise exercise7, String workoutDay, String workoutTitle) {
-        adminClientProfileViewModel.writeToWorkouts(exercise, exercise2, exercise3, exercise4, exercise5,
+        adminClientProfileViewModel.writeToWorkouts(currentUser, exercise, exercise2, exercise3, exercise4, exercise5,
                 exercise6, exercise7, workoutDay, workoutTitle);
     }
 

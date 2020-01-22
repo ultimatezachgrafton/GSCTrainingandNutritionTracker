@@ -79,14 +79,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/etWorkoutTitle"
-            android:hint="Enter workout title"/>
+            android:hint="Enter workout title"
+            android:text="@={workoutTitle}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etDay"
             android:singleLine="true"
-            android:hint="@string/enterDay"/>
+            android:hint="@string/enterDay"
+            android:text="@={workoutDay}"/>
 
         <TextView
             android:id="@+id/tvExerciseNum"
@@ -102,13 +104,15 @@
             android:layout_height="wrap_content"
             android:hint="Enter name"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@={exercise.exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps"
-            android:hint="enter reps"/>
+            android:hint="enter reps"
+            android:text="@={exercise.reps}"/>
 
         <TextView
             android:id="@+id/tvExerciseNum2"
@@ -124,13 +128,15 @@
             android:layout_height="wrap_content"
             android:hint="Enter name"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@={exercise2.exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps2"
-            android:hint="enter reps"/>
+            android:hint="enter reps"
+            android:text="@={exercise2.reps}"/>
 
         <TextView
             android:id="@+id/tvExerciseNum3"
@@ -146,13 +152,15 @@
             android:layout_height="wrap_content"
             android:hint="Enter name"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@={exercise3.exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps3"
-            android:hint="enter reps"/>
+            android:hint="enter reps"
+            android:text="@={exercise3.reps}"/>
 
         <TextView
             android:id="@+id/tvExerciseNum4"
@@ -168,13 +176,15 @@
             android:layout_height="wrap_content"
             android:hint="Enter name"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@={exercise4.exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps4"
-            android:hint="enter reps"/>
+            android:hint="enter reps"
+            android:text="@={exercise4.reps}"/>
 
         <TextView
             android:id="@+id/tvExerciseNum5"
@@ -190,13 +200,15 @@
             android:layout_height="wrap_content"
             android:hint="Enter name"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@={exercise5.exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps5"
-            android:hint="enter reps"/>
+            android:hint="enter reps"
+            android:text="@={exercise5.reps}"/>
 
         <TextView
             android:id="@+id/tvExerciseNum6"
@@ -212,13 +224,15 @@
             android:layout_height="wrap_content"
             android:hint="Enter name"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@={exercise6.exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps6"
-            android:hint="enter reps"/>
+            android:hint="enter reps"
+            android:text="@={exercise6.reps}"/>
 
         <TextView
             android:id="@+id/tvExerciseNum7"
@@ -234,20 +248,22 @@
             android:layout_height="wrap_content"
             android:hint="Enter name"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="@={exercise7.exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps7"
-            android:hint="enter reps"/>
+            android:hint="enter reps"
+            android:text="@={exercise7.reps}"/>
 
         <Button
             android:id="@+id/bWriteWorkouts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="write workouts"
-            android:onClick="@{()->viewmodel.writeToWorkouts(exercise, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, workoutDay, workoutTitle)}"/>
+            android:onClick="@{()->viewmodel.writeToWorkouts(user, exercise, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, workoutDay, workoutTitle)}"/>
 
         <Button
             android:id="@+id/bToDatePicker"

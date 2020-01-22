@@ -44,6 +44,7 @@ public class RegisterViewModel extends ViewModel {
             return;
         }
         setUserValues(firstName, lastName, phoneNumber, email, password);
+        registerUser();
     }
 
     public void registerUser() {
