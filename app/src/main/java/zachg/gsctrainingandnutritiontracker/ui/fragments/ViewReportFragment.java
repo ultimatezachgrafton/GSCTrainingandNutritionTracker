@@ -53,6 +53,10 @@ public class ViewReportFragment extends Fragment {
         this.currentUser = user;
     }
 
+    public ViewReportFragment(User user) {
+        this.currentUser = user;
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);

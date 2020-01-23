@@ -45,7 +45,6 @@ public class AdminClientProfileFragment extends Fragment {
 
     public AdminClientProfileFragment(User user) {
         this.currentUser = user;
-        //adminClientProfileViewModel = new AdminClientProfileViewModel(user); // remove
     }
 
     @Override
@@ -141,8 +140,6 @@ public class AdminClientProfileFragment extends Fragment {
 
     public void toDatePicker() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ViewReportFragment()).addToBackStack(null).commit();
-        //SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-        //                new AdminCalendarFragment(currentUser)).addToBackStack(null).commit();
+                new ViewReportFragment(currentUser)).addToBackStack(null).commit();
     }
 }
