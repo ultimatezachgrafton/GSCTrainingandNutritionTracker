@@ -18,7 +18,7 @@ public class ReportListViewModel extends ViewModel {
     private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
     public String TAG = "ReportListViewModel";
 
-    public void init(Report report) {
+    public void init(User user) {
         this.currentUser = user;
         repo = FirestoreRepository.getInstance();
         reports.setValue(repo.getReportsByUser(currentUser));

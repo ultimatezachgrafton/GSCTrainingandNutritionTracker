@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportListBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
@@ -41,6 +42,7 @@ public class ReportListFragment extends Fragment {
     public String TAG = "ReportListFragment";
 
     User currentUser = new User();
+    Report currentReport = new Report();
 
     public ReportListFragment(User user) {
         this.currentUser = user;
@@ -57,6 +59,7 @@ public class ReportListFragment extends Fragment {
         binding = FragmentReportListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setUser(currentUser);
+        binding.setReport(currentReport);
 
         // Gets ViewModel instance to observe  LiveData
         binding.setModel(reportListViewModel);
@@ -94,7 +97,7 @@ public class ReportListFragment extends Fragment {
         reportListAdapter.setOnItemClickListener(new ReportListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                currentUser = reportListViewModel.onItemClicked(documentSnapshot, position);
+                currentReport = reportListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment_report_list
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
