@@ -35,6 +35,7 @@ public class FirestoreRepository {
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
+    public Query reportQuery = userColRef; // set to fetch reports
 
     // Gets singleton instance of FirestoreRepository
     public static FirestoreRepository getInstance() {
@@ -119,24 +120,10 @@ public class FirestoreRepository {
     }
 
     // Gets all Reports for a single User
-    public void getReportsByUser(User user, String dateString) {
-        CollectionReference reportColRef = userColRef.document(user.getEmail())
-                .collection("reports");
-        reportColRef.whereEqualTo("date", dateString).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.d(TAG, "Does doc exist?");
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document.exists()) {
-                            Log.d(TAG, "doc exists");
-                            Query reportQuery = reportColRef.whereEqualTo("date", dateString);
-                            reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
-                        }
-                    }
-                }
-            }
-        });
+    public FirestoreRecyclerOptions<Report> getReportsByUser(User user, String string) {
+        return new FirestoreRecyclerOptions.Builder<Report>()
+                .setQuery(reportQuery, Report.class)
+                .build();
     }
 
     // Gets all of a single User's reports on a specific date
