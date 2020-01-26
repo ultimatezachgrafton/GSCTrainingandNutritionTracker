@@ -21,7 +21,8 @@ public class ReportListViewModel extends ViewModel {
     public void init(User user) {
         this.currentUser = user;
         repo = FirestoreRepository.getInstance();
-        reports.setValue(repo.getReportsByUser(currentUser));
+        String dateString = "";
+        reports.setValue(repo.getReportsByUser(currentUser, dateString));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Report>> getReports() {

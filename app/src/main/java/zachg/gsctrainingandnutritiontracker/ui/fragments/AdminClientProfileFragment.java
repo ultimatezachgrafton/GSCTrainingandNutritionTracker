@@ -140,6 +140,6 @@ public class AdminClientProfileFragment extends Fragment {
 
     public void toDatePicker() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ViewReportFragment(currentUser)).addToBackStack(null).commit();
+                new ReportListFragment(currentUser)).addToBackStack(null).commit();
     }
 }
