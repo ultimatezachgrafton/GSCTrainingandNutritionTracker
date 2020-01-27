@@ -86,6 +86,9 @@ public class AdminClientProfileViewModel extends ViewModel {
         Workout workout = new Workout(user.getClientName(), user.getEmail(), workoutTitle);
         workout.setExerciseList(exerciseList);
         workout.setWorkoutTitle(workoutTitle);
+
+        // if workoutTitle is null, set null
+
         repo.writeWorkoutsToRepo(user, workout);
     }
 }

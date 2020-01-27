@@ -1,5 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.ui.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
 
     @Override
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position, Report report) {
-//        holder.tvClientName.setText(workout.getWorkoutTitle());
+        Log.d(TAG, "oBVH");
     }
 
 }
