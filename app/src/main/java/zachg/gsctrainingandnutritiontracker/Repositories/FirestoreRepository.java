@@ -121,9 +121,11 @@ public class FirestoreRepository {
 
     // Gets all Reports for a single User
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user, String string) {
+        Query reportQuery = userColRef.whereEqualTo("clientName", user.getClientName());
         return new FirestoreRecyclerOptions.Builder<Report>()
                 .setQuery(reportQuery, Report.class)
                 .build();
+//        reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
     }
 
     // Gets all of a single User's reports on a specific date

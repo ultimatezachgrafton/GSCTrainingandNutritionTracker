@@ -13,6 +13,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
@@ -22,7 +24,8 @@ public class ReportListViewModel extends ViewModel implements OnCompleteListener
     private FirestoreRepository repo = new FirestoreRepository();
     private User currentUser = new User();
     private Report report = new Report();
-    private MutableLiveData<Report> reports = new MutableLiveData<>();
+    private ArrayList<Report> reports = new ArrayList<>();
+    private MutableLiveData<FirestoreRecyclerOptions<Report>> reportLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
     public String TAG = "ReportListViewModel";
 
@@ -30,11 +33,13 @@ public class ReportListViewModel extends ViewModel implements OnCompleteListener
         this.currentUser = user;
         repo = FirestoreRepository.getInstance();
         String dateString = "";
-        repo.setSnapshotOnCompleteListener(this);
+        reportLiveData.setValue(repo.getReportsByUser(currentUser, dateString));
+//        repo.setSnapshotOnCompleteListener(this);
+//        getReportsByUser(user, dateString);
     }
 
-    public MutableLiveData<Report> getReports() {
-        return reports;
+    public MutableLiveData<FirestoreRecyclerOptions<Report>> getReports() {
+        return reportLiveData;
     }
 
     public MutableLiveData<Boolean> getIsUpdating() {
@@ -49,13 +54,17 @@ public class ReportListViewModel extends ViewModel implements OnCompleteListener
         return currentReport;
     }
 
+    public void getReportsByUser(User user, String string) {
+        repo.getReportsByUser(user, string);
+    }
+
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 if (doc.exists()) {
                     report = doc.toObject(Report.class);
-                    reports.setValue(report);
+                    reports.add(report);
                 }
             }
         } else {
