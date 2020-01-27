@@ -121,7 +121,8 @@ public class FirestoreRepository {
 
     // Gets all Reports for a single User
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user, String string) {
-        Query reportQuery = userColRef.whereEqualTo("clientName", user.getClientName());
+        Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
+                .whereEqualTo("clientName", user.getClientName());
         return new FirestoreRecyclerOptions.Builder<Report>()
                 .setQuery(reportQuery, Report.class)
                 .build();
