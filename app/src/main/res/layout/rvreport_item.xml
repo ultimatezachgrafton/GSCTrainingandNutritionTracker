@@ -8,14 +8,16 @@
     android:clickable="true">
 
     <TextView
-        android:id="@+id/tvClientName"
+        android:id="@+id/tvWorkoutTitle"
         style="@style/user_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="bye"/>
 
     <TextView
-        android:id="@+id/tvEmail"
+        android:id="@+id/tvExerciseDay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="hi"/>
 
 </LinearLayout>
