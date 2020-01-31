@@ -15,7 +15,7 @@
         android:text="bye"/>
 
     <TextView
-        android:id="@+id/tvExerciseDay"
+        android:id="@+id/tvWorkoutDay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="hi"/>

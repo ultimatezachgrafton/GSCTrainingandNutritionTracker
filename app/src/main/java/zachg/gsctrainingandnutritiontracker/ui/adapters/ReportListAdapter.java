@@ -38,12 +38,12 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
     // UserViewHolder is the class that defines the views that hold the User data
     class ReportViewHolder extends RecyclerView.ViewHolder {
         TextView tvWorkoutTitle;
-        TextView tvEmail;
+        TextView tvWorkoutDay;
 
         public ReportViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvClientName = itemView.findViewById(R.id.tvWorkoutTitle);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
+            tvWorkoutTitle = itemView.findViewById(R.id.tvWorkoutTitle);
+            tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
