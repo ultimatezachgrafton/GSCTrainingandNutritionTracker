@@ -67,7 +67,8 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
 
     @Override
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position, Report report) {
-        Log.d(TAG, "oBVH" + getItemCount());
+        holder.tvWorkoutTitle.setText(report.getWorkoutTitle());
+        holder.tvWorkoutDay.setText(report.getWorkoutDay());
     }
 
 }

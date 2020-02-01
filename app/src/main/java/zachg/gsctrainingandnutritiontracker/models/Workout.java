@@ -11,6 +11,7 @@ import java.util.List;
 public class Workout extends BaseObservable {
 
     private String email, clientName, workoutTitle;
+    private int workoutDay;
     private int selectedItemPosition;
     private boolean prevWorkout = false;
     private List<Exercise> exerciseList = new ArrayList<>();
@@ -54,6 +55,16 @@ public class Workout extends BaseObservable {
     public void setEmail(String email) {
         this.email = email;
         notifyPropertyChanged(BR.email);
+    }
+
+    @Bindable
+    public int getWorkoutDay() {
+        return workoutDay;
+    }
+
+    public void setWorkoutDay(int workoutDay) {
+        this.workoutDay = workoutDay;
+        notifyPropertyChanged(BR.workoutDay);
     }
 
     @Bindable
