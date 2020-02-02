@@ -24,6 +24,7 @@ public class Report extends BaseObservable {
     private String exerciseReps;
     private String exerciseWeight;
     private String exerciseName;
+    private Workout workout;
     private String workoutTitle;
     private int workoutDay;
 
@@ -45,13 +46,14 @@ public class Report extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString) {
+    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString, Workout workout) {
         this.clientName = clientName;
         this.email = email;
         this.dailyWeight = dailyWeight;
         this.exerciseWeight = exerciseWeight;
         this.comments = comments;
         this.dateString = dateString;
+        this.workout = workout;
     }
 
     @Bindable
@@ -198,6 +200,8 @@ public class Report extends BaseObservable {
         notifyPropertyChanged(BR.workoutTitle);
     }
 
+
+    // get the workoutDay and title from the workouts
     @Bindable
     public int getWorkoutDay() { return workoutDay; }
 

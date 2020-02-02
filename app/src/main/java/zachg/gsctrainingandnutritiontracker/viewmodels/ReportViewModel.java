@@ -48,7 +48,7 @@ public class ReportViewModel extends ViewModel {
 
     // Writes report to the Repository
     public void writeReport(User currentUser, Report report) {
-        Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(), dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString());
+        Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(), dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString()); // TODO: get workout to access title and day
         Log.d(TAG, generatedReport.getClientName() + generatedReport.getDateString());
         repo.writeReportToRepo(generatedReport);
 
