@@ -19,7 +19,7 @@ import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class ReportListViewModel extends ViewModel {
+public class ReportListViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     private User currentUser = new User();
@@ -34,7 +34,7 @@ public class ReportListViewModel extends ViewModel {
         repo = FirestoreRepository.getInstance();
         String dateString = "";
         reportLiveData.setValue(repo.getReportsByUser(currentUser, dateString));
-//        repo.setSnapshotOnCompleteListener(this);
+        repo.setSnapshotOnCompleteListener(this);
 //        getReportsByUser(user, dateString);
     }
 
@@ -54,18 +54,18 @@ public class ReportListViewModel extends ViewModel {
         return currentReport;
     }
 
-//    @Override
-//    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//        if (task.isSuccessful()) {
-//            for (QueryDocumentSnapshot doc : task.getResult()) {
-//                if (doc.exists()) {
-//                    report = doc.toObject(Report.class);
-//                    reports.add(report);
-//                }
-//            }
-//        } else {
-//            Log.d(TAG, "Error getting documents: ", task.getException());
-//            return;
-//        }
-//    }
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot doc : task.getResult()) {
+                if (doc.exists()) {
+                    report = doc.toObject(Report.class);
+                    reports.add(report);
+                }
+            }
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+            return;
+        }
+    }
 }
