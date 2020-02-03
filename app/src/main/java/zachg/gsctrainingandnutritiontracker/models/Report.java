@@ -56,6 +56,16 @@ public class Report extends BaseObservable {
         this.workout = workout;
     }
 
+
+    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString) {
+        this.clientName = clientName;
+        this.email = email;
+        this.dailyWeight = dailyWeight;
+        this.exerciseWeight = exerciseWeight;
+        this.comments = comments;
+        this.dateString = dateString;
+    }
+
     @Bindable
     public Date getDate() {
         return date;

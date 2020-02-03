@@ -108,12 +108,15 @@ public class ClientProfileFragment extends Fragment {
         } return true;
     }
 
+
     public void goToNewReport() {
+        Log.d(TAG, "clack");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }
 
     public void goToViewReport() {
+        Log.d(TAG, "click");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(currentUser, currentReport.getDateString())).addToBackStack(null).commit();
     }

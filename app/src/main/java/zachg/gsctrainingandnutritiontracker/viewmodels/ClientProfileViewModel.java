@@ -41,6 +41,8 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
         repo.setSnapshotOnCompleteListener(this);
     }
 
+
+    //if reports exists, fetch it if not - gotonewreport
     public void getReportByDate(User user, Report report) {
         repo.getReportByDate(user, report.getDateString()); }
 
