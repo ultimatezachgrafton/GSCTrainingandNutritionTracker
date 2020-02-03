@@ -41,10 +41,8 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
         repo.setSnapshotOnCompleteListener(this);
     }
 
-
-    //if reports exists, fetch it if not - gotonewreport
-    public void getReportByDate(User user, Report report) {
-        repo.getReportByDate(user, report.getDateString()); }
+    public void getReportByUser(User user) {
+        repo.getReportByUser(user); }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -52,6 +50,7 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 if (doc.exists()) {
                     report = doc.toObject(Report.class);
+                    Log.d(TAG, "what");
                     reportLiveData.setValue(report);
                 }
             }

@@ -57,7 +57,11 @@ public class ClientProfileFragment extends Fragment {
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                goToNewReport();
+                if (r.getWorkoutTitle() != null) {
+                    goToNewReport();
+                } else {
+                   goToViewReport();
+                }
             }
         });
 
@@ -73,7 +77,7 @@ public class ClientProfileFragment extends Fragment {
             }
             String dateString = ((month + 1) + "-" + dayOfMonthStr + "-" + year);
             currentReport.setDateString(dateString);
-            clientProfileViewModel.getReportByDate(currentUser, currentReport);
+            clientProfileViewModel.getReportByUser(currentUser);
         });
 
         return v;
