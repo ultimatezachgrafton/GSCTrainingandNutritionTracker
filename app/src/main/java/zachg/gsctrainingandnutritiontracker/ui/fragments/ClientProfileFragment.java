@@ -57,7 +57,7 @@ public class ClientProfileFragment extends Fragment {
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                if (r.getWorkoutTitle() != null) {
+                if (r.getWorkoutTitle() == null) {
                     goToNewReport();
                 } else {
                    goToViewReport();
@@ -71,11 +71,16 @@ public class ClientProfileFragment extends Fragment {
             String dayOfMonthStr, monthStr;
             // if dayOfMonth is less than 10, put a zero in front of it
             if (dayOfMonth < 10) {
-                dayOfMonthStr = "0" + String.valueOf(dayOfMonth);
+                dayOfMonthStr = "0" + (dayOfMonth);
             } else {
                 dayOfMonthStr = String.valueOf(dayOfMonth);
             }
-            String dateString = ((month + 1) + "-" + dayOfMonthStr + "-" + year);
+            if (month < 10) {
+                monthStr = "0" + (month + 1);
+            } else {
+                monthStr = String.valueOf(month);
+            }
+            String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
             currentReport.setDateString(dateString);
             clientProfileViewModel.getReportByUser(currentUser);
         });
@@ -114,13 +119,11 @@ public class ClientProfileFragment extends Fragment {
 
 
     public void goToNewReport() {
-        Log.d(TAG, "clack");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
     }
 
     public void goToViewReport() {
-        Log.d(TAG, "click");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(currentUser, currentReport.getDateString())).addToBackStack(null).commit();
     }

@@ -50,7 +50,6 @@ public class ClientProfileViewModel extends ViewModel implements OnCompleteListe
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 if (doc.exists()) {
                     report = doc.toObject(Report.class);
-                    Log.d(TAG, "what");
                     reportLiveData.setValue(report);
                 }
             }
