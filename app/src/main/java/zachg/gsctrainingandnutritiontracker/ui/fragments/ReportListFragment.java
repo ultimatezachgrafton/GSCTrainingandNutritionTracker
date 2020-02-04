@@ -94,13 +94,14 @@ public class ReportListFragment extends Fragment {
         binding.rvReport.setHasFixedSize(true);
         binding.rvReport.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Note: Listener is explicitly called here to address a binding concern improperly documented
         reportListAdapter.setOnItemClickListener(new ReportListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 currentReport = reportListViewModel.onItemClicked(documentSnapshot, position);
-                // Goes to client's profile fragment_report_list
+                // Goes to client's profile fragment
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
+                        new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
             }
         });
     }
