@@ -145,27 +145,4 @@ public class ReportFragment extends Fragment {
                 return true;
         } return super.onOptionsItemSelected(item);
     }
-
-//    // TODO: why is this here
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_CONTACT && data != null) {
-//            Uri contactUri = data.getData();
-//            // Specify which fields you want your query to return values for
-//            String[] queryFields = new String[]{ContactsContract.Contacts.DISPLAY_NAME};
-//            // Perform your query - the contactUri is like a "where" clause here
-//            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
-//            try {
-//                // Double-check that you actually got results
-//                if (c.getCount() == 0) {
-//                    return;
-//                }
-//                // Pull out the first column of the first row of data - that is your suspect's name
-//                c.moveToFirst();
-//                String suspect = c.getString(0);
-//            } finally {
-//                c.close();
-//            }
-//        }
-//    }
 }

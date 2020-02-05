@@ -57,7 +57,7 @@ public class ClientProfileFragment extends Fragment {
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                if (r.getWorkoutTitle() == null) {
+                if (!r.isNew()) {
                     goToNewReport();
                 } else {
                    goToViewReport();
