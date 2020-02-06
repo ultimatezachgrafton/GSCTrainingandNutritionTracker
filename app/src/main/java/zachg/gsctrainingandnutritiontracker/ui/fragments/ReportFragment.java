@@ -30,10 +30,12 @@ import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
+import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.ui.adapters.ExerciseListAdapter;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
@@ -43,7 +45,7 @@ public class ReportFragment extends Fragment {
 
     private ReportViewModel reportViewModel = new ReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private WorkoutListAdapter workoutListAdapter;
+    private ExerciseListAdapter exerciseListAdapter;
 
     private FragmentReportBinding binding;
 
@@ -84,11 +86,11 @@ public class ReportFragment extends Fragment {
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
         reportViewModel.init(currentUser, currentReport);
 
-        reportViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
+        reportViewModel.getExercises().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
             @Override
-            public void onChanged(FirestoreRecyclerOptions<Workout> workouts) {
-                initRecyclerView(workouts);
-                workoutListAdapter.startListening();
+            public void onChanged(FirestoreRecyclerOptions<Exercise> exercises) {
+                initRecyclerView(exercises);
+                exerciseListAdapter.startListening();
             }
         });
 
@@ -105,9 +107,9 @@ public class ReportFragment extends Fragment {
         return v;
     }
 
-    private void initRecyclerView(FirestoreRecyclerOptions<Workout> workouts) {
-        workoutListAdapter = new WorkoutListAdapter(workouts);
-        binding.rvWorkout.setAdapter(workoutListAdapter);
+    private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
+        exerciseListAdapter = new ExerciseListAdapter(exercises);
+        binding.rvWorkout.setAdapter(exerciseListAdapter);
         binding.rvWorkout.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
@@ -118,7 +120,7 @@ public class ReportFragment extends Fragment {
 
     public void onStop() {
         super.onStop();
-        workoutListAdapter.stopListening();
+        exerciseListAdapter.stopListening();
     }
 
     @Override

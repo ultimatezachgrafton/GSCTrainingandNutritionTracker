@@ -14,32 +14,33 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 
-public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, WorkoutListAdapter.WorkoutViewHolder> {
+public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, ExerciseListAdapter.ExerciseViewHolder> {
     private OnItemClickListener listener;
-    private Workout workoutList = new Workout();
-    public String TAG = "WorkoutListAdapter";
+    private Exercise exercise = new Exercise();
+    public String TAG = "ExerciseListAdapter";
 
     // Listens for a Firestore query
-    public WorkoutListAdapter(@NonNull FirestoreRecyclerOptions<Workout> options) {
+    public ExerciseListAdapter(@NonNull FirestoreRecyclerOptions<Exercise> options) {
         super(options);
     }
 
     @NonNull
     @Override
-    public WorkoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvworkout_item, parent, false);
 
-        return new WorkoutViewHolder(v);
+        return new ExerciseViewHolder(v);
     }
 
     // UserViewHolder is the class that defines the views that hold the User data
-    class WorkoutViewHolder extends RecyclerView.ViewHolder {
+    class ExerciseViewHolder extends RecyclerView.ViewHolder {
         TextView tvExerciseName;
         TextView tvExerciseNum;
 
-        public WorkoutViewHolder(@NonNull View itemView) {
+        public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             tvExerciseName = itemView.findViewById(R.id.tvExerciseName);
             tvExerciseNum = itemView.findViewById(R.id.tvExerciseNum);
@@ -65,9 +66,9 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
-        holder.tvExerciseName.setText(workout.getWorkoutTitle());
-        holder.tvExerciseNum.setText(workout.getWorkoutDay());
+    public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position, Exercise exercise) {
+        holder.tvExerciseName.setText(exercise.getExerciseName()); //TODO: get this to display the exerciseName from db
+        holder.tvExerciseNum.setText(exercise.getExerciseNum());
     }
 
 }

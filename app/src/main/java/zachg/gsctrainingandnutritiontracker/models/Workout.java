@@ -15,6 +15,7 @@ public class Workout extends BaseObservable {
     private int selectedItemPosition;
     private boolean prevWorkout = false;
     private List<Exercise> exerciseList = new ArrayList<>();
+    private Exercise exercise = new Exercise();
     private User currentUser = new User();
 
     public Workout(User user){
@@ -75,6 +76,16 @@ public class Workout extends BaseObservable {
     public void setWorkoutTitle(String workoutTitle) {
         this.workoutTitle = workoutTitle;
         notifyPropertyChanged(BR.workoutTitle);
+    }
+
+    @Bindable
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
+        notifyPropertyChanged(BR.exercise);
     }
 
     @Bindable

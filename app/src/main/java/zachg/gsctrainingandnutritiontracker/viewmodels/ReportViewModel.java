@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
@@ -17,6 +18,7 @@ public class ReportViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> workouts = new MutableLiveData<>();
+    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exercises = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
     public ObservableField<String> dailyWeight = new ObservableField<>("");
@@ -40,6 +42,10 @@ public class ReportViewModel extends ViewModel {
 
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {
         return workouts;
+    }
+
+    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
+        return exercises;
     }
 
     public MutableLiveData<Boolean> getIsUpdating() {
