@@ -120,7 +120,7 @@ public class ReportFragment extends Fragment {
 
     public void onStop() {
         super.onStop();
-        exerciseListAdapter.stopListening();
+//        exerciseListAdapter.stopListening();
     }
 
     @Override

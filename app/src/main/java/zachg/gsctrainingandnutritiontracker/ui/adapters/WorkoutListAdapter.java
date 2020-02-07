@@ -1,6 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.ui.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
     @NonNull
     @Override
     public WorkoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvworkout_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_exercise_item, parent, false);
 
         return new WorkoutViewHolder(v);
     }

@@ -2,11 +2,18 @@ package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
@@ -14,11 +21,13 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class ReportViewModel extends ViewModel {
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
+public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> workouts = new MutableLiveData<>();
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exercises = new MutableLiveData<>();
+    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
     public ObservableField<String> dailyWeight = new ObservableField<>("");
@@ -26,6 +35,8 @@ public class ReportViewModel extends ViewModel {
     public ObservableField<String> exerciseWeight = new ObservableField<>("");
 
     public Report report = new Report();
+    public Exercise exercise = new Exercise();
+    private ArrayList<Exercise> exercises = new ArrayList<>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
@@ -45,7 +56,7 @@ public class ReportViewModel extends ViewModel {
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
-        return exercises;
+        return exerciseLiveData;
     }
 
     public MutableLiveData<Boolean> getIsUpdating() {
@@ -66,6 +77,21 @@ public class ReportViewModel extends ViewModel {
 
     public void iterateWorkoutNum(User user) {
         user.setCurrentWorkoutNum(user.getCurrentWorkoutNum()+1);
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot doc : task.getResult()) {
+                if (doc.exists()) {
+                    exercise = doc.toObject(Exercise.class);
+                    exercises.add(exercise);
+                }
+            }
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+            return;
+        }
     }
 
 }
