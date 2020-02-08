@@ -26,7 +26,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
-    public MutableLiveData<FirestoreRecyclerOptions<Workout>> workouts = new MutableLiveData<>();
+    public MutableLiveData<FirestoreRecyclerOptions<Workout>> workoutLiveData = new MutableLiveData<>();
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
@@ -35,8 +35,9 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public ObservableField<String> exerciseWeight = new ObservableField<>("");
 
     public Report report = new Report();
+    public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
-    private ArrayList<Exercise> exercises = new ArrayList<>();
+    private ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
@@ -48,11 +49,13 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
-        workouts.setValue(repo.getWorkoutsFromRepo(currentUser));
+        workoutLiveData.setValue(repo.getWorkoutsFromRepo(currentUser));
+        exerciseArrayList = workout.getExerciseList();
+        // exerciseLiveData.setValue(exerciseArrayList);
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {
-        return workouts;
+        return workoutLiveData;
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
@@ -85,7 +88,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 if (doc.exists()) {
                     exercise = doc.toObject(Exercise.class);
-                    exercises.add(exercise);
+                    exerciseArrayList.add(exercise);
                 }
             }
         } else {

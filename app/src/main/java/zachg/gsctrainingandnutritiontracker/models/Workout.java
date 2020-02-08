@@ -14,7 +14,7 @@ public class Workout extends BaseObservable {
     private int workoutDay;
     private int selectedItemPosition;
     private boolean prevWorkout = false;
-    private List<Exercise> exerciseList = new ArrayList<>();
+    private ArrayList<Exercise> exerciseList = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private User currentUser = new User();
 
@@ -89,11 +89,11 @@ public class Workout extends BaseObservable {
     }
 
     @Bindable
-    public List<Exercise> getExerciseList() {
+    public ArrayList<Exercise> getExerciseList() {
         return exerciseList;
     }
 
-    public void setExerciseList(List<Exercise> exerciseList) {
+    public void setExerciseList(ArrayList<Exercise> exerciseList) {
         this.exerciseList = exerciseList;
         notifyPropertyChanged(BR.exerciseList);
     }
