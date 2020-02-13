@@ -20,6 +20,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -140,11 +142,16 @@ public class FirestoreRepository {
     }
 
     // Returns Workouts as assigned by admin
-    public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
-        Query workoutQuery = userColRef.whereEqualTo("email", user.getEmail());
+    public void getWorkoutsFromRepo(User user) {
+        Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts");
         workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
-        return new FirestoreRecyclerOptions.Builder<Workout>()
-                .setQuery(workoutQuery, Workout.class)
+    }
+
+    public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, int num) {
+        Query exerciseQuery = userColRef.document(user.getEmail()).collection("workouts")
+                .whereEqualTo("workoutId", "num");
+        return new FirestoreRecyclerOptions.Builder<Exercise>()
+                .setQuery(exerciseQuery, Exercise.class)
                 .build();
     }
 

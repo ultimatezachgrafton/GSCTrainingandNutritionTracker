@@ -26,10 +26,10 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ReportViewModel extends ViewModel {
+public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
-    public MutableLiveData<FirestoreRecyclerOptions<Workout>> workoutLiveData = new MutableLiveData<>();
+    public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
@@ -52,12 +52,12 @@ public class ReportViewModel extends ViewModel {
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
+        repo.setSnapshotOnCompleteListener(this);
+        repo.getWorkoutsFromRepo(currentUser);
         exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, 0));
-        // exercise
-//        exerciseLiveData.setValue(exerciseArrayList);
     }
 
-    public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {
+    public MutableLiveData<Workout> getWorkouts() {
         return workoutLiveData;
     }
 
@@ -85,24 +85,20 @@ public class ReportViewModel extends ViewModel {
         user.setCurrentWorkoutNum(user.getCurrentWorkoutNum()+1);
     }
 
-//    @Override
-//    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//        if (task.isSuccessful()) {
-//            for (QueryDocumentSnapshot doc : task.getResult()) {
-//                if (doc.exists()) {
-//                    exercise = doc.toObject(Exercise.class);
-//
-//                    exerciseLiveData.setValue(exercise); // get this current workout's exercises
-//
-//                    exercises = workout.getExercises();
-//                }
-//            }
-//            Log.d(TAG, "list size: " + exercises.size());
-//            Log.d(TAG, "list: " + workout.getExercises() + workout.getWorkoutTitle());
-////            Log.d(TAG, "element 0: " + String.valueOf(exercises.get(0).getExerciseName()));
-//        } else {
-//            Log.d(TAG, "Error getting documents: ", task.getException());
-//            return;
-//        }
-//    }
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            for (QueryDocumentSnapshot doc : task.getResult()) {
+                if (doc.exists()) {
+                    workout = doc.toObject(Workout.class);
+                    workoutLiveData.setValue(workout);
+                }
+            }
+            Log.d(TAG, "list size: " + exercises.size());
+            Log.d(TAG, "list: " + workout.getExercises() + workout.getWorkoutTitle());
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+            return;
+        }
+    }
 }
