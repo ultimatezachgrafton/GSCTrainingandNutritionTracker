@@ -29,7 +29,7 @@ public class AdminClientProfileViewModel extends ViewModel {
     public Exercise exercise5 = new Exercise();
     public Exercise exercise6 = new Exercise();
     public Exercise exercise7 = new Exercise();
-    public List<Exercise> exerciseList = new ArrayList();
+    public ArrayList<Exercise> exercises = new ArrayList();
 
     private ObservableField<String> etExerciseName = new ObservableField<>();
     private ObservableField<String> etExerciseName2 = new ObservableField<>();
@@ -75,16 +75,16 @@ public class AdminClientProfileViewModel extends ViewModel {
         this.workoutDay = workoutDay;
         this.workoutTitle = workoutTitle;
 
-        exerciseList.add(0, exercise);
-        exerciseList.add(1, exercise2);
-        exerciseList.add(2, exercise3);
-        exerciseList.add(3, exercise4);
-        exerciseList.add(4, exercise5);
-        exerciseList.add(5, exercise6);
-        exerciseList.add(6, exercise7);
+        exercises.add(0, exercise);
+        exercises.add(1, exercise2);
+        exercises.add(2, exercise3);
+        exercises.add(3, exercise4);
+        exercises.add(4, exercise5);
+        exercises.add(5, exercise6);
+        exercises.add(6, exercise7);
 
         Workout workout = new Workout(user.getClientName(), user.getEmail(), workoutTitle);
-        workout.setExerciseList(exerciseList);
+        workout.setExercises(exercises);
         workout.setWorkoutTitle(workoutTitle);
 
         // if workoutTitle is null, set null

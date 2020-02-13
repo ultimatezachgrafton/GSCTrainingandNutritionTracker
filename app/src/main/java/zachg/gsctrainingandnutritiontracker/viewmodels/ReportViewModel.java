@@ -1,6 +1,8 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -10,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -23,7 +26,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ReportViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> workoutLiveData = new MutableLiveData<>();
@@ -37,7 +40,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
-    private ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
+    private ArrayList<Exercise> exercises = new ArrayList<Exercise>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
@@ -49,9 +52,9 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
-        workoutLiveData.setValue(repo.getWorkoutsFromRepo(currentUser));
-        exerciseArrayList = workout.getExerciseList();
-        // exerciseLiveData.setValue(exerciseArrayList);
+        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, 0));
+        // exercise
+//        exerciseLiveData.setValue(exerciseArrayList);
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {
@@ -82,19 +85,24 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         user.setCurrentWorkoutNum(user.getCurrentWorkoutNum()+1);
     }
 
-    @Override
-    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot doc : task.getResult()) {
-                if (doc.exists()) {
-                    exercise = doc.toObject(Exercise.class);
-                    exerciseArrayList.add(exercise);
-                }
-            }
-        } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-            return;
-        }
-    }
-
+//    @Override
+//    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//        if (task.isSuccessful()) {
+//            for (QueryDocumentSnapshot doc : task.getResult()) {
+//                if (doc.exists()) {
+//                    exercise = doc.toObject(Exercise.class);
+//
+//                    exerciseLiveData.setValue(exercise); // get this current workout's exercises
+//
+//                    exercises = workout.getExercises();
+//                }
+//            }
+//            Log.d(TAG, "list size: " + exercises.size());
+//            Log.d(TAG, "list: " + workout.getExercises() + workout.getWorkoutTitle());
+////            Log.d(TAG, "element 0: " + String.valueOf(exercises.get(0).getExerciseName()));
+//        } else {
+//            Log.d(TAG, "Error getting documents: ", task.getException());
+//            return;
+//        }
+//    }
 }
