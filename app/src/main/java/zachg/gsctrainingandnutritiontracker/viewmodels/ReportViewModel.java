@@ -26,7 +26,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ReportViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
@@ -40,10 +40,11 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
-    private ArrayList<Exercise> exercises = new ArrayList<Exercise>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
+    public String workoutTitle;
+    public int workoutDay;
 
     public ReportViewModel() {}
 
@@ -52,13 +53,8 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
-        repo.setSnapshotOnCompleteListener(this);
-        repo.getWorkoutsFromRepo(currentUser);
-        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, 0));
-    }
-
-    public MutableLiveData<Workout> getWorkouts() {
-        return workoutLiveData;
+        workoutDay = 1;
+        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
@@ -83,22 +79,5 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
 
     public void iterateWorkoutNum(User user) {
         user.setCurrentWorkoutNum(user.getCurrentWorkoutNum()+1);
-    }
-
-    @Override
-    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot doc : task.getResult()) {
-                if (doc.exists()) {
-                    workout = doc.toObject(Workout.class);
-                    workoutLiveData.setValue(workout);
-                }
-            }
-            Log.d(TAG, "list size: " + exercises.size());
-            Log.d(TAG, "list: " + workout.getExercises() + workout.getWorkoutTitle());
-        } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-            return;
-        }
     }
 }

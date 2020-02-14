@@ -148,8 +148,8 @@ public class FirestoreRepository {
     }
 
     public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, int num) {
-        Query exerciseQuery = userColRef.document(user.getEmail()).collection("workouts")
-                .whereEqualTo("workoutId", "num");
+        Query exerciseQuery = userColRef.document(user.getEmail()).collection("exercises")
+                .whereEqualTo("workoutDay", num);
         return new FirestoreRecyclerOptions.Builder<Exercise>()
                 .setQuery(exerciseQuery, Exercise.class)
                 .build();

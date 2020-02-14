@@ -98,7 +98,7 @@ public class ReportFragment extends Fragment {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-//                    binding.rvWorkout.smoothScrollToPosition(reportViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
+                    binding.rvExercise.smoothScrollToPosition(reportViewModel.getExercises().getValue().getSnapshots().size() - 1);
                 }
             }
 
@@ -109,8 +109,8 @@ public class ReportFragment extends Fragment {
 
     private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
         exerciseListAdapter = new ExerciseListAdapter(exercises);
-        binding.rvWorkout.setAdapter(exerciseListAdapter);
-        binding.rvWorkout.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvExercise.setAdapter(exerciseListAdapter);
+        binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
@@ -120,7 +120,7 @@ public class ReportFragment extends Fragment {
 
     public void onStop() {
         super.onStop();
-//        exerciseListAdapter.stopListening();
+        exerciseListAdapter.stopListening();
     }
 
     @Override

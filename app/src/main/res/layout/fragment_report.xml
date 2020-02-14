@@ -20,6 +20,9 @@
         <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
+            name="workout"
+            type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
     </data>
 
 <RelativeLayout
@@ -82,16 +85,16 @@
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/exercises"
+        android:text="Today's workout: "
         android:layout_below="@id/etWeight"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvWorkout"
+        android:id="@+id/rvExercise"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/separator2"
         android:background="@android:color/darker_gray"
-        tools:listitem="@layout/rvuser_item"
+        tools:listitem="@layout/rv_exercise_item"
         android:layout_weight="1"/>
 
     <EditText
@@ -100,7 +103,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/comments"
         android:text="@={model.comments}"
-        android:layout_below="@id/rvWorkout" />
+        android:layout_below="@id/rvExercise" />
 
     <Button
         android:id="@+id/bSendReport"
