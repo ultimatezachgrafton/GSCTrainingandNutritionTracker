@@ -44,17 +44,18 @@ public class ViewReportViewModel extends ViewModel implements OnCompleteListener
         this.currentReport = report;
         repo = FirestoreRepository.getInstance();
         repo.setSnapshotOnCompleteListener(this);
-        repo.getReportsByUser(client, report.getDateString());
+        repo.getReportByUser(client);
     }
 
-    public MutableLiveData<Report> getReport() { return reportLiveData; }
+    public Report getCurrentReport() {
+        return currentReport; }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 Report report = doc.toObject(Report.class);
-                reportLiveData.setValue(report);
+                currentReport = report;
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());

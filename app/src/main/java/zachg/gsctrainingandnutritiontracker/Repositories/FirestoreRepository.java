@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 
@@ -212,19 +213,20 @@ public class FirestoreRepository {
     public void writeReportToRepo(Report report) {
         db.collection("users").document(report.getEmail()).collection("reports")
                 .document(report.getDateString())
-                .set(report)
+                .set(report, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("reports", "DocumentSnapshot added with ID: ");
-                        Log.d("reports", report.getDateString() + report.getClientName());
+                        Log.d(TAG, "DocumentSnapshot added with ID: ");
+                        Log.d(TAG, report.getDateString() + report.getClientName());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("reports", "Error writing document", e);
+                        Log.w(TAG, "Error writing document", e);
                     }
                 });
+        Log.d(TAG, report.getDateString() + report.getEmail());
     }
 }

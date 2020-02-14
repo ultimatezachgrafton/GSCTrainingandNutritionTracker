@@ -70,6 +70,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/bCamera" />
 
+        <Button
+            android:id="@+id/bWriteWorkouts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="write workouts"
+            android:onClick="@{()->viewmodel.writeToWorkouts(user, exercise, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, workoutDay, workoutTitle)}"/>
+
+        <Button
+            android:id="@+id/bToDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvClientName"
+            android:text="@string/toDatePicker"
+            android:onClick="@{()->fragment.toDatePicker()}"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -257,21 +272,6 @@
             android:id="@+id/etReps7"
             android:hint="enter reps"
             android:text="@={exercise7.reps}"/>
-
-        <Button
-            android:id="@+id/bWriteWorkouts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="write workouts"
-            android:onClick="@{()->viewmodel.writeToWorkouts(user, exercise, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, workoutDay, workoutTitle)}"/>
-
-        <Button
-            android:id="@+id/bToDatePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvClientName"
-            android:text="@string/toDatePicker"
-            android:onClick="@{()->fragment.toDatePicker()}"/>
 
     </LinearLayout>
         </ScrollView>

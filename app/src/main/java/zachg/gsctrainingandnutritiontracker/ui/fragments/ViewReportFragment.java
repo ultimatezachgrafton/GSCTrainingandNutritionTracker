@@ -67,19 +67,14 @@ public class ViewReportFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = FragmentAdminReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
-        binding.setReport(currentReport);
+
         adminReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
         adminReportViewModel.init(currentUser, currentReport);
+        binding.setReport(adminReportViewModel.getCurrentReport());
+
 
         // if user has sent a report on this day, it displays the data sent
 //        updatePhotoView();
-
-        adminReportViewModel.getReport().observe(this, new Observer<Report>() {
-            @Override
-            public void onChanged(@Nullable Report report) {
-                //
-            }
-        });
 
         return v;
     }
