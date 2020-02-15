@@ -65,6 +65,8 @@ public class ReportViewModel extends ViewModel {
         return isUpdating;
     }
 
+
+    // TODO: Write everything correctly - whether filled out or not - INCLUDING the exerciseNames, etc
     // Writes report to the Repository
     public void writeReport(User currentUser, Report report) {
         Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),

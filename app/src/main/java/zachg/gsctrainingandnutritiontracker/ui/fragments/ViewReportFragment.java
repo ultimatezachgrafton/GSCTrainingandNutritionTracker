@@ -53,8 +53,9 @@ public class ViewReportFragment extends Fragment {
         this.currentUser = user;
     }
 
-    public ViewReportFragment(User user) {
+    public ViewReportFragment(Report report, User user) {
         this.currentUser = user;
+        this.currentReport = report;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,8 @@ public class ViewReportFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = FragmentAdminReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
+
+        binding.setReport(currentReport);
 
         adminReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
         adminReportViewModel.init(currentUser, currentReport);

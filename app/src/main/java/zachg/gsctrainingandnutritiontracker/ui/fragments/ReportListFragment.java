@@ -101,7 +101,7 @@ public class ReportListFragment extends Fragment {
                 currentReport = reportListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
+                        new ViewReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
             }
         });
     }
