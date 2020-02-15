@@ -65,13 +65,13 @@ public class ReportViewModel extends ViewModel {
         return isUpdating;
     }
 
-
     // TODO: Write everything correctly - whether filled out or not - INCLUDING the exerciseNames, etc
+    // TODO: all this converts to fullReport string for viewing
     // Writes report to the Repository
     public void writeReport(User currentUser, Report report) {
         Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
                 dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString());
-        // TODO: get workout to access title and day
+//                report.getWorkoutTitle(), report.getExerciseArray());
         Log.d(TAG, generatedReport.getClientName() + generatedReport.getDateString());
         repo.writeReportToRepo(generatedReport);
 
