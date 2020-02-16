@@ -33,9 +33,9 @@ public class ReportViewModel extends ViewModel {
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
 
-    public ObservableField<String> dailyWeight = new ObservableField<>("");
-    public ObservableField<String> comments = new ObservableField<>("");
-    public ObservableField<String> exerciseWeight = new ObservableField<>("");
+    public ObservableField<String> dailyWeight = new ObservableField<>();
+    public ObservableField<String> comments = new ObservableField<>();
+    public ObservableField<String> exerciseWeight = new ObservableField<>();
 
     public Report report = new Report();
     public Workout workout = new Workout();
