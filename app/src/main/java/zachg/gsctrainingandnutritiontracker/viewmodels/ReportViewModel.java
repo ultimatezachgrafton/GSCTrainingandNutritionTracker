@@ -65,10 +65,13 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     }
 
     public void getExerciseListInfo() {
-        // get exercisearray from repo
-        // iterate thru exercises, copy them, write them to reports
-
-
+        // iterate thru exercises, copy name, weight, reps, write them to reports
+        for (int i = 0; i < exerciseArrayList.size(); i++) {
+            // set these into a single String and add it to fullreport;
+            exerciseArrayList.get(i).getExerciseName();
+            exerciseArrayList.get(i).getExerciseWeight();
+            exerciseArrayList.get(i).getReps();
+        }
     }
 
     public MutableLiveData<Boolean> getIsUpdating() {

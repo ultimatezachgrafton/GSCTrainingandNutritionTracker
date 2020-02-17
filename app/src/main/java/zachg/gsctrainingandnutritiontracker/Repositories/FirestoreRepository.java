@@ -156,6 +156,12 @@ public class FirestoreRepository {
                 .build();
     }
 
+    public void getExercisesForIteration(User user, int num) {
+        Query exerciseQuery = userColRef.document(user.getEmail()).collection("exercises")
+                .whereEqualTo("workoutDay", num);
+        exerciseQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+    }
+
     public void registerUser(User user) {
         // Add FirebaseUser to database
         auth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
