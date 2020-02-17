@@ -26,7 +26,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ReportViewModel extends ViewModel {
+public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
@@ -40,6 +40,7 @@ public class ReportViewModel extends ViewModel {
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
+    public ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
@@ -55,17 +56,26 @@ public class ReportViewModel extends ViewModel {
         this.dateString = report.getDateString();
         workoutDay = 1;
         exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
+        repo.setSnapshotOnCompleteListener(this);
+        repo.getExercisesForIteration(currentUser, workoutDay);
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
         return exerciseLiveData;
     }
 
+    public void getExerciseListInfo() {
+        // get exercisearray from repo
+        // iterate thru exercises, copy them, write them to reports
+
+
+    }
+
     public MutableLiveData<Boolean> getIsUpdating() {
         return isUpdating;
     }
 
-    // TODO: Write everything correctly - whether filled out or not - INCLUDING the exerciseNames, etc
+    // TODO: Write the exerciseNames, etc
     // TODO: all this converts to fullReport string for viewing
     // Writes report to the Repository
     public void writeReport(User currentUser, Report report) {
@@ -81,5 +91,21 @@ public class ReportViewModel extends ViewModel {
 
     public void iterateWorkoutNum(User user) {
         user.setCurrentWorkoutNum(user.getCurrentWorkoutNum()+1);
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+            Log.d(TAG, "size: " + String.valueOf(task.getResult().size()));
+            for (QueryDocumentSnapshot doc : task.getResult()) {
+                for (int i = 0; i < task.getResult().size(); i++) {
+                    Exercise exercise = doc.toObject(Exercise.class);
+                    exerciseArrayList.add(i, exercise);
+                    Log.d(TAG, "exercise " + i + " : " + exercise.getExerciseName());
+                }
+            }
+        } else {
+            Log.d(TAG, "Error getting documents: ", task.getException());
+        }
     }
 }
