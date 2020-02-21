@@ -8,6 +8,9 @@
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel"/>
+        <variable
+            name="profilePhoto"
+            type="android.widget.ImageView"/>
     </data>
 
     <LinearLayout
@@ -20,6 +23,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/profilePhoto"
+                android:background="@android:color/darker_gray" />
 
             <ImageView
                 android:id="@+id/client_photo"

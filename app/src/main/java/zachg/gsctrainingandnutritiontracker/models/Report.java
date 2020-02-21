@@ -34,6 +34,8 @@ public class Report extends BaseObservable {
     private ArrayList<Workout> workoutLists;
     private String fullReport;
     private String day;
+    private String exerciseString;
+
 
     public Report() {}
 
@@ -46,14 +48,16 @@ public class Report extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString, Workout workout) {
+    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString,
+                  String workoutTitle, String exerciseString) {
         this.clientName = clientName;
         this.email = email;
         this.dailyWeight = dailyWeight;
         this.exerciseWeight = exerciseWeight;
         this.comments = comments;
         this.dateString = dateString;
-        this.workout = workout;
+        this.workoutTitle = workoutTitle;
+        this.exerciseString = exerciseString;
     }
 
 
@@ -210,7 +214,6 @@ public class Report extends BaseObservable {
         notifyPropertyChanged(BR.workoutTitle);
     }
 
-
     // get the workoutDay and title from the workouts
     @Bindable
     public String getWorkoutDay() { return workoutDay; }
@@ -219,4 +222,19 @@ public class Report extends BaseObservable {
         this.workoutDay = workoutDay;
         notifyPropertyChanged(BR.workoutDay);
     }
+
+    @Bindable
+    public String getExerciseString() { return exerciseString; }
+
+    public void setExerciseString(String exerciseStringBuilder) {
+        this.exerciseString = String.valueOf(exerciseStringBuilder);
+        notifyPropertyChanged(BR.exerciseString);
+    }
+
+    public String convertToFullReport(Report report) {
+        this.fullReport = report.getClientName().concat(report.getEmail()).concat(report.getDateString()).concat(report.getExerciseString());
+        return this.fullReport;
+    }
+
+    public String getPhotoFilename() { return "IMG_" + getReportId() + ".jpg"; }
 }

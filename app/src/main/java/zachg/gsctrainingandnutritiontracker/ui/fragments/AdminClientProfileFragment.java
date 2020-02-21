@@ -1,15 +1,28 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.io.File;
+import java.util.List;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfileBinding;
@@ -17,6 +30,7 @@ import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
@@ -41,6 +55,12 @@ public class AdminClientProfileFragment extends Fragment {
     private Exercise exercise7 = new Exercise();
     private int totalEditTexts;
 
+    private static final int REQUEST_PHOTO = 2;
+
+    private ImageView profilePhoto;
+    private ImageButton bCamera;
+    private File photoFile;
+
     public AdminClientProfileFragment() {}
 
     public AdminClientProfileFragment(User user) {
@@ -54,6 +74,23 @@ public class AdminClientProfileFragment extends Fragment {
         View v = binding.getRoot();
         binding.setFragment(this);
         binding.setUser(currentUser);
+        binding.setProfilePhoto(profilePhoto);
+        binding.setBCamera(bCamera);
+
+        PackageManager packageManager = getActivity().getPackageManager();
+
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        boolean canTakePhoto = photoFile != null && captureImage.resolveActivity(packageManager) != null;
+        bCamera.setEnabled(canTakePhoto);
+        bCamera.setOnClickListener( new View.OnClickListener() {
+            @Override public void onClick(View v) { Uri uri = FileProvider.getUriForFile(getActivity(),
+                    "zachg.gsctrainingandnutritiontracker.fileprovider", photoFile);
+            captureImage.putExtra( MediaStore.EXTRA_OUTPUT, uri); List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
+                        queryIntentActivities( captureImage, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo activity : cameraActivities) {getActivity().grantUriPermission(activity.
+                    activityInfo.packageName,uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
+            startActivityForResult( captureImage, REQUEST_PHOTO); } });
+
         binding.setExercise(exercise);
         binding.setExercise(exercise2);
         binding.setExercise(exercise3);
@@ -124,12 +161,35 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        updatePhotoView();
+
         return v;
     }
 
     public void createExerciseArray() {
 
     }
+
+    public File getPhotoFile(User user) {
+        File filesDir = getContext().getFilesDir();
+        return new File( filesDir, user.getPhotoFilename());
+    }
+
+    private void updatePhotoView() {
+        if (photoFile == null || !photoFile.exists()) {
+            profilePhoto.setImageDrawable(null);
+            profilePhoto.setContentDescription(
+                    getString(R.string.report_photo_no_image_description)
+            );
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
+            profilePhoto.setImageBitmap(bitmap);
+            profilePhoto.setContentDescription(
+                    getString(R.string.report_photo_image_description)
+            );
+        }
+    }
+
 
     public void addExerciseValues(Exercise exercise, Exercise exercise2, Exercise exercise3,
                                   Exercise exercise4, Exercise exercise5, Exercise exercise6,

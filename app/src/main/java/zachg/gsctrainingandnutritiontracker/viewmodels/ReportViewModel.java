@@ -44,6 +44,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
+    public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
     public String workoutTitle;
     public int workoutDay;
 
@@ -54,10 +55,12 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
-        workoutDay = 1;
-        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
+        workoutDay = currentUser.getWorkoutDay();
         repo.setSnapshotOnCompleteListener(this);
+        Log.d(TAG, "workoutday: " + workoutDay);
+        Log.d(TAG, "user workoutday: " + currentUser.getWorkoutDay());
         repo.getExercisesForIteration(currentUser, workoutDay);
+        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
@@ -68,32 +71,33 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         // iterate thru exercises, copy name, weight, reps, write them to reports
         for (int i = 0; i < exerciseArrayList.size(); i++) {
             // set these into a single String and add it to fullreport;
-            exerciseArrayList.get(i).getExerciseName();
-            exerciseArrayList.get(i).getExerciseWeight();
-            exerciseArrayList.get(i).getReps();
+            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseName());
+            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseWeight());
+            exerciseStringBuilder.append(exerciseArrayList.get(i).getReps());
         }
+        report.setExerciseString(String.valueOf(exerciseStringBuilder));
     }
 
     public MutableLiveData<Boolean> getIsUpdating() {
         return isUpdating;
     }
 
-    // TODO: Write the exerciseNames, etc
-    // TODO: all this converts to fullReport string for viewing
     // Writes report to the Repository
     public void writeReport(User currentUser, Report report) {
-        Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
-                dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString());
-//                report.getWorkoutTitle(), report.getExerciseArray());
-        Log.d(TAG, generatedReport.getClientName() + generatedReport.getDateString());
-        repo.writeReportToRepo(generatedReport);
+            Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
+                    dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString(),
+                    report.getWorkoutTitle(), report.getExerciseString());
+            repo.writeReportToRepo(generatedReport);
 
-        // TODO: write iterated workoutNum to user's fstore data
-        //iterateWorkoutNum(currentUser);
+            iterateWorkoutNum(currentUser);
     }
 
     public void iterateWorkoutNum(User user) {
-        user.setCurrentWorkoutNum(user.getCurrentWorkoutNum()+1);
+        if (user.getWorkoutDay()+1 < exerciseArrayList.size()) {
+            user.setWorkoutDay(user.getWorkoutDay() + 1);
+        } else {
+            user.setWorkoutDay(1);
+        }
     }
 
     @Override
@@ -101,11 +105,12 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         if (task.isSuccessful()) {
             Log.d(TAG, "size: " + String.valueOf(task.getResult().size()));
             for (QueryDocumentSnapshot doc : task.getResult()) {
-                for (int i = 0; i < task.getResult().size(); i++) {
+                for (int i = 0; i <  task.getResult().size(); i++) {
                     Exercise exercise = doc.toObject(Exercise.class);
                     exerciseArrayList.add(i, exercise);
                     Log.d(TAG, "exercise " + i + " : " + exercise.getExerciseName());
                 }
+                getExerciseListInfo();
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());

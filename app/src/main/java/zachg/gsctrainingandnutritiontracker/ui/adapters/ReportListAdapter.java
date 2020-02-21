@@ -39,11 +39,15 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
     class ReportViewHolder extends RecyclerView.ViewHolder {
         TextView tvWorkoutTitle;
         TextView tvWorkoutDay;
+        TextView tvClientName;
+        TextView tvDateString;
 
         public ReportViewHolder(@NonNull View itemView) {
             super(itemView);
             tvWorkoutTitle = itemView.findViewById(R.id.tvWorkoutTitle);
             tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
+            tvClientName = itemView.findViewById(R.id.tvClientName);
+            tvDateString = itemView.findViewById(R.id.tvDateString);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,6 +73,8 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position, Report report) {
         holder.tvWorkoutTitle.setText(report.getWorkoutTitle());
         holder.tvWorkoutDay.setText(report.getWorkoutDay());
+        holder.tvDateString.setText(report.getDateString());
+        holder.tvClientName.setText(report.getClientName());
     }
 
 }

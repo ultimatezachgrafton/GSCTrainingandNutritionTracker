@@ -27,7 +27,7 @@ public class User extends BaseObservable {
     private boolean isAdmin;
     private boolean isLoggedIn;
 
-    private int currentWorkoutNum;
+    private int workoutDay;
     private int previousLoopWorkoutNum;     // tracks which workout of previous loop the user has yet to complete
     private boolean isFinishingPreviousLoop; // tracks if the user is still in process of completing the previous workout loop
 
@@ -42,13 +42,14 @@ public class User extends BaseObservable {
         this.email = email;
     }
 
-    public User(String firstName, String lastName, String phoneNumber, String email, String password) {
+    public User(String firstName, String lastName, String phoneNumber, String email, String password, int workoutDay) {
         this.firstName = firstName;
         this.lastName = lastName;
         setClientName(this.firstName, this.lastName);
         this.email = email;
         this.password = password;
         this.id = getId();
+        this.workoutDay = workoutDay;
     }
 
     public String getId() {
@@ -118,12 +119,14 @@ public class User extends BaseObservable {
         this.confirmPassword = confirmPassword;
     }
 
-    public int getCurrentWorkoutNum() {
-        return currentWorkoutNum;
+    @Bindable
+    public int getWorkoutDay() {
+        return workoutDay;
     }
 
-    public void setCurrentWorkoutNum(int currentWorkoutNum) {
-        this.currentWorkoutNum = currentWorkoutNum;
+    public void setWorkoutDay(int workoutDay) {
+        this.workoutDay = workoutDay;
+        notifyPropertyChanged(BR.workoutDay);
     }
 
     @NonNull
@@ -135,23 +138,6 @@ public class User extends BaseObservable {
     public void setPhoneNumber(@NonNull String phoneNumber) {
         this.phoneNumber = phoneNumber;
         notifyPropertyChanged(BR.phoneNumber);
-    }
-
-    // TODO: incorporate previous loop operations where applicable - in registerUser(), and writeReport()
-    public int getPreviousLoopWorkoutNum() {
-        return previousLoopWorkoutNum;
-    }
-
-    public void setPreviousLoopWorkoutNum(int previousLoopWorkoutNum) {
-        this.previousLoopWorkoutNum = previousLoopWorkoutNum;
-    }
-
-    public boolean getIsFinishingPreviousLoop() {
-        return isFinishingPreviousLoop;
-    }
-
-    public void setIsFinishingPreviousLoop(boolean isFinishingPreviousLoop) {
-        this.isFinishingPreviousLoop = isFinishingPreviousLoop;
     }
 
     public String getPhotoFilename() { return "IMG_" + getId() + ".jpg"; }

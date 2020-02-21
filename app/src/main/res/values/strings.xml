@@ -65,5 +65,6 @@
     <string name="exercise">Exercise:</string>
     <string name="auth_failed">Authentifcation failed</string>
     <string name="enterDay">Enter workout day:</string>
+    <string name="viewProfile">View Profile</string>
 
 </resources>

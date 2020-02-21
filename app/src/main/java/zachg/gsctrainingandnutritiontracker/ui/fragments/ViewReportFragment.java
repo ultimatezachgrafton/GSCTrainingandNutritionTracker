@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,10 +25,11 @@ import java.io.File;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminReportBinding;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentViewReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel;
 
 // TODO: change to dialog fragment_report_list that shows the info
@@ -38,10 +40,10 @@ public class ViewReportFragment extends Fragment {
     private ViewReportViewModel adminReportViewModel;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    private FragmentAdminReportBinding binding;
+    private FragmentViewReportBinding binding;
 
     private File photoFile;
-    private ImageView photoView;
+    private ImageView profilePhoto;
     private User currentUser = new User();
     private Report currentReport = new Report();
     private Date date = new Date();
@@ -66,36 +68,40 @@ public class ViewReportFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        binding = FragmentAdminReportBinding.inflate(inflater, container, false);
+        binding = FragmentViewReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
         binding.setReport(currentReport);
+        binding.setProfilePhoto(profilePhoto);
 
         adminReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
         adminReportViewModel.init(currentUser, currentReport);
         binding.setReport(adminReportViewModel.getCurrentReport());
 
-
-        // if user has sent a report on this day, it displays the data sent
-//        updatePhotoView();
+        updatePhotoView();
 
         return v;
     }
 
-//    private void updatePhotoView() {
-//        if (photoFile == null || !photoFile.exists()) {
-//            photoView.setImageDrawable(null);
-//            photoView.setContentDescription(
-//                    getString(R.string.report_photo_no_image_description)
-//            );
-//        } else {
-//            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
-//            photoView.setImageBitmap(bitmap);
-//            photoView.setContentDescription(
-//                    getString(R.string.report_photo_image_description)
-//            );
-//        }
-//    }
+    public File getPhotoFile(User user) {
+        File filesDir = getContext().getFilesDir();
+        return new File( filesDir, user.getPhotoFilename());
+    }
+
+    private void updatePhotoView() {
+        if (photoFile == null || !photoFile.exists()) {
+            profilePhoto.setImageDrawable(null);
+            profilePhoto.setContentDescription(
+                    getString(R.string.report_photo_no_image_description)
+            );
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
+            profilePhoto.setImageBitmap(bitmap);
+            profilePhoto.setContentDescription(
+                    getString(R.string.report_photo_image_description)
+            );
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

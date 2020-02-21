@@ -37,12 +37,14 @@ public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, Exer
     // UserViewHolder is the class that defines the views that hold the User data
     class ExerciseViewHolder extends RecyclerView.ViewHolder {
         TextView tvExerciseName;
-        TextView tvExerciseNum;
+        TextView tvExerciseReps;
+        TextView tvExerciseWeight;
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             tvExerciseName = itemView.findViewById(R.id.tvExerciseName);
-            tvExerciseNum = itemView.findViewById(R.id.tvExerciseNum);
+            tvExerciseReps = itemView.findViewById(R.id.tvReps);
+            tvExerciseWeight = itemView.findViewById(R.id.tvWeightUsed);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,9 +68,9 @@ public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, Exer
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position, Exercise exercise) {
-        Log.d("ReportView", "onBind");
-        holder.tvExerciseName.setText(exercise.getExerciseName()); //TODO: get this to display the exerciseName from db
-//        holder.tvExerciseNum.setText(exercise.getExerciseNum());
+        holder.tvExerciseName.setText(exercise.getExerciseName());
+        holder.tvExerciseReps.setText( exercise.getReps());
+        holder.tvExerciseWeight.setText(exercise.getExerciseWeight());
     }
 
 }

@@ -41,6 +41,12 @@
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
+        <variable
+            name="bCamera"
+            type="android.widget.ImageButton"/>
+        <variable
+            name="profilePhoto"
+            type="android.widget.ImageView"/>
     </data>
 
     <ScrollView
@@ -54,7 +60,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:id="@+id/profile_photo"
+            android:id="@+id/profilePhoto"
             android:background="@android:color/darker_gray" />
 
         <ImageButton

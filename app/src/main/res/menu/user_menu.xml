@@ -4,11 +4,15 @@
 
     <item
         android:id="@+id/bViewProfile"
-        android:title="string/viewProfile"/>
+        android:title="@string/viewProfile"/>
 
     <item
         android:id="@+id/bInbox"
-        android:title="string/inbox" />
+        android:title="@string/inbox" />
+
+    <item
+        android:id="@+id/bSelectWorkout"
+        android:title="@string/selectWorkout" />
 
     <item
         android:id="@+id/bLogout"

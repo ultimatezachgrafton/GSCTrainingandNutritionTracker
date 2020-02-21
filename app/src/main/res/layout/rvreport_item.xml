@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+<data>
+    <import type="android.view.View"/>
+    <variable
+        name="report"
+        type="zachg.gsctrainingandnutritiontracker.models.Report" />
+</data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -8,16 +15,28 @@
     android:clickable="true">
 
     <TextView
+        android:id="@+id/tvClientName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{report.clientName}"/>
+
+    <TextView
+        android:id="@+id/tvDateString"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{report.dateString}"/>
+
+    <TextView
         android:id="@+id/tvWorkoutTitle"
         style="@style/user_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="bye"/>
+        android:text="@{report.workoutTitle}"/>
 
     <TextView
         android:id="@+id/tvWorkoutDay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="hi"/>
+        android:text="@{report.exerciseName}"/>
 
-</LinearLayout>
+</LinearLayout></layout>

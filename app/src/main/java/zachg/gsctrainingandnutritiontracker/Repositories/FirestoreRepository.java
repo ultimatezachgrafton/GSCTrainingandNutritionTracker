@@ -217,14 +217,18 @@ public class FirestoreRepository {
     }
 
     public void writeReportToRepo(Report report) {
+        report.setFullReport(report.convertToFullReport(report));
+        Log.d(TAG, "exStr3: " + report.getExerciseString());
+        Log.d(TAG, "fullReport: " + report.getFullReport());
+
         db.collection("users").document(report.getEmail()).collection("reports")
                 .document(report.getDateString())
-                .set(report, SetOptions.merge())
+                .set(report)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot added with ID: ");
-                        Log.d(TAG, report.getDateString() + report.getClientName());
+                        Log.d(TAG, report.getFullReport());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
