@@ -166,10 +166,6 @@ public class AdminClientProfileFragment extends Fragment {
         return v;
     }
 
-    public void createExerciseArray() {
-
-    }
-
     public File getPhotoFile(User user) {
         File filesDir = getContext().getFilesDir();
         return new File( filesDir, user.getPhotoFilename());
