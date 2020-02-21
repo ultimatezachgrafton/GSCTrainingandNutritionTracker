@@ -58,7 +58,7 @@ public class AdminClientProfileFragment extends Fragment {
     private static final int REQUEST_PHOTO = 2;
 
     private ImageView profilePhoto;
-    private ImageButton bCamera;
+    private ImageButton bCameraButton;
     private File photoFile;
 
     public AdminClientProfileFragment() {}
@@ -74,22 +74,25 @@ public class AdminClientProfileFragment extends Fragment {
         View v = binding.getRoot();
         binding.setFragment(this);
         binding.setUser(currentUser);
-        binding.setProfilePhoto(profilePhoto);
-        binding.setBCamera(bCamera);
+//        binding.setProfilePhoto(profilePhoto);
+//        binding.setBCamera(bCameraButton);
+        bCameraButton = v.findViewById(R.id.bCamera);
+        profilePhoto = v.findViewById(R.id.profilePhoto);
 
         PackageManager packageManager = getActivity().getPackageManager();
-
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        boolean canTakePhoto = photoFile != null && captureImage.resolveActivity(packageManager) != null;
-        bCamera.setEnabled(canTakePhoto);
-        bCamera.setOnClickListener( new View.OnClickListener() {
+//        boolean canTakePhoto = photoFile != null && captureImage.resolveActivity(packageManager) != null;
+//        bCameraButton.setEnabled(canTakePhoto);
+        bCameraButton.setOnClickListener( new View.OnClickListener() {
             @Override public void onClick(View v) { Uri uri = FileProvider.getUriForFile(getActivity(),
                     "zachg.gsctrainingandnutritiontracker.fileprovider", photoFile);
             captureImage.putExtra( MediaStore.EXTRA_OUTPUT, uri); List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
                         queryIntentActivities( captureImage, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo activity : cameraActivities) {getActivity().grantUriPermission(activity.
                     activityInfo.packageName,uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
-            startActivityForResult( captureImage, REQUEST_PHOTO); } });
+            startActivityForResult(captureImage, REQUEST_PHOTO);
+            }
+        });
 
         binding.setExercise(exercise);
         binding.setExercise(exercise2);
