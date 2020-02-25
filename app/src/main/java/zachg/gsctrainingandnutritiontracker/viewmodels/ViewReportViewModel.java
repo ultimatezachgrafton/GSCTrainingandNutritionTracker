@@ -31,16 +31,14 @@ public class ViewReportViewModel extends ViewModel implements OnCompleteListener
     private FirestoreRepository repo;
     private Report currentReport = new Report();
     private User currentUser = new User();
-    private User client = new User();
+    private User currentClient = new User();
     private MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
 
-    private File photoFile;
-    private ImageView photoView;
-
     // init getting null data for user
-    public void init(User user, Report report) {
+    public void init(User user, User client, Report report) {
         final StringBuilder str = new StringBuilder();
-        this.client = user;
+        this.currentUser = user;
+        this.currentClient = client;
         this.currentReport = report;
         repo = FirestoreRepository.getInstance();
         repo.setSnapshotOnCompleteListener(this);

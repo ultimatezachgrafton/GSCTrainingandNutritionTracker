@@ -16,10 +16,10 @@
             type="String"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.ClientProfileFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.ClientPortalFragment"/>
         <variable
             name="viewmodel"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel" />
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientPortalViewModel" />
 
     </data>
 

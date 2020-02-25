@@ -1,11 +1,8 @@
 package zachg.gsctrainingandnutritiontracker.ui.fragments;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,10 +30,8 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.adapters.ExerciseListAdapter;
-import zachg.gsctrainingandnutritiontracker.ui.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
@@ -133,7 +128,7 @@ public class ReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
+                        new ClientPortalFragment(currentUser)).addToBackStack(null).commit();
             case R.id.bInbox: ;
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
                 sendIntent.setData(Uri.parse("smsto:" + currentUser.getPhoneNumber()));

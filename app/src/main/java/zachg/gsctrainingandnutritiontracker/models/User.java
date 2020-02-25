@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.fragment.app.FragmentActivity;
 
 public class User extends BaseObservable {
 
@@ -52,9 +53,7 @@ public class User extends BaseObservable {
         this.workoutDay = workoutDay;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     public void setId(String id) { this.id = id; }
 
@@ -141,5 +140,4 @@ public class User extends BaseObservable {
     }
 
     public String getPhotoFilename() { return "IMG_" + getId() + ".jpg"; }
-
 }

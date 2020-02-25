@@ -42,10 +42,12 @@ public class ReportListFragment extends Fragment {
     public String TAG = "ReportListFragment";
 
     User currentUser = new User();
+    User currentClient = new User();
     Report currentReport = new Report();
 
-    public ReportListFragment(User user) {
+    public ReportListFragment(User user, User client) {
         this.currentUser = user;
+        this.currentClient = client;
     }
 
     @Override
@@ -59,12 +61,13 @@ public class ReportListFragment extends Fragment {
         binding = FragmentReportListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setUser(currentUser);
+        binding.setUser(currentClient);
         binding.setReport(currentReport);
 
         // Gets ViewModel instance to observe  LiveData
         binding.setModel(reportListViewModel);
         reportListViewModel = ViewModelProviders.of(getActivity()).get(ReportListViewModel.class);
-        reportListViewModel.init(currentUser);
+        reportListViewModel.init(currentClient);
 
         reportListViewModel.getReports().observe(this, new Observer<FirestoreRecyclerOptions<Report>>() {
             @Override
@@ -101,7 +104,7 @@ public class ReportListFragment extends Fragment {
                 currentReport = reportListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ViewReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
+                        new ViewReportFragment(currentReport, currentUser, currentClient)).addToBackStack(null).commit();
             }
         });
     }

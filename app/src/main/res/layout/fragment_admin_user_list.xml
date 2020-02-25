@@ -4,6 +4,9 @@
         <variable name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
+            name="client"
+            type="zachg.gsctrainingandnutritiontracker.models.User" />
+        <variable
             name="model"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel" />
     </data>

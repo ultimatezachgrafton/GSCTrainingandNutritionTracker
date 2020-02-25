@@ -235,6 +235,4 @@ public class Report extends BaseObservable {
         this.fullReport = report.getClientName().concat(report.getEmail()).concat(report.getDateString()).concat(report.getExerciseString());
         return this.fullReport;
     }
-
-    public String getPhotoFilename() { return "IMG_" + getReportId() + ".jpg"; }
 }

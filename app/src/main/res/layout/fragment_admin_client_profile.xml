@@ -6,6 +6,9 @@
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
+            name="client"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
             name="exercise"
             type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
         <variable
@@ -73,7 +76,7 @@
 
         <TextView
             android:id="@+id/tvClientName"
-            android:text="@{user.clientName}"
+            android:text="@{client.clientName}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/bCamera" />

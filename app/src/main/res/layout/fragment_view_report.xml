@@ -3,14 +3,20 @@
     <data>
         <import type="android.view.View"/>
         <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.ui.fragments.ViewReportFragment"/>
+        <variable
             name="report"
             type="zachg.gsctrainingandnutritiontracker.models.Report"/>
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel"/>
         <variable
-            name="profilePhoto"
-            type="android.widget.ImageView"/>
+            name="client"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
     </data>
 
     <LinearLayout
@@ -30,22 +36,12 @@
                 android:id="@+id/profilePhoto"
                 android:background="@android:color/darker_gray" />
 
-            <ImageView
-                android:id="@+id/client_photo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@android:color/darker_gray"
-                android:contentDescription="@string/report_photo_no_image_description"
-                android:cropToPadding="true"
-                android:focusable="true"
-                android:scaleType="centerInside" />
-
             <TextView
                 android:id="@+id/client_name"
                 style="?android:listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/client_photo"
+                android:layout_toRightOf="@id/profilePhoto"
                 android:text="@{report.clientName}"
                 android:textSize="18sp"/>
 
@@ -55,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/client_name"
-                android:layout_toRightOf="@id/client_photo"
+                android:layout_toRightOf="@id/profilePhoto"
                 android:text="@{report.dateString}"
                 android:textSize="18sp" />
 

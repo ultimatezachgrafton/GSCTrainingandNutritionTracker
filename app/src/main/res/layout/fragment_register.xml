@@ -40,10 +40,12 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:padding="10dp"
+        android:background="#525252"
         android:id="@+id/fragment_register"
         tools:context=".ui.activities.SingleFragmentActivity">
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/firstName" />
@@ -57,6 +59,7 @@
             android:text="@={user.firstName}"/>
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/lastName" />
@@ -70,6 +73,7 @@
             android:text="@={user.lastName}"/>
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_phone" />
@@ -83,6 +87,7 @@
             android:text="@={user.phoneNumber}"/>
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_email" />
@@ -96,6 +101,7 @@
             android:text="@={user.email}"/>
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password" />
@@ -110,6 +116,7 @@
             android:layout_marginBottom="10dp" />
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Confirm password" />
@@ -129,6 +136,8 @@
             android:layout_height="wrap_content"
             android:text="@string/register"
             android:clickable="true"
+            android:background="#696969"
+            android:textColor="@android:color/white"
             android:onClick="@{()->fragment.onRegisterClick(user.firstName, user.lastName, user.phoneNumber, user.email, user.password, user.confirmPassword)}" />
 
     </LinearLayout>

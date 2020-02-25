@@ -3,6 +3,7 @@ package zachg.gsctrainingandnutritiontracker.ui.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +40,8 @@ public class AdminUserListFragment extends Fragment {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     public String TAG = "AdminUserListFragment";
 
-    User currentUser = new User();
+    private User currentUser = new User();
+    private User currentClient = new User();
 
     public AdminUserListFragment(User user) {
         this.currentUser = user;
@@ -56,6 +58,7 @@ public class AdminUserListFragment extends Fragment {
         binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setUser(currentUser);
+        binding.setClient(currentClient);
 
         // Gets ViewModel instance to observe  LiveData
         binding.setModel(adminListViewModel);
@@ -93,10 +96,10 @@ public class AdminUserListFragment extends Fragment {
         userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                currentUser = adminListViewModel.onItemClicked(documentSnapshot, position);
+                currentClient = adminListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment_report_list
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminClientProfileFragment(currentUser)).addToBackStack(null).commit();
+                        new AdminClientProfileFragment(currentUser, currentClient)).addToBackStack(null).commit();
             }
         });
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,10 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +30,8 @@ import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 // TODO: change to dialog fragment_report_list that shows the info
 
 public class ViewReportFragment extends Fragment {
@@ -45,6 +45,7 @@ public class ViewReportFragment extends Fragment {
     private File photoFile;
     private ImageView profilePhoto;
     private User currentUser = new User();
+    private User currentClient = new User();
     private Report currentReport = new Report();
     private Date date = new Date();
 
@@ -55,7 +56,8 @@ public class ViewReportFragment extends Fragment {
         this.currentUser = user;
     }
 
-    public ViewReportFragment(Report report, User user) {
+    public ViewReportFragment(Report report, User user, User client) {
+        this.currentClient = client;
         this.currentUser = user;
         this.currentReport = report;
     }
@@ -71,13 +73,17 @@ public class ViewReportFragment extends Fragment {
         binding = FragmentViewReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
+        binding.setFragment(this);
+        binding.setUser(currentUser);
+        binding.setClient(currentClient);
         binding.setReport(currentReport);
-        binding.setProfilePhoto(profilePhoto);
+        photoFile = getPhotoFile(currentClient);
 
         adminReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
-        adminReportViewModel.init(currentUser, currentReport);
+        adminReportViewModel.init(currentUser, currentClient, currentReport);
         binding.setReport(adminReportViewModel.getCurrentReport());
 
+        profilePhoto = v.findViewById(R.id.profilePhoto);
         updatePhotoView();
 
         return v;
@@ -85,7 +91,7 @@ public class ViewReportFragment extends Fragment {
 
     public File getPhotoFile(User user) {
         File filesDir = getContext().getFilesDir();
-        return new File( filesDir, user.getPhotoFilename());
+        return new File(filesDir, user.getPhotoFilename());
     }
 
     private void updatePhotoView() {
@@ -97,6 +103,7 @@ public class ViewReportFragment extends Fragment {
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
             profilePhoto.setImageBitmap(bitmap);
+            Log.d(TAG,"bitmap set: " + photoFile.getPath());
             profilePhoto.setContentDescription(
                     getString(R.string.report_photo_image_description)
             );
@@ -113,7 +120,7 @@ public class ViewReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientProfileFragment(currentUser)).addToBackStack(null).commit();
+                        new ClientPortalFragment(currentUser)).addToBackStack(null).commit();
             case R.id.bAddNewClient:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new RegisterFragment()).addToBackStack(null).commit();

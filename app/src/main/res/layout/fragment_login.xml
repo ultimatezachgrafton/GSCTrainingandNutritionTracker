@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="fragment"
@@ -12,54 +12,62 @@
             type="zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#525252"
         android:orientation="vertical"
         android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/email" />
+            android:text="@string/email"
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/etEmail"
-            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="@={user.email}"/>
+            android:singleLine="true"
+            android:text="@={user.email}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password" />
+            android:text="Password"
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/etPassword"
-            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:layout_marginBottom="10dp"
-            android:text="@={user.password}"/>
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:text="@={user.password}" />
 
         <Button
             android:id="@+id/bLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
-            android:onClick="@{()->fragment.onLoginClick(user.email, user.password)}"/>
+            android:onClick="@{()->fragment.onLoginClick(user.email, user.password)}"
+            android:text="@string/login"
+            android:background="#696969"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/bRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/register_new"
+            android:background="#696969"
             android:clickable="true"
-            android:onClick="@{()->fragment.onRegisterClick()}" />
+            android:onClick="@{()->fragment.onRegisterClick()}"
+            android:text="@string/register_new"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </layout>

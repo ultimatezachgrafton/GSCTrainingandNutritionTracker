@@ -26,14 +26,14 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.ui.fragments.ViewReportFragment;
 
-public class ClientProfileViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ClientPortalViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo;
 
     public MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
     private User currentUser = new User();
     private Report report = new Report();
-    public String TAG = "ClientProfileViewModel";
+    public String TAG = "ClientPortalViewModel";
 
     public void init(User user) {
         this.currentUser = user;

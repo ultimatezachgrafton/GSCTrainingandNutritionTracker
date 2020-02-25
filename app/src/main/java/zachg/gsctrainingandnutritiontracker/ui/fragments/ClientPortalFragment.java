@@ -3,7 +3,6 @@ package zachg.gsctrainingandnutritiontracker.ui.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,20 +23,20 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBin
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.viewmodels.ClientProfileViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.ClientPortalViewModel;
 
-public class ClientProfileFragment extends Fragment {
+public class ClientPortalFragment extends Fragment {
 
     FragmentClientProfileBinding binding;
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User currentUser = new User();
     private Report currentReport = new Report();
-    private ClientProfileViewModel clientProfileViewModel;
-    public String TAG = "ClientProfileFragment";
+    private ClientPortalViewModel clientProfileViewModel;
+    public String TAG = "ClientPortalFragment";
     public CalendarView calendarView;
 
-    public ClientProfileFragment(User user) {
+    public ClientPortalFragment(User user) {
         this.currentUser = user;
     }
 
@@ -51,7 +50,7 @@ public class ClientProfileFragment extends Fragment {
         binding.setFragment(this);
         binding.setViewmodel(clientProfileViewModel);
 
-        clientProfileViewModel = ViewModelProviders.of(this).get(ClientProfileViewModel.class);
+        clientProfileViewModel = ViewModelProviders.of(this).get(ClientPortalViewModel.class);
         clientProfileViewModel.init(currentUser);
 
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {

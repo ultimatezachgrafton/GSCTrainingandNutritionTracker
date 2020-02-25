@@ -46,6 +46,8 @@ public class AdminClientProfileFragment extends Fragment {
     private final String ARG_USER_ID = "user_id";
 
     private User currentUser = new User();
+    private User currentClient = new User();
+
     private Exercise exercise = new Exercise();
     private Exercise exercise2 = new Exercise();
     private Exercise exercise3 = new Exercise();
@@ -63,9 +65,12 @@ public class AdminClientProfileFragment extends Fragment {
 
     public AdminClientProfileFragment() {}
 
-    public AdminClientProfileFragment(User user) {
+    public AdminClientProfileFragment(User user, User client) {
         this.currentUser = user;
+        this.currentClient = client;
     }
+
+    // TODO: sending empty exercises crashes
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,20 +79,16 @@ public class AdminClientProfileFragment extends Fragment {
         View v = binding.getRoot();
         binding.setFragment(this);
         binding.setUser(currentUser);
-//        binding.setProfilePhoto(profilePhoto);
-//        binding.setBCamera(bCameraButton);
+        binding.setClient(currentClient);
         bCameraButton = v.findViewById(R.id.bCamera);
-        profilePhoto = v.findViewById(R.id.profilePhoto);
+        photoFile = getPhotoFile(currentClient);
 
-        PackageManager packageManager = getActivity().getPackageManager();
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        boolean canTakePhoto = photoFile != null && captureImage.resolveActivity(packageManager) != null;
-//        bCameraButton.setEnabled(canTakePhoto);
         bCameraButton.setOnClickListener( new View.OnClickListener() {
-            @Override public void onClick(View v) { Uri uri = FileProvider.getUriForFile(getActivity(),
+            @Override public void onClick(View v) {Uri uri = FileProvider.getUriForFile(getActivity(),
                     "zachg.gsctrainingandnutritiontracker.fileprovider", photoFile);
-            captureImage.putExtra( MediaStore.EXTRA_OUTPUT, uri); List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
-                        queryIntentActivities( captureImage, PackageManager.MATCH_DEFAULT_ONLY);
+            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri); List<ResolveInfo> cameraActivities = getActivity().getPackageManager().
+                        queryIntentActivities(captureImage, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo activity : cameraActivities) {getActivity().grantUriPermission(activity.
                     activityInfo.packageName,uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);}
             startActivityForResult(captureImage, REQUEST_PHOTO);
@@ -101,7 +102,7 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setExercise(exercise5);
         binding.setExercise(exercise6);
         binding.setExercise(exercise7);
-        Workout workout = new Workout(currentUser);
+        Workout workout = new Workout(currentClient);
         binding.setWorkout(workout);
 
         binding.setViewmodel(adminClientProfileViewModel);
@@ -164,6 +165,7 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        profilePhoto = v.findViewById(R.id.profilePhoto);
         updatePhotoView();
 
         return v;
@@ -171,7 +173,7 @@ public class AdminClientProfileFragment extends Fragment {
 
     public File getPhotoFile(User user) {
         File filesDir = getContext().getFilesDir();
-        return new File( filesDir, user.getPhotoFilename());
+        return new File(filesDir, user.getPhotoFilename());
     }
 
     private void updatePhotoView() {
@@ -183,22 +185,22 @@ public class AdminClientProfileFragment extends Fragment {
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
             profilePhoto.setImageBitmap(bitmap);
+            Log.d(TAG,"bitmap set: " + photoFile.getPath());
             profilePhoto.setContentDescription(
                     getString(R.string.report_photo_image_description)
             );
         }
     }
 
-
     public void addExerciseValues(Exercise exercise, Exercise exercise2, Exercise exercise3,
                                   Exercise exercise4, Exercise exercise5, Exercise exercise6,
                                   Exercise exercise7, String workoutDay, String workoutTitle) {
-        adminClientProfileViewModel.writeToWorkouts(currentUser, exercise, exercise2, exercise3, exercise4, exercise5,
+        adminClientProfileViewModel.writeToWorkouts(currentClient, exercise, exercise2, exercise3, exercise4, exercise5,
                 exercise6, exercise7, workoutDay, workoutTitle);
     }
 
     public void toDatePicker() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ReportListFragment(currentUser)).addToBackStack(null).commit();
+                new ReportListFragment(currentUser, currentClient)).addToBackStack(null).commit();
     }
 }
