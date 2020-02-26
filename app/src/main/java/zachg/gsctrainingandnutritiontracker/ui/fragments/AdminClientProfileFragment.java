@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -54,13 +55,13 @@ public class AdminClientProfileFragment extends Fragment {
     private Exercise exercise4 = new Exercise();
     private Exercise exercise5 = new Exercise();
     private Exercise exercise6 = new Exercise();
-    private Exercise exercise7 = new Exercise();
-    private int totalEditTexts;
+    private int totalEditTexts = 0;
 
     private static final int REQUEST_PHOTO = 2;
 
     private ImageView profilePhoto;
     private ImageButton bCameraButton;
+    private Button bAddExercise;
     private File photoFile;
 
     public AdminClientProfileFragment() {}
@@ -95,13 +96,16 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        LinearLayout ll = new LinearLayout(getContext());
+        binding.setAddEts(ll);
+        binding.setBAddExercise(bAddExercise);
+
         binding.setExercise(exercise);
         binding.setExercise(exercise2);
         binding.setExercise(exercise3);
         binding.setExercise(exercise4);
         binding.setExercise(exercise5);
         binding.setExercise(exercise6);
-        binding.setExercise(exercise7);
         Workout workout = new Workout(currentClient);
         binding.setWorkout(workout);
 
@@ -192,11 +196,27 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
+    public void addLine(LinearLayout ll) {
+        Log.d(TAG, "addLine");
+
+        // add edittext
+        EditText et = new EditText(getContext());
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        et.setLayoutParams(p);
+
+        // dynamically create a name for the et??
+
+        et.setText("Text");
+        et.setId(totalEditTexts + 1);
+        ll.addView(et);
+        totalEditTexts++;
+    }
+
     public void addExerciseValues(Exercise exercise, Exercise exercise2, Exercise exercise3,
                                   Exercise exercise4, Exercise exercise5, Exercise exercise6,
                                   Exercise exercise7, String workoutDay, String workoutTitle) {
         adminClientProfileViewModel.writeToWorkouts(currentClient, exercise, exercise2, exercise3, exercise4, exercise5,
-                exercise6, exercise7, workoutDay, workoutTitle);
+                exercise6, workoutDay, workoutTitle);
     }
 
     public void toDatePicker() {

@@ -28,9 +28,6 @@
             name="exercise6"
             type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
         <variable
-            name="exercise7"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
-        <variable
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminClientProfileFragment"/>
         <variable
@@ -51,38 +48,35 @@
         <variable
             name="profilePhoto"
             type="android.widget.ImageView"/>
+        <variable
+            name="addEts"
+            type="android.widget.LinearLayout"/>
+        <variable
+            name="bAddExercise"
+            type="android.widget.Button" />
     </data>
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:background="#525252"
-        android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:id="@+id/profilePhoto"
-            android:background="@android:color/darker_gray" />
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/profilePhoto"
+                android:background="@android:color/darker_gray" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bCamera"
-            android:clickable="true"
-            android:src="@android:drawable/ic_menu_camera"
-            android:layout_below="@id/client_photo"/>
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvClientName"
-            android:text="@{client.clientName}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bCamera" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bCamera"
+                android:clickable="true"
+                android:src="@android:drawable/ic_menu_camera"
+                android:layout_below="@id/profilePhoto"/>
 
         <Button
             android:background="#696969"
@@ -91,17 +85,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="write workouts"
-            android:onClick="@{()->viewmodel.writeToWorkouts(user, exercise, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7, workoutDay, workoutTitle)}"/>
+            android:layout_below="@id/bCamera"
+            android:onClick="@{()->viewmodel.writeToWorkouts(user, exercise, exercise2, exercise3, exercise4, exercise5, exercise6, workoutDay, workoutTitle)}"/>
 
         <Button
-            android:background="#696969"
-            android:textColor="@android:color/white"
             android:id="@+id/bToDatePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvClientName"
+            android:layout_toRightOf="@id/bWriteWorkouts"
+            android:layout_alignBottom="@id/bWriteWorkouts"
+            android:background="#696969"
+            android:onClick="@{()->fragment.toDatePicker()}"
             android:text="@string/toDatePicker"
-            android:onClick="@{()->fragment.toDatePicker()}"/>
+            android:textColor="@android:color/white" />
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:background="#525252"
+        android:layout_height="match_parent"
+        android:id="@+id/exerciseLinearLayout"
+        android:layout_below="@id/bToDatePicker">
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:id="@+id/tvClientName"
+            android:text="@{client.clientName}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bCamera" />
 
         <TextView
             android:textColor="@android:color/white"
@@ -274,6 +285,14 @@
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
             android:text="@={exercise5.reps}"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addEts"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:background="#525252"
+            android:layout_height="match_parent"
+            android:layout_below="@id/bToDatePicker">
 
         <TextView
             android:textColor="@android:color/white"
@@ -304,36 +323,17 @@
             android:backgroundTint="@android:color/white"
             android:text="@={exercise6.reps}"/>
 
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExerciseName7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter name"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
-            android:text="@={exercise7.exerciseName}"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etReps7"
-            android:hint="enter reps"
-            android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
-            android:text="@={exercise7.reps}"/>
-
     </LinearLayout>
-        </ScrollView>
 
+            <Button
+                android:id="@+id/bAddExerciser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/exerciseLinearLayout"
+                android:background="#696969"
+                android:onClick="@{()->fragment.addLine(exerciseLinearLayout)}"
+                android:text="@string/addExercise1"
+                android:textColor="@android:color/white" />
+    </RelativeLayout>
+    </ScrollView>
 </layout>

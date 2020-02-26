@@ -63,14 +63,13 @@ public class AdminClientProfileViewModel extends ViewModel {
 
     public void writeToWorkouts(User user, Exercise exercise, Exercise exercise2, Exercise exercise3,
                                 Exercise exercise4, Exercise exercise5, Exercise exercise6,
-                                Exercise exercise7, String workoutDay, String workoutTitle) {
+                                String workoutDay, String workoutTitle) {
         this.exercise = exercise;
         this.exercise2 = exercise2;
         this.exercise3 = exercise3;
         this.exercise4 = exercise4;
         this.exercise5 = exercise5;
         this.exercise6 = exercise6;
-        this.exercise7 = exercise7;
 
         this.workoutDay = workoutDay;
         this.workoutTitle = workoutTitle;
@@ -81,7 +80,6 @@ public class AdminClientProfileViewModel extends ViewModel {
         exercises.add(3, exercise4);
         exercises.add(4, exercise5);
         exercises.add(5, exercise6);
-        exercises.add(6, exercise7);
 
         Workout workout = new Workout(user.getClientName(), user.getEmail(), workoutTitle);
         workout.setExercises(exercises);
