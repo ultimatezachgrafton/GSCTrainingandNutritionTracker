@@ -10,23 +10,41 @@
             name="client"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
-            name="exercise"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
+            name="exerciseName"
+            type="String" />
         <variable
-            name="exercise2"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
+            name="exerciseReps"
+            type="String"/>
         <variable
-            name="exercise3"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
+            name="exerciseName2"
+            type="String" />
         <variable
-            name="exercise4"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
+            name="exerciseReps2"
+            type="String"/>
         <variable
-            name="exercise5"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
+            name="exerciseName3"
+            type="String" />
         <variable
-            name="exercise6"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
+            name="exerciseReps3"
+            type="String"/>
+        <variable
+            name="exerciseName4"
+            type="String" />
+        <variable
+            name="exerciseReps4"
+            type="String"/>
+        <variable
+            name="exerciseName5"
+            type="String" />
+        <variable
+            name="exerciseReps5"
+            type="String"/>
+        <variable
+            name="generatedExerciseName"
+            type="String"/>
+        <variable
+            name="generatedExerciseReps"
+            type="String"/>
         <variable
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminClientProfileFragment"/>
@@ -54,6 +72,9 @@
         <variable
             name="bAddExercise"
             type="android.widget.Button" />
+        <variable
+            name="ll"
+            type="android.widget.LinearLayout"/>
     </data>
 
     <ScrollView
@@ -86,7 +107,7 @@
             android:layout_height="wrap_content"
             android:text="write workouts"
             android:layout_below="@id/bCamera"
-            android:onClick="@{()->viewmodel.writeToWorkouts(user, exercise, exercise2, exercise3, exercise4, exercise5, exercise6, workoutDay, workoutTitle)}"/>
+            android:onClick="@{()->fragment.getEtValues(workoutTitle, workoutDay, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, ll)}"/>
 
         <Button
             android:id="@+id/bToDatePicker"
@@ -120,7 +141,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tvWorkoutTitle"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <EditText
             android:id="@+id/etWorkoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,7 +178,7 @@
             android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise.exerciseName}"/>
+            android:text="@={exerciseName}"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -166,7 +187,7 @@
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise.reps}"/>
+            android:text="@={exerciseReps}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -188,7 +209,7 @@
             android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise2.exerciseName}"/>
+            android:text="@={exerciseName2}"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -197,7 +218,7 @@
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise2.reps}"/>
+            android:text="@={exerciseReps2}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -217,7 +238,7 @@
             android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise3.exerciseName}"/>
+            android:text="@={exerciseName3}"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -226,7 +247,7 @@
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
             android:hint="enter reps"
-            android:text="@={exercise3.reps}"/>
+            android:text="@={exerciseReps3}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -246,7 +267,7 @@
             android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise4.exerciseName}"/>
+            android:text="@={exerciseName4}"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -255,7 +276,7 @@
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise4.reps}"/>
+            android:text="@={exerciseReps4}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -275,7 +296,7 @@
             android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise5.exerciseName}"/>
+            android:text="@={exerciseName5}"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -284,7 +305,7 @@
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
             android:backgroundTint="@android:color/white"
-            android:text="@={exercise5.reps}"/>
+            android:text="@={exerciseReps5}"/>
     </LinearLayout>
 
         <LinearLayout
@@ -293,35 +314,6 @@
             android:background="#525252"
             android:layout_height="match_parent"
             android:layout_below="@id/bToDatePicker">
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExerciseName6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter name"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
-            android:text="@={exercise6.exerciseName}"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etReps6"
-            android:hint="enter reps"
-            android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
-            android:text="@={exercise6.reps}"/>
 
     </LinearLayout>
 

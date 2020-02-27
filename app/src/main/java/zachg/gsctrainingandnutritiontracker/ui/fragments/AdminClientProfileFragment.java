@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import zachg.gsctrainingandnutritiontracker.R;
@@ -45,17 +46,21 @@ public class AdminClientProfileFragment extends Fragment {
 
     private AdminClientProfileViewModel adminClientProfileViewModel = new AdminClientProfileViewModel();
     private final String ARG_USER_ID = "user_id";
+    private String TAG = "AdminClientProfileFragment";
 
     private User currentUser = new User();
     private User currentClient = new User();
 
+    private String workoutTitle, workoutDay, exerciseName, exerciseReps;
+    private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
+            exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps;
+    private ArrayList<Exercise> generatedExerciseArray = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private Exercise exercise2 = new Exercise();
     private Exercise exercise3 = new Exercise();
     private Exercise exercise4 = new Exercise();
     private Exercise exercise5 = new Exercise();
-    private Exercise exercise6 = new Exercise();
-    private int totalEditTexts = 0;
+    private int totalExerciseEditTexts = 5;
 
     private static final int REQUEST_PHOTO = 2;
 
@@ -81,6 +86,13 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setFragment(this);
         binding.setUser(currentUser);
         binding.setClient(currentClient);
+
+        binding.setWorkoutTitle(workoutTitle);
+        binding.setWorkoutDay(workoutDay);
+
+        binding.setGeneratedExerciseName(generatedExerciseName);
+        binding.setGeneratedExerciseReps(generatedExerciseReps);
+
         bCameraButton = v.findViewById(R.id.bCamera);
         photoFile = getPhotoFile(currentClient);
 
@@ -97,15 +109,22 @@ public class AdminClientProfileFragment extends Fragment {
         });
 
         LinearLayout ll = new LinearLayout(getContext());
+        binding.setLl(ll);
         binding.setAddEts(ll);
         binding.setBAddExercise(bAddExercise);
 
-        binding.setExercise(exercise);
-        binding.setExercise(exercise2);
-        binding.setExercise(exercise3);
-        binding.setExercise(exercise4);
-        binding.setExercise(exercise5);
-        binding.setExercise(exercise6);
+        binding.setExerciseName(exerciseName);
+        binding.setExerciseName(exerciseName2);
+        binding.setExerciseName(exerciseName3);
+        binding.setExerciseName(exerciseName4);
+        binding.setExerciseName(exerciseName5);
+
+        binding.setExerciseReps(exerciseReps);
+        binding.setExerciseReps2(exerciseReps2);
+        binding.setExerciseReps3(exerciseReps3);
+        binding.setExerciseReps4(exerciseReps4);
+        binding.setExerciseReps5(exerciseReps5);
+
         Workout workout = new Workout(currentClient);
         binding.setWorkout(workout);
 
@@ -113,59 +132,103 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
         adminClientProfileViewModel.init();
 
-        adminClientProfileViewModel.newExercise.observe(this, new Observer<Exercise>() {
+        adminClientProfileViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Exercise exercise) {
-                    Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                workoutTitle = str;
             }
         });
 
-        adminClientProfileViewModel.newExercise2.observe(this, new Observer<Exercise>() {
+        adminClientProfileViewModel.workoutDayLiveData.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Exercise exercise) {
-                Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                workoutDay = str;
             }
         });
 
-        adminClientProfileViewModel.newExercise3.observe(this, new Observer<Exercise>() {
+        adminClientProfileViewModel.newExerciseName.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Exercise exercise) {
-                Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                exerciseName = str;
             }
         });
 
-        adminClientProfileViewModel.newExercise4.observe(this, new Observer<Exercise>() {
+        adminClientProfileViewModel.newExerciseReps.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Exercise exercise) {
-                Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                exerciseReps = str;
             }
         });
 
-        adminClientProfileViewModel.newExercise5.observe(this, new Observer<Exercise>() {
+        adminClientProfileViewModel.newExerciseName2.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Exercise exercise) {
-                Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                exerciseName2 = str;
             }
         });
 
-        adminClientProfileViewModel.newExercise6.observe(this, new Observer<Exercise>() {
+        adminClientProfileViewModel.newExerciseReps2.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Exercise exercise) {
-                Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                exerciseReps2 = str;
             }
         });
 
-        adminClientProfileViewModel.newExercise7.observe(this, new Observer<Exercise>() {
+        adminClientProfileViewModel.newExerciseName3.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Exercise exercise) {
-                Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                exerciseName3 = str;
             }
         });
 
-        adminClientProfileViewModel.newWorkout.observe(this, new Observer<Workout>() {
+        adminClientProfileViewModel.newExerciseReps3.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Workout workout) {
-                Log.d(TAG, "changed ex");
+            public void onChanged(String str) {
+                exerciseReps3 = str;
+            }
+        });
+
+        adminClientProfileViewModel.newExerciseName4.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseName4 = str;
+            }
+        });
+
+        adminClientProfileViewModel.newExerciseReps4.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseReps4 = str;
+            }
+        });
+
+        adminClientProfileViewModel.newExerciseName5.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseName5 = str;
+            }
+        });
+
+        adminClientProfileViewModel.newExerciseReps5.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseReps5 = str;
+            }
+        });
+
+        adminClientProfileViewModel.generatedExerciseName.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                generatedExerciseName = str;
+
+                //generatedExerciseArray.add(totalExerciseEditTexts).setExerciseName(generatedExerciseName);
+            }
+        });
+
+        adminClientProfileViewModel.generatedExerciseReps.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                generatedExerciseReps = str;
             }
         });
 
@@ -201,26 +264,60 @@ public class AdminClientProfileFragment extends Fragment {
 
         // add edittext
         EditText et = new EditText(getContext());
+        EditText et2 = new EditText(getContext());
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         et.setLayoutParams(p);
+        et2.setLayoutParams(p);
 
-        // dynamically create a name for the et??
-
-        et.setText("Text");
-        et.setId(totalEditTexts + 1);
+        et.setHint("Enter exercise");
+        et2.setHint("Enter reps");
+        et.setHintTextColor(getResources().getColor(R.color.white));
+        et2.setHintTextColor(getResources().getColor(R.color.white));
+        et.setId(totalExerciseEditTexts + 1);
+        et2.setId(totalExerciseEditTexts + 1);
         ll.addView(et);
-        totalEditTexts++;
+        ll.addView(et2);
+        totalExerciseEditTexts++;
     }
 
-    public void addExerciseValues(Exercise exercise, Exercise exercise2, Exercise exercise3,
-                                  Exercise exercise4, Exercise exercise5, Exercise exercise6,
-                                  Exercise exercise7, String workoutDay, String workoutTitle) {
+public void getEtValues(String workoutTitle, String workoutDay, User currentClient, String exerciseName, String exerciseName2,
+                        String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
+                        String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5, LinearLayout ll) {
+
+        ArrayList<Exercise> exArray = new ArrayList<Exercise>();
+
+        Exercise exercise = new Exercise(exerciseName, exerciseReps);
+        Exercise exercise2 = new Exercise(exerciseName2, exerciseReps2);
+        Exercise exercise3 = new Exercise(exerciseName3, exerciseReps3);
+        Exercise exercise4 = new Exercise(exerciseName4, exerciseReps4);
+        Exercise exercise5 = new Exercise(exerciseName5, exerciseReps5);
+
+        exArray.add(0, exercise);
+        exArray.add(1, exercise2);
+        exArray.add(2, exercise3);
+        exArray.add(3, exercise4);
+        exArray.add(4, exercise5);
+
+        // set exerciseName and Reps == i
+
+        for (int i=0; i < totalExerciseEditTexts; i++){
+            EditText editText = (EditText)ll.getChildAt(i);
+            Exercise generatedExercise = new Exercise(generatedExerciseName, generatedExerciseReps);
+            //exArray.add(i, generatedExercise))  editText.getText().toString();
+            //exArray
+        }
+
         adminClientProfileViewModel.writeToWorkouts(currentClient, exercise, exercise2, exercise3, exercise4, exercise5,
-                exercise6, workoutDay, workoutTitle);
+                workoutDay, workoutTitle);
     }
 
     public void toDatePicker() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ReportListFragment(currentUser, currentClient)).addToBackStack(null).commit();
+    }
+
+    public void toWorkoutList() {
+//        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+//                new WorkoutListFragment(currentUser, currentClient)).addToBackStack(null).commit();
     }
 }
