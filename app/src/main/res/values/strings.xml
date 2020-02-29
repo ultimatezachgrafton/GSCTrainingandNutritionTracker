@@ -67,5 +67,10 @@
     <string name="enterDay">Enter workout day:</string>
     <string name="viewProfile">View Profile</string>
     <string name="addExercise1">Add 1</string>
+    <string name="exercise1">Exercise 1:</string>
+    <string name="exercise2">Exercise 2:</string>
+    <string name="exercise3">Exercise 3:</string>
+    <string name="exercise4">Exercise 4:</string>
+    <string name="exercise5">Exercise 5:</string>
 
 </resources>

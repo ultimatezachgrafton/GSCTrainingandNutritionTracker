@@ -59,14 +59,15 @@ public class AdminClientProfileFragment extends Fragment {
             exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps;
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
-    private ArrayList<Exercise> generatedExerciseArray = new ArrayList<>();
+    private ArrayList<TextView> exerciseNumberTextViewArray = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private Exercise exercise2 = new Exercise();
     private Exercise exercise3 = new Exercise();
     private Exercise exercise4 = new Exercise();
     private Exercise exercise5 = new Exercise();
-    private int totalExerciseNameEditTexts = 5;
-    private int totalExerciseRepsEditTexts = 5;
+    private int totalExerciseNameEditTexts = 0;
+    private int totalExerciseRepsEditTexts = 0;
+    private int totalExerciseTextViews = 0;
     private static final int REQUEST_PHOTO = 2;
 
     private ImageView profilePhoto;
@@ -230,8 +231,6 @@ public class AdminClientProfileFragment extends Fragment {
             @Override
             public void onChanged(String str) {
                 generatedExerciseName = str;
-
-                //generatedExerciseArray.add(totalExerciseEditTexts).setExerciseName(generatedExerciseName);
             }
         });
 
@@ -269,7 +268,7 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
-    public void addLine(LinearLayout ll, TextView tv) {
+    public void addLine(LinearLayout ll) {
         // add EditTexts
         EditText et = new EditText(getContext());
         EditText et2 = new EditText(getContext());
@@ -277,18 +276,22 @@ public class AdminClientProfileFragment extends Fragment {
         et.setLayoutParams(p);
         et2.setLayoutParams(p);
 
-        et.setHintTextColor(Color.WHITE);//getResources().getColor(R.color.white));
+        et.setHintTextColor(Color.WHITE);
         et2.setHintTextColor(Color.WHITE);
         et.setHint("Enter exercise");
         et2.setHint("Enter reps");
         et.setId(totalExerciseNameEditTexts + 1);
         et2.setId(totalExerciseRepsEditTexts + 1);
 
-        tv.setVisibility(View.VISIBLE);
+        // generate and style TextView
+        TextView tv = new TextView(getContext());
+        int i = totalExerciseNameEditTexts + 1;
+        tv.setText("Exercise " + i + ":");
         tv.setTextColor(Color.WHITE);
         tv.setTypeface(null, Typeface.BOLD);
         tv.setTextSize(18);
 
+        // Add to the View
         ll.addView(tv);
         ll.addView(et);
         ll.addView(et2);

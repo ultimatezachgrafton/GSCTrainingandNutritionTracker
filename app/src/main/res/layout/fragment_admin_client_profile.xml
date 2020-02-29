@@ -160,10 +160,10 @@
 
         <TextView
             android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum"
+            android:id="@+id/tvExerciseNum1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exercise"
+            android:text="@string/exercise1"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -190,7 +190,7 @@
             android:id="@+id/tvExerciseNum2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exercise"
+            android:text="@string/exercise2"
             android:textSize="18sp"
             android:textColorHint="@android:color/white"
             android:textStyle="bold" />
@@ -218,7 +218,7 @@
             android:id="@+id/tvExerciseNum3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exercise"
+            android:text="@string/exercise3"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -245,7 +245,7 @@
             android:id="@+id/tvExerciseNum4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exercise"
+            android:text="@string/exercise4"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -272,7 +272,7 @@
             android:id="@+id/tvExerciseNum5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exercise"
+            android:text="@string/exercise5"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -310,7 +310,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/exerciseLinearLayout"
                 android:background="#696969"
-                android:onClick="@{()->fragment.addLine(exerciseLinearLayout, tv)}"
+                android:onClick="@{()->fragment.addLine(exerciseLinearLayout)}"
                 android:text="@string/addExercise1"
                 android:textColor="@android:color/white" />
     </RelativeLayout>
