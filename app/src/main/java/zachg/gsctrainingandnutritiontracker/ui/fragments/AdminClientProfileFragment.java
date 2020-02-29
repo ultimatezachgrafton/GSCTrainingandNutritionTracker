@@ -54,13 +54,16 @@ public class AdminClientProfileFragment extends Fragment {
     private String workoutTitle, workoutDay, exerciseName, exerciseReps;
     private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
             exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps;
+    private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
+    private ArrayList<EditText> exerciseRepsEditTexttArray = new ArrayList<>();
     private ArrayList<Exercise> generatedExerciseArray = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private Exercise exercise2 = new Exercise();
     private Exercise exercise3 = new Exercise();
     private Exercise exercise4 = new Exercise();
     private Exercise exercise5 = new Exercise();
-    private int totalExerciseEditTexts = 5;
+    private int totalExerciseNameEditTexts = 5;
+    private int totalExerciseRepsEditTexts = 5;
 
     private static final int REQUEST_PHOTO = 2;
 
@@ -273,11 +276,17 @@ public class AdminClientProfileFragment extends Fragment {
         et2.setHint("Enter reps");
         et.setHintTextColor(getResources().getColor(R.color.white));
         et2.setHintTextColor(getResources().getColor(R.color.white));
-        et.setId(totalExerciseEditTexts + 1);
-        et2.setId(totalExerciseEditTexts + 1);
+        et.setId(totalExerciseNameEditTexts + 1);
+        et2.setId(totalExerciseRepsEditTexts + 1);
         ll.addView(et);
         ll.addView(et2);
-        totalExerciseEditTexts++;
+
+        exerciseNameEditTextArray.add(totalExerciseNameEditTexts, et);
+        exerciseRepsEditTexttArray.add();
+
+
+        totalExerciseNameEditTexts++;
+        totalExerciseRepsEditTexts++;
     }
 
 public void getEtValues(String workoutTitle, String workoutDay, User currentClient, String exerciseName, String exerciseName2,
@@ -298,17 +307,15 @@ public void getEtValues(String workoutTitle, String workoutDay, User currentClie
         exArray.add(3, exercise4);
         exArray.add(4, exercise5);
 
-        // set exerciseName and Reps == i
-
-        for (int i=0; i < totalExerciseEditTexts; i++){
-            EditText editText = (EditText)ll.getChildAt(i);
-            Exercise generatedExercise = new Exercise(generatedExerciseName, generatedExerciseReps);
-            //exArray.add(i, generatedExercise))  editText.getText().toString();
-            //exArray
+        // set exerciseName and exerciseReps
+        for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
+            String exName = exerciseNameEditTextArray.get(i).getText().toString();
+            String exReps = exerciseRepsEditTexttArray.get(i).getText().toString();
+            Exercise generatedExercise = new Exercise(exName, exReps);
+            exArray.add(generatedExercise);
         }
 
-        adminClientProfileViewModel.writeToWorkouts(currentClient, exercise, exercise2, exercise3, exercise4, exercise5,
-                workoutDay, workoutTitle);
+        adminClientProfileViewModel.writeToWorkouts(currentClient, exArray, workoutDay, workoutTitle);
     }
 
     public void toDatePicker() {

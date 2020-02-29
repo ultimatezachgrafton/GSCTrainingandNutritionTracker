@@ -1,5 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,6 +12,8 @@ import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminClientProfileViewModel extends ViewModel {
 
@@ -65,31 +69,23 @@ public class AdminClientProfileViewModel extends ViewModel {
     public void init() {
     }
 
-    public void writeToWorkouts(User user, Exercise exercise, Exercise exercise2, Exercise exercise3,
-                                Exercise exercise4, Exercise exercise5, String workoutDay, String workoutTitle) {
-        this.exercise = exercise;
-        this.exercise2 = exercise2;
-        this.exercise3 = exercise3;
-        this.exercise4 = exercise4;
-        this.exercise5 = exercise5;
+    public void writeToWorkouts(User user, ArrayList<Exercise> exArray, String workoutDay, String workoutTitle) {
 
-//        Log.d(TAG, exercise5.getExerciseName());
+        for (int i = 0; i < exArray.size(); i++) {
+            exercises.add(i, exArray.get(i));
+        }
+
+        Log.d(TAG, exercises.get(5).getExerciseName());
 
         this.workoutDay = workoutDay;
         this.workoutTitle = workoutTitle;
-
-        exercises.add(0, exercise);
-        exercises.add(1, exercise2);
-        exercises.add(2, exercise3);
-        exercises.add(3, exercise4);
-        exercises.add(4, exercise5);
 
         Workout workout = new Workout(user.getClientName(), user.getEmail(), workoutTitle);
         workout.setExercises(exercises);
         workout.setWorkoutTitle(workoutTitle);
         workout.setWorkoutDay(workoutDay);
 
-        // if workoutTitle is null, set null
+        // TODO: if workoutTitle is null, set null
 
         repo.writeWorkoutsToRepo(user, workout);
     }
