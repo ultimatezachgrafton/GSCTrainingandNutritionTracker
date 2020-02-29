@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -65,7 +67,6 @@ public class AdminClientProfileFragment extends Fragment {
     private Exercise exercise5 = new Exercise();
     private int totalExerciseNameEditTexts = 5;
     private int totalExerciseRepsEditTexts = 5;
-
     private static final int REQUEST_PHOTO = 2;
 
     private ImageView profilePhoto;
@@ -268,17 +269,14 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
-    public void addLine(LinearLayout ll) {
-        Log.d(TAG, String.valueOf(exerciseNameEditTextArray.size()));
-
-        // add edittext
+    public void addLine(LinearLayout ll, TextView tv) {
+        // add EditTexts
         EditText et = new EditText(getContext());
         EditText et2 = new EditText(getContext());
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         et.setLayoutParams(p);
         et2.setLayoutParams(p);
 
-        String exStr = "Excercise: ";
         et.setHintTextColor(Color.WHITE);//getResources().getColor(R.color.white));
         et2.setHintTextColor(Color.WHITE);
         et.setHint("Enter exercise");
@@ -286,6 +284,12 @@ public class AdminClientProfileFragment extends Fragment {
         et.setId(totalExerciseNameEditTexts + 1);
         et2.setId(totalExerciseRepsEditTexts + 1);
 
+        tv.setVisibility(View.VISIBLE);
+        tv.setTextColor(Color.WHITE);
+        tv.setTypeface(null, Typeface.BOLD);
+        tv.setTextSize(18);
+
+        ll.addView(tv);
         ll.addView(et);
         ll.addView(et2);
 

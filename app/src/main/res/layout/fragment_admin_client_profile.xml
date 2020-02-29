@@ -310,9 +310,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/exerciseLinearLayout"
                 android:background="#696969"
-                android:onClick="@{()->fragment.addLine(exerciseLinearLayout)}"
+                android:onClick="@{()->fragment.addLine(exerciseLinearLayout, tv)}"
                 android:text="@string/addExercise1"
                 android:textColor="@android:color/white" />
     </RelativeLayout>
     </ScrollView>
+
 </layout>
