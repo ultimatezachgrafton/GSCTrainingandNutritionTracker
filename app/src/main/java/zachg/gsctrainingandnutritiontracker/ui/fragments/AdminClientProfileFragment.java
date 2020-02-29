@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -55,7 +56,7 @@ public class AdminClientProfileFragment extends Fragment {
     private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
             exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps;
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
-    private ArrayList<EditText> exerciseRepsEditTexttArray = new ArrayList<>();
+    private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
     private ArrayList<Exercise> generatedExerciseArray = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private Exercise exercise2 = new Exercise();
@@ -98,6 +99,11 @@ public class AdminClientProfileFragment extends Fragment {
 
         bCameraButton = v.findViewById(R.id.bCamera);
         photoFile = getPhotoFile(currentClient);
+
+        // initialize array values
+        EditText et = new EditText(getContext());
+        while(exerciseNameEditTextArray.size() < totalExerciseNameEditTexts) exerciseNameEditTextArray.add(0, et);
+        while(exerciseRepsEditTextArray.size() < totalExerciseRepsEditTexts) exerciseRepsEditTextArray.add(0, et);
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         bCameraButton.setOnClickListener( new View.OnClickListener() {
@@ -263,7 +269,7 @@ public class AdminClientProfileFragment extends Fragment {
     }
 
     public void addLine(LinearLayout ll) {
-        Log.d(TAG, "addLine");
+        Log.d(TAG, String.valueOf(exerciseNameEditTextArray.size()));
 
         // add edittext
         EditText et = new EditText(getContext());
@@ -272,18 +278,19 @@ public class AdminClientProfileFragment extends Fragment {
         et.setLayoutParams(p);
         et2.setLayoutParams(p);
 
+        String exStr = "Excercise: ";
+        et.setHintTextColor(Color.WHITE);//getResources().getColor(R.color.white));
+        et2.setHintTextColor(Color.WHITE);
         et.setHint("Enter exercise");
         et2.setHint("Enter reps");
-        et.setHintTextColor(getResources().getColor(R.color.white));
-        et2.setHintTextColor(getResources().getColor(R.color.white));
         et.setId(totalExerciseNameEditTexts + 1);
         et2.setId(totalExerciseRepsEditTexts + 1);
+
         ll.addView(et);
         ll.addView(et2);
 
         exerciseNameEditTextArray.add(totalExerciseNameEditTexts, et);
-        exerciseRepsEditTexttArray.add();
-
+        exerciseRepsEditTextArray.add(totalExerciseRepsEditTexts, et2);
 
         totalExerciseNameEditTexts++;
         totalExerciseRepsEditTexts++;
@@ -310,7 +317,7 @@ public void getEtValues(String workoutTitle, String workoutDay, User currentClie
         // set exerciseName and exerciseReps
         for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
             String exName = exerciseNameEditTextArray.get(i).getText().toString();
-            String exReps = exerciseRepsEditTexttArray.get(i).getText().toString();
+            String exReps = exerciseRepsEditTextArray.get(i).getText().toString();
             Exercise generatedExercise = new Exercise(exName, exReps);
             exArray.add(generatedExercise);
         }

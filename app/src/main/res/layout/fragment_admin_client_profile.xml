@@ -147,8 +147,7 @@
             android:layout_height="wrap_content"
             android:hint="Enter workout title"
             android:text="@={workoutTitle}"
-            android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"/>
+            android:textColorHint="@android:color/white"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -157,7 +156,6 @@
             android:singleLine="true"
             android:hint="@string/enterDay"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={workoutDay}"/>
 
         <TextView
@@ -177,7 +175,6 @@
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseName}"/>
 
         <EditText
@@ -186,7 +183,6 @@
             android:id="@+id/etReps"
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseReps}"/>
 
         <TextView
@@ -197,7 +193,6 @@
             android:text="@string/exercise"
             android:textSize="18sp"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:textStyle="bold" />
 
         <EditText
@@ -208,7 +203,6 @@
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseName2}"/>
 
         <EditText
@@ -217,7 +211,6 @@
             android:id="@+id/etReps2"
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseReps2}"/>
 
         <TextView
@@ -237,7 +230,6 @@
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseName3}"/>
 
         <EditText
@@ -245,7 +237,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/etReps3"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:hint="enter reps"
             android:text="@={exerciseReps3}"/>
 
@@ -266,7 +257,6 @@
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseName4}"/>
 
         <EditText
@@ -275,7 +265,6 @@
             android:id="@+id/etReps4"
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseReps4}"/>
 
         <TextView
@@ -295,7 +284,6 @@
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseName5}"/>
 
         <EditText
@@ -304,7 +292,6 @@
             android:id="@+id/etReps5"
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@android:color/white"
             android:text="@={exerciseReps5}"/>
     </LinearLayout>
 
