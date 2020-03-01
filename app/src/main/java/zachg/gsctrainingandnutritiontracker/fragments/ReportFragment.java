@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.fragments;
+package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -30,8 +30,8 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ui.adapters.ExerciseListAdapter;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
 public class ReportFragment extends Fragment {
@@ -106,40 +106,5 @@ public class ReportFragment extends Fragment {
         exerciseListAdapter = new ExerciseListAdapter(exercises);
         binding.rvExercise.setAdapter(exerciseListAdapter);
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    public void onStop() {
-        super.onStop();
-        exerciseListAdapter.stopListening();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.user_menu, menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bViewProfile:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientPortalFragment(currentUser)).addToBackStack(null).commit();
-            case R.id.bInbox: ;
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                sendIntent.setData(Uri.parse("smsto:" + currentUser.getPhoneNumber()));
-                startActivity(sendIntent);
-                return true;
-            case R.id.bLogout:
-                auth.signOut();
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).addToBackStack(null).commit();
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                return true;
-        } return super.onOptionsItemSelected(item);
     }
 }

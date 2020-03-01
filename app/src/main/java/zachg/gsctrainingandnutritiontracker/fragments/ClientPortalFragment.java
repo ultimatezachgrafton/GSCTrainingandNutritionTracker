@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.fragments;
+package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -22,7 +22,7 @@ import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientPortalViewModel;
 
 public class ClientPortalFragment extends Fragment {

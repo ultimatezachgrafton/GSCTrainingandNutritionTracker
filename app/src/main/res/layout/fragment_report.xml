@@ -7,7 +7,7 @@
             type="zachg.gsctrainingandnutritiontracker.models.Report"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.ReportFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.fragments.ReportFragment"/>
         <variable
             name="model"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel"/>

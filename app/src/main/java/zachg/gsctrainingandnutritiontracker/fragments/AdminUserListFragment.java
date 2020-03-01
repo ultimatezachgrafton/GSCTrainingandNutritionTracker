@@ -1,9 +1,8 @@
-package zachg.gsctrainingandnutritiontracker.ui.fragments;
+package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +24,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.adapters.UserListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in

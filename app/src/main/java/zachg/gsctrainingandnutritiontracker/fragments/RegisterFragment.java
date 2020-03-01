@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.fragments;
+package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentRegisterBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
 public class RegisterFragment extends Fragment {

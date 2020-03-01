@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.fragments;
+package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -22,14 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportListBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.ui.adapters.ReportListAdapter;
-import zachg.gsctrainingandnutritiontracker.ui.adapters.UserListAdapter;
-import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.adapters.ReportListAdapter;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportListViewModel;
 
 public class ReportListFragment extends Fragment {

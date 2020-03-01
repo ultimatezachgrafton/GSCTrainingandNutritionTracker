@@ -3,7 +3,7 @@
     <data>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment" />
+            type="zachg.gsctrainingandnutritiontracker.fragments.LoginFragment" />
         <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User" />

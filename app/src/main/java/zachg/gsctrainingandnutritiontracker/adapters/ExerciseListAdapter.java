@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.adapters;
+package zachg.gsctrainingandnutritiontracker.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,6 +68,7 @@ public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, Exer
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position, Exercise exercise) {
+        Log.d(TAG, "onBindVH");
         holder.tvExerciseName.setText(exercise.getExerciseName());
         holder.tvExerciseReps.setText( exercise.getReps());
         holder.tvExerciseWeight.setText(exercise.getExerciseWeight());

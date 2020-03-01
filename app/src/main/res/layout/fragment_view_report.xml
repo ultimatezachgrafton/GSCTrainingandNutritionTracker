@@ -4,7 +4,7 @@
         <import type="android.view.View"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.ViewReportFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.fragments.ViewReportFragment"/>
         <variable
             name="report"
             type="zachg.gsctrainingandnutritiontracker.models.Report"/>

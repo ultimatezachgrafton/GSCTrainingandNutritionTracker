@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.activities;
+package zachg.gsctrainingandnutritiontracker.activities;
 
 import android.os.Bundle;
 
@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment;
+import zachg.gsctrainingandnutritiontracker.fragments.LoginFragment;
 
 // Controls the various fragments
 

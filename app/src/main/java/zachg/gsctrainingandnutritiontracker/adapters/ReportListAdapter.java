@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.adapters;
+package zachg.gsctrainingandnutritiontracker.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,37 +13,39 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.models.Report;
 
-// UserListAdapter adapts the RecyclerView list items of Users for viewing
-
-public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdapter.UserViewHolder> {
+public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportListAdapter.ReportViewHolder> {
     private OnItemClickListener listener;
-    private User currentUser = new User();
-    public String TAG = "UserListAdapter";
+    private Report reportList = new Report();
+    public String TAG = "ReportListAdapter";
 
     // Listens for a Firestore query
-    public UserListAdapter(@NonNull FirestoreRecyclerOptions<User> options) {
+    public ReportListAdapter(@NonNull FirestoreRecyclerOptions<Report> options) {
         super(options);
     }
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvuser_item, parent, false);
+    public ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvreport_item, parent, false);
 
-        return new UserViewHolder(v);
+        return new ReportViewHolder(v);
     }
 
     // UserViewHolder is the class that defines the views that hold the User data
-    class UserViewHolder extends RecyclerView.ViewHolder {
+    class ReportViewHolder extends RecyclerView.ViewHolder {
+        TextView tvWorkoutTitle;
+        TextView tvWorkoutDay;
         TextView tvClientName;
-        TextView tvEmail;
+        TextView tvDateString;
 
-        public UserViewHolder(@NonNull View itemView) {
+        public ReportViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvWorkoutTitle = itemView.findViewById(R.id.tvWorkoutTitle);
+            tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
             tvClientName = itemView.findViewById(R.id.tvClientName);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
+            tvDateString = itemView.findViewById(R.id.tvDateString);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,9 +68,12 @@ public class UserListAdapter extends FirestoreRecyclerAdapter<User, UserListAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position, User user) {
-        holder.tvClientName.setText(user.getClientName());
-        holder.tvEmail.setText(user.getEmail());
+    public void onBindViewHolder(@NonNull ReportViewHolder holder, int position, Report report) {
+        holder.tvWorkoutTitle.setText(report.getWorkoutTitle());
+        holder.tvWorkoutDay.setText(report.getWorkoutDay());
+        holder.tvDateString.setText(report.getDateString());
+        holder.tvClientName.setText(report.getClientName());
     }
 
 }
+

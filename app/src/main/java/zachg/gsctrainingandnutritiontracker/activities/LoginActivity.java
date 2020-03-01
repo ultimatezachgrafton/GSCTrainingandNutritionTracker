@@ -1,10 +1,8 @@
-package zachg.gsctrainingandnutritiontracker.ui.activities;
-
-import android.util.Log;
+package zachg.gsctrainingandnutritiontracker.activities;
 
 import androidx.fragment.app.Fragment;
 
-import zachg.gsctrainingandnutritiontracker.ui.fragments.LoginFragment;
+import zachg.gsctrainingandnutritiontracker.fragments.LoginFragment;
 
 public class LoginActivity extends SingleFragmentActivity {
 

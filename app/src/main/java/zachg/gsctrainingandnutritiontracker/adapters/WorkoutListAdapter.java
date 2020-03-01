@@ -1,5 +1,6 @@
-package zachg.gsctrainingandnutritiontracker.ui.adapters;
+package zachg.gsctrainingandnutritiontracker.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,13 +36,13 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
 
     // UserViewHolder is the class that defines the views that hold the User data
     class WorkoutViewHolder extends RecyclerView.ViewHolder {
-        TextView tvExerciseName;
-        TextView tvExerciseNum;
+        TextView tvWorkoutTitle;
+        TextView tvWorkoutDay;
 
         public WorkoutViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvExerciseName = itemView.findViewById(R.id.tvExerciseName);
-            tvExerciseNum = itemView.findViewById(R.id.tvExerciseNum);
+            tvWorkoutTitle = itemView.findViewById(R.id.tvWorkoutTitle);
+            tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,8 +66,9 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
 
     @Override
     public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
-        holder.tvExerciseName.setText(workout.getWorkoutTitle());
-        holder.tvExerciseNum.setText(workout.getWorkoutDay());
+        Log.d(TAG, "onBindVH");
+        holder.tvWorkoutTitle.setText(workout.getWorkoutTitle());
+        holder.tvWorkoutDay.setText(workout.getWorkoutDay());
     }
 
 }

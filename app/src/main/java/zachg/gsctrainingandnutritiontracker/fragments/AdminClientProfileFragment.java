@@ -1,4 +1,4 @@
-package zachg.gsctrainingandnutritiontracker.ui.fragments;
+package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,12 +34,9 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfi
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.ui.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
-import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminClientProfileFragment extends Fragment {
 
@@ -59,15 +56,13 @@ public class AdminClientProfileFragment extends Fragment {
             exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps;
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
-    private ArrayList<TextView> exerciseNumberTextViewArray = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private Exercise exercise2 = new Exercise();
     private Exercise exercise3 = new Exercise();
     private Exercise exercise4 = new Exercise();
     private Exercise exercise5 = new Exercise();
-    private int totalExerciseNameEditTexts = 0;
-    private int totalExerciseRepsEditTexts = 0;
-    private int totalExerciseTextViews = 0;
+    private int totalExerciseNameEditTexts = 5;
+    private int totalExerciseRepsEditTexts = 5;
     private static final int REQUEST_PHOTO = 2;
 
     private ImageView profilePhoto;
@@ -337,8 +332,8 @@ public void getEtValues(String workoutTitle, String workoutDay, User currentClie
                 new ReportListFragment(currentUser, currentClient)).addToBackStack(null).commit();
     }
 
-    public void toWorkoutList() {
-//        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                new WorkoutListFragment(currentUser, currentClient)).addToBackStack(null).commit();
+    public void toWorkoutList(User user, User client) {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new WorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 }

@@ -55,10 +55,10 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
-        workoutDay = currentUser.getWorkoutDay();
+//        workoutDay = currentUser.getWorkoutDay();
         repo.setSnapshotOnCompleteListener(this);
-        Log.d(TAG, "workoutday: " + workoutDay);
-        Log.d(TAG, "user workoutday: " + currentUser.getWorkoutDay());
+//        Log.d(TAG, "workoutday: " + workoutDay);
+//        Log.d(TAG, "user workoutday: " + currentUser.getWorkoutDay());
         repo.getExercisesForIteration(currentUser, workoutDay);
         exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
     }
@@ -89,16 +89,16 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
                     report.getWorkoutTitle(), report.getExerciseString());
             repo.writeReportToRepo(generatedReport);
 
-            iterateWorkoutNum(currentUser);
+           // iterateWorkoutNum(currentUser);
     }
 
-    public void iterateWorkoutNum(User user) {
-        if (user.getWorkoutDay()+1 < exerciseArrayList.size()) {
-            user.setWorkoutDay(user.getWorkoutDay() + 1);
-        } else {
-            user.setWorkoutDay(1);
-        }
-    }
+//    public void iterateWorkoutNum(User user) {
+//        if (user.getWorkoutDay()+1 < exerciseArrayList.size()) {
+//            user.setWorkoutDay(user.getWorkoutDay() + 1);
+//        } else {
+//            user.setWorkoutDay(1);
+//        }
+//    }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {

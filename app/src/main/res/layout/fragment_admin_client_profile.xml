@@ -47,7 +47,7 @@
             type="String"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.AdminClientProfileFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.fragments.AdminClientProfileFragment"/>
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
@@ -118,6 +118,17 @@
             android:background="#696969"
             android:onClick="@{()->fragment.toDatePicker()}"
             android:text="@string/toDatePicker"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/bToWorkoutList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/bToDatePicker"
+            android:layout_alignBottom="@id/bToDatePicker"
+            android:background="#696969"
+            android:onClick="@{()->fragment.toWorkoutList(user, client)}"
+            android:text="@string/toWorkoutList"
             android:textColor="@android:color/white" />
 
     <LinearLayout

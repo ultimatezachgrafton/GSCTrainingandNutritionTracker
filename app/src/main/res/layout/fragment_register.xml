@@ -28,7 +28,7 @@
             type="zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel" />
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.ui.fragments.RegisterFragment" />
+            type="zachg.gsctrainingandnutritiontracker.fragments.RegisterFragment" />
         <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User" />
@@ -42,7 +42,7 @@
         android:padding="10dp"
         android:background="#525252"
         android:id="@+id/fragment_register"
-        tools:context=".ui.activities.SingleFragmentActivity">
+        tools:context=".activities.SingleFragmentActivity">
 
         <TextView
             android:textColor="@android:color/white"

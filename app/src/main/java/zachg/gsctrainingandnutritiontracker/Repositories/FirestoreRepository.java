@@ -143,9 +143,11 @@ public class FirestoreRepository {
     }
 
     // Returns Workouts as assigned by admin
-    public void getWorkoutsFromRepo(User user) {
+    public FirestoreRecyclerOptions<Workout> getWorkoutsFromRepo(User user) {
         Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts");
-        workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        return new FirestoreRecyclerOptions.Builder<Workout>()
+                .setQuery(workoutQuery, Workout.class)
+                .build();
     }
 
     public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, int num) {
