@@ -28,7 +28,7 @@ public class User extends BaseObservable {
     private boolean isAdmin;
     private boolean isLoggedIn;
 
-    //private String workoutDay;
+//    private int workoutDay;
     private int previousLoopWorkoutNum;     // tracks which workout of previous loop the user has yet to complete
     private boolean isFinishingPreviousLoop; // tracks if the user is still in process of completing the previous workout loop
 
@@ -43,7 +43,7 @@ public class User extends BaseObservable {
         this.email = email;
     }
 
-    public User(String firstName, String lastName, String phoneNumber, String email, String password, int workoutDay) {
+    public User(String firstName, String lastName, String phoneNumber, String email, String password) {//}, int workoutDay) {
         this.firstName = firstName;
         this.lastName = lastName;
         setClientName(this.firstName, this.lastName);

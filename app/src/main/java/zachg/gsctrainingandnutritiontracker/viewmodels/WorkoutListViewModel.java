@@ -1,5 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -23,6 +25,7 @@ public class WorkoutListViewModel extends ViewModel {
         this.client = client;
         repo = FirestoreRepository.getInstance();
         workouts.setValue(repo.getWorkoutsFromRepo(client));
+        Log.d(TAG, String.valueOf(workouts.getValue()));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {
@@ -34,7 +37,7 @@ public class WorkoutListViewModel extends ViewModel {
     }
 
     public Workout onItemClicked(DocumentSnapshot documentSnapshot, int position) {
-        // Fetches currentUser
+        // Fetches currentWorkout
         Workout currentWorkout = documentSnapshot.toObject(Workout.class);
         String id = documentSnapshot.getId();
         String path = documentSnapshot.getReference().getPath();

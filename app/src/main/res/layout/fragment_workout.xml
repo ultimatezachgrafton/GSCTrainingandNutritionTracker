@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="workout"
+            type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
+        <variable
+            name="fragment"
+            type="zachg.gsctrainingandnutritiontracker.fragments.WorkoutFragment"/>
+        <variable
+            name="model"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.WorkoutViewModel"/>
+        <variable
+            name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+    </data>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <TextView
+            android:id="@+id/tvWorkoutTitle"
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{workout.workoutTitle}"/>
+
+        <TextView
+            android:id="@+id/separator1"
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This workout contains the following exercises."/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvExercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/separator1"
+            android:background="@android:color/darker_gray"
+            tools:listitem="@layout/rv_exercise_item"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/bUpdateWorkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_report"
+            android:layout_below="@id/rvExercise"
+            android:clickable="true"
+            android:onClick="@{()->model.updateWorkout(user, workout)}" />
+
+        <Button
+            android:id="@+id/bDeleteWorkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_report"
+            android:layout_below="@id/bUpdateWorkout"
+            android:clickable="true"
+            android:onClick="@{()->model.deleteWorkout(user, workout)}" />
+
+    </RelativeLayout>
+</layout>

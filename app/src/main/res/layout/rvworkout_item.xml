@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rvworkout_item"
+    android:background="@android:color/holo_orange_light"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/tvItemWorkoutTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvItemWorkoutDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="3"/>
+
+</LinearLayout>

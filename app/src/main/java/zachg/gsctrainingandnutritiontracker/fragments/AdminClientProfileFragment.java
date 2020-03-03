@@ -51,7 +51,8 @@ public class AdminClientProfileFragment extends Fragment {
     private User currentUser = new User();
     private User currentClient = new User();
 
-    private String workoutTitle, workoutDay, exerciseName, exerciseReps;
+    private String workoutTitle, exerciseName, exerciseReps;
+    private int w = 0;
     private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
             exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps;
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
@@ -89,7 +90,7 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setClient(currentClient);
 
         binding.setWorkoutTitle(workoutTitle);
-        binding.setWorkoutDay(workoutDay);
+        binding.setW(w);
 
         binding.setGeneratedExerciseName(generatedExerciseName);
         binding.setGeneratedExerciseReps(generatedExerciseReps);
@@ -145,12 +146,12 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
-        adminClientProfileViewModel.workoutDayLiveData.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                workoutDay = str;
-            }
-        });
+//        adminClientProfileViewModel.workoutDayLiveData.observe(this, new Observer<Integer>() {
+//            @Override
+//            public void onChanged(Integer i) {
+//                workoutDay = 3;
+//            }
+//        });
 
         adminClientProfileViewModel.newExerciseName.observe(this, new Observer<String>() {
             @Override
@@ -298,7 +299,7 @@ public class AdminClientProfileFragment extends Fragment {
         totalExerciseRepsEditTexts++;
     }
 
-public void getEtValues(String workoutTitle, String workoutDay, User currentClient, String exerciseName, String exerciseName2,
+public void getEtValues(String workoutTitle, int w, User currentClient, String exerciseName, String exerciseName2,
                         String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
                         String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5, LinearLayout ll) {
 
@@ -324,7 +325,7 @@ public void getEtValues(String workoutTitle, String workoutDay, User currentClie
             exArray.add(generatedExercise);
         }
 
-        adminClientProfileViewModel.writeToWorkouts(currentClient, exArray, workoutDay, workoutTitle);
+        adminClientProfileViewModel.writeToWorkouts(currentClient, exArray, w, workoutTitle);
     }
 
     public void toDatePicker() {

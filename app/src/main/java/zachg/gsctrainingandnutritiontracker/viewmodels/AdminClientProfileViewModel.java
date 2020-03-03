@@ -19,7 +19,8 @@ public class AdminClientProfileViewModel extends ViewModel {
 
     private FirestoreRepository repo = FirestoreRepository.getInstance();
 
-    public String exerciseName, exerciseReps, workoutTitle, workoutDay;
+    public String exerciseName, exerciseReps, workoutTitle;
+//    public int workoutDay = 0;
     public Exercise exercise = new Exercise();
     public Exercise exercise2 = new Exercise();
     public Exercise exercise3 = new Exercise();
@@ -43,7 +44,7 @@ public class AdminClientProfileViewModel extends ViewModel {
     private ObservableField<String> etGeneratedExerciseReps = new ObservableField<String>();
 
     private ObservableField<String> etWorkoutTitle = new ObservableField<>();
-    private ObservableField<String> etWorkoutDay = new ObservableField<>();
+//    private ObservableField<Integer> etWorkoutDay = new ObservableField<>();
 
     public MutableLiveData<String> generatedExerciseName = new MutableLiveData<String>();
     public MutableLiveData<String> generatedExerciseReps = new MutableLiveData<String>();
@@ -61,7 +62,7 @@ public class AdminClientProfileViewModel extends ViewModel {
     public MutableLiveData<String> newExerciseReps5 = new MutableLiveData<>();
 
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
-    public MutableLiveData<String> workoutDayLiveData = new MutableLiveData<String>();
+//    public MutableLiveData<Integer> workoutDayLiveData = new MutableLiveData<>();
 
 
     public AdminClientProfileViewModel() {}
@@ -69,7 +70,7 @@ public class AdminClientProfileViewModel extends ViewModel {
     public void init() {
     }
 
-    public void writeToWorkouts(User user, ArrayList<Exercise> exArray, String workoutDay, String workoutTitle) {
+    public void writeToWorkouts(User user, ArrayList<Exercise> exArray, int w, String workoutTitle) {
 
         for (int i = 0; i < exArray.size(); i++) {
             exercises.add(i, exArray.get(i));
@@ -77,13 +78,13 @@ public class AdminClientProfileViewModel extends ViewModel {
 
         Log.d(TAG, exercises.get(5).getExerciseName());
 
-        this.workoutDay = workoutDay;
+//        this.workoutDay = workoutDay;
         this.workoutTitle = workoutTitle;
 
         Workout workout = new Workout(user.getClientName(), user.getEmail(), workoutTitle);
         workout.setExercises(exercises);
         workout.setWorkoutTitle(workoutTitle);
-        workout.setWorkoutDay(workoutDay);
+//        workout.setWorkoutDay(3);
 
         // TODO: if workoutTitle is null, set null
 

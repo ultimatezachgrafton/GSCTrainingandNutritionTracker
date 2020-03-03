@@ -48,8 +48,8 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void registerUser() {
-        int workoutDay = 1;
-        User user = new User(firstName, lastName, phoneNumber, email, password, workoutDay);
+//        int workoutDay = 1;
+        User user = new User(firstName, lastName, phoneNumber, email, password);//, workoutDay);
         repo.registerUser(user);
         newUser.setValue(user);
         onError.setValue(CLIENT_ADDED);

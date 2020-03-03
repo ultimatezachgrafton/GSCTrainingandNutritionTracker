@@ -150,11 +150,11 @@ public class FirestoreRepository {
                 .build();
     }
 
-    public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, int num) {
-        Query exerciseQuery = userColRef.document(user.getEmail()).collection("exercises")
-                .whereEqualTo("workoutDay", num);
-        return new FirestoreRecyclerOptions.Builder<Exercise>()
-                .setQuery(exerciseQuery, Exercise.class)
+    public FirestoreRecyclerOptions<Workout> getExercisesFromRepo(User user, Workout workout) {
+        Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts")
+                .whereEqualTo("workoutTitle", workout.getWorkoutTitle());
+        return new FirestoreRecyclerOptions.Builder<Workout>()
+                .setQuery(workoutQuery, Workout.class)
                 .build();
     }
 
@@ -204,6 +204,42 @@ public class FirestoreRepository {
         db.collection("users").document(user.getEmail()).collection("workouts")
                 .document(workout.getWorkoutTitle())
                 .set(workout)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("reports", "DocumentSnapshot added with ID: ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("reports", "Error writing document", e);
+                    }
+                });
+    }
+
+    public void updateWorkout(User user, Workout workout) {
+        db.collection("users").document(user.getEmail()).collection("workouts")
+                .document(workout.getWorkoutTitle())
+                .set(workout)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("reports", "DocumentSnapshot added with ID: ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("reports", "Error writing document", e);
+                    }
+                });
+    }
+
+    public void deleteWorkout(User user, Workout workout) {
+        db.collection("users").document(user.getEmail()).collection("workouts")
+                .document(workout.getWorkoutTitle())
+                .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

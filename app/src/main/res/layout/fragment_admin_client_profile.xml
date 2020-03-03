@@ -55,8 +55,8 @@
             name="workoutTitle"
             type="String"/>
         <variable
-            name="workoutDay"
-            type="String"/>
+            name="w"
+            type="int"/>
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:text="write workouts"
             android:layout_below="@id/bCamera"
-            android:onClick="@{()->fragment.getEtValues(workoutTitle, workoutDay, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, ll)}"/>
+            android:onClick="@{()->fragment.getEtValues(workoutTitle, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, ll)}"/>
 
         <Button
             android:id="@+id/bToDatePicker"
@@ -167,7 +167,7 @@
             android:singleLine="true"
             android:hint="@string/enterDay"
             android:textColorHint="@android:color/white"
-            android:text="@={workoutDay}"/>
+            android:inputType="numberSigned"/>
 
         <TextView
             android:textColor="@android:color/white"

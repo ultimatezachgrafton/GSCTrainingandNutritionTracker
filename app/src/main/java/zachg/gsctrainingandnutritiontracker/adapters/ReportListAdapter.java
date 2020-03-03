@@ -70,7 +70,7 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
     @Override
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position, Report report) {
         holder.tvWorkoutTitle.setText(report.getWorkoutTitle());
-        holder.tvWorkoutDay.setText(report.getWorkoutDay());
+        //holder.tvWorkoutDay.setText(report.getWorkoutDay());
         holder.tvDateString.setText(report.getDateString());
         holder.tvClientName.setText(report.getClientName());
     }

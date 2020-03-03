@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +29,12 @@ public class WorkoutListFragment extends Fragment {
     private WorkoutListViewModel workoutListViewModel;
     private WorkoutListAdapter workoutListAdapter;
 
-    private User user = new User();
+    private String TAG = "WorkoutListFragment";
+
     private User client = new User();
+    private Workout workout = new Workout();
 
     public WorkoutListFragment(User user, User client) {
-        this.user = user;
         this.client = client;
     }
 
@@ -42,21 +44,20 @@ public class WorkoutListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentWorkoutListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
-        binding.setUser(user);
-        binding.setClient(client);
+        binding.setWorkout(workout);
 
         // Gets ViewModel instance to observe  LiveData
         binding.setModel(workoutListViewModel);
         workoutListViewModel = ViewModelProviders.of(getActivity()).get(WorkoutListViewModel.class);
-        workoutListViewModel.init(user);
+        workoutListViewModel.init(client);
         workoutListViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<Workout> workouts) {
+                Log.d(TAG, "workouts changed");
                 initRecyclerView(workouts);
                 workoutListAdapter.startListening();
             }
@@ -78,6 +79,8 @@ public class WorkoutListFragment extends Fragment {
     private void initRecyclerView(FirestoreRecyclerOptions<Workout> workouts) {
         workoutListAdapter = new WorkoutListAdapter(workouts);
         binding.rvWorkout.setAdapter(workoutListAdapter);
+
+        Log.d(TAG, "initRecyclerView");
 
         binding.rvWorkout.setHasFixedSize(true);
         binding.rvWorkout.setLayoutManager(new LinearLayoutManager(getContext()));

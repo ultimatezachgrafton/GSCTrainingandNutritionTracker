@@ -46,7 +46,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public String dateString;
     public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
     public String workoutTitle;
-    public int workoutDay;
+//    public int workoutDay;
 
     public ReportViewModel() {}
 
@@ -59,8 +59,8 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         repo.setSnapshotOnCompleteListener(this);
 //        Log.d(TAG, "workoutday: " + workoutDay);
 //        Log.d(TAG, "user workoutday: " + currentUser.getWorkoutDay());
-        repo.getExercisesForIteration(currentUser, workoutDay);
-        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
+//        repo.getExercisesForIteration(currentUser, workoutDay);
+//        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {

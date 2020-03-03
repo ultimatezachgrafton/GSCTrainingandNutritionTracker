@@ -7,7 +7,8 @@ import androidx.databinding.library.baseAdapters.BR;
 public class Exercise extends BaseObservable {
 
     private String email;
-    private String exerciseName, exerciseNum, reps, exerciseWeight, day;
+    private String exerciseName, exerciseNum, reps, exerciseWeight;
+    private int day;
     private int selectedItemPosition;
 
     public Exercise(String exerciseName, String reps) {
@@ -15,7 +16,7 @@ public class Exercise extends BaseObservable {
         this.reps = reps;
     }
 
-    public Exercise(String exerciseName, String exerciseNum, String reps, String exerciseWeight, String day){
+    public Exercise(String exerciseName, String exerciseNum, String reps, String exerciseWeight, int day){
         this.exerciseName = exerciseName;
         this.exerciseNum = exerciseNum;
         this.reps = reps;
@@ -50,9 +51,9 @@ public class Exercise extends BaseObservable {
         this.exerciseWeight = exerciseWeight;
     }
 
-    public String getDay() { return day; }
-
-    public void setDay(String day) { this.day = day; }
+//    public int getDay() { return day; }
+//
+//    public void setDay(int day) { this.day = day; }
 
     public String getExerciseNum() { return exerciseNum; }
 

@@ -14,11 +14,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 
 public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, WorkoutListAdapter.WorkoutViewHolder> {
     private OnItemClickListener listener;
-    private Workout workoutList = new Workout();
+    private User user = new User();
+    private Workout workout = new Workout();
     public String TAG = "WorkoutListAdapter";
 
     // Listens for a Firestore query
@@ -29,20 +31,19 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
     @NonNull
     @Override
     public WorkoutViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_exercise_item, parent, false);
+        Log.d(TAG, "onCreateVH");
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvworkout_item, parent, false);
 
         return new WorkoutViewHolder(v);
     }
 
-    // UserViewHolder is the class that defines the views that hold the User data
+    // WorkoutViewHolder is the class that defines the views that hold the User data
     class WorkoutViewHolder extends RecyclerView.ViewHolder {
         TextView tvWorkoutTitle;
-        TextView tvWorkoutDay;
 
         public WorkoutViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvWorkoutTitle = itemView.findViewById(R.id.tvWorkoutTitle);
-            tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
+            tvWorkoutTitle = itemView.findViewById(R.id.tvItemWorkoutTitle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,7 +69,6 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
     public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
         Log.d(TAG, "onBindVH");
         holder.tvWorkoutTitle.setText(workout.getWorkoutTitle());
-        holder.tvWorkoutDay.setText(workout.getWorkoutDay());
     }
 
 }
