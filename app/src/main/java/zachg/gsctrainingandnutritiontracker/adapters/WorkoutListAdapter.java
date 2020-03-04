@@ -40,10 +40,12 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
     // WorkoutViewHolder is the class that defines the views that hold the User data
     class WorkoutViewHolder extends RecyclerView.ViewHolder {
         TextView tvWorkoutTitle;
+        TextView tvWorkoutDay;
 
         public WorkoutViewHolder(@NonNull View itemView) {
             super(itemView);
             tvWorkoutTitle = itemView.findViewById(R.id.tvItemWorkoutTitle);
+            tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,6 +71,7 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
     public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position, Workout workout) {
         Log.d(TAG, "onBindVH");
         holder.tvWorkoutTitle.setText(workout.getWorkoutTitle());
+//        holder.tvWorkoutDay.setText(workout.getWorkoutDay());
     }
 
 }

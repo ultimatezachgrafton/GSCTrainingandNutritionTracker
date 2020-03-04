@@ -46,6 +46,9 @@
             name="generatedExerciseReps"
             type="String"/>
         <variable
+            name="generatedExerciseWeight"
+            type="String"/>
+        <variable
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.fragments.AdminClientProfileFragment"/>
         <variable
@@ -308,12 +311,13 @@
 
         <LinearLayout
             android:id="@+id/addEts"
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:background="#525252"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#525252"
             android:layout_below="@id/bToDatePicker">
 
-    </LinearLayout>
+        </LinearLayout>
 
             <Button
                 android:id="@+id/bAddExerciser"

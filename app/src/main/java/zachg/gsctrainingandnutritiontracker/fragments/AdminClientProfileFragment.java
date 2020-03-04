@@ -54,9 +54,10 @@ public class AdminClientProfileFragment extends Fragment {
     private String workoutTitle, exerciseName, exerciseReps;
     private int w = 0;
     private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
-            exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps;
+            exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps, generatedExerciseWeight;
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
+    private ArrayList<EditText> exerciseWeightEditTextArray = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private Exercise exercise2 = new Exercise();
     private Exercise exercise3 = new Exercise();
@@ -64,6 +65,7 @@ public class AdminClientProfileFragment extends Fragment {
     private Exercise exercise5 = new Exercise();
     private int totalExerciseNameEditTexts = 5;
     private int totalExerciseRepsEditTexts = 5;
+    private int totalExerciseWeightEditTexts = 5;
     private static final int REQUEST_PHOTO = 2;
 
     private ImageView profilePhoto;
@@ -90,7 +92,6 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setClient(currentClient);
 
         binding.setWorkoutTitle(workoutTitle);
-        binding.setW(w);
 
         binding.setGeneratedExerciseName(generatedExerciseName);
         binding.setGeneratedExerciseReps(generatedExerciseReps);
@@ -145,13 +146,6 @@ public class AdminClientProfileFragment extends Fragment {
                 workoutTitle = str;
             }
         });
-
-//        adminClientProfileViewModel.workoutDayLiveData.observe(this, new Observer<Integer>() {
-//            @Override
-//            public void onChanged(Integer i) {
-//                workoutDay = 3;
-//            }
-//        });
 
         adminClientProfileViewModel.newExerciseName.observe(this, new Observer<String>() {
             @Override
@@ -268,9 +262,11 @@ public class AdminClientProfileFragment extends Fragment {
         // add EditTexts
         EditText et = new EditText(getContext());
         EditText et2 = new EditText(getContext());
+        EditText et3 = new EditText(getContext());
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         et.setLayoutParams(p);
         et2.setLayoutParams(p);
+        et3.setLayoutParams(p);
 
         et.setHintTextColor(Color.WHITE);
         et2.setHintTextColor(Color.WHITE);
@@ -278,6 +274,10 @@ public class AdminClientProfileFragment extends Fragment {
         et2.setHint("Enter reps");
         et.setId(totalExerciseNameEditTexts + 1);
         et2.setId(totalExerciseRepsEditTexts + 1);
+
+        et3.setTextColor(Color.WHITE);
+        et3.setHint("Enter weight");
+        et3.setId(totalExerciseWeightEditTexts + 1);
 
         // generate and style TextView
         TextView tv = new TextView(getContext());
@@ -291,26 +291,30 @@ public class AdminClientProfileFragment extends Fragment {
         ll.addView(tv);
         ll.addView(et);
         ll.addView(et2);
+        ll.addView(et3);
 
         exerciseNameEditTextArray.add(totalExerciseNameEditTexts, et);
         exerciseRepsEditTextArray.add(totalExerciseRepsEditTexts, et2);
+        exerciseWeightEditTextArray.add(totalExerciseWeightEditTexts, et3);
 
         totalExerciseNameEditTexts++;
         totalExerciseRepsEditTexts++;
     }
 
+    //takes an array
 public void getEtValues(String workoutTitle, int w, User currentClient, String exerciseName, String exerciseName2,
                         String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
                         String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5, LinearLayout ll) {
 
         ArrayList<Exercise> exArray = new ArrayList<Exercise>();
-
+// add weight
         Exercise exercise = new Exercise(exerciseName, exerciseReps);
         Exercise exercise2 = new Exercise(exerciseName2, exerciseReps2);
         Exercise exercise3 = new Exercise(exerciseName3, exerciseReps3);
         Exercise exercise4 = new Exercise(exerciseName4, exerciseReps4);
         Exercise exercise5 = new Exercise(exerciseName5, exerciseReps5);
 
+    // use loop
         exArray.add(0, exercise);
         exArray.add(1, exercise2);
         exArray.add(2, exercise3);
@@ -321,7 +325,8 @@ public void getEtValues(String workoutTitle, int w, User currentClient, String e
         for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
             String exName = exerciseNameEditTextArray.get(i).getText().toString();
             String exReps = exerciseRepsEditTextArray.get(i).getText().toString();
-            Exercise generatedExercise = new Exercise(exName, exReps);
+            String exWeight = exerciseWeightEditTextArray.get(i).getText().toString();
+            Exercise generatedExercise = new Exercise(exName, exReps, exWeight);
             exArray.add(generatedExercise);
         }
 

@@ -85,7 +85,7 @@ public class ReportFragment extends Fragment {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Exercise> exercises) {
                 initRecyclerView(exercises);
-                exerciseListAdapter.startListening();
+                //exerciseListAdapter.startListening();
             }
         });
 
@@ -103,7 +103,7 @@ public class ReportFragment extends Fragment {
     }
 
     private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
-        exerciseListAdapter = new ExerciseListAdapter(exercises);
+        //exerciseListAdapter = new ExerciseListAdapter(exercises);
         binding.rvExercise.setAdapter(exerciseListAdapter);
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }

@@ -88,10 +88,10 @@ public class WorkoutListFragment extends Fragment {
         workoutListAdapter.setOnItemClickListener(new WorkoutListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Workout workout = workoutListViewModel.onItemClicked(documentSnapshot, position);
+                workout = workoutListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment_report_list
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new WorkoutFragment(workout)).addToBackStack(null).commit();
+                        new WorkoutFragment(client, workout)).addToBackStack(null).commit();
             }
         });
     }

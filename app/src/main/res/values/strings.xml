@@ -73,5 +73,7 @@
     <string name="exercise4">Exercise 4:</string>
     <string name="exercise5">Exercise 5:</string>
     <string name="toWorkoutList">To Workout List</string>
+    <string name="delete_workout">Delete Workout</string>
+    <string name="update_workout">Update Workout</string>
 
 </resources>

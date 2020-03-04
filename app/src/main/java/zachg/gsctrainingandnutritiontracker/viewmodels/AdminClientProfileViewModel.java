@@ -67,8 +67,7 @@ public class AdminClientProfileViewModel extends ViewModel {
 
     public AdminClientProfileViewModel() {}
 
-    public void init() {
-    }
+    public void init() {}
 
     public void writeToWorkouts(User user, ArrayList<Exercise> exArray, int w, String workoutTitle) {
 

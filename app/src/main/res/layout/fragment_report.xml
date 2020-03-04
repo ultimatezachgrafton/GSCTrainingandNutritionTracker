@@ -79,7 +79,6 @@
         android:layout_toEndOf="@id/separator1"
         android:layout_alignBaseline="@id/separator1"/>
 
-
     <TextView
         android:id="@+id/separator2"
         style="?android:listSeparatorTextViewStyle"
