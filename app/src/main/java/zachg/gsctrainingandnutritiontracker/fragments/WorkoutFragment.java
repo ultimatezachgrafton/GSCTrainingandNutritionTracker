@@ -149,7 +149,7 @@ public class WorkoutFragment extends Fragment {
 
         ArrayList<Exercise> exArray = new ArrayList<Exercise>();
 
-        String workoutTitle = workoutTitleEditText.toString;
+//        String workoutTitle = workoutTitleEditText.toString;
 
         // set exerciseName and exerciseReps
         for (int i=0; i < exerciseNameEditTextArray.size(); i++) {

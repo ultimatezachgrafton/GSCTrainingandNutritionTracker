@@ -54,7 +54,8 @@ public class AdminClientProfileFragment extends Fragment {
     private String workoutTitle, exerciseName, exerciseReps;
     private int w = 0;
     private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
-            exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps, generatedExerciseWeight;
+            exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps,
+            generatedExerciseWeight;
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseWeightEditTextArray = new ArrayList<>();
@@ -304,15 +305,17 @@ public class AdminClientProfileFragment extends Fragment {
     //takes an array
 public void getEtValues(String workoutTitle, int w, User currentClient, String exerciseName, String exerciseName2,
                         String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
-                        String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5, LinearLayout ll) {
+                        String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5,
+                        String exerciseWeight, String exerciseWeight2, String exerciseWeight3, String exerciseWeight4,
+                        String exerciseWeight5, LinearLayout ll) {
 
         ArrayList<Exercise> exArray = new ArrayList<Exercise>();
-// add weight
-        Exercise exercise = new Exercise(exerciseName, exerciseReps);
-        Exercise exercise2 = new Exercise(exerciseName2, exerciseReps2);
-        Exercise exercise3 = new Exercise(exerciseName3, exerciseReps3);
-        Exercise exercise4 = new Exercise(exerciseName4, exerciseReps4);
-        Exercise exercise5 = new Exercise(exerciseName5, exerciseReps5);
+
+        Exercise exercise = new Exercise(exerciseName, exerciseReps, exerciseWeight);
+        Exercise exercise2 = new Exercise(exerciseName2, exerciseReps2, exerciseWeight2);
+        Exercise exercise3 = new Exercise(exerciseName3, exerciseReps3, exerciseWeight3);
+        Exercise exercise4 = new Exercise(exerciseName4, exerciseReps4, exerciseWeight4);
+        Exercise exercise5 = new Exercise(exerciseName5, exerciseReps5, exerciseWeight5);
 
     // use loop
         exArray.add(0, exercise);

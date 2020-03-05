@@ -75,5 +75,6 @@
     <string name="toWorkoutList">To Workout List</string>
     <string name="delete_workout">Delete Workout</string>
     <string name="update_workout">Update Workout</string>
+    <string name="exercise_weight">Enter Weight</string>
 
 </resources>

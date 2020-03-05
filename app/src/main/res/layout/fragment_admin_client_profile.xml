@@ -40,6 +40,21 @@
             name="exerciseReps5"
             type="String"/>
         <variable
+            name="exerciseWeight"
+            type="String"/>
+        <variable
+            name="exerciseWeight2"
+            type="String"/>
+        <variable
+            name="exerciseWeight3"
+            type="String"/>
+        <variable
+            name="exerciseWeight4"
+            type="String"/>
+        <variable
+            name="exerciseWeight5"
+            type="String"/>
+        <variable
             name="generatedExerciseName"
             type="String"/>
         <variable
@@ -110,7 +125,7 @@
             android:layout_height="wrap_content"
             android:text="write workouts"
             android:layout_below="@id/bCamera"
-            android:onClick="@{()->fragment.getEtValues(workoutTitle, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, ll)}"/>
+            android:onClick="@{()->fragment.getEtValues(workoutTitle, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, exerciseWeight, exerciseWeight2,exerciseWeight3,exerciseWeight4,exerciseWeight5, ll)}"/>
 
         <Button
             android:id="@+id/bToDatePicker"
@@ -186,7 +201,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter name"
-            android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseName}"/>
@@ -198,6 +212,15 @@
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps}"/>
+
+        <EditText
+            android:id="@+id/etExerciseWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/exercise_weight"
+            android:singleLine="true"
+            android:textColorHint="@android:color/white"
+            android:text="@={exerciseWeight}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -227,6 +250,15 @@
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps2}"/>
 
+        <EditText
+            android:id="@+id/etExerciseWeight2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/exercise_weight"
+            android:singleLine="true"
+            android:textColorHint="@android:color/white"
+            android:text="@={exerciseWeight2}"/>
+
         <TextView
             android:textColor="@android:color/white"
             android:id="@+id/tvExerciseNum3"
@@ -253,6 +285,15 @@
             android:textColorHint="@android:color/white"
             android:hint="enter reps"
             android:text="@={exerciseReps3}"/>
+
+        <EditText
+            android:id="@+id/etExerciseWeight3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/exercise_weight"
+            android:singleLine="true"
+            android:textColorHint="@android:color/white"
+            android:text="@={exerciseWeight3}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -281,6 +322,15 @@
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps4}"/>
 
+        <EditText
+            android:id="@+id/etExerciseWeight4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/exercise_weight"
+            android:singleLine="true"
+            android:textColorHint="@android:color/white"
+            android:text="@={exerciseWeight4}"/>
+
         <TextView
             android:textColor="@android:color/white"
             android:id="@+id/tvExerciseNum5"
@@ -307,6 +357,15 @@
             android:hint="enter reps"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps5}"/>
+
+        <EditText
+            android:id="@+id/etExerciseWeight5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/exercise_weight"
+            android:singleLine="true"
+            android:textColorHint="@android:color/white"
+            android:text="@={exerciseWeight5}"/>
     </LinearLayout>
 
         <LinearLayout
