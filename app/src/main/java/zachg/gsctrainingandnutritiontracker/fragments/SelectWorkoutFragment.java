@@ -17,24 +17,29 @@ import androidx.lifecycle.Observer;
 import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.generated.callback.OnClickListener;
+import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.viewmodels.SelectWorkoutViewModel;
 
 import static android.media.CamcorderProfile.get;
 
-public class SelectWorkoutFragment extends Fragment {
+public class SelectWorkoutFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "MyCustomDialog";
 
-    public interface OnInputListener{
-        void sendInput(String input);
+    @Override
+    public void onClick(View v) {
+
     }
 
     private SelectWorkoutViewModel selectWorkoutViewModel = new SelectWorkoutViewModel();
 
     private Workout workout = new Workout();
     private User user = new User();
+    private Report report = new Report();
     private ArrayList<Workout> workouts = new ArrayList<>();
     private ArrayList<TextView> workoutTextViewArray = new ArrayList<>();
     private int totalWorkouts = 0;
@@ -43,8 +48,9 @@ public class SelectWorkoutFragment extends Fragment {
 
     private int totalTvs = 0;
 
-    public SelectWorkoutFragment(User user) {
+    public SelectWorkoutFragment(User user, Report report) {
         this.user = user;
+        this.report = report;
         Log.d(TAG, String.valueOf(user.getEmail()));
     }
 
@@ -56,20 +62,17 @@ public class SelectWorkoutFragment extends Fragment {
 
         selectWorkoutViewModel.init(user);
 
-        LinearLayout ll = new LinearLayout(getContext());
-        ll = view.findViewById(R.id.generateTvs);
+        LinearLayout ll = view.findViewById(R.id.generateTvs);
+        LinearLayout finalLl = ll;
 
-        selectWorkoutViewModel.getWorkouts().observe(this, new Observer<Workout>() {
+        selectWorkoutViewModel.getWorkouts().observe(this, new Observer<ArrayList<Workout>>() {
             @Override
-            public void onChanged(Workout workout) {
-                workouts.add(workout);
-                totalTvs++;
+            public void onChanged(ArrayList<Workout> workouts) {
+                while (workouts.size() > totalTvs) {
+                    addLine(finalLl, workouts.get(totalTvs));
+                }
             }
         });
-
-        while (workouts.size() < totalTvs) {
-            addLine(ll, workout);
-        }
 
         return view;
     }
@@ -78,11 +81,20 @@ public class SelectWorkoutFragment extends Fragment {
         TextView tv = new TextView(getContext());
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         tv.setLayoutParams(p);
-        tv.setTextColor(Color.WHITE);
-        tv.setText(workouts.get(totalTvs).getWorkoutTitle());
+        tv.setTextColor(Color.BLACK);
+        tv.setText(workout.getWorkoutTitle());
         tv.setId(totalTvs + 1);
         tv.setTypeface(null, Typeface.BOLD);
         tv.setTextSize(18);
+
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Workout selectedWorkout = workout;
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new ReportFragment(report, user, selectedWorkout)).addToBackStack(null).commit();
+            }
+        });
 
         // Add to the View
         ll.addView(tv);
@@ -91,6 +103,6 @@ public class SelectWorkoutFragment extends Fragment {
 
         workoutTextViewArray.add(totalTvs, tv);
         totalTvs++;
-        Log.d(TAG, "addLine3" + totalTvs);
+        Log.d(TAG, "addLine " + totalTvs);
     }
 }

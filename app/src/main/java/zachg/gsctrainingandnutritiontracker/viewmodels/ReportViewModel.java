@@ -51,11 +51,16 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
 
     public ReportViewModel() {}
 
-    public void init(User user, Report report) {
+    public void init(User user, Report report, Workout workout) {
         repo = FirestoreRepository.getInstance();
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
+        if (workout != null) {
+            workoutLiveData.setValue(workout);
+        } else {
+            getWorkoutsFromRepo(user);
+        }
 //        workoutDay = currentUser.getWorkoutDay();
     }
 

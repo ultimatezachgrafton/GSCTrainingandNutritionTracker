@@ -24,25 +24,15 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
-    public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<Workout>> workoutLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
-
-    public ObservableField<String> dailyWeight = new ObservableField<>();
-    public ObservableField<String> comments = new ObservableField<>();
-    public ObservableField<String> exerciseWeight = new ObservableField<>();
 
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
     public ArrayList<Workout> workoutArrayList = new ArrayList<>();
-    public ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
     public User currentUser = new User();
-    public String TAG = "ReportViewModel";
-    public String dateString;
-    public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
-    public String workoutTitle;
-//    public int workoutDay;
+    public String TAG = "WorkoutViewModel";
 
     public SelectWorkoutViewModel() {}
 
@@ -51,10 +41,10 @@ public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListe
         this.currentUser = user;
         repo.setSnapshotOnCompleteListener(this);
         repo.getWorkoutsForReport(currentUser);
-        Log.d(TAG, "Getting workouts from repo");
     }
 
-    public MutableLiveData<Workout> getWorkouts() {
+    public MutableLiveData<ArrayList<Workout>> getWorkouts() {
+//        Log.d(TAG, "get workouts" + workoutArrayList.get(0).getWorkoutTitle());
         return workoutLiveData;
     }
 
@@ -72,9 +62,11 @@ public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListe
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 for (int i = 0; i <  task.getResult().size(); i++) {
                     Workout workout = doc.toObject(Workout.class);
-                    workoutLiveData.setValue(workout);
-                    Log.d(TAG, "workouts get");
+                    workoutArrayList.add(workout);
+                    Log.d(TAG, "adding workout" + workoutArrayList.get(i).getWorkoutTitle());
                 }
+                Log.d(TAG, workoutArrayList.get(0).getWorkoutTitle());
+                workoutLiveData.setValue(workoutArrayList);
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());

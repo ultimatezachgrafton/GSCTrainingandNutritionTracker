@@ -61,6 +61,7 @@ public class ReportFragment extends Fragment {
     private String clientName, dateString;
     private TextView tvClientName, tvDate;
     private ArrayList<Workout> workouts = new ArrayList<>();
+    private Workout workout = new Workout();
 
     private int totalWorkouts = 0;
 
@@ -91,6 +92,14 @@ public class ReportFragment extends Fragment {
         this.dateString = report.getDateString();
     }
 
+    public ReportFragment(Report report, User user, Workout workout) {
+        this.currentReport = report;
+        this.workout = workout;
+        this.currentUser = user;
+        report.setClientName(user.getClientName());
+        this.dateString = report.getDateString();
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -110,7 +119,7 @@ public class ReportFragment extends Fragment {
 
         binding.setModel(reportViewModel);
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(currentUser, currentReport);
+        reportViewModel.init(currentUser, currentReport, workout);
 
         reportViewModel.getWorkouts().observe(this, new Observer<Workout>() {
             @Override
@@ -192,13 +201,13 @@ public class ReportFragment extends Fragment {
                 return true;
             // TODO: ask ben and logged out are strings in res
             case R.id.bSelectWorkout:
-                reportViewModel.getWorkoutsFromRepo(currentUser);
+                goToSelectWorkout(currentUser);
         } return true;
     }
 
     public void goToSelectWorkout(User user) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new SelectWorkoutFragment(user)).addToBackStack(null).commit();
+                new SelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
     }
 
 }
