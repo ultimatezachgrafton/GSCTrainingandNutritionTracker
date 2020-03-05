@@ -150,6 +150,11 @@ public class FirestoreRepository {
                 .build();
     }
 
+    public void getWorkoutsForReport(User user) {
+        Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts");
+        workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+    }
+
     public FirestoreRecyclerOptions<Workout> getExercisesFromRepo(User user, Workout workout) {
         Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts")
                 .whereEqualTo("workoutTitle", workout.getWorkoutTitle());

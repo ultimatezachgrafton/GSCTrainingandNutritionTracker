@@ -3,6 +3,7 @@ package zachg.gsctrainingandnutritiontracker.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,6 +65,13 @@ public class ClientPortalFragment extends Fragment {
             }
         });
 
+        clientProfileViewModel.noReport.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer i) {
+                    goToViewReport();
+            }
+        });
+
         // listener explicitly called to address issue that as of this writing android inversebinding
         // is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
@@ -80,8 +88,9 @@ public class ClientPortalFragment extends Fragment {
                 monthStr = String.valueOf(month);
             }
             String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
+            Log.d(TAG, dateString);
             currentReport.setDateString(dateString);
-            clientProfileViewModel.getReportByUser(currentUser);
+            goToNewReport();
         });
 
         return v;

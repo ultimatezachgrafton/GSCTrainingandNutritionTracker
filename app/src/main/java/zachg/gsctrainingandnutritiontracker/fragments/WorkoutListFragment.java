@@ -54,6 +54,7 @@ public class WorkoutListFragment extends Fragment {
         binding.setModel(workoutListViewModel);
         workoutListViewModel = ViewModelProviders.of(getActivity()).get(WorkoutListViewModel.class);
         workoutListViewModel.init(client);
+
         workoutListViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<Workout> workouts) {

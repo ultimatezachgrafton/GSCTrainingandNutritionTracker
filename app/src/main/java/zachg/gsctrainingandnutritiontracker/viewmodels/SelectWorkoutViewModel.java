@@ -1,8 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -12,7 +10,6 @@ import androidx.lifecycle.ViewModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -24,9 +21,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
-public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
@@ -49,17 +44,11 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public String workoutTitle;
 //    public int workoutDay;
 
-    public ReportViewModel() {}
+    public SelectWorkoutViewModel() {}
 
-    public void init(User user, Report report) {
+    public void init(User user) {
         repo = FirestoreRepository.getInstance();
         this.currentUser = user;
-        this.report = report;
-        this.dateString = report.getDateString();
-//        workoutDay = currentUser.getWorkoutDay();
-    }
-
-    public void getWorkoutsFromRepo(User currentUser) {
         repo.setSnapshotOnCompleteListener(this);
         repo.getWorkoutsForReport(currentUser);
         Log.d(TAG, "Getting workouts from repo");
@@ -67,28 +56,6 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
 
     public MutableLiveData<Workout> getWorkouts() {
         return workoutLiveData;
-    }
-
-    public void getExerciseListInfo() {
-        // iterate thru exercises, copy name, weight, reps, write them to reports
-        for (int i = 0; i < exerciseArrayList.size(); i++) {
-            // set these into a single String and add it to fullreport;
-            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseName());
-            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseWeight());
-            exerciseStringBuilder.append(exerciseArrayList.get(i).getReps());
-        }
-        report.setExerciseString(String.valueOf(exerciseStringBuilder));
-    }
-
-    // TODO: not working
-    // Writes report to the Repository
-    public void writeReport(User currentUser, Report report) {
-            Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
-                    dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString(),
-                    report.getWorkoutTitle(), report.getExerciseString());
-            repo.writeReportToRepo(generatedReport);
-
-           // iterateWorkoutNum(currentUser);
     }
 
 //    public void iterateWorkoutNum(User user) {

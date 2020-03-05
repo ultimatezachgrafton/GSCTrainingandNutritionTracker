@@ -23,6 +23,9 @@
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
+        <variable
+            name="linearLayout"
+            type="android.widget.LinearLayout" />
     </data>
 
 <RelativeLayout
@@ -87,14 +90,12 @@
         android:text="Today's workout: "
         android:layout_below="@id/etWeight"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExercise"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/separator2"
-        android:background="@android:color/darker_gray"
-        tools:listitem="@layout/rv_exercise_item"
-        android:layout_weight="1"/>
+        android:id="@+id/generateExercises"
+        android:layout_below="@id/separator2"/>
 
     <EditText
         android:id="@+id/etComments"
@@ -102,7 +103,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/comments"
         android:text="@={model.comments}"
-        android:layout_below="@id/rvExercise" />
+        android:layout_below="@id/generateExercises" />
 
     <Button
         android:id="@+id/bSendReport"

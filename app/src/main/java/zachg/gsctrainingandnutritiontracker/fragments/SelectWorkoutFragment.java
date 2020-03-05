@@ -1,6 +1,5 @@
 package zachg.gsctrainingandnutritiontracker.fragments;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -8,93 +7,71 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
+import zachg.gsctrainingandnutritiontracker.viewmodels.SelectWorkoutViewModel;
 
-public class SelectWorkoutDialogFragment extends DialogFragment {
+import static android.media.CamcorderProfile.get;
+
+public class SelectWorkoutFragment extends Fragment {
 
     private static final String TAG = "MyCustomDialog";
 
     public interface OnInputListener{
         void sendInput(String input);
     }
-    public OnInputListener mOnInputListener;
+
+    private SelectWorkoutViewModel selectWorkoutViewModel = new SelectWorkoutViewModel();
 
     private Workout workout = new Workout();
+    private User user = new User();
     private ArrayList<Workout> workouts = new ArrayList<>();
     private ArrayList<TextView> workoutTextViewArray = new ArrayList<>();
+    private int totalWorkouts = 0;
 
     private TextView actionCancel;
 
     private int totalTvs = 0;
 
-    public SelectWorkoutDialogFragment(ArrayList<Workout> workouts) {
-        this.workouts = workouts;
+    public SelectWorkoutFragment(User user) {
+        this.user = user;
+        Log.d(TAG, String.valueOf(user.getEmail()));
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_fragment_select_workout, container, false);
+        View view = inflater.inflate(R.layout.fragment_select_workout, container, false);
         actionCancel = view.findViewById(R.id.action_cancel);
+
+        selectWorkoutViewModel.init(user);
 
         LinearLayout ll = new LinearLayout(getContext());
         ll = view.findViewById(R.id.generateTvs);
 
-        // generate TextViews
-        while (totalTvs < workouts.size() ) {
-            addLine(ll, workouts.get(totalTvs));
-        }
-
-        actionCancel.setOnClickListener(new View.OnClickListener() {
+        selectWorkoutViewModel.getWorkouts().observe(this, new Observer<Workout>() {
             @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: closing dialog");
-                getDialog().dismiss();
+            public void onChanged(Workout workout) {
+                workouts.add(workout);
+                totalTvs++;
             }
         });
 
-//        mActionOk.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(TAG, "onClick: capturing input");
-
-//                String input = mInput.getText().toString();
-//                if(!input.equals("")){
-//
-//                    //Easiest way: just set the value
-//                    ((MainActivity)getActivity()).mInputDisplay.setText(input);
-//
-//                }
-                //"Best Practice" but it takes longer
-//                mOnInputListener.sendInput(input);
-
-//                getDialog().dismiss();
-//            }
-//        });
+        while (workouts.size() < totalTvs) {
+            addLine(ll, workout);
+        }
 
         return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try{
-            mOnInputListener = (OnInputListener) getActivity();
-        }catch (ClassCastException e){
-            Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage() );
-        }
     }
 
     public void addLine(LinearLayout ll, Workout workout) {
@@ -109,6 +86,8 @@ public class SelectWorkoutDialogFragment extends DialogFragment {
 
         // Add to the View
         ll.addView(tv);
+
+        // set onClick
 
         workoutTextViewArray.add(totalTvs, tv);
         totalTvs++;
