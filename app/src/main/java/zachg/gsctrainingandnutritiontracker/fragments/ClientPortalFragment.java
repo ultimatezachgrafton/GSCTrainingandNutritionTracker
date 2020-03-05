@@ -126,4 +126,5 @@ public class ClientPortalFragment extends Fragment {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(currentUser, currentReport.getDateString())).addToBackStack(null).commit();
     }
+
 }

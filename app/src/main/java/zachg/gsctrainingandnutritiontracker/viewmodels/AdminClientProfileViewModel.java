@@ -40,14 +40,22 @@ public class AdminClientProfileViewModel extends ViewModel {
     private ObservableField<String> etExerciseReps4 = new ObservableField<>();
     private ObservableField<String> etExerciseReps5 = new ObservableField<>();
 
+    private ObservableField<String> etExerciseWeight = new ObservableField<>();
+    private ObservableField<String> etExerciseWeight2 = new ObservableField<>();
+    private ObservableField<String> etExerciseWeight3 = new ObservableField<>();
+    private ObservableField<String> etExerciseWeight4 = new ObservableField<>();
+    private ObservableField<String> etExerciseWeight5 = new ObservableField<>();
+
     private ObservableField<String> etGeneratedExerciseName = new ObservableField<String>();
     private ObservableField<String> etGeneratedExerciseReps = new ObservableField<String>();
+    private ObservableField<String> etGeneratedExerciseWeight = new ObservableField<String>();
 
     private ObservableField<String> etWorkoutTitle = new ObservableField<>();
 //    private ObservableField<Integer> etWorkoutDay = new ObservableField<>();
 
     public MutableLiveData<String> generatedExerciseName = new MutableLiveData<String>();
     public MutableLiveData<String> generatedExerciseReps = new MutableLiveData<String>();
+    public MutableLiveData<String> generatedExerciseWeight = new MutableLiveData<String>();
 
     public MutableLiveData<String> newExerciseName = new MutableLiveData<>();
     public MutableLiveData<String> newExerciseName2 = new MutableLiveData<>();
@@ -60,6 +68,12 @@ public class AdminClientProfileViewModel extends ViewModel {
     public MutableLiveData<String> newExerciseReps3 = new MutableLiveData<>();
     public MutableLiveData<String> newExerciseReps4 = new MutableLiveData<>();
     public MutableLiveData<String> newExerciseReps5 = new MutableLiveData<>();
+
+    public MutableLiveData<String> newExerciseWeight = new MutableLiveData<>();
+    public MutableLiveData<String> newExerciseWeight2 = new MutableLiveData<>();
+    public MutableLiveData<String> newExerciseWeight3 = new MutableLiveData<>();
+    public MutableLiveData<String> newExerciseWeight4 = new MutableLiveData<>();
+    public MutableLiveData<String> newExerciseWeight5 = new MutableLiveData<>();
 
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
 //    public MutableLiveData<Integer> workoutDayLiveData = new MutableLiveData<>();

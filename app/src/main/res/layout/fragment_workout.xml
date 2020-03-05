@@ -32,10 +32,6 @@
             name="generatedExerciseWeight"
             type="String"/>
         <variable
-            name="workoutTitle"
-            type="String"/>
-
-        <variable
             name="exercises"
             type="java.util.ArrayList" />
         <variable

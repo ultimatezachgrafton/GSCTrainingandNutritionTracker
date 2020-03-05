@@ -54,6 +54,7 @@ public class WorkoutViewModel extends ViewModel {
         this.workoutTitle = workout.getWorkoutTitle();
     }
 
+    // Currently deletes all values
     // Writes report to the Repository
     public void updateWorkout(User client, Workout workout) {
         Workout updatedWorkout = new Workout(workout.getClientName(), client.getEmail(),

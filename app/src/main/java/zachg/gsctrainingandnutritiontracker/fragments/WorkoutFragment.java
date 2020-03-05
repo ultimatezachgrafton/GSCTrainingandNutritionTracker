@@ -79,7 +79,6 @@ public class WorkoutFragment extends Fragment {
         ll = v.findViewById(R.id.addEts);
         binding.setAddEts(ll);
 
-        binding.setWorkoutTitle(workoutTitle);
         binding.setGeneratedExerciseName(generatedExerciseName);
         binding.setGeneratedExerciseReps(generatedExerciseReps);
         binding.setGeneratedExerciseWeight(generatedExerciseWeight);
@@ -144,7 +143,9 @@ public class WorkoutFragment extends Fragment {
         Log.d(TAG, "addLine3" + totalExerciseNameEditTexts);
     }
 
-    //takes array
+
+    // should be in ViewModel
+    // takes array
     public void getEtValues(Workout workout, int w, User client, LinearLayout ll) {
 
         ArrayList<Exercise> exArray = new ArrayList<Exercise>();

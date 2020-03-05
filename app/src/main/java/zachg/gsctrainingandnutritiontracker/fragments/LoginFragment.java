@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment {
         // TODO: make toast into accurate progress bar
         Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
         // Check if login values are valid
-        loginViewModel.verifyUser("b@b.com", "benben");//email, password);
+        loginViewModel.verifyUser("p@p.com", "pppppp");//email, password);
     }
 
     public void onRegisterClick() {

@@ -36,20 +36,25 @@ public class Exercise extends BaseObservable {
 
     public void setExerciseName(String exerciseName) {
         this.exerciseName = exerciseName;
+        notifyPropertyChanged(BR.exerciseName);
     }
 
+    @Bindable
     public String getReps() { return reps; }
 
     public void setReps(String reps) {
         this.reps = reps;
+        notifyPropertyChanged(BR.exerciseReps);
     }
 
+    @Bindable
     public String getExerciseWeight() {
         return this.exerciseWeight;
     }
 
     public void setExerciseWeight(String exerciseWeight) {
         this.exerciseWeight = exerciseWeight;
+        notifyPropertyChanged(BR.exerciseWeight);
     }
 
 //    public int getDay() { return day; }

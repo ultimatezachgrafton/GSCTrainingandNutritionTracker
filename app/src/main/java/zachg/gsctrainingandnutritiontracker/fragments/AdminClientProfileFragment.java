@@ -54,7 +54,8 @@ public class AdminClientProfileFragment extends Fragment {
     private String workoutTitle, exerciseName, exerciseReps;
     private int w = 0;
     private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
-            exerciseReps4, exerciseName5, exerciseReps5, generatedExerciseName, generatedExerciseReps,
+            exerciseReps4, exerciseName5, exerciseReps5, exerciseWeight, exerciseWeight2, exerciseWeight3,
+            exerciseWeight4, exerciseWeight5, generatedExerciseName, generatedExerciseReps,
             generatedExerciseWeight;
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
@@ -96,6 +97,7 @@ public class AdminClientProfileFragment extends Fragment {
 
         binding.setGeneratedExerciseName(generatedExerciseName);
         binding.setGeneratedExerciseReps(generatedExerciseReps);
+        binding.setGeneratedExerciseWeight(generatedExerciseWeight);
 
         bCameraButton = v.findViewById(R.id.bCamera);
         photoFile = getPhotoFile(currentClient);
@@ -104,6 +106,7 @@ public class AdminClientProfileFragment extends Fragment {
         EditText et = new EditText(getContext());
         while(exerciseNameEditTextArray.size() < totalExerciseNameEditTexts) exerciseNameEditTextArray.add(0, et);
         while(exerciseRepsEditTextArray.size() < totalExerciseRepsEditTexts) exerciseRepsEditTextArray.add(0, et);
+        while(exerciseWeightEditTextArray.size() < totalExerciseWeightEditTexts) exerciseWeightEditTextArray.add(0, et);
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         bCameraButton.setOnClickListener( new View.OnClickListener() {
@@ -134,6 +137,12 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setExerciseReps4(exerciseReps4);
         binding.setExerciseReps5(exerciseReps5);
 
+        binding.setExerciseReps(exerciseWeight);
+        binding.setExerciseReps2(exerciseWeight2);
+        binding.setExerciseReps3(exerciseWeight3);
+        binding.setExerciseReps4(exerciseWeight4);
+        binding.setExerciseReps5(exerciseWeight5);
+
         Workout workout = new Workout(currentClient);
         binding.setWorkout(workout);
 
@@ -162,6 +171,13 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        adminClientProfileViewModel.newExerciseWeight.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseWeight = str;
+            }
+        });
+
         adminClientProfileViewModel.newExerciseName2.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String str) {
@@ -173,6 +189,13 @@ public class AdminClientProfileFragment extends Fragment {
             @Override
             public void onChanged(String str) {
                 exerciseReps2 = str;
+            }
+        });
+
+        adminClientProfileViewModel.newExerciseWeight2.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseWeight2 = str;
             }
         });
 
@@ -190,6 +213,13 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        adminClientProfileViewModel.newExerciseWeight3.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseWeight3 = str;
+            }
+        });
+
         adminClientProfileViewModel.newExerciseName4.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String str) {
@@ -201,6 +231,13 @@ public class AdminClientProfileFragment extends Fragment {
             @Override
             public void onChanged(String str) {
                 exerciseReps4 = str;
+            }
+        });
+
+        adminClientProfileViewModel.newExerciseWeight4.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseWeight4 = str;
             }
         });
 
@@ -218,6 +255,13 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        adminClientProfileViewModel.newExerciseWeight5.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                exerciseWeight5 = str;
+            }
+        });
+
         adminClientProfileViewModel.generatedExerciseName.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String str) {
@@ -229,6 +273,13 @@ public class AdminClientProfileFragment extends Fragment {
             @Override
             public void onChanged(String str) {
                 generatedExerciseReps = str;
+            }
+        });
+
+        adminClientProfileViewModel.generatedExerciseWeight.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                generatedExerciseWeight = str;
             }
         });
 

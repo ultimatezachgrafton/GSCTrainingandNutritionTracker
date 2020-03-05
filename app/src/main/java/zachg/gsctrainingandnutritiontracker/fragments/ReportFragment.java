@@ -9,10 +9,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -23,6 +26,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
@@ -32,9 +36,10 @@ import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
 
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment implements SelectWorkoutDialogFragment.OnInputListener {
 
     // For Users to fill out their workout as they complete it
 
@@ -48,6 +53,9 @@ public class ReportFragment extends Fragment {
     private ImageView photoView;
     private String clientName, dateString;
     private TextView tvClientName, tvDate;
+    private ArrayList<Workout> workouts;
+
+    private int totalWorkouts = 0;
 
     private Date date;
     private User currentUser = new User();
@@ -81,30 +89,45 @@ public class ReportFragment extends Fragment {
         reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
         reportViewModel.init(currentUser, currentReport);
 
-        reportViewModel.getExercises().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
+        reportViewModel.getWorkouts().observe(this, new Observer<Workout>() {
             @Override
-            public void onChanged(FirestoreRecyclerOptions<Exercise> exercises) {
-                initRecyclerView(exercises);
-                //exerciseListAdapter.startListening();
+            public void onChanged(Workout workout) {
+                workouts.add(totalWorkouts, workout);
+                totalWorkouts++;
             }
-        });
-
-        reportViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (!aBoolean) {
-                    binding.rvExercise.smoothScrollToPosition(reportViewModel.getExercises().getValue().getSnapshots().size() - 1);
-                }
-            }
-
         });
 
         return v;
     }
 
-    private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
-        //exerciseListAdapter = new ExerciseListAdapter(exercises);
-        binding.rvExercise.setAdapter(exerciseListAdapter);
-        binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.user_menu, menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bInbox:
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setData(Uri.parse("sms:"));
+                startActivity(sendIntent);
+                return true;
+            case R.id.bLogout:
+                auth.signOut();
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new LoginFragment()).addToBackStack(null).commit();
+                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+                return true;
+            // TODO: ask ben and logged out are strings in res
+            case R.id.bSelectWorkout:
+                SelectWorkoutDialogFragment dialog = new SelectWorkoutDialogFragment(workouts);
+                dialog.show(getFragmentManager(), "SelectWorkoutDialogFragment");
+        } return true;
+    }
+
+    @Override
+    public void sendInput(String input) {
+
     }
 }

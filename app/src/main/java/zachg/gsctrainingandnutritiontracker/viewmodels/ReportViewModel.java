@@ -40,6 +40,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
+    public ArrayList<Workout> workoutArrayList = new ArrayList<>();
     public ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
@@ -57,14 +58,11 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
         this.dateString = report.getDateString();
 //        workoutDay = currentUser.getWorkoutDay();
         repo.setSnapshotOnCompleteListener(this);
-//        Log.d(TAG, "workoutday: " + workoutDay);
-//        Log.d(TAG, "user workoutday: " + currentUser.getWorkoutDay());
-//        repo.getExercisesForIteration(currentUser, workoutDay);
-//        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, workoutDay));
+        repo.getWorkoutsFromRepo(currentUser);
     }
 
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
-        return exerciseLiveData;
+    public MutableLiveData<Workout> getWorkouts() {
+        return workoutLiveData;
     }
 
     public void getExerciseListInfo() {
@@ -106,11 +104,9 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
             Log.d(TAG, "size: " + String.valueOf(task.getResult().size()));
             for (QueryDocumentSnapshot doc : task.getResult()) {
                 for (int i = 0; i <  task.getResult().size(); i++) {
-                    Exercise exercise = doc.toObject(Exercise.class);
-                    exerciseArrayList.add(i, exercise);
-                    Log.d(TAG, "exercise " + i + " : " + exercise.getExerciseName());
+                    Workout workout = doc.toObject(Workout.class);
+                    workoutLiveData.setValue(workout);
                 }
-                getExerciseListInfo();
             }
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());
