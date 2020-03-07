@@ -25,6 +25,7 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
     private User currentUser = new User();
     private Report report = new Report();
     public String TAG = "ClientPortalViewModel";
+    private String dateGreeting;
 
     public void init(User user) {
         this.currentUser = user;

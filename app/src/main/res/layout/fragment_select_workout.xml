@@ -13,14 +13,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="#696969">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/selectWorkout"
                 android:textSize="18sp"
-                android:textColor="#000"
+                android:textColor="@color/white"
                 android:id="@+id/heading"/>
 
             <LinearLayout
@@ -34,11 +35,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CANCEL"
+                android:textColor="@color/white"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="20dp"
                 android:textSize="18sp"
-                android:textColor="#33bbff"
                 android:id="@+id/action_cancel"/>
 
         </RelativeLayout>

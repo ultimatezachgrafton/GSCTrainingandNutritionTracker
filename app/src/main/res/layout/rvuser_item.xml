@@ -4,18 +4,20 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rvuser_item"
-        android:background="@android:color/holo_orange_light"
+        android:background="#696969"
         android:clickable="true">
 
         <TextView
             android:id="@+id/tvClientName"
             style="@style/user_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
     </LinearLayout>

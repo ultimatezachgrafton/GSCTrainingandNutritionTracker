@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:margin="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View"/>
         <variable
@@ -101,80 +102,90 @@
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#525252">
+
+        <TextView
+            android:textColor="@android:color/white"
+            android:id="@+id/tvClientName"
+            android:text="@{client.clientName}"
+            android:layout_width="match_parent"
+            android:layout_toEndOf="@id/profilePhoto"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@id/profilePhoto"/>
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:id="@+id/profilePhoto"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
                 android:background="@android:color/darker_gray" />
 
             <ImageButton
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/bCamera"
                 android:clickable="true"
+                android:layout_alignBottom="@id/bToWorkoutList"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="#696969"
                 android:src="@android:drawable/ic_menu_camera"
                 android:layout_below="@id/profilePhoto"/>
 
         <Button
-            android:background="#696969"
-            android:textColor="@android:color/white"
-            android:id="@+id/bWriteWorkouts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="write workouts"
-            android:layout_below="@id/bCamera"
-            android:onClick="@{()->fragment.getEtValues(workoutTitle, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, exerciseWeight, exerciseWeight2,exerciseWeight3,exerciseWeight4,exerciseWeight5, ll)}"/>
-
-        <Button
             android:id="@+id/bToDatePicker"
-            android:layout_width="wrap_content"
+            android:layout_width="500dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/bWriteWorkouts"
-            android:layout_alignBottom="@id/bWriteWorkouts"
+            android:layout_toEndOf="@id/profilePhoto"
+            android:layout_below="@id/tvClientName"
             android:background="#696969"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
             android:onClick="@{()->fragment.toDatePicker()}"
             android:text="@string/toDatePicker"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:layout_margin="1dp"/>
 
         <Button
             android:id="@+id/bToWorkoutList"
-            android:layout_width="wrap_content"
+            android:layout_width="500dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/bToDatePicker"
-            android:layout_alignBottom="@id/bToDatePicker"
+            android:layout_toEndOf="@id/profilePhoto"
+            android:layout_below="@id/bToDatePicker"
             android:background="#696969"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
             android:onClick="@{()->fragment.toWorkoutList(user, client)}"
             android:text="@string/toWorkoutList"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:layout_margin="1dp"/>
 
     <LinearLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:background="#525252"
         android:layout_height="match_parent"
         android:id="@+id/exerciseLinearLayout"
-        android:layout_below="@id/bToDatePicker">
+        android:layout_below="@id/bToWorkoutList">
 
         <TextView
             android:textColor="@android:color/white"
-            android:id="@+id/tvClientName"
-            android:text="@{client.clientName}"
+            android:id="@+id/tvAddWorkout"
+            android:text="@string/addWorkout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/bCamera" />
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvWorkoutTitle"/>
+            android:textSize="20dp"
+            android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/etWorkoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter workout title"
+            android:hint="@string/enterWorkoutTitle"
             android:text="@={workoutTitle}"
             android:textColorHint="@android:color/white"/>
 
@@ -200,7 +211,7 @@
             android:id="@+id/etExerciseName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter name"
+            android:hint="@string/enterName"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseName}"/>
@@ -209,7 +220,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps"
-            android:hint="enter reps"
+            android:hint="@string/enterReps"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps}"/>
 
@@ -236,7 +247,7 @@
             android:id="@+id/etExerciseName2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter name"
+            android:hint="@string/enterName"
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
@@ -246,7 +257,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps2"
-            android:hint="enter reps"
+            android:hint="@string/enterReps"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps2}"/>
 
@@ -272,7 +283,7 @@
             android:id="@+id/etExerciseName3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter name"
+            android:hint="@string/enterName"
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
@@ -283,7 +294,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/etReps3"
             android:textColorHint="@android:color/white"
-            android:hint="enter reps"
+            android:hint="@string/enterReps"
             android:text="@={exerciseReps3}"/>
 
         <EditText
@@ -308,7 +319,7 @@
             android:id="@+id/etExerciseName4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter name"
+            android:hint="@string/enterName"
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
@@ -318,7 +329,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps4"
-            android:hint="enter reps"
+            android:hint="@string/enterReps"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps4}"/>
 
@@ -344,7 +355,7 @@
             android:id="@+id/etExerciseName5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter name"
+            android:hint="@string/enterName"
             android:inputType="text"
             android:singleLine="true"
             android:textColorHint="@android:color/white"
@@ -354,7 +365,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etReps5"
-            android:hint="enter reps"
+            android:hint="@string/enterReps"
             android:textColorHint="@android:color/white"
             android:text="@={exerciseReps5}"/>
 
@@ -374,19 +385,64 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#525252"
-            android:layout_below="@id/bToDatePicker">
+            android:layout_below="@id/exerciseLinearLayout">
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="#525252"
+            android:layout_below="@id/addEts">
+
             <Button
-                android:id="@+id/bAddExerciser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/exerciseLinearLayout"
+                android:id="@+id/bAddExercise1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:background="#696969"
+                android:layout_margin="1dp"
                 android:onClick="@{()->fragment.addLine(exerciseLinearLayout)}"
                 android:text="@string/addExercise1"
                 android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/bAddExercise3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="#696969"
+            android:layout_margin="1dp"
+            android:onClick="@{()->fragment.addLine(exerciseLinearLayout)}"
+            android:text="@string/addExercise3"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/bAddExercise5"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="#696969"
+            android:layout_margin="1dp"
+            android:onClick="@{()->fragment.addLine(exerciseLinearLayout)}"
+            android:text="@string/addExercise5"
+            android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+        <Button
+            android:background="#696969"
+            android:textColor="@android:color/white"
+            android:id="@+id/bWriteWorkouts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/writeWorkouts"
+            android:layout_below="@id/buttonLayout"
+            android:layout_margin="1dp"
+            android:onClick="@{()->fragment.getEtValues(workoutTitle, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, exerciseWeight, exerciseWeight2,exerciseWeight3,exerciseWeight4,exerciseWeight5, ll)}"/>
+
     </RelativeLayout>
     </ScrollView>
 

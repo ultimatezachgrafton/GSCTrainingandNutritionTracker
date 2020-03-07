@@ -34,6 +34,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#525252"
     android:layout_margin="16dp">
 
     <ImageView
@@ -53,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/client_photo"
         android:text="@{report.clientName}"
+        android:textColor="@color/white"
         android:textSize="18sp"/>
 
     <TextView
@@ -63,6 +65,7 @@
         android:layout_below="@id/client_name"
         android:layout_toRightOf="@id/client_photo"
         android:text="@{report.dateString}"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <TextView
@@ -71,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/enter_weight"
+        android:textColor="@color/white"
         android:layout_below="@id/client_photo"/>
 
     <EditText
@@ -79,6 +83,7 @@
         android:layout_height="wrap_content"
         android:text="@={model.dailyWeight}"
         android:singleLine="true"
+        android:textColor="@color/white"
         android:layout_toEndOf="@id/separator1"
         android:layout_alignBaseline="@id/separator1"/>
 
@@ -88,6 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Today's workout: "
+        android:textColor="@color/white"
         android:layout_below="@id/etWeight"/>
 
     <LinearLayout
@@ -95,6 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/generateExercises"
+        android:background="#696969"
         android:layout_below="@id/separator2"/>
 
     <EditText
@@ -102,16 +109,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/comments"
+        android:textColorHint="@color/white"
         android:text="@={model.comments}"
+        android:textColor="@color/white"
         android:layout_below="@id/generateExercises" />
 
     <Button
         android:id="@+id/bSendReport"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_report"
         android:layout_below="@id/etComments"
+        android:background="#696969"
         android:clickable="true"
+        android:textColor="@color/white"
         android:onClick="@{()->model.writeReport(user, report)}" />
 
     </RelativeLayout>

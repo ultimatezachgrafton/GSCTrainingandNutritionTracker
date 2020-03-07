@@ -18,6 +18,9 @@
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.fragments.ClientPortalFragment"/>
         <variable
+            name="greeting"
+            type="String" />
+        <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientPortalViewModel" />
 
@@ -25,7 +28,10 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:background="#525252"
+        android:layout_height="match_parent"
+
+        android:gravity="center">
 
         <TextView
             android:id="@+id/tvGreeting"
@@ -33,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
             android:layout_marginBottom="15dp"
-            android:text="@{@string/date_greeting(user.firstName)}"
+            android:text="@{greeting}"
             android:gravity="center"
             android:textSize="32sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_select_date"
@@ -43,16 +49,26 @@
             android:id="@+id/tv_select_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{@string/select_date}"
+            android:text="@string/select_date"
             android:gravity="center"
             android:textSize="22sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/calendarView"
             app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
 
         <CalendarView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/calendarView"
+            android:textColorPrimary="@color/white"
+            android:theme="@style/CalenderViewCustom"
+            android:weekDayTextAppearance="@style/weekDayTextAppearance"
+            android:dateTextAppearance="@style/appTextAppearance"
+            android:unfocusedMonthDateColor="@color/white"
+            android:selectedWeekBackgroundColor="@color/white"
+            android:weekSeparatorLineColor="@color/white"
+            android:focusedMonthDateColor="@color/white"
+            android:weekNumberColor="@color/white"
             />
 
 </LinearLayout>

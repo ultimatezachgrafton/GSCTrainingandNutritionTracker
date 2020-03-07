@@ -21,7 +21,6 @@
         <variable
             name="model"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.WorkoutViewModel" />
-
         <variable
             name="generatedExerciseName"
             type="String"/>
@@ -47,31 +46,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <Button
-        android:id="@+id/bUpdateWorkout"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/update_workout"
-        android:clickable="true"
-        android:onClick="@{()->model.updateWorkout(client, workout)}" />
+        android:background="#525252">
 
-    <Button
-        android:layout_below="@id/bUpdateWorkout"
-        android:id="@+id/bDeleteWorkout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete_workout"
-        android:clickable="true"
-        android:onClick="@{()->model.deleteWorkout(client, workout)}" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
     <EditText
-        android:layout_below="@id/bDeleteWorkout"
         android:id="@+id/tvWorkoutTitle"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="@={workout.workoutTitle}"/>
 
     <TextView
@@ -80,8 +67,8 @@
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This workout contains the following exercises."/>
-
+        android:textColor="@color/white"
+        android:text="@string/workoutContains"/>
 
     <LinearLayout
         android:id="@+id/addEts"
@@ -92,16 +79,70 @@
         android:layout_below="@id/separator1">
     </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="#525252"
+            android:layout_below="@id/addEts">
+
+            <Button
+                android:id="@+id/bAddExercise1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="#696969"
+                android:layout_margin="1dp"
+                android:onClick="@{()->fragment.addLine(addEts)}"
+                android:text="@string/addExercise1"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/bAddExercise3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="#696969"
+                android:layout_margin="1dp"
+                android:onClick="@{()->fragment.addLine(addEts)}"
+                android:text="@string/addExercise3"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/bAddExercise5"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="#696969"
+                android:layout_margin="1dp"
+                android:onClick="@{()->fragment.addLine(addEts)}"
+                android:text="@string/addExercise5"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
         <Button
-        android:id="@+id/bAddExercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#696969"
-            android:layout_below="@id/addEts"
+            android:id="@+id/bUpdateWorkout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update_workout"
             android:clickable="true"
-        android:onClick="@{()->fragment.addLine(addEts)}"
-        android:text="@string/addExercise1"
-        android:textColor="@android:color/white" />
+            android:background="#696969"
+            android:layout_below="@id/buttonLayout"
+            android:layout_margin="1dp"
+            android:onClick="@{()->model.updateWorkout(client, workout)}" />
+
+        <Button
+            android:id="@+id/bDeleteWorkout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_workout"
+            android:clickable="true"
+            android:background="#696969"
+            android:layout_below="@id/bUpdateWorkout"
+            android:onClick="@{()->model.deleteWorkout(client, workout)}" />
+
     </RelativeLayout>
     </ScrollView>
 </layout>

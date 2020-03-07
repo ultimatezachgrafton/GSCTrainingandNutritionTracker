@@ -36,6 +36,7 @@ public class ClientPortalFragment extends Fragment {
     private ClientPortalViewModel clientProfileViewModel;
     public String TAG = "ClientPortalFragment";
     public CalendarView calendarView;
+    private String greeting;
 
     public ClientPortalFragment(User user) {
         this.currentUser = user;
@@ -50,6 +51,7 @@ public class ClientPortalFragment extends Fragment {
         binding.setReport(currentReport);
         binding.setFragment(this);
         binding.setViewmodel(clientProfileViewModel);
+        binding.setGreeting(greeting);
 
         clientProfileViewModel = ViewModelProviders.of(this).get(ClientPortalViewModel.class);
         clientProfileViewModel.init(currentUser);
@@ -64,6 +66,8 @@ public class ClientPortalFragment extends Fragment {
                 }
             }
         });
+        
+        greeting = "Hi, " + currentUser.getFirstName() + "!";
 
         clientProfileViewModel.noReport.observe(this, new Observer<Integer>() {
             @Override

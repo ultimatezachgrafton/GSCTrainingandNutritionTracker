@@ -1,16 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TitleColor" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
 
     <style name="user_title">
         <item name="android:layout_width">match_parent</item>
@@ -21,7 +24,27 @@
         <item name="android:paddingLeft">8dp</item>
     </style>
 
-    <style name="SplashScreen">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">#696969</item>
+        <item name="colorPrimary">@color/white</item>
     </style>
+
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:weekNumberColor">@color/red</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="weekDayTextAppearance">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="appTextAppearance">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <color name="red">#F32313</color>
 </resources>

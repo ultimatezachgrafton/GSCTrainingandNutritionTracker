@@ -34,7 +34,7 @@
 
     <string name="isAdminAdmin">Admin</string>
     <string name="isAdminUser">User</string>
-    <string name="toDatePicker">Client Calendar</string>
+    <string name="toDatePicker">To Client Calendar</string>
 
     <string name="swipe_info1">Swipe left for nutrition</string>
     <string name="swipe_info2">Swipe right for workout</string>
@@ -64,9 +64,11 @@
     <string name="selectReport">Select Report</string>
     <string name="exercise">Exercise:</string>
     <string name="auth_failed">Authentifcation failed</string>
-    <string name="enterDay">Enter workout day:</string>
+    <string name="enterDay">Enter Workout Day</string>
     <string name="viewProfile">View Profile</string>
-    <string name="addExercise1">Add 1</string>
+    <string name="addExercise1">Add 1 Exercise</string>
+    <string name="addExercise3">Add 3 Exercises</string>
+    <string name="addExercise5">Add 5 Exercises</string>
     <string name="exercise1">Exercise 1:</string>
     <string name="exercise2">Exercise 2:</string>
     <string name="exercise3">Exercise 3:</string>
@@ -76,5 +78,11 @@
     <string name="delete_workout">Delete Workout</string>
     <string name="update_workout">Update Workout</string>
     <string name="exercise_weight">Enter Weight</string>
+    <string name="enterWorkoutTitle">Enter Workout Title</string>
+    <string name="enterReps">Enter Reps</string>
+    <string name="enterName">Enter Name</string>
+    <string name="addWorkout">Create New Workout:</string>
+    <string name="writeWorkouts">Write Workout</string>
+    <string name="workoutContains">This workout contains the following exercises.</string>
 
 </resources>
