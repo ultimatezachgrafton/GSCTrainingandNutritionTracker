@@ -45,7 +45,6 @@ public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, Workou
         public WorkoutViewHolder(@NonNull View itemView) {
             super(itemView);
             tvWorkoutTitle = itemView.findViewById(R.id.tvItemWorkoutTitle);
-            tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

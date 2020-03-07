@@ -43,7 +43,6 @@ public class ReportListAdapter extends FirestoreRecyclerAdapter<Report, ReportLi
         public ReportViewHolder(@NonNull View itemView) {
             super(itemView);
             tvWorkoutTitle = itemView.findViewById(R.id.tvWorkoutTitle);
-            tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
             tvClientName = itemView.findViewById(R.id.tvClientName);
             tvDateString = itemView.findViewById(R.id.tvDateString);
 
