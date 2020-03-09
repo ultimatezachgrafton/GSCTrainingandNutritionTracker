@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -19,7 +20,11 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 public class LoginViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
-    public ObservableField<String> email, password = new ObservableField<>();
+    public ObservableField<String> email = new ObservableField<>();
+    public ObservableField<String> password = new ObservableField<>();
+    public MutableLiveData<Boolean> isLoggingIn = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLogInNull = new MutableLiveData<>();
+    public MutableLiveData<Boolean> doesUserExist = new MutableLiveData<>();
     public MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
     public MutableLiveData<FirebaseUser> firebaseUser = new MutableLiveData<>();
     public MutableLiveData<User> currentUser = new MutableLiveData<>();
@@ -30,37 +35,47 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     // Checks if user is logged in
     public void init() {
         FirebaseUser fUser = repo.getFirebaseUser();
-        if (fUser == null) {                                // Check to see if a user is logged in
-            Log.d(TAG, "loggedinfalse");               // If a user is not logged in, set isLoggedIn to false
+        repo.setQuerySnapshotOnCompleteListener(this);
+        if (fUser == null) {
+            isLoggedIn.setValue(false);
         } else {
+            isLoggedIn.setValue(true);
             user = repo.getUserByEmail(fUser.getEmail());
-            Log.d(TAG, "loggedintrue");                // If a user is logged in, get that User's information
         }
-        repo.setSnapshotOnCompleteListener(this);
     }
 
     // Verifies user exists by the email and password provided
     public void verifyUser(String email, String password) {
-        if (!isLoginReady(email, password)) return;
-        repo.queryUserByEmailPassword(email, password);
+        isLogInNull.setValue(false);
+        if (!isLoginNull(email, password)) {
+            isLogInNull.setValue(true);
+            return;
+        } else {
+            isLoggingIn.setValue(true);
+            repo.queryUserByEmailPassword(email, password);
+
+        }
     }
 
     // Verifies login fields are not null
-    public boolean isLoginReady(String email, String password) {
+    public boolean isLoginNull(String email, String password) {
         return email != null && password != null;
     }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot doc : task.getResult()) {
-                user = doc.toObject(User.class);
-                currentUser.setValue(user);
-                repo.signIn(user.getEmail(), user.getPassword());
-            }
-        } else {
+        QuerySnapshot qs = task.getResult();
+        if (qs.size() == 0) {
+            doesUserExist.setValue(false);
             Log.d(TAG, "Error getting documents: ", task.getException());
             return;
+        } else {
+            for (QueryDocumentSnapshot doc : qs) {
+                user = doc.toObject(User.class);
+                currentUser.setValue(user);
+                doesUserExist.setValue(true);
+                repo.signIn(user.getEmail(), user.getPassword());
+            }
         }
     }
 }

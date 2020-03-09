@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,27 @@ public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private User user = new User();
     LoginViewModel loginViewModel = new LoginViewModel();
+    String loggingIn = "Logging In...";
+    String logInNull = "Please fill out all fields.";
+    String userNull = "No record of user with this email/password.";
     String TAG = "LoginFragment";
 
     public LoginFragment() {}
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (auth.getCurrentUser() != null) {
+            // User is signed in (getCurrentUser() will be null if not signed in)
+            // loginViewModel.getUser
+
+            if (auth.getCurrentUser().getIsAdmin()) {
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new LoginFragment()).addToBackStack(null).commit();
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,8 +70,6 @@ public class LoginFragment extends Fragment {
         // Bind User
         binding.setUser(user);
 
-        // TODO: if user doesn't match a profile,
-
         loginViewModel.currentUser.observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -62,6 +79,34 @@ public class LoginFragment extends Fragment {
                     goToAdminList(user);
                 } else if (!user.getIsAdmin()) {
                     goToProfile(user);
+                }
+            }
+        });
+
+        loginViewModel.isLoggingIn.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                if (bool) {
+                    Toast.makeText(getContext(), loggingIn, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        loginViewModel.isLogInNull.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                if (bool) {
+                    Toast.makeText(getContext(), logInNull, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        loginViewModel.doesUserExist.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                if (!bool) {
+                    Log.d(TAG, "bool");
+                    Toast.makeText(getContext(), userNull, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -76,10 +121,8 @@ public class LoginFragment extends Fragment {
     }
 
     public void onLoginClick(final String email, final String password) {
-        // TODO: make toast into accurate progress bar
-        Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
         // Check if login values are valid
-        loginViewModel.verifyUser("p@p.com", "pppppp");//email, password);
+        loginViewModel.verifyUser(email, password);
     }
 
     public void onRegisterClick() {

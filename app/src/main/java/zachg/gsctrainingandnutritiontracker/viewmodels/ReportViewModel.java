@@ -65,7 +65,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     }
 
     public void getWorkoutsFromRepo(User currentUser) {
-        repo.setSnapshotOnCompleteListener(this);
+        repo.setQuerySnapshotOnCompleteListener(this);
         repo.getWorkoutsForReport(currentUser);
         Log.d(TAG, "Getting workouts from repo");
     }

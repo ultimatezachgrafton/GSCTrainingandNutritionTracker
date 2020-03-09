@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -33,7 +34,8 @@ public class FirestoreRepository {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private static FirestoreRepository instance;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener;
+    private OnCompleteListener<QuerySnapshot> querySnapshotOnCompleteListener;
+    private OnCompleteListener<DocumentSnapshot> docSnapshotOnCompleteListener;
     private User user = new User();
     public String TAG = "FirestoreRepository";
 
@@ -49,8 +51,13 @@ public class FirestoreRepository {
         return instance;
     }
 
-    public void setSnapshotOnCompleteListener(OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener) {
-        this.snapshotOnCompleteListener = snapshotOnCompleteListener;
+    public void setQuerySnapshotOnCompleteListener(OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener) {
+        this.querySnapshotOnCompleteListener = snapshotOnCompleteListener;
+    }
+
+
+    public void setDocSnapshotOnCompleteListener(OnCompleteListener<DocumentSnapshot> snapshotOnCompleteListener) {
+        this.docSnapshotOnCompleteListener = snapshotOnCompleteListener;
     }
 
     // Gets FirebaseUser for authentification
@@ -114,13 +121,13 @@ public class FirestoreRepository {
     // Fetches User data from email and password provided by user at login
     public void queryUserByEmailPassword(String email, String password) {
         Query userQuery = userColRef.whereEqualTo("email", email).whereEqualTo("password", password);
-        userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Validate that registered User's email is not currently in use
     public void duplicateEmailCheck(String email) {
         Query userQuery = userColRef.whereEqualTo("email", email);
-        userQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Gets all Reports for a single User
@@ -139,7 +146,7 @@ public class FirestoreRepository {
 
         Query reportQuery = userColRef.document(user.getEmail())
                 .collection("reports");
-        reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        reportQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Returns Workouts as assigned by admin
@@ -152,7 +159,7 @@ public class FirestoreRepository {
 
     public void getWorkoutsForReport(User user) {
         Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts");
-        workoutQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        workoutQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     public FirestoreRecyclerOptions<Workout> getExercisesFromRepo(User user, Workout workout) {
@@ -166,7 +173,7 @@ public class FirestoreRepository {
     public void getExercisesForIteration(User user, int num) {
         Query exerciseQuery = userColRef.document(user.getEmail()).collection("exercises")
                 .whereEqualTo("workoutDay", num);
-        exerciseQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
+        exerciseQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     public void registerUser(User user) {

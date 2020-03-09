@@ -39,7 +39,7 @@ public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListe
     public void init(User user) {
         repo = FirestoreRepository.getInstance();
         this.currentUser = user;
-        repo.setSnapshotOnCompleteListener(this);
+        repo.setQuerySnapshotOnCompleteListener(this);
         repo.getWorkoutsForReport(currentUser);
     }
 

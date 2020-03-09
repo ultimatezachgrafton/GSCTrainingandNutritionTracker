@@ -41,7 +41,7 @@ public class ViewReportViewModel extends ViewModel implements OnCompleteListener
         this.currentClient = client;
         this.currentReport = report;
         repo = FirestoreRepository.getInstance();
-        repo.setSnapshotOnCompleteListener(this);
+        repo.setQuerySnapshotOnCompleteListener(this);
         repo.getReportByUser(client);
     }
 
