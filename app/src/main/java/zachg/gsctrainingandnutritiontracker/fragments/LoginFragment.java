@@ -35,21 +35,6 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (auth.getCurrentUser() != null) {
-            // User is signed in (getCurrentUser() will be null if not signed in)
-            // loginViewModel.getUser
-
-            if (auth.getCurrentUser().getIsAdmin()) {
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).addToBackStack(null).commit();
-            }
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //Inflate and bind the layout for this fragment_report_list
@@ -124,6 +109,10 @@ public class LoginFragment extends Fragment {
         // Check if login values are valid
         loginViewModel.verifyUser(email, password);
     }
+
+
+    // after error w registration, goes back to login and gives error D/FirestoreRepository: fuser null: null;
+    // and register does not work
 
     public void onRegisterClick() {
         loginViewModel.currentUser.removeObservers(this);

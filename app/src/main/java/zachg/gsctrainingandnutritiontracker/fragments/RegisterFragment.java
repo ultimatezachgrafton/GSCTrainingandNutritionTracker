@@ -57,7 +57,6 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        // Displays error statements
         registerViewModel.onError.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {

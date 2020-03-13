@@ -93,7 +93,7 @@ public class FirestoreRepository {
     }
 
     // Gets User by searching for email
-    public User getUserByEmail(String email) {
+    public User getFUserByEmail(String email) {
         // Fetches "users" from Firestore database
         CollectionReference userColRef = db.collection("users");
         // Queries the users for matching email
@@ -109,6 +109,11 @@ public class FirestoreRepository {
             }
         });
         return user;
+    }
+
+    public void getUserByEmail(String email) {
+        Query userQuery = userColRef.whereEqualTo("email", email);
+        userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Gets all Users
@@ -192,6 +197,23 @@ public class FirestoreRepository {
                         }
                     }
                 });
+
+//        if(!task.isSuccessful()) {
+//            try {
+//                throw task.getException();
+//            } catch(FirebaseAuthWeakPasswordException e) {
+//                mTxtPassword.setError(getString(R.string.error_weak_password));
+//                mTxtPassword.requestFocus();
+//            } catch(FirebaseAuthInvalidCredentialsException e) {
+//                mTxtEmail.setError(getString(R.string.error_invalid_email));
+//                mTxtEmail.requestFocus();
+//            } catch(FirebaseAuthUserCollisionException e) {
+//                mTxtEmail.setError(getString(R.string.error_user_exists));
+//                mTxtEmail.requestFocus();
+//            } catch(Exception e) {
+//                Log.e(TAG, e.getMessage());
+//            }
+//        }
 
         // Store user's data in a User model object stored in the database
         FirebaseFirestore db = FirebaseFirestore.getInstance();

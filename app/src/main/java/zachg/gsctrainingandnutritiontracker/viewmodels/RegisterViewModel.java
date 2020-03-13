@@ -1,15 +1,23 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class RegisterViewModel extends ViewModel {
+public class RegisterViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -24,32 +32,46 @@ public class RegisterViewModel extends ViewModel {
     public ObservableField<String> etConfirmPassword = new ObservableField<>();
     public MutableLiveData<User> newUser = new MutableLiveData<>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isEmailDuplicate = new MutableLiveData<>();
 
     private static String REGISTER_ERROR = "Please fill in all fields";
     private static String PASSWORD_ERROR = "Passwords do not match.";
     private static String CLIENT_ADDED = "Registering client! Please give us a moment...";
+    private static String EMAIL_BADLY_FORMATTED = "Email is badly formatted.";
+    private static String PASSWORD_BADLY_FORMATTED = "Password must be at least six characters long.";
+    private static String DUPLICATE_EMAIL = "This email is already registered.";
 
     private String TAG = "RegisterViewModel";
 
     public void init() {}
 
+    // Checks validity, displays error statements
     public void registerUserCheck(final String firstName, final String lastName, final String phoneNumber,
                                   final String email, final String password, String confirmPassword) {
         if (!isRegisterReady(firstName, lastName, email, password, confirmPassword)) {
             onError.setValue(REGISTER_ERROR);
             return;
         }
+        if (!isEmailValid(email)) {
+            onError.setValue(EMAIL_BADLY_FORMATTED);
+            return;
+        }
+        if (!isPasswordValid(password)){
+            onError.setValue(PASSWORD_BADLY_FORMATTED);
+            return;
+        };
         if (!doPasswordsMatch(password, confirmPassword)) {
             onError.setValue(PASSWORD_ERROR);
             return;
         }
+        isEmailDuplicate(email);
         setUserValues(firstName, lastName, phoneNumber, email, password);
         registerUser();
     }
 
+    // Registers user
     public void registerUser() {
-//        int workoutDay = 1;
-        User user = new User(firstName, lastName, phoneNumber, email, password);//, workoutDay);
+        User user = new User(firstName, lastName, phoneNumber, email, password);//, 1);
         repo.registerUser(user);
         newUser.setValue(user);
         onError.setValue(CLIENT_ADDED);
@@ -67,7 +89,28 @@ public class RegisterViewModel extends ViewModel {
         else return false;
     }
 
-    // sets user values
+    // Checks if email is properly formatted
+    public boolean isEmailValid(String email) {
+        return true;
+    }
+
+    // Checks if password is long enough
+    public boolean isPasswordValid(String password) {
+        if (password.length() >= 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Checks if email is already used in database
+    public void isEmailDuplicate(String email) {
+        repo.setQuerySnapshotOnCompleteListener(this);
+        repo.duplicateEmailCheck(email);
+    }
+
+    // TODO: Do not let bad info be written to db
+    // Sets user values
     public void setUserValues(String firstName, String lastName, String phoneNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -76,5 +119,13 @@ public class RegisterViewModel extends ViewModel {
         this.password = password;
     }
 
-    // TODO: if duplicate email, display message
+    // Handles isEmailDuplicate check
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        QuerySnapshot qs = task.getResult();
+        if (qs.size() > 0) {
+            onError.setValue(DUPLICATE_EMAIL);
+            Log.d(TAG, "dup check");
+        }
+    }
 }

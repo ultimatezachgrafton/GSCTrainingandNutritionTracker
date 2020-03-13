@@ -40,7 +40,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             isLoggedIn.setValue(false);
         } else {
             isLoggedIn.setValue(true);
-            user = repo.getUserByEmail(fUser.getEmail());
+            repo.getUserByEmail(fUser.getEmail());
         }
     }
 
