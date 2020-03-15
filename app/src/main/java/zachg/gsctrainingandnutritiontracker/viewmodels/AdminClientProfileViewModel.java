@@ -2,9 +2,14 @@ package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -15,7 +20,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class AdminClientProfileViewModel extends ViewModel {
+public class AdminClientProfileViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = FirestoreRepository.getInstance();
 
@@ -78,10 +83,25 @@ public class AdminClientProfileViewModel extends ViewModel {
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
 //    public MutableLiveData<Integer> workoutDayLiveData = new MutableLiveData<>();
 
+    public User user = new User();
+    public ArrayList<Exercise> exArray = new ArrayList<>();
+    public int w;
+
+    public MutableLiveData<String> onError = new MutableLiveData<>();
+    // TODO: string resource
+    public String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
 
     public AdminClientProfileViewModel() {}
 
     public void init() {}
+
+    public void duplicateWorkoutTitleCheck(User user, ArrayList<Exercise> exArray, int w, String workoutTitle) {
+        this.user = user;
+        this.exArray = exArray;
+        this.w = w;
+        this.workoutTitle = workoutTitle;
+        repo.duplicateWorkoutTitleCheck(user, workoutTitle);
+    }
 
     public void writeToWorkouts(User user, ArrayList<Exercise> exArray, int w, String workoutTitle) {
 
@@ -100,7 +120,17 @@ public class AdminClientProfileViewModel extends ViewModel {
 //        workout.setWorkoutDay(3);
 
         // TODO: if workoutTitle is null, set null
-
         repo.writeWorkoutsToRepo(user, workout);
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        QuerySnapshot qs = task.getResult();
+        if (qs.size() > 0) {
+            onError.setValue(DUPLICATE_WORKOUT_TITLE);
+            Log.d(TAG, "duplicate checked");
+        } else {
+            writeToWorkouts(user, exArray, w, workoutTitle);
+        }
     }
 }

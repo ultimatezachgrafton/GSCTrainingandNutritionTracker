@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -283,6 +284,14 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        adminClientProfileViewModel.onError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                // TODO: getFocus
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         profilePhoto = v.findViewById(R.id.profilePhotoImageView);
         updatePhotoView();
 
@@ -353,6 +362,7 @@ public class AdminClientProfileFragment extends Fragment {
         totalExerciseRepsEditTexts++;
     }
 
+    // TODO: this goes in ViewModel
     //takes an array
 public void getEtValues(String workoutTitle, int w, User currentClient, String exerciseName, String exerciseName2,
                         String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
@@ -384,7 +394,7 @@ public void getEtValues(String workoutTitle, int w, User currentClient, String e
             exArray.add(generatedExercise);
         }
 
-        adminClientProfileViewModel.writeToWorkouts(currentClient, exArray, w, workoutTitle);
+        adminClientProfileViewModel.duplicateWorkoutTitleCheck(currentClient, exArray, w, workoutTitle);
     }
 
     public void toDatePicker() {
