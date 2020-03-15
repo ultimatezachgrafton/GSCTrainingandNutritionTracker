@@ -52,7 +52,7 @@
 
         <EditText
             android:singleLine="true"
-            android:id="@+id/etFirstName"
+            android:id="@+id/firstNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -66,7 +66,7 @@
 
         <EditText
             android:singleLine="true"
-            android:id="@+id/etLastName"
+            android:id="@+id/lastNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -80,7 +80,7 @@
 
         <EditText
             android:singleLine="true"
-            android:id="@+id/etPhoneNumber"
+            android:id="@+id/phoneNumberEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -95,7 +95,7 @@
 
         <EditText
             android:singleLine="true"
-            android:id="@+id/etEmail"
+            android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -110,7 +110,7 @@
 
         <EditText
             android:singleLine="true"
-            android:id="@+id/etPassword"
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -125,7 +125,7 @@
 
         <EditText
             android:singleLine="true"
-            android:id="@+id/etConfirmPassword"
+            android:id="@+id/confirmPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -133,7 +133,7 @@
             android:layout_marginBottom="10dp" />
 
         <Button
-            android:id="@+id/bRegister"
+            android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register"

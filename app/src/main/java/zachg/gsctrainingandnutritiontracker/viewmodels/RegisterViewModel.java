@@ -10,11 +10,9 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class RegisterViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
@@ -34,6 +32,7 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     public MutableLiveData<String> onError = new MutableLiveData<>();
     public MutableLiveData<Boolean> isEmailDuplicate = new MutableLiveData<>();
 
+    // TODO: make these string values
     private static String REGISTER_ERROR = "Please fill in all fields";
     private static String PASSWORD_ERROR = "Passwords do not match.";
     private static String CLIENT_ADDED = "Registering client! Please give us a moment...";
@@ -65,14 +64,14 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
             return;
         }
         isEmailDuplicate(email);
-        setUserValues(firstName, lastName, phoneNumber, email, password);
-        registerUser();
     }
 
+    // TODO: phone number entry is weird
+
     // Registers user
-    public void registerUser() {
+    public void registerFirebaseUser() {
         User user = new User(firstName, lastName, phoneNumber, email, password);//, 1);
-        repo.registerUser(user);
+        repo.registerFirebaseUser(user);
         newUser.setValue(user);
         onError.setValue(CLIENT_ADDED);
     }
@@ -125,7 +124,10 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         QuerySnapshot qs = task.getResult();
         if (qs.size() > 0) {
             onError.setValue(DUPLICATE_EMAIL);
-            Log.d(TAG, "dup check");
+            Log.d(TAG, "duplicate checked");
+        } else {
+            setUserValues(firstName, lastName, phoneNumber, email, password);
+            registerFirebaseUser();
         }
     }
 }

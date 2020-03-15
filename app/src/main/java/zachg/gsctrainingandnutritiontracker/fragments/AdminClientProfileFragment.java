@@ -99,7 +99,7 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setGeneratedExerciseReps(generatedExerciseReps);
         binding.setGeneratedExerciseWeight(generatedExerciseWeight);
 
-        bCameraButton = v.findViewById(R.id.bCamera);
+        bCameraButton = v.findViewById(R.id.cameraImageButton);
         photoFile = getPhotoFile(currentClient);
 
         // initialize array values
@@ -283,7 +283,7 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
-        profilePhoto = v.findViewById(R.id.profilePhoto);
+        profilePhoto = v.findViewById(R.id.profilePhotoImageView);
         updatePhotoView();
 
         return v;

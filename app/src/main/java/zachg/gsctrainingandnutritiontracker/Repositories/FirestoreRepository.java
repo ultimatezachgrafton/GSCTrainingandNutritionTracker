@@ -12,6 +12,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -167,6 +171,13 @@ public class FirestoreRepository {
         workoutQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
+    public boolean checkDuplicateWorkoutTitles(User user, Workout workout) {
+        Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts")
+                .whereEqualTo("workoutTitle", workout.getWorkoutTitle());
+        // on complete, return boolean
+        return false;
+    }
+
     public FirestoreRecyclerOptions<Workout> getExercisesFromRepo(User user, Workout workout) {
         Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts")
                 .whereEqualTo("workoutTitle", workout.getWorkoutTitle());
@@ -181,40 +192,23 @@ public class FirestoreRepository {
         exerciseQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
-    public void registerUser(User user) {
-        // Add FirebaseUser to database
+    // Add FirebaseUser to database, returns error or success message
+    public void registerFirebaseUser(User user) {
         auth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = auth.getCurrentUser();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.d(TAG, "createUserWithEmail:failure", task.getException());
-                        }
-                    }
-                });
+                                           @Override
+                                           public void onComplete(@NonNull Task<AuthResult> task) {
+                                               if (task.isSuccessful()) {
+                                                   // Sign in success, update UI with the signed-in user's information
+                                                   Log.d(TAG, "createUserWithEmail:success");
+                                                   FirebaseUser user = auth.getCurrentUser();
+                                               }
+                                           }
+                                       });
+        registerUser(user);
+    }
 
-//        if(!task.isSuccessful()) {
-//            try {
-//                throw task.getException();
-//            } catch(FirebaseAuthWeakPasswordException e) {
-//                mTxtPassword.setError(getString(R.string.error_weak_password));
-//                mTxtPassword.requestFocus();
-//            } catch(FirebaseAuthInvalidCredentialsException e) {
-//                mTxtEmail.setError(getString(R.string.error_invalid_email));
-//                mTxtEmail.requestFocus();
-//            } catch(FirebaseAuthUserCollisionException e) {
-//                mTxtEmail.setError(getString(R.string.error_user_exists));
-//                mTxtEmail.requestFocus();
-//            } catch(Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
-
+    public void registerUser(User user) {
         // Store user's data in a User model object stored in the database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Add user as a new document with a generated ID

@@ -35,7 +35,7 @@
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:id="@+id/profilePhoto"
+                android:id="@+id/profilePhotoImageView"
                 android:background="@android:color/darker_gray" />
 
             <TextView
@@ -43,7 +43,7 @@
                 style="?android:listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/profilePhoto"
+                android:layout_toRightOf="@id/profilePhotoImageView"
                 android:text="@{report.clientName}"
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/client_name"
-                android:layout_toRightOf="@id/profilePhoto"
+                android:layout_toRightOf="@id/profilePhotoImageView"
                 android:text="@{report.dateString}"
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvFullReport"
                 android:text="@{report.fullReport}"
-                android:layout_below="@id/tvDate"
+                android:layout_below="@id/profilePhotoImageView"
                 android:textColor="@color/white"/>
 
         </RelativeLayout>

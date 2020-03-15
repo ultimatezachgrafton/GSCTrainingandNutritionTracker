@@ -76,7 +76,7 @@ public class WorkoutFragment extends Fragment {
         binding.setClient(client);
 
         LinearLayout ll = new LinearLayout(getContext());
-        ll = v.findViewById(R.id.addEts);
+        ll = v.findViewById(R.id.addEtsLinearLayout);
         binding.setAddEts(ll);
 
         binding.setGeneratedExerciseName(generatedExerciseName);

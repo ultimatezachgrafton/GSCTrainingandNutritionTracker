@@ -84,5 +84,6 @@
     <string name="addWorkout">Create New Workout:</string>
     <string name="writeWorkouts">Write Workout</string>
     <string name="workoutContains">This workout contains the following exercises.</string>
+    <string name="error_weak_password">Password must be six characters long.</string>
 
 </resources>

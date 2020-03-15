@@ -110,14 +110,14 @@
             android:id="@+id/tvClientName"
             android:text="@{client.clientName}"
             android:layout_width="match_parent"
-            android:layout_toEndOf="@id/profilePhoto"
+            android:layout_toEndOf="@id/profilePhotoImageView"
             android:layout_height="40dp"
-            android:layout_toRightOf="@id/profilePhoto"/>
+            android:layout_toRightOf="@id/profilePhotoImageView"/>
 
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:id="@+id/profilePhoto"
+                android:id="@+id/profilePhotoImageView"
                 android:layout_marginBottom="1dp"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
@@ -126,20 +126,20 @@
             <ImageButton
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/bCamera"
+                android:id="@+id/cameraImageButton"
                 android:clickable="true"
                 android:layout_alignBottom="@id/bToWorkoutList"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp"
                 android:background="#696969"
                 android:src="@android:drawable/ic_menu_camera"
-                android:layout_below="@id/profilePhoto"/>
+                android:layout_below="@id/profilePhotoImageView"/>
 
         <Button
             android:id="@+id/bToDatePicker"
             android:layout_width="500dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/profilePhoto"
+            android:layout_toEndOf="@id/profilePhotoImageView"
             android:layout_below="@id/tvClientName"
             android:background="#696969"
             android:layout_marginBottom="1dp"
@@ -154,7 +154,7 @@
             android:id="@+id/bToWorkoutList"
             android:layout_width="500dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/profilePhoto"
+            android:layout_toEndOf="@id/profilePhotoImageView"
             android:layout_below="@id/bToDatePicker"
             android:background="#696969"
             android:layout_marginBottom="1dp"
@@ -380,7 +380,7 @@
     </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/addEts"
+            android:id="@+id/addEtsLinearLayout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -395,7 +395,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:background="#525252"
-            android:layout_below="@id/addEts">
+            android:layout_below="@id/addEtsLinearLayout">
 
             <Button
                 android:id="@+id/bAddExercise1"

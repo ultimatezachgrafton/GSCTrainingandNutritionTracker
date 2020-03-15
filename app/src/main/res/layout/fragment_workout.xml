@@ -71,7 +71,7 @@
         android:text="@string/workoutContains"/>
 
     <LinearLayout
-        android:id="@+id/addEts"
+        android:id="@+id/addEtsLinearLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:background="#525252"
-            android:layout_below="@id/addEts">
+            android:layout_below="@id/addEtsLinearLayout">
 
             <Button
                 android:id="@+id/bAddExercise1"
@@ -94,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:background="#696969"
                 android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addLine(addEts)}"
+                android:onClick="@{()->fragment.addLine(addEtsLinearLayout)}"
                 android:text="@string/addExercise1"
                 android:textColor="@android:color/white" />
 
@@ -105,7 +105,7 @@
                 android:layout_height="match_parent"
                 android:background="#696969"
                 android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addLine(addEts)}"
+                android:onClick="@{()->fragment.addLine(addEtsLinearLayout)}"
                 android:text="@string/addExercise3"
                 android:textColor="@android:color/white"/>
 
@@ -116,7 +116,7 @@
                 android:layout_height="match_parent"
                 android:background="#696969"
                 android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addLine(addEts)}"
+                android:onClick="@{()->fragment.addLine(addEtsLinearLayout)}"
                 android:text="@string/addExercise5"
                 android:textColor="@android:color/white" />
 

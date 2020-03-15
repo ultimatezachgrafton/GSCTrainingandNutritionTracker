@@ -83,7 +83,7 @@ public class ViewReportFragment extends Fragment {
         adminReportViewModel.init(currentUser, currentClient, currentReport);
         binding.setReport(adminReportViewModel.getCurrentReport());
 
-        profilePhoto = v.findViewById(R.id.profilePhoto);
+        profilePhoto = v.findViewById(R.id.profilePhotoImageView);
         updatePhotoView();
 
         return v;
