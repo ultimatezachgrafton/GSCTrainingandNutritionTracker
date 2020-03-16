@@ -30,7 +30,6 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.WorkoutViewModel;
 import static zachg.gsctrainingandnutritiontracker.BR.generatedExerciseWeight;
 
 public class WorkoutFragment extends Fragment {
-    // For Users to fill out their workout as they complete it
 
     private FragmentWorkoutBinding binding;
 
@@ -96,7 +95,7 @@ public class WorkoutFragment extends Fragment {
 
         return v;
 
-        // TODO: allows editing and deletion of workouts, exercises
+        // TODO: allows editing and deletion of workouts, exercises - put in all observers etc
     }
 
     public void addLine(LinearLayout ll) {

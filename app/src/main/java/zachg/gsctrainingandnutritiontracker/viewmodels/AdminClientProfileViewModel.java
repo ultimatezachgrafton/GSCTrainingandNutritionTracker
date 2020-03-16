@@ -100,11 +100,11 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
         this.exArray = exArray;
         this.w = w;
         this.workoutTitle = workoutTitle;
+        repo.setQuerySnapshotOnCompleteListener(this);
         repo.duplicateWorkoutTitleCheck(user, workoutTitle);
     }
 
     public void writeToWorkouts(User user, ArrayList<Exercise> exArray, int w, String workoutTitle) {
-
         for (int i = 0; i < exArray.size(); i++) {
             exercises.add(i, exArray.get(i));
         }
@@ -119,7 +119,10 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
         workout.setWorkoutTitle(workoutTitle);
 //        workout.setWorkoutDay(3);
 
-        // TODO: if workoutTitle is null, set null
+        // TODO: nulltitle is string res
+        if (workout.getWorkoutTitle() == null) {
+            workout.setWorkoutTitle("null title");
+        }
         repo.writeWorkoutsToRepo(user, workout);
     }
 
@@ -128,7 +131,6 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
         QuerySnapshot qs = task.getResult();
         if (qs.size() > 0) {
             onError.setValue(DUPLICATE_WORKOUT_TITLE);
-            Log.d(TAG, "duplicate checked");
         } else {
             writeToWorkouts(user, exArray, w, workoutTitle);
         }
