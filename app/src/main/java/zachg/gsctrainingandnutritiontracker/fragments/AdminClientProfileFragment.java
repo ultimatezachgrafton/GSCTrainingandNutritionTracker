@@ -338,8 +338,8 @@ public class AdminClientProfileFragment extends Fragment {
         et.setId(totalExerciseNameEditTexts + 1);
         et2.setId(totalExerciseRepsEditTexts + 1);
 
-        et3.setTextColor(Color.WHITE);
         et3.setHint("Enter weight");
+        et3.setHintTextColor(Color.WHITE);
         et3.setId(totalExerciseWeightEditTexts + 1);
 
         // generate and style TextView
