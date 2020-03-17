@@ -139,7 +139,6 @@ public class WorkoutFragment extends Fragment {
         totalExerciseNameEditTexts++;
         totalExerciseRepsEditTexts++;
         totalExerciseWeightEditTexts++;
-        Log.d(TAG, "addLine3" + totalExerciseNameEditTexts);
     }
 
 

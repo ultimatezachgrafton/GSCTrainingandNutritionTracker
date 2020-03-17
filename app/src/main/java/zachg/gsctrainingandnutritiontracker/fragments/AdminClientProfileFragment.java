@@ -329,10 +329,12 @@ public class AdminClientProfileFragment extends Fragment {
         et2.setLayoutParams(p);
         et3.setLayoutParams(p);
 
+        // TODO: strings are string res values
         et.setHintTextColor(Color.WHITE);
         et2.setHintTextColor(Color.WHITE);
         et.setHint("Enter exercise");
         et2.setHint("Enter reps");
+        et3.setHint("Enter weight");
         et.setId(totalExerciseNameEditTexts + 1);
         et2.setId(totalExerciseRepsEditTexts + 1);
 
@@ -362,9 +364,17 @@ public class AdminClientProfileFragment extends Fragment {
         totalExerciseRepsEditTexts++;
     }
 
+    public void addThree(LinearLayout ll) {
+        addLine(ll); addLine(ll); addLine(ll);
+    }
+
+    public void addFive(LinearLayout ll) {
+        addLine(ll); addLine(ll); addLine(ll); addLine(ll); addLine(ll);
+    }
+
     // TODO: this goes in ViewModel
     //takes an array
-public void getEtValues(String workoutTitle, int w, User currentClient, String exerciseName, String exerciseName2,
+    public void getEtValues(String workoutTitle, int w, User currentClient, String exerciseName, String exerciseName2,
                         String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
                         String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5,
                         String exerciseWeight, String exerciseWeight2, String exerciseWeight3, String exerciseWeight4,
