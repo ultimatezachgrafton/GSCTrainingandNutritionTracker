@@ -139,10 +139,10 @@ public class FirestoreRepository {
         userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
-    public void duplicateWorkoutTitleCheck(User user, String workoutTitle) {
+    public void duplicateWorkoutTitleCheck(User user, Workout workout) {
         Log.d(TAG, "in repo for dup check");
         Query userQuery = userColRef.document(user.getEmail()).collection("workouts")
-                .whereEqualTo("workoutTitle", workoutTitle);
+                .whereEqualTo("workoutTitle", workout.getWorkoutTitle());
         userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 

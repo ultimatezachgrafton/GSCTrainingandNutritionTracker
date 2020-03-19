@@ -1,6 +1,8 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -13,6 +15,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.fragments.ReportListFragment;
+import zachg.gsctrainingandnutritiontracker.fragments.WorkoutListFragment;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
@@ -24,105 +30,116 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
 
     private FirestoreRepository repo = FirestoreRepository.getInstance();
 
-    public String exerciseName, exerciseReps, workoutTitle;
-//    public int workoutDay = 0;
+    public String exerciseName, exerciseReps;
+
+    public User user = new User();
+    public User client = new User();
+    public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
     public Exercise exercise2 = new Exercise();
     public Exercise exercise3 = new Exercise();
     public Exercise exercise4 = new Exercise();
     public Exercise exercise5 = new Exercise();
-    public ArrayList<Exercise> exercises = new ArrayList();
+    public ArrayList<Exercise> exerciseArray = new ArrayList<>();
 
-    private ObservableField<String> etExerciseName = new ObservableField<>();
-    private ObservableField<String> etExerciseName2 = new ObservableField<>();
-    private ObservableField<String> etExerciseName3 = new ObservableField<>();
-    private ObservableField<String> etExerciseName4 = new ObservableField<>();
-    private ObservableField<String> etExerciseName5 = new ObservableField<>();
-
-    private ObservableField<String> etExerciseReps = new ObservableField<>();
-    private ObservableField<String> etExerciseReps2 = new ObservableField<>();
-    private ObservableField<String> etExerciseReps3 = new ObservableField<>();
-    private ObservableField<String> etExerciseReps4 = new ObservableField<>();
-    private ObservableField<String> etExerciseReps5 = new ObservableField<>();
-
-    private ObservableField<String> etExerciseWeight = new ObservableField<>();
-    private ObservableField<String> etExerciseWeight2 = new ObservableField<>();
-    private ObservableField<String> etExerciseWeight3 = new ObservableField<>();
-    private ObservableField<String> etExerciseWeight4 = new ObservableField<>();
-    private ObservableField<String> etExerciseWeight5 = new ObservableField<>();
+    private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
+    private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
+    private ArrayList<EditText> exerciseWeightEditTextArray = new ArrayList<>();
 
     private ObservableField<String> etGeneratedExerciseName = new ObservableField<String>();
     private ObservableField<String> etGeneratedExerciseReps = new ObservableField<String>();
     private ObservableField<String> etGeneratedExerciseWeight = new ObservableField<String>();
-
     private ObservableField<String> etWorkoutTitle = new ObservableField<>();
-//    private ObservableField<Integer> etWorkoutDay = new ObservableField<>();
+    private ObservableField<Integer> etWorkoutDay = new ObservableField<>();
 
     public MutableLiveData<String> generatedExerciseName = new MutableLiveData<String>();
     public MutableLiveData<String> generatedExerciseReps = new MutableLiveData<String>();
     public MutableLiveData<String> generatedExerciseWeight = new MutableLiveData<String>();
-
-    public MutableLiveData<String> newExerciseName = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseName2 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseName3 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseName4 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseName5 = new MutableLiveData<>();
-
-    public MutableLiveData<String> newExerciseReps = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseReps2 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseReps3 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseReps4 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseReps5 = new MutableLiveData<>();
-
-    public MutableLiveData<String> newExerciseWeight = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseWeight2 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseWeight3 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseWeight4 = new MutableLiveData<>();
-    public MutableLiveData<String> newExerciseWeight5 = new MutableLiveData<>();
+    public MutableLiveData<String> newExerciseName = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseReps = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseWeight = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseName2 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseReps2 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseWeight2 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseName3 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseReps3 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseWeight3 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseName4 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseReps4 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseWeight4 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseName5 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseReps5 = new MutableLiveData<String>();
+    public MutableLiveData<String> newExerciseWeight5 = new MutableLiveData<String>();
 
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
-//    public MutableLiveData<Integer> workoutDayLiveData = new MutableLiveData<>();
-
-    public User user = new User();
-    public ArrayList<Exercise> exArray = new ArrayList<>();
-    public int w;
 
     public MutableLiveData<String> onError = new MutableLiveData<>();
-    // TODO: string resource
-    public String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
+
+    public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
+    public static String WORKOUT_TITLE_NULL = "Workout title is null.";
+    public static int ex1 = 0, ex2 = 1, ex3 = 2, ex4 = 3, ex5 = 4;   // numbers for exercise array elements
 
     public AdminClientProfileViewModel() {}
 
     public void init() {}
 
-    public void duplicateWorkoutTitleCheck(User user, ArrayList<Exercise> exArray, int w, String workoutTitle) {
-        this.user = user;
-        this.exArray = exArray;
-        this.w = w;
-        this.workoutTitle = workoutTitle;
-        repo.setQuerySnapshotOnCompleteListener(this);
-        repo.duplicateWorkoutTitleCheck(user, workoutTitle);
+    public void getEtValues(Workout workout, int w, User currentClient, String exerciseName, String exerciseName2,
+                            String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
+                            String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5,
+                            String exerciseWeight, String exerciseWeight2, String exerciseWeight3, String exerciseWeight4,
+                            String exerciseWeight5, LinearLayout ll) {
+
+        Exercise exercise = new Exercise(exerciseName, exerciseReps, exerciseWeight);
+        Exercise exercise2 = new Exercise(exerciseName2, exerciseReps2, exerciseWeight2);
+        Exercise exercise3 = new Exercise(exerciseName3, exerciseReps3, exerciseWeight3);
+        Exercise exercise4 = new Exercise(exerciseName4, exerciseReps4, exerciseWeight4);
+        Exercise exercise5 = new Exercise(exerciseName5, exerciseReps5, exerciseWeight5);
+
+        exerciseArray.add(ex1, exercise);
+        exerciseArray.add(ex2, exercise2);
+        exerciseArray.add(ex3, exercise3);
+        exerciseArray.add(ex4, exercise4);
+        exerciseArray.add(ex5, exercise5);
+
+        // set exerciseName and exerciseReps
+        for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
+            String exName = exerciseNameEditTextArray.get(i).getText().toString();
+            String exReps = exerciseRepsEditTextArray.get(i).getText().toString();
+            String exWeight = exerciseWeightEditTextArray.get(i).getText().toString();
+            Exercise generatedExercise = new Exercise(exName, exReps, exWeight);
+            exerciseArray.add(generatedExercise);
+        }
+
+        // TODO: check for null workoutTitle, anything other than ints in workoutDay,
+        // if an exercise field is not empty, the others cannot be - no half-entered info
+
+        nullWorkoutTitleCheck();
+        duplicateWorkoutTitleCheck(currentClient, workout, exerciseArray);
     }
 
-    public void writeToWorkouts(User user, ArrayList<Exercise> exArray, int w, String workoutTitle) {
-        for (int i = 0; i < exArray.size(); i++) {
-            exercises.add(i, exArray.get(i));
+    // Checks if WorkoutTitle is null
+    public void nullWorkoutTitleCheck() {
+        if (workout.getWorkoutTitle().length() == 0) {
+            onError.setValue(WORKOUT_TITLE_NULL);
+            return;
         }
+    }
 
-        Log.d(TAG, exercises.get(5).getExerciseName());
+    // Checks if workoutTitle is already used for this user
+    public void duplicateWorkoutTitleCheck(User user, Workout workout, ArrayList<Exercise> exerciseArray) {
+        this.user = user;
+        this.exerciseArray = exerciseArray;
+        repo.setQuerySnapshotOnCompleteListener(this);
+        repo.duplicateWorkoutTitleCheck(user, workout);
+    }
 
-//        this.workoutDay = workoutDay;
-        this.workoutTitle = workoutTitle;
+    // Write workouts to the repo
+    public void writeToWorkouts(User user, Workout workout, ArrayList<Exercise> exerciseArray) {
 
-        Workout workout = new Workout(user.getClientName(), user.getEmail(), workoutTitle);
-        workout.setExercises(exercises);
-        workout.setWorkoutTitle(workoutTitle);
-//        workout.setWorkoutDay(3);
+        workout.setClientName(user.getClientName());
+        workout.setEmail(user.getEmail());
+        workout.setExercises(exerciseArray);
 
-        // TODO: nulltitle is string res
-        if (workout.getWorkoutTitle() == null) {
-            workout.setWorkoutTitle("null title");
-        }
         repo.writeWorkoutsToRepo(user, workout);
     }
 
@@ -132,7 +149,7 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
         if (qs.size() > 0) {
             onError.setValue(DUPLICATE_WORKOUT_TITLE);
         } else {
-            writeToWorkouts(user, exArray, w, workoutTitle);
+            writeToWorkouts(user, workout, exerciseArray);
         }
     }
 }

@@ -11,6 +11,9 @@
             name="client"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
+            name="workoutDayString"
+            type="String" />
+        <variable
             name="exerciseName"
             type="String" />
         <variable
@@ -70,9 +73,6 @@
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
-        <variable
-            name="workoutTitle"
-            type="String"/>
         <variable
             name="w"
             type="int"/>
@@ -185,18 +185,19 @@
             android:id="@+id/etWorkoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:hint="@string/enterWorkoutTitle"
-            android:text="@={workoutTitle}"
+            android:text="@={workout.workoutTitle}"
             android:textColorHint="@android:color/white"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etDay"
+            android:id="@+id/etWorkoutDay"
             android:singleLine="true"
             android:hint="@string/enterDay"
             android:textColorHint="@android:color/white"
-            android:inputType="numberSigned"/>
+            android:text="@={workoutDayString}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -441,7 +442,7 @@
             android:text="@string/writeWorkouts"
             android:layout_below="@id/buttonLayout"
             android:layout_margin="1dp"
-            android:onClick="@{()->fragment.getEtValues(workoutTitle, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, exerciseWeight, exerciseWeight2,exerciseWeight3,exerciseWeight4,exerciseWeight5, ll)}"/>
+            android:onClick="@{()->viewmodel.getEtValues(workout, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, exerciseWeight, exerciseWeight2,exerciseWeight3,exerciseWeight4,exerciseWeight5, ll)}"/>
 
     </RelativeLayout>
     </ScrollView>

@@ -31,10 +31,13 @@ public class WorkoutViewModel extends ViewModel {
     public MutableLiveData<String> generatedExerciseName = new MutableLiveData<String>();
     public MutableLiveData<String> generatedExerciseReps = new MutableLiveData<String>();
     public MutableLiveData<String> generatedExerciseWeight = new MutableLiveData<String>();
+    public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
+    public MutableLiveData<String> onError = new MutableLiveData<>();
 
-    public ObservableField<String> exerciseName = new ObservableField<>();
-    public ObservableField<String> exerciseReps = new ObservableField<>();
-    public ObservableField<String> exerciseWeight = new ObservableField<>();
+    public ObservableField<String> etGeneratedExerciseName = new ObservableField<String>();
+    public ObservableField<String> etGeneratedExerciseReps = new ObservableField<String>();
+    public ObservableField<String> etGeneratedExerciseWeight = new ObservableField<String>();
+    public ObservableField<String> etWorkoutTitle = new ObservableField<>();
 
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
@@ -44,6 +47,11 @@ public class WorkoutViewModel extends ViewModel {
     public String dateString;
     public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
     public String workoutTitle;
+
+    public Exercise exercise2 = new Exercise();
+    public Exercise exercise3 = new Exercise();
+    public Exercise exercise4 = new Exercise();
+    public Exercise exercise5 = new Exercise();
 
     public WorkoutViewModel() {}
 
@@ -57,6 +65,7 @@ public class WorkoutViewModel extends ViewModel {
     // Currently deletes all values
     // Writes report to the Repository
     public void updateWorkout(User client, Workout workout) {
+        // getEtValues
         Workout updatedWorkout = new Workout(workout.getClientName(), client.getEmail(),
                 workout.getWorkoutTitle());
         repo.updateWorkout(client, updatedWorkout);

@@ -42,22 +42,23 @@ import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewMod
 public class AdminClientProfileFragment extends Fragment {
 
     // The admin enters workout values and sends them to FirestoreRepository
-
     FragmentAdminClientProfileBinding binding;
 
     private AdminClientProfileViewModel adminClientProfileViewModel = new AdminClientProfileViewModel();
     private final String ARG_USER_ID = "user_id";
     private String TAG = "AdminClientProfileFragment";
 
-    private User currentUser = new User();
-    private User currentClient = new User();
+    private User user = new User();
+    private User client = new User();
 
-    private String workoutTitle, exerciseName, exerciseReps;
-    private int w = 0;
-    private String exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
+    private String workoutDayString, exerciseName, exerciseReps, exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
             exerciseReps4, exerciseName5, exerciseReps5, exerciseWeight, exerciseWeight2, exerciseWeight3,
             exerciseWeight4, exerciseWeight5, generatedExerciseName, generatedExerciseReps,
             generatedExerciseWeight;
+    private int w;
+
+    private Workout workout = new Workout();
+
     private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
     private ArrayList<EditText> exerciseWeightEditTextArray = new ArrayList<>();
@@ -79,11 +80,9 @@ public class AdminClientProfileFragment extends Fragment {
     public AdminClientProfileFragment() {}
 
     public AdminClientProfileFragment(User user, User client) {
-        this.currentUser = user;
-        this.currentClient = client;
+        this.user = user;
+        this.client = client;
     }
-
-    // TODO: sending empty exercises crashes
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,17 +90,36 @@ public class AdminClientProfileFragment extends Fragment {
         binding = FragmentAdminClientProfileBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
         binding.setFragment(this);
-        binding.setUser(currentUser);
-        binding.setClient(currentClient);
+        binding.setUser(user);
+        binding.setClient(client);
+        binding.setWorkout(workout);
+        binding.setWorkoutDayString(workoutDayString);
+        workout.setClientName(client.getClientName());
 
-        binding.setWorkoutTitle(workoutTitle);
+        binding.setExerciseName(exerciseName);
+        binding.setExerciseName2(exerciseName2);
+        binding.setExerciseName3(exerciseName3);
+        binding.setExerciseName4(exerciseName4);
+        binding.setExerciseName5(exerciseName5);
+
+        binding.setExerciseReps(exerciseReps);
+        binding.setExerciseReps2(exerciseReps2);
+        binding.setExerciseReps3(exerciseReps3);
+        binding.setExerciseReps4(exerciseReps4);
+        binding.setExerciseReps5(exerciseReps5);
+
+        binding.setExerciseWeight(exerciseWeight);
+        binding.setExerciseWeight2(exerciseWeight2);
+        binding.setExerciseWeight3(exerciseWeight3);
+        binding.setExerciseWeight4(exerciseWeight4);
+        binding.setExerciseWeight5(exerciseWeight5);
 
         binding.setGeneratedExerciseName(generatedExerciseName);
         binding.setGeneratedExerciseReps(generatedExerciseReps);
         binding.setGeneratedExerciseWeight(generatedExerciseWeight);
 
         bCameraButton = v.findViewById(R.id.cameraImageButton);
-        photoFile = getPhotoFile(currentClient);
+        photoFile = getPhotoFile(client);
 
         // initialize array values
         EditText et = new EditText(getContext());
@@ -126,27 +144,6 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setAddEts(ll);
         binding.setBAddExercise(bAddExercise);
 
-        binding.setExerciseName(exerciseName);
-        binding.setExerciseName(exerciseName2);
-        binding.setExerciseName(exerciseName3);
-        binding.setExerciseName(exerciseName4);
-        binding.setExerciseName(exerciseName5);
-
-        binding.setExerciseReps(exerciseReps);
-        binding.setExerciseReps2(exerciseReps2);
-        binding.setExerciseReps3(exerciseReps3);
-        binding.setExerciseReps4(exerciseReps4);
-        binding.setExerciseReps5(exerciseReps5);
-
-        binding.setExerciseReps(exerciseWeight);
-        binding.setExerciseReps2(exerciseWeight2);
-        binding.setExerciseReps3(exerciseWeight3);
-        binding.setExerciseReps4(exerciseWeight4);
-        binding.setExerciseReps5(exerciseWeight5);
-
-        Workout workout = new Workout(currentClient);
-        binding.setWorkout(workout);
-
         binding.setViewmodel(adminClientProfileViewModel);
         adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
         adminClientProfileViewModel.init();
@@ -154,7 +151,7 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String str) {
-                workoutTitle = str;
+                workout.setWorkoutTitle(str);
             }
         });
 
@@ -372,44 +369,9 @@ public class AdminClientProfileFragment extends Fragment {
         addLine(ll); addLine(ll); addLine(ll); addLine(ll); addLine(ll);
     }
 
-    // TODO: this goes in ViewModel
-    //takes an array
-    public void getEtValues(String workoutTitle, int w, User currentClient, String exerciseName, String exerciseName2,
-                        String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
-                        String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5,
-                        String exerciseWeight, String exerciseWeight2, String exerciseWeight3, String exerciseWeight4,
-                        String exerciseWeight5, LinearLayout ll) {
-
-        ArrayList<Exercise> exArray = new ArrayList<Exercise>();
-
-        Exercise exercise = new Exercise(exerciseName, exerciseReps, exerciseWeight);
-        Exercise exercise2 = new Exercise(exerciseName2, exerciseReps2, exerciseWeight2);
-        Exercise exercise3 = new Exercise(exerciseName3, exerciseReps3, exerciseWeight3);
-        Exercise exercise4 = new Exercise(exerciseName4, exerciseReps4, exerciseWeight4);
-        Exercise exercise5 = new Exercise(exerciseName5, exerciseReps5, exerciseWeight5);
-
-    // use loop
-        exArray.add(0, exercise);
-        exArray.add(1, exercise2);
-        exArray.add(2, exercise3);
-        exArray.add(3, exercise4);
-        exArray.add(4, exercise5);
-
-        // set exerciseName and exerciseReps
-        for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
-            String exName = exerciseNameEditTextArray.get(i).getText().toString();
-            String exReps = exerciseRepsEditTextArray.get(i).getText().toString();
-            String exWeight = exerciseWeightEditTextArray.get(i).getText().toString();
-            Exercise generatedExercise = new Exercise(exName, exReps, exWeight);
-            exArray.add(generatedExercise);
-        }
-
-        adminClientProfileViewModel.duplicateWorkoutTitleCheck(currentClient, exArray, w, workoutTitle);
-    }
-
     public void toDatePicker() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ReportListFragment(currentUser, currentClient)).addToBackStack(null).commit();
+                new ReportListFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void toWorkoutList(User user, User client) {

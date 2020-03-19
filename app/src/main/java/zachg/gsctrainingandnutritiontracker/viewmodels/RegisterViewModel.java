@@ -88,8 +88,9 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         else return false;
     }
 
-    // Checks if email is properly formatted
+    // TODO: Checks if email is properly formatted
     public boolean isEmailValid(String email) {
+        // if...
         return true;
     }
 

@@ -26,7 +26,7 @@ public class Report extends BaseObservable {
     private String exerciseName;
     private Workout workout;
     private String workoutTitle;
-//    private int workoutDay;
+    private int workoutDay;
 
     private String comments;
     private boolean isNew; // determines if report is new
@@ -214,14 +214,13 @@ public class Report extends BaseObservable {
         notifyPropertyChanged(BR.workoutTitle);
     }
 
-    // get the workoutDay and title from the workouts
-//    @Bindable
-//    public int getWorkoutDay() { return workoutDay; }
-//
-//    public void setWorkoutDay(int workoutDay) {
-//        this.workoutDay = workoutDay;
-//        notifyPropertyChanged(BR.workoutDay);
-//    }
+    @Bindable
+    public int getWorkoutDay() { return workoutDay; }
+
+    public void setWorkoutDay(int workoutDay) {
+        this.workoutDay = workoutDay;
+        notifyPropertyChanged(BR.workoutDay);
+    }
 
     @Bindable
     public String getExerciseString() { return exerciseString; }

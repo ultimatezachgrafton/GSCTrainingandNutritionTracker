@@ -90,7 +90,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onChanged(Boolean bool) {
                 if (!bool) {
-                    Log.d(TAG, "bool");
                     Toast.makeText(getContext(), userNull, Toast.LENGTH_LONG).show();
                 }
             }

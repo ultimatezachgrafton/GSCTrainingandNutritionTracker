@@ -12,8 +12,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +27,7 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentWorkoutBinding;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.WorkoutViewModel;
 
 import static zachg.gsctrainingandnutritiontracker.BR.generatedExerciseWeight;
@@ -70,9 +73,15 @@ public class WorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentWorkoutBinding.inflate(inflater, container, false);
-        final View v = binding.getRoot();
+        View v = binding.getRoot();
         binding.setWorkout(workout);
         binding.setClient(client);
+
+        binding.setWorkoutTitle(workoutTitle);
+
+        binding.setGeneratedExerciseName(generatedExerciseName);
+        binding.setGeneratedExerciseReps(generatedExerciseReps);
+        binding.setGeneratedExerciseWeight(generatedExerciseWeight);
 
         LinearLayout ll = new LinearLayout(getContext());
         ll = v.findViewById(R.id.addEtsLinearLayout);
@@ -89,13 +98,52 @@ public class WorkoutFragment extends Fragment {
         exercises = workout.getExercises();
         binding.setExercises(exercises);
 
+        binding.setBAddExercise(bAddExercise);
+
+        Workout workout = new Workout(client);
+        binding.setWorkout(workout);
+
         while (totalExerciseNameEditTexts < exercises.size() ) {
            addLine(ll);
         }
 
-        return v;
+        workoutViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                workoutTitle = str;
+            }
+        });
 
-        // TODO: allows editing and deletion of workouts, exercises - put in all observers etc
+        workoutViewModel.generatedExerciseName.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                generatedExerciseName = str;
+            }
+        });
+
+        workoutViewModel.generatedExerciseReps.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                generatedExerciseReps = str;
+            }
+        });
+
+        workoutViewModel.generatedExerciseWeight.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String str) {
+                generatedExerciseWeight = str;
+            }
+        });
+
+        workoutViewModel.onError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                // TODO: getFocus
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return v;
     }
 
     public void addLine(LinearLayout ll) {
@@ -148,7 +196,7 @@ public class WorkoutFragment extends Fragment {
 
         ArrayList<Exercise> exArray = new ArrayList<Exercise>();
 
-//        String workoutTitle = workoutTitleEditText.toString;
+        // String workoutTitle = workoutTitleEditText.toString;
 
         // set exerciseName and exerciseReps
         for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
