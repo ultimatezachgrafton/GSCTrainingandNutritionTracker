@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -22,7 +23,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class WorkoutViewModel extends ViewModel {
+public class WorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
@@ -33,6 +34,7 @@ public class WorkoutViewModel extends ViewModel {
     public MutableLiveData<String> generatedExerciseWeight = new MutableLiveData<String>();
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
+    public MutableLiveData<Boolean> workoutDeleted = new MutableLiveData<>();
 
     public ObservableField<String> etGeneratedExerciseName = new ObservableField<String>();
     public ObservableField<String> etGeneratedExerciseReps = new ObservableField<String>();
@@ -48,6 +50,9 @@ public class WorkoutViewModel extends ViewModel {
     public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
     public String workoutTitle;
 
+    public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
+    public static String WORKOUT_TITLE_NULL = "Workout title is null.";
+
     public Exercise exercise2 = new Exercise();
     public Exercise exercise3 = new Exercise();
     public Exercise exercise4 = new Exercise();
@@ -62,17 +67,59 @@ public class WorkoutViewModel extends ViewModel {
         this.workoutTitle = workout.getWorkoutTitle();
     }
 
-    // Currently deletes all values
+    // takes array
+    public void getEtValues(User client, Workout workout, LinearLayout ll, ArrayList<String> exerciseNameEditTextArray, ArrayList<String>
+            exerciseRepsEditTextArray, ArrayList<String> exerciseWeightEditTextArray) {
+        ArrayList<Exercise> exArray = new ArrayList<Exercise>();
+
+        // set exerciseName and exerciseReps
+        for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
+            String exName = exerciseNameEditTextArray.get(i);
+            String exReps = exerciseRepsEditTextArray.get(i);;
+            String exWeight = exerciseWeightEditTextArray.get(i);
+            Exercise generatedExercise = new Exercise(exName, exReps, exWeight);
+            exArray.add(generatedExercise);
+        }
+
+        workout.setExercises(exArray);
+        nullWorkoutTitleCheck(client, workout);
+    }
+
+    // Checks if WorkoutTitle is null
+    public void nullWorkoutTitleCheck(User client, Workout workout) {
+        if (workout.getWorkoutTitle().length() == 0) {
+            onError.setValue(WORKOUT_TITLE_NULL);
+            return;
+        } else {
+            duplicateWorkoutTitleCheck(client, workout);
+        }
+    }
+
+    // Checks if workoutTitle is already used for this user
+    public void duplicateWorkoutTitleCheck(User user, Workout workout) {
+        this.client = user;
+        repo.setQuerySnapshotOnCompleteListener(this);
+        repo.duplicateWorkoutTitleCheck(user, workout);
+    }
+
     // Writes report to the Repository
-    public void updateWorkout(User client, Workout workout) {
-        // getEtValues
-        Workout updatedWorkout = new Workout(workout.getClientName(), client.getEmail(),
-                workout.getWorkoutTitle());
-        repo.updateWorkout(client, updatedWorkout);
+    public void updateWorkout(User client, Workout workout, LinearLayout ll, ArrayList<String> exerciseNameEditTextArray, ArrayList<String>
+            exerciseRepsEditTextArray, ArrayList<String> exerciseWeightEditTextArray) {
+        getEtValues(client, workout, ll, exerciseNameEditTextArray, exerciseRepsEditTextArray, exerciseWeightEditTextArray);
     }
 
     public void deleteWorkout(User client, Workout workout) {
         repo.deleteWorkout(client, workout);
-        // go back to workoutlist
+        workoutDeleted.setValue(true);
+    }
+
+    @Override
+    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        QuerySnapshot qs = task.getResult();
+        if (qs.size() > 0) {
+            onError.setValue(DUPLICATE_WORKOUT_TITLE);
+        } else {
+            repo.updateWorkout(client, workout);
+        }
     }
 }

@@ -51,7 +51,7 @@ public class AdminClientProfileFragment extends Fragment {
     private User user = new User();
     private User client = new User();
 
-    private String workoutDayString, exerciseName, exerciseReps, exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
+    private String exerciseName, exerciseReps, exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
             exerciseReps4, exerciseName5, exerciseReps5, exerciseWeight, exerciseWeight2, exerciseWeight3,
             exerciseWeight4, exerciseWeight5, generatedExerciseName, generatedExerciseReps,
             generatedExerciseWeight;
@@ -93,7 +93,6 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setUser(user);
         binding.setClient(client);
         binding.setWorkout(workout);
-        binding.setWorkoutDayString(workoutDayString);
         workout.setClientName(client.getClientName());
 
         binding.setExerciseName(exerciseName);

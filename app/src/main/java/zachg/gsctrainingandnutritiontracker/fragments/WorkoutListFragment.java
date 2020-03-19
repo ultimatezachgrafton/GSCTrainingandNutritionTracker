@@ -38,6 +38,10 @@ public class WorkoutListFragment extends Fragment {
         this.client = client;
     }
 
+    public WorkoutListFragment(User client) {
+        this.client = client;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

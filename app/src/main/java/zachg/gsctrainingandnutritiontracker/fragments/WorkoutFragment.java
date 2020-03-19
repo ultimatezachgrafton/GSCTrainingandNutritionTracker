@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentWorkoutBinding;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -82,6 +83,11 @@ public class WorkoutFragment extends Fragment {
         binding.setGeneratedExerciseName(generatedExerciseName);
         binding.setGeneratedExerciseReps(generatedExerciseReps);
         binding.setGeneratedExerciseWeight(generatedExerciseWeight);
+
+
+        binding.setExerciseNameEditTextArray(exerciseNameEditTextArray);
+        binding.setExerciseRepsEditTextArray(exerciseRepsEditTextArray);
+        binding.setExerciseWeightEditTextArray(exerciseWeightEditTextArray);
 
         LinearLayout ll = new LinearLayout(getContext());
         ll = v.findViewById(R.id.addEtsLinearLayout);
@@ -143,6 +149,14 @@ public class WorkoutFragment extends Fragment {
             }
         });
 
+        workoutViewModel.workoutDeleted.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new WorkoutListFragment(client)).addToBackStack(null).commit();
+            }
+        });
+
         return v;
     }
 
@@ -187,29 +201,6 @@ public class WorkoutFragment extends Fragment {
         totalExerciseNameEditTexts++;
         totalExerciseRepsEditTexts++;
         totalExerciseWeightEditTexts++;
-    }
-
-
-    // should be in ViewModel
-    // takes array
-    public void getEtValues(Workout workout, int w, User client, LinearLayout ll) {
-
-        ArrayList<Exercise> exArray = new ArrayList<Exercise>();
-
-        // String workoutTitle = workoutTitleEditText.toString;
-
-        // set exerciseName and exerciseReps
-        for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
-            String exName = exerciseNameEditTextArray.get(i).getText().toString();
-            String exReps = exerciseRepsEditTextArray.get(i).getText().toString();
-            String exWeight = exerciseWeightEditTextArray.get(i).getText().toString();
-            Exercise generatedExercise = new Exercise(exName, exReps, exWeight);
-            exArray.add(generatedExercise);
-        }
-
-        workout.setExercises(exArray);
-
-        workoutViewModel.updateWorkout(client, workout);
     }
 
     @Override

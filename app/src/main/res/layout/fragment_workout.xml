@@ -40,9 +40,6 @@
             name="workoutTitle"
             type="String"/>
         <variable
-            name="w"
-            type="int"/>
-        <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
         <variable
@@ -57,6 +54,15 @@
         <variable
             name="ll"
             type="android.widget.LinearLayout"/>
+        <variable
+            name="exerciseNameEditTextArray"
+            type="java.util.ArrayList"/>
+        <variable
+            name="exerciseRepsEditTextArray"
+            type="java.util.ArrayList"/>
+        <variable
+            name="exerciseWeightEditTextArray"
+            type="java.util.ArrayList"/>
     </data>
 
     <ScrollView
@@ -152,7 +158,9 @@
             android:background="#696969"
             android:layout_below="@id/buttonLayout"
             android:layout_margin="1dp"
-            android:onClick="@{()->model.updateWorkout(client, workout)}" />
+            android:onClick="@{()->model.updateWorkout(client, workout, ll,
+            exerciseNameEditTextArray, exerciseRepsEditTextArray,
+            exerciseWeightEditTextArray)}" />
 
         <Button
             android:id="@+id/bDeleteWorkout"
@@ -162,7 +170,9 @@
             android:clickable="true"
             android:background="#696969"
             android:layout_below="@id/bUpdateWorkout"
-            android:onClick="@{()->model.deleteWorkout(client, workout)}" />
+            android:onClick="@{()->model.deleteWorkout(client, workout, ll,
+            exerciseNameEditTextArray, exerciseRepsEditTextArray,
+            exerciseWeightEditTextArray)}" />
 
     </RelativeLayout>
     </ScrollView>

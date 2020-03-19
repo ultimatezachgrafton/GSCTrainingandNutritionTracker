@@ -88,10 +88,9 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         else return false;
     }
 
-    // TODO: Checks if email is properly formatted
+    // TODO: Make sure this works
     public boolean isEmailValid(String email) {
-        // if...
-        return true;
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     // Checks if password is long enough

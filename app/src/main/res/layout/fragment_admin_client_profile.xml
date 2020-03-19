@@ -190,15 +190,6 @@
             android:text="@={workout.workoutTitle}"
             android:textColorHint="@android:color/white"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etWorkoutDay"
-            android:singleLine="true"
-            android:hint="@string/enterDay"
-            android:textColorHint="@android:color/white"
-            android:text="@={workoutDayString}"/>
-
         <TextView
             android:textColor="@android:color/white"
             android:id="@+id/tvExerciseNum1"
