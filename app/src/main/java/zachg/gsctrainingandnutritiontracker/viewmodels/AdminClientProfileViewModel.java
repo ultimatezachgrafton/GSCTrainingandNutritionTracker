@@ -83,7 +83,7 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
 
     public void init() {}
 
-    public void getEtValues(Workout workout, int w, User currentClient, String exerciseName, String exerciseName2,
+    public void getEtValues(Workout workout, int w, User client, String exerciseName, String exerciseName2,
                             String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
                             String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5,
                             String exerciseWeight, String exerciseWeight2, String exerciseWeight3, String exerciseWeight4,
@@ -110,18 +110,16 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
             exerciseArray.add(generatedExercise);
         }
 
-        // TODO: check for null workoutTitle, anything other than ints in workoutDay,
-        // if an exercise field is not empty, the others cannot be - no half-entered info
-
-        nullWorkoutTitleCheck();
-        duplicateWorkoutTitleCheck(currentClient, workout, exerciseArray);
+        nullWorkoutTitleCheck(client, workout, exerciseArray);
     }
 
     // Checks if WorkoutTitle is null
-    public void nullWorkoutTitleCheck() {
+    public void nullWorkoutTitleCheck(User client, Workout workout, ArrayList<Exercise> exerciseArray) {
         if (workout.getWorkoutTitle().length() == 0) {
             onError.setValue(WORKOUT_TITLE_NULL);
             return;
+        } else {
+            duplicateWorkoutTitleCheck(client, workout, exerciseArray);
         }
     }
 
