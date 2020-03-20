@@ -13,32 +13,11 @@
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
-            name="addEts"
-            type="android.widget.LinearLayout"/>
-        <variable
             name="model"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.WorkoutViewModel" />
         <variable
-            name="generatedExerciseName"
-            type="String"/>
-        <variable
-            name="generatedExerciseReps"
-            type="String"/>
-        <variable
-            name="generatedExerciseWeight"
-            type="String"/>
-        <variable
-            name="exercises"
-            type="java.util.ArrayList" />
-        <variable
-            name="exercise"
-            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
-        <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
-        <variable
-            name="workoutTitle"
-            type="String"/>
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
@@ -51,19 +30,6 @@
         <variable
             name="bAddExercise"
             type="android.widget.Button" />
-        <variable
-            name="ll"
-            type="android.widget.LinearLayout"/>
-        <import type="java.util.ArrayList"/>
-        <variable
-            name="exerciseNameEditTextArray"
-            type="ArrayList"/>
-        <variable
-            name="exerciseRepsEditTextArray"
-            type="ArrayList"/>
-        <variable
-            name="exerciseWeightEditTextArray"
-            type="ArrayList"/>
     </data>
 
     <ScrollView
@@ -98,13 +64,32 @@
         android:textColor="@color/white"
         android:text="@string/workoutContains"/>
 
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layout_exercise_list"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_below="@id/separator1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvExercise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/darker_gray"
+                tools:listitem="@layout/rv_exercise_item" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <LinearLayout
         android:id="@+id/addEtsLinearLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#525252"
-        android:layout_below="@id/separator1">
+        android:layout_below="@id/layout_exercise_list">
     </LinearLayout>
 
         <LinearLayout
@@ -122,7 +107,7 @@
                 android:layout_height="match_parent"
                 android:background="#696969"
                 android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addLine(addEtsLinearLayout)}"
+                android:onClick="@{()->fragment.addOne()}"
                 android:text="@string/addExercise1"
                 android:textColor="@android:color/white" />
 
@@ -133,7 +118,7 @@
                 android:layout_height="match_parent"
                 android:background="#696969"
                 android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addLine(addEtsLinearLayout)}"
+                android:onClick="@{()->fragment.addThree()}"
                 android:text="@string/addExercise3"
                 android:textColor="@android:color/white"/>
 
@@ -144,7 +129,7 @@
                 android:layout_height="match_parent"
                 android:background="#696969"
                 android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addLine(addEtsLinearLayout)}"
+                android:onClick="@{()->fragment.addFive()}"
                 android:text="@string/addExercise5"
                 android:textColor="@android:color/white" />
 

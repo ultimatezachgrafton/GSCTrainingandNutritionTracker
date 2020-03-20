@@ -55,28 +55,12 @@ public class AdminClientProfileFragment extends Fragment {
     private ExerciseListAdapter exerciseListAdapter;
     private final String ARG_USER_ID = "user_id";
     private String TAG = "AdminClientProfileFragment";
-
     private User user = new User();
     private User client = new User();
-
     private Workout workout = new Workout();
-
-    private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
-    private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
-    private ArrayList<EditText> exerciseWeightEditTextArray = new ArrayList<>();
-    private Exercise exercise = new Exercise();
-    private Exercise exercise2 = new Exercise();
-    private Exercise exercise3 = new Exercise();
-    private Exercise exercise4 = new Exercise();
-    private Exercise exercise5 = new Exercise();
-    private int totalExerciseNameEditTexts = 5;
-    private int totalExerciseRepsEditTexts = 5;
-    private int totalExerciseWeightEditTexts = 5;
     private static final int REQUEST_PHOTO = 2;
-
     private ImageView profilePhoto;
     private ImageButton bCameraButton;
-    private Button bAddExercise;
     private File photoFile;
 
     public AdminClientProfileFragment() {}
@@ -97,10 +81,6 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setWorkout(workout);
         workout.setClientName(client.getClientName());
 
-        binding.setExerciseName1(exerciseName1);
-        binding.setExeGeneratedExerciseReps(generatedExerciseReps);
-        binding.setGeneratedExerciseWeight(generatedExerciseWeight);
-
         bCameraButton = v.findViewById(R.id.cameraImageButton);
         photoFile = getPhotoFile(client);
 
@@ -116,11 +96,9 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
-        binding.setBAddExercise(bAddExercise);
-
         binding.setViewmodel(adminClientProfileViewModel);
         adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
-        adminClientProfileViewModel.init(user, workout);
+        adminClientProfileViewModel.init(client, workout);
 
         adminClientProfileViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
             @Override
@@ -137,37 +115,10 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
-        adminClientProfileViewModel.getExercises().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
-            @Override
-            public void onChanged(@Nullable FirestoreRecyclerOptions<Exercise> exercises) {
-                initRecyclerView(exercises);
-                exerciseListAdapter.startListening();
-            }
-        });
-
-        adminClientProfileViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (!aBoolean) {
-                    binding.rvExercise.smoothScrollToPosition(adminClientProfileViewModel.getExercises().getValue().getSnapshots().size() - 1);
-                }
-            }
-
-        });
-
         profilePhoto = v.findViewById(R.id.profilePhotoImageView);
         updatePhotoView();
 
         return v;
-    }
-
-    private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
-        exerciseListAdapter = new ExerciseListAdapter(exercises);
-        binding.rvExercise.setAdapter(exerciseListAdapter);
-        binding.rvExercise.setHasFixedSize(true);
-        binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // load five
     }
 
     public File getPhotoFile(User user) {
@@ -191,10 +142,6 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
-    public void addNewWorkout() {
-        // load five empty exercises
-    }
-
     public void addOne() {}
 
     public void addThree() {}
@@ -211,6 +158,11 @@ public class AdminClientProfileFragment extends Fragment {
                 new WorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 
+    public void toWorkoutFragment(User user, User client) {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new WorkoutFragment(user, client)).addToBackStack(null).commit();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -218,6 +170,5 @@ public class AdminClientProfileFragment extends Fragment {
 
     public void onStop() {
         super.onStop();
-        exerciseListAdapter.stopListening();
     }
 }

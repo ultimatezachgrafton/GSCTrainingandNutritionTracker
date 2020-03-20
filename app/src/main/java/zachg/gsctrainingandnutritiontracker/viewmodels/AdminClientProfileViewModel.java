@@ -31,15 +31,10 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
 
     private FirestoreRepository repo = FirestoreRepository.getInstance();
 
-    public String exerciseName, exerciseReps;
-
-    public User user = new User();
     public User client = new User();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
     public ArrayList<Exercise> exerciseArray = new ArrayList<>();
-    private MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
 
@@ -51,17 +46,6 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
     public void init(User client, Workout workout) {
         this.client = client;
         repo = FirestoreRepository.getInstance();
-//        exerciseLiveData.setValue(initExercises()); // five empty exercise items
-        exerciseLiveData.setValue(repo.getExercisesFromRepo(client, workout));
-        Log.d(TAG, String.valueOf(exerciseLiveData.getValue()));
-    }
-
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
-        return exerciseLiveData;
-    }
-
-    public MutableLiveData<Boolean> getIsUpdating() {
-        return isUpdating;
     }
 
     // Checks if WorkoutTitle is null
@@ -76,7 +60,6 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
 
     // Checks if workoutTitle is already used for this user
     public void duplicateWorkoutTitleCheck(User user, Workout workout, ArrayList<Exercise> exerciseArray) {
-        this.user = user;
         this.exerciseArray = exerciseArray;
         repo.setQuerySnapshotOnCompleteListener(this);
         repo.duplicateWorkoutTitleCheck(user, workout);
@@ -98,7 +81,7 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
         if (qs.size() > 0) {
             onError.setValue(DUPLICATE_WORKOUT_TITLE);
         } else {
-            writeToWorkouts(user, workout, exerciseArray);
+            writeToWorkouts(client, workout, exerciseArray);
         }
     }
 }

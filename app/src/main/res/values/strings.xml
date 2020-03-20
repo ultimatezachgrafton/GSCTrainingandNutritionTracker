@@ -78,7 +78,7 @@
     <string name="delete_workout">Delete Workout</string>
     <string name="update_workout">Update Workout</string>
     <string name="exercise_weight">Enter Weight</string>
-    <string name="enterWorkoutTitle">Enter Workout Title</string>
+    <string name="enterWorkoutTitle">Enter New Workout Title</string>
     <string name="enterReps">Enter Reps</string>
     <string name="enterName">Enter Name</string>
     <string name="addWorkout">Create New Workout</string>

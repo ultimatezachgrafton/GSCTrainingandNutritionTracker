@@ -30,10 +30,6 @@
             type="android.widget.Button" />
     </data>
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,86 +95,25 @@
             android:textColor="@android:color/white"
             android:layout_margin="1dp"/>
 
+        <EditText
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/etWorkoutTitle"
+            android:hint="@string/enterWorkoutTitle"
+            android:textColorHint="@color/white"
+            android:text="@={workout.workoutTitle}"
+            android:textSize="24dp"
+            android:layout_below="@id/bToWorkoutList"/>
+
         <Button
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/bCreateNewWorkout"
             android:text="@string/addWorkout"
             android:textSize="24dp"
-            android:layout_below="@id/bToWorkoutList"
-            android:onClick="()->fragment.addNewWorkout()"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/newWorkoutLayout">
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/layout_exercise_list"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_below="@id/bCreateNewWorkout">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvExercise"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/darker_gray"
-                tools:listitem="@layout/rv_exercise_item" />
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-            <Button
-                android:id="@+id/bAddExercise1"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="#696969"
-                android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addOne()}"
-                android:text="@string/addExercise1"
-                android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/bAddExercise3"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:background="#696969"
-            android:layout_margin="1dp"
-            android:onClick="@{()->fragment.addThree()}"
-            android:text="@string/addExercise3"
-            android:textColor="@android:color/white"/>
-
-        <Button
-            android:id="@+id/bAddExercise5"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:background="#696969"
-            android:layout_margin="1dp"
-            android:onClick="@{()->fragment.addFive()}"
-            android:text="@string/addExercise5"
-            android:textColor="@android:color/white" />
-
-        </LinearLayout>
-
-        <Button
-            android:background="#696969"
-            android:textColor="@android:color/white"
-            android:id="@+id/bWriteWorkouts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/writeWorkouts"
-            android:layout_below="@id/newWorkoutLayout"
-            android:layout_margin="1dp"
-            android:onClick="@{()->viewmodel.nullWorkoutTitleCheck(client, workout)}"/>
+            android:onClick="@{()->fragment.toWorkoutFragment(user, client)}"
+            android:layout_below="@id/etWorkoutTitle"/>
 
     </RelativeLayout>
-    </ScrollView>
 
 </layout>

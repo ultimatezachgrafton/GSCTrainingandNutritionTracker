@@ -59,11 +59,6 @@ public class FirestoreRepository {
         this.querySnapshotOnCompleteListener = snapshotOnCompleteListener;
     }
 
-
-    public void setDocSnapshotOnCompleteListener(OnCompleteListener<DocumentSnapshot> snapshotOnCompleteListener) {
-        this.docSnapshotOnCompleteListener = snapshotOnCompleteListener;
-    }
-
     // Gets FirebaseUser for authentification
     public FirebaseUser getFirebaseUser() {
         if (auth.getCurrentUser() != null) {
@@ -158,8 +153,6 @@ public class FirestoreRepository {
 
     // Gets all of a single User's reports on a specific date
     public void getReportByUser(User user) {
-        // TODO: when registering user, doc id is always user.getemail
-
         Query reportQuery = userColRef.document(user.getEmail())
                 .collection("reports");
         reportQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
@@ -193,10 +186,22 @@ public class FirestoreRepository {
                 .build();
     }
 
-    public void getExercisesForIteration(User user, int num) {
-        Query exerciseQuery = userColRef.document(user.getEmail()).collection("exercises")
-                .whereEqualTo("workoutDay", num);
-        exerciseQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
+    public void createInitialExercises(User user, Workout workout) {
+        db.collection("users").document(user.getEmail()).collection("workouts")
+                .document(workout.getWorkoutTitle())
+                .set(workout)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("reports", "DocumentSnapshot added with ID: ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("reports", "Error writing document", e);
+                    }
+                });
     }
 
     // Add FirebaseUser to database, returns error or success message
@@ -291,8 +296,6 @@ public class FirestoreRepository {
 
     public void writeReportToRepo(Report report) {
         report.setFullReport(report.convertToFullReport(report));
-        Log.d(TAG, "exStr3: " + report.getExerciseString());
-        Log.d(TAG, "fullReport: " + report.getFullReport());
 
         db.collection("users").document(report.getEmail()).collection("reports")
                 .document(report.getDateString())
