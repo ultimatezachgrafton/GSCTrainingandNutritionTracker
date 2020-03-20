@@ -7,20 +7,20 @@ import androidx.databinding.library.baseAdapters.BR;
 public class Exercise extends BaseObservable {
 
     private String email;
-    private String exerciseName, exerciseNum, reps, exerciseWeight;
+    private String exerciseName, exerciseNum, exerciseReps, exerciseWeight;
     private int day;
     private int selectedItemPosition;
 
-    public Exercise(String exerciseName, String reps, String weight) {
+    public Exercise(String exerciseName, String exerciseReps, String weight) {
         this.exerciseName = exerciseName;
-        this.reps = reps;
+        this.exerciseReps = exerciseReps;
         this.exerciseWeight = weight;
     }
 
-    public Exercise(String exerciseName, String exerciseNum, String reps, String exerciseWeight, int day){
+    public Exercise(String exerciseName, String exerciseNum, String exerciseReps, String exerciseWeight, int day){
         this.exerciseName = exerciseName;
         this.exerciseNum = exerciseNum;
-        this.reps = reps;
+        this.exerciseReps = exerciseReps;
         this.exerciseWeight = exerciseWeight;
         this.day = day;
     }
@@ -40,10 +40,10 @@ public class Exercise extends BaseObservable {
     }
 
     @Bindable
-    public String getReps() { return reps; }
+    public String getExerciseReps() { return exerciseReps; }
 
-    public void setReps(String reps) {
-        this.reps = reps;
+    public void setExerciseReps(String exerciseReps) {
+        this.exerciseReps = exerciseReps;
         notifyPropertyChanged(BR.exerciseReps);
     }
 
@@ -56,14 +56,6 @@ public class Exercise extends BaseObservable {
         this.exerciseWeight = exerciseWeight;
         notifyPropertyChanged(BR.exerciseWeight);
     }
-
-//    public int getDay() { return day; }
-//
-//    public void setDay(int day) { this.day = day; }
-
-    public String getExerciseNum() { return exerciseNum; }
-
-    public void setExerciseNum(String exerciseNum) { this.exerciseNum = exerciseNum; }
 
     @Bindable
     public int getSelectedItemPosition() {

@@ -79,7 +79,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
             // set these into a single String and add it to fullreport;
             exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseName());
             exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseWeight());
-            exerciseStringBuilder.append(exerciseArrayList.get(i).getReps());
+            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseReps());
         }
         report.setExerciseString(String.valueOf(exerciseStringBuilder));
     }

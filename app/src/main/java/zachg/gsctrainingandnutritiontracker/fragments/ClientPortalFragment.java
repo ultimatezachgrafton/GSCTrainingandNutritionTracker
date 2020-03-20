@@ -31,30 +31,30 @@ public class ClientPortalFragment extends Fragment {
     FragmentClientProfileBinding binding;
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private User currentUser = new User();
+    private User user = new User();
+    private User client = new User();
     private Report currentReport = new Report();
     private ClientPortalViewModel clientProfileViewModel;
     public String TAG = "ClientPortalFragment";
     public CalendarView calendarView;
     private String greeting;
 
-    public ClientPortalFragment(User user) {
-        this.currentUser = user;
-    }
+    // Initializes client for maneuverability within WorkoutListFragment
+    public ClientPortalFragment(User user, User client) { this.user = user; this.client = client; }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment_report_list
         binding = FragmentClientProfileBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
-        binding.setUser(currentUser);
+        binding.setUser(user);
         binding.setReport(currentReport);
         binding.setFragment(this);
         binding.setViewmodel(clientProfileViewModel);
         binding.setGreeting(greeting);
 
         clientProfileViewModel = ViewModelProviders.of(this).get(ClientPortalViewModel.class);
-        clientProfileViewModel.init(currentUser);
+        clientProfileViewModel.init(user);
 
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
@@ -67,7 +67,7 @@ public class ClientPortalFragment extends Fragment {
             }
         });
         
-        greeting = "Hi, " + currentUser.getFirstName() + "!";
+        greeting = "Hi, " + user.getFirstName() + "!";
 
         clientProfileViewModel.noReport.observe(this, new Observer<Integer>() {
             @Override
@@ -132,12 +132,12 @@ public class ClientPortalFragment extends Fragment {
 
     public void goToNewReport() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ReportFragment(currentReport, currentUser)).addToBackStack(null).commit();
+                new SelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
     }
 
     public void goToViewReport() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ViewReportFragment(currentUser, currentReport.getDateString())).addToBackStack(null).commit();
+                new ViewReportFragment(user, currentReport.getDateString())).addToBackStack(null).commit();
     }
 
 }

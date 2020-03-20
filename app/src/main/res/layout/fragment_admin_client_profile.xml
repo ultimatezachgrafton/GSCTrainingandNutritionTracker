@@ -11,71 +11,11 @@
             name="client"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
-            name="workoutDayString"
-            type="String" />
-        <variable
-            name="exerciseName"
-            type="String" />
-        <variable
-            name="exerciseReps"
-            type="String"/>
-        <variable
-            name="exerciseName2"
-            type="String" />
-        <variable
-            name="exerciseReps2"
-            type="String"/>
-        <variable
-            name="exerciseName3"
-            type="String" />
-        <variable
-            name="exerciseReps3"
-            type="String"/>
-        <variable
-            name="exerciseName4"
-            type="String" />
-        <variable
-            name="exerciseReps4"
-            type="String"/>
-        <variable
-            name="exerciseName5"
-            type="String" />
-        <variable
-            name="exerciseReps5"
-            type="String"/>
-        <variable
-            name="exerciseWeight"
-            type="String"/>
-        <variable
-            name="exerciseWeight2"
-            type="String"/>
-        <variable
-            name="exerciseWeight3"
-            type="String"/>
-        <variable
-            name="exerciseWeight4"
-            type="String"/>
-        <variable
-            name="exerciseWeight5"
-            type="String"/>
-        <variable
-            name="generatedExerciseName"
-            type="String"/>
-        <variable
-            name="generatedExerciseReps"
-            type="String"/>
-        <variable
-            name="generatedExerciseWeight"
-            type="String"/>
-        <variable
             name="fragment"
             type="zachg.gsctrainingandnutritiontracker.fragments.AdminClientProfileFragment"/>
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
-        <variable
-            name="w"
-            type="int"/>
         <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
@@ -86,14 +26,8 @@
             name="profilePhoto"
             type="android.widget.ImageView"/>
         <variable
-            name="addEts"
-            type="android.widget.LinearLayout"/>
-        <variable
             name="bAddExercise"
             type="android.widget.Button" />
-        <variable
-            name="ll"
-            type="android.widget.LinearLayout"/>
     </data>
 
     <ScrollView
@@ -145,7 +79,7 @@
             android:layout_marginBottom="1dp"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
-            android:onClick="@{()->fragment.toDatePicker()}"
+            android:onClick="@{()->fragment.toDatePicker(user, client)}"
             android:text="@string/toDatePicker"
             android:textColor="@android:color/white"
             android:layout_margin="1dp"/>
@@ -165,229 +99,38 @@
             android:textColor="@android:color/white"
             android:layout_margin="1dp"/>
 
-    <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:background="#525252"
-        android:layout_height="match_parent"
-        android:id="@+id/exerciseLinearLayout"
-        android:layout_below="@id/bToWorkoutList">
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvAddWorkout"
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/bCreateNewWorkout"
             android:text="@string/addWorkout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:layout_gravity="center"/>
-
-        <EditText
-            android:id="@+id/etWorkoutTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:hint="@string/enterWorkoutTitle"
-            android:text="@={workout.workoutTitle}"
-            android:textColorHint="@android:color/white"/>
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExerciseName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enterName"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseName}"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etReps"
-            android:hint="@string/enterReps"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseReps}"/>
-
-        <EditText
-            android:id="@+id/etExerciseWeight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/exercise_weight"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseWeight}"/>
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise2"
-            android:textSize="18sp"
-            android:textColorHint="@android:color/white"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExerciseName2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enterName"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseName2}"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etReps2"
-            android:hint="@string/enterReps"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseReps2}"/>
-
-        <EditText
-            android:id="@+id/etExerciseWeight2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/exercise_weight"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseWeight2}"/>
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise3"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExerciseName3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enterName"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseName3}"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etReps3"
-            android:textColorHint="@android:color/white"
-            android:hint="@string/enterReps"
-            android:text="@={exerciseReps3}"/>
-
-        <EditText
-            android:id="@+id/etExerciseWeight3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/exercise_weight"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseWeight3}"/>
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise4"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExerciseName4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enterName"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseName4}"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etReps4"
-            android:hint="@string/enterReps"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseReps4}"/>
-
-        <EditText
-            android:id="@+id/etExerciseWeight4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/exercise_weight"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseWeight4}"/>
-
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/tvExerciseNum5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/exercise5"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExerciseName5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enterName"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseName5}"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etReps5"
-            android:hint="@string/enterReps"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseReps5}"/>
-
-        <EditText
-            android:id="@+id/etExerciseWeight5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/exercise_weight"
-            android:singleLine="true"
-            android:textColorHint="@android:color/white"
-            android:text="@={exerciseWeight5}"/>
-    </LinearLayout>
+            android:textSize="24dp"
+            android:layout_below="@id/bToWorkoutList"
+            android:onClick="()->fragment.addNewWorkout()"/>
 
         <LinearLayout
-            android:id="@+id/addEtsLinearLayout"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#525252"
-            android:layout_below="@id/exerciseLinearLayout">
+            android:id="@+id/newWorkoutLayout">
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/buttonLayout"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="#525252"
-            android:layout_below="@id/addEtsLinearLayout">
+            android:id="@+id/layout_exercise_list"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_below="@id/bCreateNewWorkout">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvExercise"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/darker_gray"
+                tools:listitem="@layout/rv_exercise_item" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <Button
                 android:id="@+id/bAddExercise1"
@@ -396,7 +139,7 @@
                 android:layout_height="match_parent"
                 android:background="#696969"
                 android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addLine(exerciseLinearLayout)}"
+                android:onClick="@{()->fragment.addOne()}"
                 android:text="@string/addExercise1"
                 android:textColor="@android:color/white" />
 
@@ -407,7 +150,7 @@
             android:layout_height="match_parent"
             android:background="#696969"
             android:layout_margin="1dp"
-            android:onClick="@{()->fragment.addThree(exerciseLinearLayout)}"
+            android:onClick="@{()->fragment.addThree()}"
             android:text="@string/addExercise3"
             android:textColor="@android:color/white"/>
 
@@ -418,7 +161,7 @@
             android:layout_height="match_parent"
             android:background="#696969"
             android:layout_margin="1dp"
-            android:onClick="@{()->fragment.addFive(exerciseLinearLayout)}"
+            android:onClick="@{()->fragment.addFive()}"
             android:text="@string/addExercise5"
             android:textColor="@android:color/white" />
 
@@ -431,9 +174,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/writeWorkouts"
-            android:layout_below="@id/buttonLayout"
+            android:layout_below="@id/newWorkoutLayout"
             android:layout_margin="1dp"
-            android:onClick="@{()->viewmodel.getEtValues(workout, w, client, exerciseName, exerciseName2, exerciseName3, exerciseName4, exerciseName5,exerciseReps, exerciseReps2,exerciseReps3,exerciseReps4,exerciseReps5, exerciseWeight, exerciseWeight2,exerciseWeight3,exerciseWeight4,exerciseWeight5, ll)}"/>
+            android:onClick="@{()->viewmodel.nullWorkoutTitleCheck(client, workout)}"/>
 
     </RelativeLayout>
     </ScrollView>

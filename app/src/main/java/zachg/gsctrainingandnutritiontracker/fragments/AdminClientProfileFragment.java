@@ -21,16 +21,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
+import zachg.gsctrainingandnutritiontracker.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -45,17 +52,12 @@ public class AdminClientProfileFragment extends Fragment {
     FragmentAdminClientProfileBinding binding;
 
     private AdminClientProfileViewModel adminClientProfileViewModel = new AdminClientProfileViewModel();
+    private ExerciseListAdapter exerciseListAdapter;
     private final String ARG_USER_ID = "user_id";
     private String TAG = "AdminClientProfileFragment";
 
     private User user = new User();
     private User client = new User();
-
-    private String exerciseName, exerciseReps, exerciseName2, exerciseReps2, exerciseName3, exerciseReps3, exerciseName4,
-            exerciseReps4, exerciseName5, exerciseReps5, exerciseWeight, exerciseWeight2, exerciseWeight3,
-            exerciseWeight4, exerciseWeight5, generatedExerciseName, generatedExerciseReps,
-            generatedExerciseWeight;
-    private int w;
 
     private Workout workout = new Workout();
 
@@ -95,36 +97,12 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setWorkout(workout);
         workout.setClientName(client.getClientName());
 
-        binding.setExerciseName(exerciseName);
-        binding.setExerciseName2(exerciseName2);
-        binding.setExerciseName3(exerciseName3);
-        binding.setExerciseName4(exerciseName4);
-        binding.setExerciseName5(exerciseName5);
-
-        binding.setExerciseReps(exerciseReps);
-        binding.setExerciseReps2(exerciseReps2);
-        binding.setExerciseReps3(exerciseReps3);
-        binding.setExerciseReps4(exerciseReps4);
-        binding.setExerciseReps5(exerciseReps5);
-
-        binding.setExerciseWeight(exerciseWeight);
-        binding.setExerciseWeight2(exerciseWeight2);
-        binding.setExerciseWeight3(exerciseWeight3);
-        binding.setExerciseWeight4(exerciseWeight4);
-        binding.setExerciseWeight5(exerciseWeight5);
-
-        binding.setGeneratedExerciseName(generatedExerciseName);
-        binding.setGeneratedExerciseReps(generatedExerciseReps);
+        binding.setExerciseName1(exerciseName1);
+        binding.setExeGeneratedExerciseReps(generatedExerciseReps);
         binding.setGeneratedExerciseWeight(generatedExerciseWeight);
 
         bCameraButton = v.findViewById(R.id.cameraImageButton);
         photoFile = getPhotoFile(client);
-
-        // initialize array values
-        EditText et = new EditText(getContext());
-        while(exerciseNameEditTextArray.size() < totalExerciseNameEditTexts) exerciseNameEditTextArray.add(0, et);
-        while(exerciseRepsEditTextArray.size() < totalExerciseRepsEditTexts) exerciseRepsEditTextArray.add(0, et);
-        while(exerciseWeightEditTextArray.size() < totalExerciseWeightEditTexts) exerciseWeightEditTextArray.add(0, et);
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         bCameraButton.setOnClickListener( new View.OnClickListener() {
@@ -138,145 +116,16 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
-        LinearLayout ll = new LinearLayout(getContext());
-        binding.setLl(ll);
-        binding.setAddEts(ll);
         binding.setBAddExercise(bAddExercise);
 
         binding.setViewmodel(adminClientProfileViewModel);
         adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
-        adminClientProfileViewModel.init();
+        adminClientProfileViewModel.init(user, workout);
 
         adminClientProfileViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String str) {
                 workout.setWorkoutTitle(str);
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseName.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseName = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseReps.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseReps = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseWeight.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseWeight = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseName2.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseName2 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseReps2.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseReps2 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseWeight2.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseWeight2 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseName3.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseName3 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseReps3.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseReps3 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseWeight3.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseWeight3 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseName4.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseName4 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseReps4.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseReps4 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseWeight4.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseWeight4 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseName5.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseName5 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseReps5.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseReps5 = str;
-            }
-        });
-
-        adminClientProfileViewModel.newExerciseWeight5.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                exerciseWeight5 = str;
-            }
-        });
-
-        adminClientProfileViewModel.generatedExerciseName.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                generatedExerciseName = str;
-            }
-        });
-
-        adminClientProfileViewModel.generatedExerciseReps.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                generatedExerciseReps = str;
-            }
-        });
-
-        adminClientProfileViewModel.generatedExerciseWeight.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String str) {
-                generatedExerciseWeight = str;
             }
         });
 
@@ -288,10 +137,37 @@ public class AdminClientProfileFragment extends Fragment {
             }
         });
 
+        adminClientProfileViewModel.getExercises().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
+            @Override
+            public void onChanged(@Nullable FirestoreRecyclerOptions<Exercise> exercises) {
+                initRecyclerView(exercises);
+                exerciseListAdapter.startListening();
+            }
+        });
+
+        adminClientProfileViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (!aBoolean) {
+                    binding.rvExercise.smoothScrollToPosition(adminClientProfileViewModel.getExercises().getValue().getSnapshots().size() - 1);
+                }
+            }
+
+        });
+
         profilePhoto = v.findViewById(R.id.profilePhotoImageView);
         updatePhotoView();
 
         return v;
+    }
+
+    private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
+        exerciseListAdapter = new ExerciseListAdapter(exercises);
+        binding.rvExercise.setAdapter(exerciseListAdapter);
+        binding.rvExercise.setHasFixedSize(true);
+        binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // load five
     }
 
     public File getPhotoFile(User user) {
@@ -315,66 +191,33 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
-    public void addLine(LinearLayout ll) {
-        // add EditTexts
-        EditText et = new EditText(getContext());
-        EditText et2 = new EditText(getContext());
-        EditText et3 = new EditText(getContext());
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        et.setLayoutParams(p);
-        et2.setLayoutParams(p);
-        et3.setLayoutParams(p);
-
-        // TODO: strings are string res values
-        et.setHintTextColor(Color.WHITE);
-        et2.setHintTextColor(Color.WHITE);
-        et.setHint("Enter exercise");
-        et2.setHint("Enter reps");
-        et3.setHint("Enter weight");
-        et.setId(totalExerciseNameEditTexts + 1);
-        et2.setId(totalExerciseRepsEditTexts + 1);
-
-        et3.setHint("Enter weight");
-        et3.setHintTextColor(Color.WHITE);
-        et3.setId(totalExerciseWeightEditTexts + 1);
-
-        // generate and style TextView
-        TextView tv = new TextView(getContext());
-        int i = totalExerciseNameEditTexts + 1;
-        tv.setText("Exercise " + i + ":");
-        tv.setTextColor(Color.WHITE);
-        tv.setTypeface(null, Typeface.BOLD);
-        tv.setTextSize(18);
-
-        // Add to the View
-        ll.addView(tv);
-        ll.addView(et);
-        ll.addView(et2);
-        ll.addView(et3);
-
-        exerciseNameEditTextArray.add(totalExerciseNameEditTexts, et);
-        exerciseRepsEditTextArray.add(totalExerciseRepsEditTexts, et2);
-        exerciseWeightEditTextArray.add(totalExerciseWeightEditTexts, et3);
-
-        totalExerciseNameEditTexts++;
-        totalExerciseRepsEditTexts++;
+    public void addNewWorkout() {
+        // load five empty exercises
     }
 
-    public void addThree(LinearLayout ll) {
-        addLine(ll); addLine(ll); addLine(ll);
-    }
+    public void addOne() {}
 
-    public void addFive(LinearLayout ll) {
-        addLine(ll); addLine(ll); addLine(ll); addLine(ll); addLine(ll);
-    }
+    public void addThree() {}
 
-    public void toDatePicker() {
+    public void addFive() {}
+
+    public void toDatePicker(User user, User client) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ReportListFragment(user, client)).addToBackStack(null).commit();
+                new ClientPortalFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void toWorkoutList(User user, User client) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new WorkoutListFragment(user, client)).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    public void onStop() {
+        super.onStop();
+        exerciseListAdapter.stopListening();
     }
 }

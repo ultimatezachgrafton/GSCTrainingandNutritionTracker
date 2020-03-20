@@ -84,11 +84,6 @@ public class WorkoutFragment extends Fragment {
         binding.setGeneratedExerciseReps(generatedExerciseReps);
         binding.setGeneratedExerciseWeight(generatedExerciseWeight);
 
-
-        binding.setExerciseNameEditTextArray(exerciseNameEditTextArray);
-        binding.setExerciseRepsEditTextArray(exerciseRepsEditTextArray);
-        binding.setExerciseWeightEditTextArray(exerciseWeightEditTextArray);
-
         LinearLayout ll = new LinearLayout(getContext());
         ll = v.findViewById(R.id.addEtsLinearLayout);
         binding.setAddEts(ll);
@@ -117,6 +112,7 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onChanged(String str) {
                 workoutTitle = str;
+
             }
         });
 
@@ -160,8 +156,8 @@ public class WorkoutFragment extends Fragment {
         return v;
     }
 
+    // Adds EditTexts
     public void addLine(LinearLayout ll) {
-//         add EditTexts
         EditText et = new EditText(getContext());
         EditText et2 = new EditText(getContext());
         EditText et3 = new EditText(getContext());
@@ -174,7 +170,7 @@ public class WorkoutFragment extends Fragment {
         et2.setTextColor(Color.WHITE);
         et3.setTextColor(Color.WHITE);
         et.setText(exercises.get(totalExerciseNameEditTexts).getExerciseName());
-        et2.setText(exercises.get(totalExerciseRepsEditTexts).getReps());
+        et2.setText(exercises.get(totalExerciseRepsEditTexts).getExerciseReps());
         et3.setText(exercises.get(totalExerciseWeightEditTexts).getExerciseWeight());
         et.setId(totalExerciseNameEditTexts + 1);
         et2.setId(totalExerciseRepsEditTexts + 1);

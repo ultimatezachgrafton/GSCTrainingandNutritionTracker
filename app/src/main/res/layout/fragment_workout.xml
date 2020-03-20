@@ -8,7 +8,7 @@
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.fragments.AdminClientProfileFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.fragments.WorkoutFragment"/>
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
@@ -54,15 +54,16 @@
         <variable
             name="ll"
             type="android.widget.LinearLayout"/>
+        <import type="java.util.ArrayList"/>
         <variable
             name="exerciseNameEditTextArray"
-            type="java.util.ArrayList"/>
+            type="ArrayList"/>
         <variable
             name="exerciseRepsEditTextArray"
-            type="java.util.ArrayList"/>
+            type="ArrayList"/>
         <variable
             name="exerciseWeightEditTextArray"
-            type="java.util.ArrayList"/>
+            type="ArrayList"/>
     </data>
 
     <ScrollView
@@ -157,10 +158,7 @@
             android:clickable="true"
             android:background="#696969"
             android:layout_below="@id/buttonLayout"
-            android:layout_margin="1dp"
-            android:onClick="@{()->model.updateWorkout(client, workout, ll,
-            exerciseNameEditTextArray, exerciseRepsEditTextArray,
-            exerciseWeightEditTextArray)}" />
+            android:layout_margin="1dp" />
 
         <Button
             android:id="@+id/bDeleteWorkout"
@@ -170,9 +168,7 @@
             android:clickable="true"
             android:background="#696969"
             android:layout_below="@id/bUpdateWorkout"
-            android:onClick="@{()->model.deleteWorkout(client, workout, ll,
-            exerciseNameEditTextArray, exerciseRepsEditTextArray,
-            exerciseWeightEditTextArray)}" />
+            android:onClick="@{()->model.deleteWorkout(client, workout)}" />
 
     </RelativeLayout>
     </ScrollView>

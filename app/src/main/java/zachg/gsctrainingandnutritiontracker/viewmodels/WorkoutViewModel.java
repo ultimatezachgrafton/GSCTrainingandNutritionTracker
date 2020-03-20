@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -67,16 +68,17 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
         this.workoutTitle = workout.getWorkoutTitle();
     }
 
-    // takes array
-    public void getEtValues(User client, Workout workout, LinearLayout ll, ArrayList<String> exerciseNameEditTextArray, ArrayList<String>
-            exerciseRepsEditTextArray, ArrayList<String> exerciseWeightEditTextArray) {
+
+    // Takes EditText values and passes them to ViewModel
+    public void getEtValues(User client, Workout workout, ArrayList<EditText> exerciseNameEditTextArray, ArrayList<EditText>
+            exerciseRepsEditTextArray, ArrayList<EditText> exerciseWeightEditTextArray) {
         ArrayList<Exercise> exArray = new ArrayList<Exercise>();
 
         // set exerciseName and exerciseReps
         for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
-            String exName = exerciseNameEditTextArray.get(i);
-            String exReps = exerciseRepsEditTextArray.get(i);;
-            String exWeight = exerciseWeightEditTextArray.get(i);
+            String exName = exerciseNameEditTextArray.get(i).getText().toString();
+            String exReps = exerciseRepsEditTextArray.get(i).getText().toString();
+            String exWeight = exerciseWeightEditTextArray.get(i).getText().toString();
             Exercise generatedExercise = new Exercise(exName, exReps, exWeight);
             exArray.add(generatedExercise);
         }
@@ -102,12 +104,7 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
         repo.duplicateWorkoutTitleCheck(user, workout);
     }
 
-    // Writes report to the Repository
-    public void updateWorkout(User client, Workout workout, LinearLayout ll, ArrayList<String> exerciseNameEditTextArray, ArrayList<String>
-            exerciseRepsEditTextArray, ArrayList<String> exerciseWeightEditTextArray) {
-        getEtValues(client, workout, ll, exerciseNameEditTextArray, exerciseRepsEditTextArray, exerciseWeightEditTextArray);
-    }
-
+    // Deletes Workout from the repository
     public void deleteWorkout(User client, Workout workout) {
         repo.deleteWorkout(client, workout);
         workoutDeleted.setValue(true);

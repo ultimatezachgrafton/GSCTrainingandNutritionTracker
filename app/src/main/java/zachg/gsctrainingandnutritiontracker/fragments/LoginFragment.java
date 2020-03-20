@@ -123,7 +123,7 @@ public class LoginFragment extends Fragment {
         Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
         loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientPortalFragment(user)).addToBackStack(null).commit();
+                new ClientPortalFragment(user, user)).addToBackStack(null).commit();
     }
 
     public void goToAdminList(User user) {

@@ -185,11 +185,11 @@ public class FirestoreRepository {
         return false;
     }
 
-    public FirestoreRecyclerOptions<Workout> getExercisesFromRepo(User user, Workout workout) {
-        Query workoutQuery = userColRef.document(user.getEmail()).collection("workouts")
+    public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, Workout workout) {
+        Query exerciseQuery = userColRef.document(user.getEmail()).collection("workouts")
                 .whereEqualTo("workoutTitle", workout.getWorkoutTitle());
-        return new FirestoreRecyclerOptions.Builder<Workout>()
-                .setQuery(workoutQuery, Workout.class)
+        return new FirestoreRecyclerOptions.Builder<Exercise>()
+                .setQuery(exerciseQuery, Exercise.class)
                 .build();
     }
 

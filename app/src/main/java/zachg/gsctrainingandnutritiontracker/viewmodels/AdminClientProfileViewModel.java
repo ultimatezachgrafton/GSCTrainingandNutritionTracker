@@ -9,6 +9,7 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,85 +37,35 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
     public User client = new User();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
-    public Exercise exercise2 = new Exercise();
-    public Exercise exercise3 = new Exercise();
-    public Exercise exercise4 = new Exercise();
-    public Exercise exercise5 = new Exercise();
     public ArrayList<Exercise> exerciseArray = new ArrayList<>();
-
-    private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
-    private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
-    private ArrayList<EditText> exerciseWeightEditTextArray = new ArrayList<>();
-
-    private ObservableField<String> etGeneratedExerciseName = new ObservableField<String>();
-    private ObservableField<String> etGeneratedExerciseReps = new ObservableField<String>();
-    private ObservableField<String> etGeneratedExerciseWeight = new ObservableField<String>();
-    private ObservableField<String> etWorkoutTitle = new ObservableField<>();
-    private ObservableField<Integer> etWorkoutDay = new ObservableField<>();
-
-    public MutableLiveData<String> generatedExerciseName = new MutableLiveData<String>();
-    public MutableLiveData<String> generatedExerciseReps = new MutableLiveData<String>();
-    public MutableLiveData<String> generatedExerciseWeight = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseName = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseReps = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseWeight = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseName2 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseReps2 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseWeight2 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseName3 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseReps3 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseWeight3 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseName4 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseReps4 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseWeight4 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseName5 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseReps5 = new MutableLiveData<String>();
-    public MutableLiveData<String> newExerciseWeight5 = new MutableLiveData<String>();
-
+    private MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
-
     public MutableLiveData<String> onError = new MutableLiveData<>();
 
     public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
     public static String WORKOUT_TITLE_NULL = "Workout title is null.";
-    public static int ex1 = 0, ex2 = 1, ex3 = 2, ex4 = 3, ex5 = 4;   // numbers for exercise array elements
 
     public AdminClientProfileViewModel() {}
 
-    public void init() {}
+    public void init(User client, Workout workout) {
+        this.client = client;
+        repo = FirestoreRepository.getInstance();
+//        exerciseLiveData.setValue(initExercises()); // five empty exercise items
+        exerciseLiveData.setValue(repo.getExercisesFromRepo(client, workout));
+        Log.d(TAG, String.valueOf(exerciseLiveData.getValue()));
+    }
 
-    public void getEtValues(Workout workout, int w, User client, String exerciseName, String exerciseName2,
-                            String exerciseName3, String exerciseName4, String exerciseName5, String exerciseReps,
-                            String exerciseReps2, String exerciseReps3, String exerciseReps4, String exerciseReps5,
-                            String exerciseWeight, String exerciseWeight2, String exerciseWeight3, String exerciseWeight4,
-                            String exerciseWeight5, LinearLayout ll) {
+    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExercises() {
+        return exerciseLiveData;
+    }
 
-        Exercise exercise = new Exercise(exerciseName, exerciseReps, exerciseWeight);
-        Exercise exercise2 = new Exercise(exerciseName2, exerciseReps2, exerciseWeight2);
-        Exercise exercise3 = new Exercise(exerciseName3, exerciseReps3, exerciseWeight3);
-        Exercise exercise4 = new Exercise(exerciseName4, exerciseReps4, exerciseWeight4);
-        Exercise exercise5 = new Exercise(exerciseName5, exerciseReps5, exerciseWeight5);
-
-        exerciseArray.add(ex1, exercise);
-        exerciseArray.add(ex2, exercise2);
-        exerciseArray.add(ex3, exercise3);
-        exerciseArray.add(ex4, exercise4);
-        exerciseArray.add(ex5, exercise5);
-
-        // set exerciseName and exerciseReps
-        for (int i=0; i < exerciseNameEditTextArray.size(); i++) {
-            String exName = exerciseNameEditTextArray.get(i).getText().toString();
-            String exReps = exerciseRepsEditTextArray.get(i).getText().toString();
-            String exWeight = exerciseWeightEditTextArray.get(i).getText().toString();
-            Exercise generatedExercise = new Exercise(exName, exReps, exWeight);
-            exerciseArray.add(generatedExercise);
-        }
-
-        nullWorkoutTitleCheck(client, workout, exerciseArray);
+    public MutableLiveData<Boolean> getIsUpdating() {
+        return isUpdating;
     }
 
     // Checks if WorkoutTitle is null
-    public void nullWorkoutTitleCheck(User client, Workout workout, ArrayList<Exercise> exerciseArray) {
+    public void nullWorkoutTitleCheck(User client, Workout workout) {
         if (workout.getWorkoutTitle().length() == 0) {
             onError.setValue(WORKOUT_TITLE_NULL);
             return;

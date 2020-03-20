@@ -120,7 +120,7 @@ public class ViewReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientPortalFragment(currentUser)).addToBackStack(null).commit();
+                        new ClientPortalFragment(currentUser, currentUser)).addToBackStack(null).commit();
             case R.id.bAddNewClient:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new RegisterFragment()).addToBackStack(null).commit();

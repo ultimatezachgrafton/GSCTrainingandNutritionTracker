@@ -129,10 +129,6 @@ public class ReportFragment extends Fragment {
             }
         });
 
-        while (totalExerciseNameEditTexts < exercises.size() ) {
-            addLine(ll);
-        }
-
         return v;
     }
 
@@ -140,50 +136,6 @@ public class ReportFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.user_menu, menu);
-    }
-
-    public void addLine(LinearLayout ll) {
-//         add EditTexts
-        EditText et = new EditText(getContext());
-        EditText et2 = new EditText(getContext());
-        EditText et3 = new EditText(getContext());
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        et.setLayoutParams(p);
-        et2.setLayoutParams(p);
-        et3.setLayoutParams(p);
-
-        et.setTextColor(Color.WHITE);
-        et2.setTextColor(Color.WHITE);
-        et3.setTextColor(Color.WHITE);
-        et.setText(exercises.get(totalExerciseNameEditTexts).getExerciseName());
-        et2.setText(exercises.get(totalExerciseRepsEditTexts).getReps());
-        et3.setText(exercises.get(totalExerciseWeightEditTexts).getExerciseWeight());
-        et.setId(totalExerciseNameEditTexts + 1);
-        et2.setId(totalExerciseRepsEditTexts + 1);
-        et3.setId(totalExerciseWeightEditTexts + 1);
-
-        // generate and style TextView
-        TextView tv = new TextView(getContext());
-        int i = totalExerciseNameEditTexts + 1;
-        tv.setText("Exercise " + i + ":");
-        tv.setTextColor(Color.WHITE);
-        tv.setTypeface(null, Typeface.BOLD);
-        tv.setTextSize(18);
-
-        // Add to the View
-        ll.addView(tv);
-        ll.addView(et);
-        ll.addView(et2);
-        ll.addView(et3);
-
-        exerciseNameEditTextArray.add(totalExerciseNameEditTexts, et);
-        exerciseRepsEditTextArray.add(totalExerciseRepsEditTexts, et2);
-        exerciseWeightEditTextArray.add(totalExerciseWeightEditTexts, et3);
-
-        totalExerciseNameEditTexts++;
-        totalExerciseRepsEditTexts++;
-        totalExerciseWeightEditTexts++;
-        Log.d(TAG, "addLine3" + totalExerciseNameEditTexts);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
