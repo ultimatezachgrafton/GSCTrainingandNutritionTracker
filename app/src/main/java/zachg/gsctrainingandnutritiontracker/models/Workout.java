@@ -18,6 +18,7 @@ public class Workout extends BaseObservable {
     private ArrayList<Exercise> exercises = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private User currentUser = new User();
+    private boolean isNew = true;
 
     public Workout(User user){
         this.currentUser = user;
@@ -87,6 +88,14 @@ public class Workout extends BaseObservable {
     public void setExercise(Exercise exercise) {
         this.exercise = exercise;
         notifyPropertyChanged(BR.exercise);
+    }
+
+    @Bindable
+    public boolean getIsNew() { return isNew; }
+
+    public void setIsNew(Boolean isNew) {
+        this.isNew = isNew;
+        notifyPropertyChanged(BR.isNew);
     }
 
     @Bindable

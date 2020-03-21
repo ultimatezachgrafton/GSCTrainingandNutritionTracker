@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -54,7 +55,8 @@ public class WorkoutFragment extends Fragment {
     public WorkoutFragment(User user, Workout workout) {
         this.client = user;
         this.workout = workout;
-    }
+        workout.setIsNew(false);
+;    }
 
     public WorkoutFragment(User user, User client) {
         this.user = user;
@@ -89,10 +91,19 @@ public class WorkoutFragment extends Fragment {
             }
         });
 
-        workoutViewModel.exerciseLiveData.observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
+        workoutViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Exercise> e) {
                 initRecyclerView(e);
+            }
+        });
+
+        workoutViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (!aBoolean) {
+                    binding.rvExercise.smoothScrollToPosition(workoutViewModel.getExerciseLiveData().getValue().getSnapshots().size() - 1);
+                }
             }
         });
 
