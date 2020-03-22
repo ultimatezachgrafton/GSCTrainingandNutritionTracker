@@ -31,6 +31,7 @@ public class WorkoutListFragment extends Fragment {
 
     private String TAG = "WorkoutListFragment";
 
+    private User user = new User();
     private User client = new User();
     private Workout workout = new Workout();
 
@@ -85,8 +86,6 @@ public class WorkoutListFragment extends Fragment {
         workoutListAdapter = new WorkoutListAdapter(workouts);
         binding.rvWorkout.setAdapter(workoutListAdapter);
 
-        Log.d(TAG, "initRecyclerView");
-
         binding.rvWorkout.setHasFixedSize(true);
         binding.rvWorkout.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -96,7 +95,7 @@ public class WorkoutListFragment extends Fragment {
                 workout = workoutListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment_report_list
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new WorkoutFragment(client, workout)).addToBackStack(null).commit();
+                        new WorkoutFragment(user, client, workout)).addToBackStack(null).commit();
             }
         });
     }

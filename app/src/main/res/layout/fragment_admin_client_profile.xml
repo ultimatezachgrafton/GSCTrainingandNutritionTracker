@@ -17,6 +17,9 @@
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
+            name="workoutTitle"
+            type="String" />
+        <variable
             name="viewmodel"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel"/>
         <variable
@@ -101,7 +104,7 @@
             android:id="@+id/etWorkoutTitle"
             android:hint="@string/enterWorkoutTitle"
             android:textColorHint="@color/white"
-            android:text="@={workout.workoutTitle}"
+            android:text="@={workoutTitle}"
             android:textSize="24dp"
             android:layout_below="@id/bToWorkoutList"/>
 
@@ -111,7 +114,7 @@
             android:id="@+id/bCreateNewWorkout"
             android:text="@string/addWorkout"
             android:textSize="24dp"
-            android:onClick="@{()->fragment.toWorkoutFragment(user, client)}"
+            android:onClick="@{()->fragment.verifyWorkoutTitle(workoutTitle)}"
             android:layout_below="@id/etWorkoutTitle"/>
 
     </RelativeLayout>

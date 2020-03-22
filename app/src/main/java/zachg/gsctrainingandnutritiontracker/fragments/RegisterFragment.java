@@ -47,9 +47,6 @@ public class RegisterFragment extends Fragment {
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         registerViewModel.init();
 
-        // Get ViewModel instance
-        registerViewModel = ViewModelProviders.of(getActivity()).get(RegisterViewModel.class);
-
         registerViewModel.newUser.observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {

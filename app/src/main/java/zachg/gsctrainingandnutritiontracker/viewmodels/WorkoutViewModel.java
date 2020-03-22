@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
@@ -29,7 +30,7 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
-    public MutableLiveData<FirestoreRecyclerOptions<ArrayList<Exercise>>> exerciseLiveData = new MutableLiveData<>();
+    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
     public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
     public MutableLiveData<Boolean> workoutDeleted = new MutableLiveData<>();
@@ -64,18 +65,16 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
     public void addNewWorkout() {
         int i = 0;
         while (i < 5) {
+            exercise.setId(UUID.randomUUID().toString());
             exerciseArray.add(i, exercise);
+            repo.createInitialExercises(client, workout, exercise);
             i++;
         }
         workout.setExercises(exerciseArray);
-        workout.setWorkoutTitle("charlie");
-        client.setEmail("p@p.com");
-        repo.setQuerySnapshotOnCompleteListener(this);
-        repo.createInitialExercises(client, workout);
         exerciseLiveData.setValue(repo.getExercisesFromRepo(client, workout));
     }
 
-    public MutableLiveData<FirestoreRecyclerOptions<ArrayList<Exercise>>> getExerciseLiveData() {
+    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
         return exerciseLiveData;
     }
 
@@ -96,8 +95,8 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
     // Checks if workoutTitle is already used for this user
     public void duplicateWorkoutTitleCheck(User user, Workout workout) {
         this.client = user;
-//        repo.setQuerySnapshotOnCompleteListener(this);
-        repo.duplicateWorkoutTitleCheck(user, workout);
+        repo.setQuerySnapshotOnCompleteListener(this);
+        repo.duplicateWorkoutTitleCheck(user, workout.getWorkoutTitle());
     }
 
     // Deletes Workout from the repository
@@ -108,16 +107,11 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+        QuerySnapshot qs = task.getResult();
+        if (qs.size() > 0) {
+            onError.setValue(DUPLICATE_WORKOUT_TITLE);
+        } else {
+            repo.updateWorkout(client, workout);
+        }
     }
-
-//    @Override
-//    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//        QuerySnapshot qs = task.getResult();
-//        if (qs.size() > 0) {
-//            onError.setValue(DUPLICATE_WORKOUT_TITLE);
-//        } else {
-//            repo.updateWorkout(client, workout);
-//        }
-//    }
 }

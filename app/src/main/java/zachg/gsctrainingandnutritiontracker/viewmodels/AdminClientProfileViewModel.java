@@ -32,10 +32,8 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
     private FirestoreRepository repo = FirestoreRepository.getInstance();
 
     public User client = new User();
-    public Workout workout = new Workout();
-    public Exercise exercise = new Exercise();
-    public ArrayList<Exercise> exerciseArray = new ArrayList<>();
-    public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
+    public String workoutTitle;
+    public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
 
     public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
@@ -43,36 +41,30 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
 
     public AdminClientProfileViewModel() {}
 
-    public void init(User client, Workout workout) {
-        this.client = client;
+    public void init() {
         repo = FirestoreRepository.getInstance();
     }
 
+    public MutableLiveData<String> getWorkoutTitleLiveData() {
+        Log.d(TAG, "get " + workoutTitleLiveData.getValue());
+        return workoutTitleLiveData;
+    }
+
     // Checks if WorkoutTitle is null
-    public void nullWorkoutTitleCheck(User client, Workout workout) {
-        if (workout.getWorkoutTitle().length() == 0) {
+    public void nullWorkoutTitleCheck(User client, String workoutTitle) {
+        if (workoutTitle == null) {
             onError.setValue(WORKOUT_TITLE_NULL);
             return;
         } else {
-            duplicateWorkoutTitleCheck(client, workout, exerciseArray);
+            this.workoutTitle = workoutTitle;
+            duplicateWorkoutTitleCheck(client, workoutTitle);
         }
     }
 
     // Checks if workoutTitle is already used for this user
-    public void duplicateWorkoutTitleCheck(User user, Workout workout, ArrayList<Exercise> exerciseArray) {
-        this.exerciseArray = exerciseArray;
+    public void duplicateWorkoutTitleCheck(User user, String workoutTitle) {
         repo.setQuerySnapshotOnCompleteListener(this);
-        repo.duplicateWorkoutTitleCheck(user, workout);
-    }
-
-    // Write workouts to the repo
-    public void writeToWorkouts(User user, Workout workout, ArrayList<Exercise> exerciseArray) {
-
-        workout.setClientName(user.getClientName());
-        workout.setEmail(user.getEmail());
-        workout.setExercises(exerciseArray);
-
-        repo.writeWorkoutsToRepo(user, workout);
+        repo.duplicateWorkoutTitleCheck(user, workoutTitle);
     }
 
     @Override
@@ -81,7 +73,8 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
         if (qs.size() > 0) {
             onError.setValue(DUPLICATE_WORKOUT_TITLE);
         } else {
-            writeToWorkouts(client, workout, exerciseArray);
+            workoutTitleLiveData.setValue(workoutTitle);
+            getWorkoutTitleLiveData();
         }
     }
 }

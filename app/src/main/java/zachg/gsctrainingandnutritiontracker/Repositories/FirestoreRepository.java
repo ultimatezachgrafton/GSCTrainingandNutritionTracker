@@ -134,10 +134,10 @@ public class FirestoreRepository {
         userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
-    public void duplicateWorkoutTitleCheck(User user, Workout workout) {
+    public void duplicateWorkoutTitleCheck(User user, String workoutTitle) {
         Log.d(TAG, "in repo for dup check");
         Query userQuery = userColRef.document(user.getEmail()).collection("workouts")
-                .whereEqualTo("workoutTitle", workout.getWorkoutTitle());
+                .whereEqualTo("workoutTitle", workoutTitle);
         userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
@@ -180,16 +180,16 @@ public class FirestoreRepository {
 
     public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, Workout workout) {
         Query exerciseQuery = userColRef.document(user.getEmail()).collection("workouts")
-                .whereEqualTo("workoutTitle", workout.getWorkoutTitle());
+                .document(workout.getWorkoutTitle()).collection("exercises");
         return new FirestoreRecyclerOptions.Builder<Exercise>()
                 .setQuery(exerciseQuery, Exercise.class)
                 .build();
     }
 
-    public void createInitialExercises(User user, Workout workout) {
+    public void createInitialExercises(User user, Workout workout, Exercise exercise) {
         db.collection("users").document(user.getEmail()).collection("workouts")
-                .document(workout.getWorkoutTitle())
-                .set(workout)
+                .document(workout.getWorkoutTitle()).collection("exercises").document(exercise.getId())
+                .set(exercise)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

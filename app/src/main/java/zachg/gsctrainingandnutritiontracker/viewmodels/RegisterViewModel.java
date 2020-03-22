@@ -70,7 +70,7 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
 
     // Registers user
     public void registerFirebaseUser() {
-        User user = new User(firstName, lastName, phoneNumber, email, password);//, 1);
+        User user = new User(firstName, lastName, phoneNumber, email, password);
         repo.registerFirebaseUser(user);
         newUser.setValue(user);
         onError.setValue(CLIENT_ADDED);

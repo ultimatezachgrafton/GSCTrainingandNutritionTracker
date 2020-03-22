@@ -1,5 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.models;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
@@ -8,7 +9,9 @@ public class Exercise extends BaseObservable {
 
     private String email;
     private String exerciseName, exerciseNum, exerciseReps, exerciseWeight;
-    private int day;
+
+    @NonNull
+    private String id;
     private int selectedItemPosition;
 
     public Exercise(String exerciseName, String exerciseReps, String weight) {
@@ -17,12 +20,11 @@ public class Exercise extends BaseObservable {
         this.exerciseWeight = weight;
     }
 
-    public Exercise(String exerciseName, String exerciseNum, String exerciseReps, String exerciseWeight, int day){
+    public Exercise(String exerciseName, String exerciseNum, String exerciseReps, String exerciseWeight){
         this.exerciseName = exerciseName;
         this.exerciseNum = exerciseNum;
         this.exerciseReps = exerciseReps;
         this.exerciseWeight = exerciseWeight;
-        this.day = day;
     }
 
     public Exercise() {}
@@ -66,6 +68,12 @@ public class Exercise extends BaseObservable {
         this.selectedItemPosition = selectedItemPosition;
         notifyPropertyChanged(BR.selectedItemPosition);
     }
+
+    @Bindable
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id;
+        notifyPropertyChanged(BR.id);}
 
     @Bindable
     public String getEmail() {

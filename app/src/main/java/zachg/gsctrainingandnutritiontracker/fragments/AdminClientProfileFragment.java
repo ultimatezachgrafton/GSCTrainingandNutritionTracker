@@ -55,6 +55,7 @@ public class AdminClientProfileFragment extends Fragment {
     private ExerciseListAdapter exerciseListAdapter;
     private final String ARG_USER_ID = "user_id";
     private String TAG = "AdminClientProfileFragment";
+    private String workoutTitle;
     private User user = new User();
     private User client = new User();
     private Workout workout = new Workout();
@@ -79,6 +80,7 @@ public class AdminClientProfileFragment extends Fragment {
         binding.setUser(user);
         binding.setClient(client);
         binding.setWorkout(workout);
+        binding.setWorkoutTitle(workoutTitle);
         workout.setClientName(client.getClientName());
 
         bCameraButton = v.findViewById(R.id.cameraImageButton);
@@ -98,12 +100,21 @@ public class AdminClientProfileFragment extends Fragment {
 
         binding.setViewmodel(adminClientProfileViewModel);
         adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
-        adminClientProfileViewModel.init(client, workout);
+        adminClientProfileViewModel.init();
 
         adminClientProfileViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
             @Override
-            public void onChanged(String str) {
-                workout.setWorkoutTitle(str);
+            public void onChanged(String s) {
+                Log.d(TAG, "title observer");
+                toWorkoutFragment(user, client, s);
+            }
+        });
+
+        adminClientProfileViewModel.getWorkoutTitleLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.d(TAG, "title observer");
+                toWorkoutFragment(user, client, s);
             }
         });
 
@@ -148,6 +159,10 @@ public class AdminClientProfileFragment extends Fragment {
 
     public void addFive() {}
 
+    public void verifyWorkoutTitle(String workoutTitle) {
+        adminClientProfileViewModel.nullWorkoutTitleCheck(client, workoutTitle);
+    }
+
     public void toDatePicker(User user, User client) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ClientPortalFragment(user, client)).addToBackStack(null).commit();
@@ -158,9 +173,10 @@ public class AdminClientProfileFragment extends Fragment {
                 new WorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 
-    public void toWorkoutFragment(User user, User client) {
+    public void toWorkoutFragment(User user, User client, String workoutTitle) {
+        Log.d(TAG, "inside toWorkoutFragment");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new WorkoutFragment(user, client)).addToBackStack(null).commit();
+                new WorkoutFragment(user, client, workoutTitle)).addToBackStack(null).commit();
     }
 
     @Override

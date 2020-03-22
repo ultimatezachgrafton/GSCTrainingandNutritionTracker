@@ -69,7 +69,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/layout_exercise_list"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_below="@id/separator1">
@@ -77,7 +77,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvExercise"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@android:color/darker_gray"
                 tools:listitem="@layout/rv_exercise_item" />
 

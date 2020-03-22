@@ -52,11 +52,19 @@ public class WorkoutFragment extends Fragment {
     public WorkoutFragment(Workout workout) {
     }
 
-    public WorkoutFragment(User user, Workout workout) {
-        this.client = user;
+    public WorkoutFragment(User user, User client, Workout workout) {
+        this.user = user;
+        this.client = client;
         this.workout = workout;
         workout.setIsNew(false);
 ;    }
+
+    public WorkoutFragment(User user, User client, String workoutTitle) {
+        this.user = user;
+        this.client = client;
+        this.workout.setWorkoutTitle(workoutTitle);
+        workout.setIsNew(true);
+    }
 
     public WorkoutFragment(User user, User client) {
         this.user = user;
@@ -95,6 +103,7 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Exercise> e) {
                 initRecyclerView(e);
+                exerciseListAdapter.startListening();
             }
         });
 
@@ -130,7 +139,6 @@ public class WorkoutFragment extends Fragment {
         exerciseListAdapter = new ExerciseListAdapter(exercises);
         binding.rvExercise.setAdapter(exerciseListAdapter);
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
-        exerciseListAdapter.startListening();
     }
 
     public void addOne() {}
