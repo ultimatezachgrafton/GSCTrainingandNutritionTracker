@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
         <variable
@@ -24,9 +25,14 @@
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
-            name="linearLayout"
-            type="android.widget.LinearLayout" />
+            name="bSendReport"
+            type="android.widget.Button" />
     </data>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -114,17 +120,36 @@
         android:textColor="@color/white"
         android:layout_below="@id/generateExercises" />
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_exercise_list"
+    android:layout_below="@+id/etComments"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExercise"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        tools:listitem="@layout/rv_exercise_item" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <Button
         android:id="@+id/bSendReport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_report"
-        android:layout_below="@id/etComments"
+        android:layout_below="@id/fragment_exercise_list"
         android:background="#696969"
         android:clickable="true"
         android:textColor="@color/white"
         android:onClick="@{()->model.writeReport(user, report)}" />
 
     </RelativeLayout>
-
+    </ScrollView>
 </layout>

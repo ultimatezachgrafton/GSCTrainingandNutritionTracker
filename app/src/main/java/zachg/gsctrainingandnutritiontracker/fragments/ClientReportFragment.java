@@ -9,17 +9,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
@@ -27,12 +28,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
+import zachg.gsctrainingandnutritiontracker.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientReportViewModel;
 
@@ -40,7 +42,7 @@ public class ClientReportFragment extends Fragment {
 
     // For Users to fill out their workout as they complete it
 
-    private ClientReportViewModel mClientReportViewModel = new ClientReportViewModel();
+    private ClientReportViewModel clientReportViewModel = new ClientReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private ExerciseListAdapter exerciseListAdapter;
 
@@ -56,37 +58,33 @@ public class ClientReportFragment extends Fragment {
     private int totalWorkouts = 0;
 
     private Date date;
-    private User currentUser = new User();
-    private Report currentReport = new Report();
-
-    private ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-    private ArrayList<EditText> exerciseNameEditTextArray = new ArrayList<>();
-    private ArrayList<EditText> exerciseRepsEditTextArray = new ArrayList<>();
-    private ArrayList<EditText> exerciseWeightEditTextArray = new ArrayList<>();
-
-    private int totalExerciseNameEditTexts = 0;
-    private int totalExerciseWeightEditTexts = 0;
-    private int totalExerciseRepsEditTexts = 0;
-    private Button bAddExercise;
-    private String workoutTitle, generatedExerciseName, generatedExerciseReps, generatedExerciseWeight;
+    private User user = new User();
+    private User client = new User();
+    private Report report = new Report();
 
     private static final int REQUEST_CONTACT = 1;
     public String TAG = "ReportFragment";
 
     public ClientReportFragment() {}
 
+    public ClientReportFragment(User user, User client) {
+        this.user = user;
+        this.client = client;
+    }
+
     public ClientReportFragment(Report report, User user) {
-        this.currentReport = report;
-        this.currentUser = user;
+        this.report = report;
+        this.user = user;
         report.setClientName(user.getClientName());
         this.dateString = report.getDateString();
     }
 
-    public ClientReportFragment(Report report, User user, Workout workout) {
-        this.currentReport = report;
+    // TODO: needs dateString
+    public ClientReportFragment(User user, User client, Workout workout) {
         this.workout = workout;
-        this.currentUser = user;
-        report.setClientName(user.getClientName());
+        this.user = user;
+        this.client = client;
+        this.report.setClientName(user.getClientName());
         this.dateString = report.getDateString();
     }
 
@@ -100,26 +98,47 @@ public class ClientReportFragment extends Fragment {
         binding = FragmentReportBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
 
-        LinearLayout ll = new LinearLayout(getContext());
-        ll = v.findViewById(R.id.generateTvs);
-        binding.setLinearLayout(ll);
+        binding.setReport(report);
+        binding.setUser(user);
 
-        binding.setReport(currentReport);
-        binding.setUser(currentUser);
+        binding.setModel(clientReportViewModel);
+        clientReportViewModel = ViewModelProviders.of(getActivity()).get(ClientReportViewModel.class);
+        clientReportViewModel.init(user, report, workout);
 
-        binding.setModel(mClientReportViewModel);
-        mClientReportViewModel = ViewModelProviders.of(getActivity()).get(ClientReportViewModel.class);
-        mClientReportViewModel.init(currentUser, currentReport, workout);
-
-        mClientReportViewModel.getWorkouts().observe(this, new Observer<Workout>() {
+        clientReportViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
             @Override
-            public void onChanged(Workout workout) {
-                workouts.add(totalWorkouts, workout);
-                totalWorkouts++;
+            public void onChanged(FirestoreRecyclerOptions<Exercise> e) {
+                initRecyclerView(e);
+                exerciseListAdapter.startListening();
+            }
+        });
+
+        clientReportViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (!aBoolean) {
+                    binding.rvExercise.smoothScrollToPosition(clientReportViewModel.getExerciseLiveData().getValue().getSnapshots().size() - 1);
+                }
+            }
+        });
+
+        clientReportViewModel.onError.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                // TODO: getFocus
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
 
         return v;
+    }
+
+    private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
+        exerciseListAdapter = new ExerciseListAdapter(exercises);
+        binding.rvExercise.setAdapter(exerciseListAdapter);
+
+        binding.rvExercise.setHasFixedSize(true);
+        binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
@@ -143,13 +162,13 @@ public class ClientReportFragment extends Fragment {
                 return true;
             // TODO: ask ben and logged out are strings in res
             case R.id.bSelectWorkout:
-                goToSelectWorkout(currentUser);
+                goToSelectWorkoutList(user, client);
         } return true;
     }
 
-    public void goToSelectWorkout(User user) {
+    public void goToSelectWorkoutList(User user, User client) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientSelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
+                new SelectWorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 
 }

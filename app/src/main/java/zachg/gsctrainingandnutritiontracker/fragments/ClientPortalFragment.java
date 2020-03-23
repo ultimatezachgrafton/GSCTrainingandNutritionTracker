@@ -60,13 +60,14 @@ public class ClientPortalFragment extends Fragment {
             @Override
             public void onChanged(Report r) {
                 if (!r.isNew()) {
-                    goToNewReport();
+                    goToSelectWorkoutList();
                 } else {
                    goToViewReport();
                 }
             }
         });
-        
+
+        // TODO string res
         greeting = "Hi, " + user.getFirstName() + "!";
 
         clientProfileViewModel.noReport.observe(this, new Observer<Integer>() {
@@ -94,7 +95,7 @@ public class ClientPortalFragment extends Fragment {
             String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
             Log.d(TAG, dateString);
             currentReport.setDateString(dateString);
-            goToNewReport();
+            goToSelectWorkoutList();
         });
 
         return v;
@@ -130,9 +131,9 @@ public class ClientPortalFragment extends Fragment {
     }
 
 
-    public void goToNewReport() {
+    public void goToSelectWorkoutList() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientSelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
+                new SelectWorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void goToViewReport() {

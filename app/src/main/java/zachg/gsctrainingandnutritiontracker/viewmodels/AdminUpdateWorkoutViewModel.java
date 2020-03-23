@@ -61,6 +61,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
         }
     }
 
+    // TODO test
     public void addOne() {
         addBlankExercises(1);
     }

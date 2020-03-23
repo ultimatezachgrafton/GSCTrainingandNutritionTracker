@@ -29,7 +29,7 @@ public class AdminUpdateWorkoutFragment extends Fragment {
 
     private FragmentAdminUpdateWorkoutBinding binding;
     private ExerciseListAdapter exerciseListAdapter;
-    private AdminUpdateWorkoutViewModel mAdminUpdateWorkoutViewModel = new AdminUpdateWorkoutViewModel();
+    private AdminUpdateWorkoutViewModel adminUpdateWorkoutViewModel = new AdminUpdateWorkoutViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User user = new User();
     private User client = new User();
@@ -74,22 +74,22 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         binding.setWorkout(workout);
         binding.setClient(client);
         binding.setBAddExercise(bAddExercise);
-        binding.setModel(mAdminUpdateWorkoutViewModel);
+        binding.setModel(adminUpdateWorkoutViewModel);
 
-        mAdminUpdateWorkoutViewModel = ViewModelProviders.of(getActivity()).get(AdminUpdateWorkoutViewModel.class);
-        mAdminUpdateWorkoutViewModel.init(client, workout);
+        adminUpdateWorkoutViewModel = ViewModelProviders.of(getActivity()).get(AdminUpdateWorkoutViewModel.class);
+        adminUpdateWorkoutViewModel.init(client, workout);
 
         Workout workout = new Workout(client);
         binding.setWorkout(workout);
 
-        mAdminUpdateWorkoutViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
+        adminUpdateWorkoutViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String str) {
                 workout.setWorkoutTitle(str);
             }
         });
 
-        mAdminUpdateWorkoutViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
+        adminUpdateWorkoutViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Exercise> e) {
                 initRecyclerView(e);
@@ -97,16 +97,16 @@ public class AdminUpdateWorkoutFragment extends Fragment {
             }
         });
 
-        mAdminUpdateWorkoutViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        adminUpdateWorkoutViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    binding.rvExercise.smoothScrollToPosition(mAdminUpdateWorkoutViewModel.getExerciseLiveData().getValue().getSnapshots().size() - 1);
+                    binding.rvExercise.smoothScrollToPosition(adminUpdateWorkoutViewModel.getExerciseLiveData().getValue().getSnapshots().size() - 1);
                 }
             }
         });
 
-        mAdminUpdateWorkoutViewModel.onError.observe(this, new Observer<String>() {
+        adminUpdateWorkoutViewModel.onError.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 // TODO: getFocus
@@ -114,11 +114,11 @@ public class AdminUpdateWorkoutFragment extends Fragment {
             }
         });
 
-        mAdminUpdateWorkoutViewModel.workoutDeleted.observe(this, new Observer<Boolean>() {
+        adminUpdateWorkoutViewModel.workoutDeleted.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminWorkoutListFragment(client)).addToBackStack(null).commit();
+                        new SelectWorkoutListFragment(client)).addToBackStack(null).commit();
             }
         });
 
@@ -131,6 +131,7 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+    // TODO
     public void addOne() {
         // add one empty exercise
         // write to repo
@@ -146,12 +147,12 @@ public class AdminUpdateWorkoutFragment extends Fragment {
     }
 
     public void validateWorkout(User client, Workout workout) {
-        mAdminUpdateWorkoutViewModel.nullWorkoutTitleCheck(client, workout);
+        adminUpdateWorkoutViewModel.nullWorkoutTitleCheck(client, workout);
     }
 
     public void deleteWorkout(User client, Workout workout) {
         // TODO: are you certain? y/n pop-up
-        mAdminUpdateWorkoutViewModel.deleteWorkout(client, workout);
+        adminUpdateWorkoutViewModel.deleteWorkout(client, workout);
     }
 
     @Override

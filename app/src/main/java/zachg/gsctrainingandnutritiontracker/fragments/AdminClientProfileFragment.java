@@ -137,6 +137,7 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
+    //TODO
     public void addOne() {}
 
     public void addThree() {}
@@ -154,7 +155,7 @@ public class AdminClientProfileFragment extends Fragment {
 
     public void toWorkoutList(User user, User client) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new AdminWorkoutListFragment(user, client)).addToBackStack(null).commit();
+                new SelectWorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void toWorkoutFragment(User user, User client, String workoutTitle) {

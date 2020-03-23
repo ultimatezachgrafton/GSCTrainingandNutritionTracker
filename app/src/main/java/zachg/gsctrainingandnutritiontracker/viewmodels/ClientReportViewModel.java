@@ -32,6 +32,7 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
+    public MutableLiveData<String> onError = new MutableLiveData<>();
 
     public ObservableField<String> dailyWeight = new ObservableField<>();
     public ObservableField<String> comments = new ObservableField<>();
@@ -40,14 +41,12 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
-    public ArrayList<Workout> workoutArrayList = new ArrayList<>();
     public ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
     public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
     public String workoutTitle;
-//    public int workoutDay;
 
     public ClientReportViewModel() {}
 
@@ -61,7 +60,14 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
         } else {
             getWorkoutsFromRepo(user);
         }
-//        workoutDay = currentUser.getWorkoutDay();
+    }
+
+    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
+        return exerciseLiveData;
+    }
+
+    public MutableLiveData<Boolean> getIsUpdating() {
+        return isUpdating;
     }
 
     public void getWorkoutsFromRepo(User currentUser) {
@@ -91,17 +97,7 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
                     dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString(),
                     report.getWorkoutTitle(), report.getExerciseString());
             repo.writeReportToRepo(generatedReport);
-
-           // iterateWorkoutNum(currentUser);
     }
-
-//    public void iterateWorkoutNum(User user) {
-//        if (user.getWorkoutDay()+1 < exerciseArrayList.size()) {
-//            user.setWorkoutDay(user.getWorkoutDay() + 1);
-//        } else {
-//            user.setWorkoutDay(1);
-//        }
-//    }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {

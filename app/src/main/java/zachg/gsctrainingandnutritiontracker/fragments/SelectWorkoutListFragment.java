@@ -19,14 +19,15 @@ import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentWorkoutListBinding;
+import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminWorkoutListViewModel;
 
-public class AdminWorkoutListFragment extends Fragment {
+public class SelectWorkoutListFragment extends Fragment {
 
     private FragmentWorkoutListBinding binding;
-    private AdminWorkoutListViewModel mAdminWorkoutListViewModel;
+    private AdminWorkoutListViewModel adminWorkoutListViewModel;
     private WorkoutListAdapter workoutListAdapter;
 
     private String TAG = "WorkoutListFragment";
@@ -34,12 +35,14 @@ public class AdminWorkoutListFragment extends Fragment {
     private User user = new User();
     private User client = new User();
     private Workout workout = new Workout();
+    public Report report = new Report();
 
-    public AdminWorkoutListFragment(User user, User client) {
+    public SelectWorkoutListFragment(User user, User client) {
+        this.user = user;
         this.client = client;
     }
 
-    public AdminWorkoutListFragment(User client) {
+    public SelectWorkoutListFragment(User client) {
         this.client = client;
     }
 
@@ -56,11 +59,11 @@ public class AdminWorkoutListFragment extends Fragment {
         binding.setWorkout(workout);
 
         // Gets ViewModel instance to observe  LiveData
-        binding.setModel(mAdminWorkoutListViewModel);
-        mAdminWorkoutListViewModel = ViewModelProviders.of(getActivity()).get(AdminWorkoutListViewModel.class);
-        mAdminWorkoutListViewModel.init(client);
+        binding.setModel(adminWorkoutListViewModel);
+        adminWorkoutListViewModel = ViewModelProviders.of(getActivity()).get(AdminWorkoutListViewModel.class);
+        adminWorkoutListViewModel.init(client);
 
-        mAdminWorkoutListViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
+        adminWorkoutListViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<Workout> workouts) {
                 Log.d(TAG, "workouts changed");
@@ -69,11 +72,11 @@ public class AdminWorkoutListFragment extends Fragment {
             }
         });
 
-        mAdminWorkoutListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        adminWorkoutListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    binding.rvWorkout.smoothScrollToPosition(mAdminWorkoutListViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
+                    binding.rvWorkout.smoothScrollToPosition(adminWorkoutListViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
                 }
             }
 
@@ -92,10 +95,15 @@ public class AdminWorkoutListFragment extends Fragment {
         workoutListAdapter.setOnItemClickListener(new WorkoutListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                workout = mAdminWorkoutListViewModel.onItemClicked(documentSnapshot, position);
-                // Goes to client's profile fragment_report_list
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminUpdateWorkoutFragment(user, client, workout)).addToBackStack(null).commit();
+                workout = adminWorkoutListViewModel.onItemClicked(documentSnapshot, position);
+                // If admin, goes to AdminWorkoutUpdate
+                if (user.getIsAdmin()) {
+                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                            new AdminUpdateWorkoutFragment(user, client, workout)).addToBackStack(null).commit();
+                } else {
+                    SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                            new ClientReportFragment(user, client, workout)).addToBackStack(null).commit();
+                }
             }
         });
     }
