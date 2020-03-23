@@ -26,7 +26,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ClientReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ClientReportViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
@@ -41,11 +41,9 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
-    public ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
     public User currentUser = new User();
     public String TAG = "ReportViewModel";
     public String dateString;
-    public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
     public String workoutTitle;
 
     public ClientReportViewModel() {}
@@ -55,11 +53,7 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
-        if (workout != null) {
-            workoutLiveData.setValue(workout);
-        } else {
-            getWorkoutsFromRepo(user);
-        }
+        getExercisesFromRepo(user, workout);
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
@@ -70,47 +64,18 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
         return isUpdating;
     }
 
-    public void getWorkoutsFromRepo(User currentUser) {
-        repo.setQuerySnapshotOnCompleteListener(this);
-        repo.getWorkoutsForReport(currentUser);
+    public void getExercisesFromRepo(User user, Workout workout) {
+        workout.setWorkoutTitle("charlie");
+        repo.getExercisesFromRepo(user, workout);
     }
 
-    public MutableLiveData<Workout> getWorkouts() {
-        return workoutLiveData;
-    }
-
-    public void getExerciseListInfo() {
-        // iterate thru exercises, copy name, weight, reps, write them to reports
-        for (int i = 0; i < exerciseArrayList.size(); i++) {
-            // set these into a single String and add it to fullreport;
-            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseName());
-            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseWeight());
-            exerciseStringBuilder.append(exerciseArrayList.get(i).getExerciseReps());
-        }
-        report.setExerciseString(String.valueOf(exerciseStringBuilder));
-    }
-
-    // TODO: not working
+    // TODO: not working, test after rv installed
     // Writes report to the Repository
     public void writeReport(User currentUser, Report report) {
             Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
                     dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString(),
                     report.getWorkoutTitle(), report.getExerciseString());
+            generatedReport.setDateString("doink");
             repo.writeReportToRepo(generatedReport);
-    }
-
-    @Override
-    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot doc : task.getResult()) {
-                for (int i = 0; i <  task.getResult().size(); i++) {
-                    Workout workout = doc.toObject(Workout.class);
-                    workoutLiveData.setValue(workout);
-                    Log.d(TAG, "workouts get");
-                }
-            }
-        } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-        }
     }
 }

@@ -231,7 +231,7 @@ public class Report extends BaseObservable {
     }
 
     public String convertToFullReport(Report report) {
-        this.fullReport = report.getClientName().concat(report.getEmail()).concat(report.getDateString()).concat(report.getExerciseString());
+        this.fullReport = "hiya";//report.getClientName().concat(report.getEmail()).concat(report.getDateString()).concat(report.getExerciseString());
         return this.fullReport;
     }
 }

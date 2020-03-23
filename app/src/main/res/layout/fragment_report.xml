@@ -110,6 +110,25 @@
         android:background="#696969"
         android:layout_below="@id/separator2"/>
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fragment_exercise_list"
+    android:layout_below="@+id/separator2"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        tools:listitem="@layout/rv_exercise_item" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <EditText
         android:id="@+id/etComments"
         android:layout_width="match_parent"
@@ -117,34 +136,15 @@
         android:hint="@string/comments"
         android:textColorHint="@color/white"
         android:text="@={model.comments}"
-        android:textColor="@color/white"
-        android:layout_below="@id/generateExercises" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/fragment_exercise_list"
-    android:layout_below="@+id/etComments"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExercise"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
-        tools:listitem="@layout/rv_exercise_item" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_below="@id/fragment_exercise_list"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/bSendReport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_report"
-        android:layout_below="@id/fragment_exercise_list"
+        android:layout_below="@id/etComments"
         android:background="#696969"
         android:clickable="true"
         android:textColor="@color/white"

@@ -3,6 +3,7 @@ package zachg.gsctrainingandnutritiontracker.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,8 +56,6 @@ public class ClientReportFragment extends Fragment {
     private ArrayList<Workout> workouts = new ArrayList<>();
     private Workout workout = new Workout();
 
-    private int totalWorkouts = 0;
-
     private Date date;
     private User user = new User();
     private User client = new User();
@@ -108,6 +107,7 @@ public class ClientReportFragment extends Fragment {
         clientReportViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Exercise> e) {
+                Log.d(TAG, "firing");
                 initRecyclerView(e);
                 exerciseListAdapter.startListening();
             }
@@ -136,8 +136,6 @@ public class ClientReportFragment extends Fragment {
     private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
         exerciseListAdapter = new ExerciseListAdapter(exercises);
         binding.rvExercise.setAdapter(exerciseListAdapter);
-
-        binding.rvExercise.setHasFixedSize(true);
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 

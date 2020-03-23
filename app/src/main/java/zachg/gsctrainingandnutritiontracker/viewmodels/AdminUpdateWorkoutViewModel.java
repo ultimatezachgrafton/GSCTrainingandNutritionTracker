@@ -42,9 +42,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
     public User client = new User();
     public String TAG = "WorkoutViewModel";
     public String dateString;
-    public StringBuilder exerciseStringBuilder = new StringBuilder(5000);
     public String workoutTitle;
-    public boolean newWorkout;
 
     public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
     public static String WORKOUT_TITLE_NULL = "Workout title is null.";
@@ -117,6 +115,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
         workoutDeleted.setValue(true);
     }
 
+    // Callback to  update and override previous workout information
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         QuerySnapshot qs = task.getResult();

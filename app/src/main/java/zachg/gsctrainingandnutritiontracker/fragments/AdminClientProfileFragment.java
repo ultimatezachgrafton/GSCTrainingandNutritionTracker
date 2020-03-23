@@ -137,13 +137,6 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
-    //TODO
-    public void addOne() {}
-
-    public void addThree() {}
-
-    public void addFive() {}
-
     public void verifyWorkoutTitle(String workoutTitle) {
         adminClientProfileViewModel.nullWorkoutTitleCheck(client, workoutTitle);
     }
