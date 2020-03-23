@@ -26,7 +26,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ClientReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
@@ -49,7 +49,7 @@ public class ReportViewModel extends ViewModel implements OnCompleteListener<Que
     public String workoutTitle;
 //    public int workoutDay;
 
-    public ReportViewModel() {}
+    public ClientReportViewModel() {}
 
     public void init(User user, Report report, Workout workout) {
         repo = FirestoreRepository.getInstance();

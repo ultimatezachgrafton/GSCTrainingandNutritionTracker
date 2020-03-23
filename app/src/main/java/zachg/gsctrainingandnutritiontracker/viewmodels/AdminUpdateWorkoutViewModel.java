@@ -26,7 +26,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class WorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class AdminUpdateWorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
@@ -49,7 +49,7 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
     public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
     public static String WORKOUT_TITLE_NULL = "Workout title is null.";
 
-    public WorkoutViewModel() {}
+    public AdminUpdateWorkoutViewModel() {}
 
     public void init(User user, Workout workout) {
         repo = FirestoreRepository.getInstance();
@@ -57,17 +57,28 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
         this.workout = workout;
         this.workoutTitle = workout.getWorkoutTitle();
         if (workout.getIsNew()) {
-            addNewWorkout();
+            addFive();
         }
     }
 
+    public void addOne() {
+        addBlankExercises(1);
+    }
+
+    public void addThree() {
+        addBlankExercises(3);
+    }
+
+    public void addFive() {
+        addBlankExercises(5);
+    }
+
     // Create a workout with five initial exercises
-    public void addNewWorkout() {
-        int i = 0;
+    public void addBlankExercises(int i) {
         while (i < 5) {
             exercise.setId(UUID.randomUUID().toString());
             exerciseArray.add(i, exercise);
-            repo.createInitialExercises(client, workout, exercise);
+            repo.createBlankExercises(client, workout, exercise);
             i++;
         }
         workout.setExercises(exerciseArray);
@@ -84,7 +95,7 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
 
     // Checks if WorkoutTitle is null
     public void nullWorkoutTitleCheck(User client, Workout workout) {
-        if (workout.getWorkoutTitle().length() == 0) {
+        if (workout.getWorkoutTitle() == null) {
             onError.setValue(WORKOUT_TITLE_NULL);
             return;
         } else {
@@ -93,10 +104,10 @@ public class WorkoutViewModel extends ViewModel implements OnCompleteListener<Qu
     }
 
     // Checks if workoutTitle is already used for this user
-    public void duplicateWorkoutTitleCheck(User user, Workout workout) {
-        this.client = user;
+    public void duplicateWorkoutTitleCheck(User client, Workout workout) {
+        this.client = client;
         repo.setQuerySnapshotOnCompleteListener(this);
-        repo.duplicateWorkoutTitleCheck(user, workout.getWorkoutTitle());
+        repo.duplicateWorkoutTitleCheck(client, workout.getWorkoutTitle());
     }
 
     // Deletes Workout from the repository

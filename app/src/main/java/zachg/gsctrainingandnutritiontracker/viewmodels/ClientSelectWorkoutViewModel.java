@@ -21,7 +21,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ClientSelectWorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
     public MutableLiveData<ArrayList<Workout>> workoutLiveData = new MutableLiveData<>();
@@ -34,7 +34,7 @@ public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListe
     public User currentUser = new User();
     public String TAG = "WorkoutViewModel";
 
-    public SelectWorkoutViewModel() {}
+    public ClientSelectWorkoutViewModel() {}
 
     public void init(User user) {
         repo = FirestoreRepository.getInstance();
@@ -47,14 +47,6 @@ public class SelectWorkoutViewModel extends ViewModel implements OnCompleteListe
 //        Log.d(TAG, "get workouts" + workoutArrayList.get(0).getWorkoutTitle());
         return workoutLiveData;
     }
-
-//    public void iterateWorkoutNum(User user) {
-//        if (user.getWorkoutDay()+1 < exerciseArrayList.size()) {
-//            user.setWorkoutDay(user.getWorkoutDay() + 1);
-//        } else {
-//            user.setWorkoutDay(1);
-//        }
-//    }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {

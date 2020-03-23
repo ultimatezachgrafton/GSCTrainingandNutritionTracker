@@ -7,10 +7,10 @@
             type="zachg.gsctrainingandnutritiontracker.models.Report"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.fragments.ReportFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.fragments.ClientReportFragment"/>
         <variable
             name="model"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel"/>
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientReportViewModel"/>
         <variable
             name="dailyWeight"
             type="String"/>

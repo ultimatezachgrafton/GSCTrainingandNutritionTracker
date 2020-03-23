@@ -1,35 +1,25 @@
 package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
@@ -44,13 +34,13 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.viewmodels.ReportViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.ClientReportViewModel;
 
-public class ReportFragment extends Fragment {
+public class ClientReportFragment extends Fragment {
 
     // For Users to fill out their workout as they complete it
 
-    private ReportViewModel reportViewModel = new ReportViewModel();
+    private ClientReportViewModel mClientReportViewModel = new ClientReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private ExerciseListAdapter exerciseListAdapter;
 
@@ -83,16 +73,16 @@ public class ReportFragment extends Fragment {
     private static final int REQUEST_CONTACT = 1;
     public String TAG = "ReportFragment";
 
-    public ReportFragment() {}
+    public ClientReportFragment() {}
 
-    public ReportFragment(Report report, User user) {
+    public ClientReportFragment(Report report, User user) {
         this.currentReport = report;
         this.currentUser = user;
         report.setClientName(user.getClientName());
         this.dateString = report.getDateString();
     }
 
-    public ReportFragment(Report report, User user, Workout workout) {
+    public ClientReportFragment(Report report, User user, Workout workout) {
         this.currentReport = report;
         this.workout = workout;
         this.currentUser = user;
@@ -117,11 +107,11 @@ public class ReportFragment extends Fragment {
         binding.setReport(currentReport);
         binding.setUser(currentUser);
 
-        binding.setModel(reportViewModel);
-        reportViewModel = ViewModelProviders.of(getActivity()).get(ReportViewModel.class);
-        reportViewModel.init(currentUser, currentReport, workout);
+        binding.setModel(mClientReportViewModel);
+        mClientReportViewModel = ViewModelProviders.of(getActivity()).get(ClientReportViewModel.class);
+        mClientReportViewModel.init(currentUser, currentReport, workout);
 
-        reportViewModel.getWorkouts().observe(this, new Observer<Workout>() {
+        mClientReportViewModel.getWorkouts().observe(this, new Observer<Workout>() {
             @Override
             public void onChanged(Workout workout) {
                 workouts.add(totalWorkouts, workout);
@@ -159,7 +149,7 @@ public class ReportFragment extends Fragment {
 
     public void goToSelectWorkout(User user) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new SelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
+                new ClientSelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
     }
 
 }

@@ -186,7 +186,7 @@ public class FirestoreRepository {
                 .build();
     }
 
-    public void createInitialExercises(User user, Workout workout, Exercise exercise) {
+    public void createBlankExercises(User user, Workout workout, Exercise exercise) {
         db.collection("users").document(user.getEmail()).collection("workouts")
                 .document(workout.getWorkoutTitle()).collection("exercises").document(exercise.getId())
                 .set(exercise)

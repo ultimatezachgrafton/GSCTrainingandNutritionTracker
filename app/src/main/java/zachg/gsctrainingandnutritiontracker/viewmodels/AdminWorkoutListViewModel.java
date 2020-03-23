@@ -12,7 +12,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class WorkoutListViewModel extends ViewModel {
+public class AdminWorkoutListViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     private User client = new User();

@@ -21,12 +21,12 @@ import zachg.gsctrainingandnutritiontracker.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentWorkoutListBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.viewmodels.WorkoutListViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminWorkoutListViewModel;
 
-public class WorkoutListFragment extends Fragment {
+public class AdminWorkoutListFragment extends Fragment {
 
     private FragmentWorkoutListBinding binding;
-    private WorkoutListViewModel workoutListViewModel;
+    private AdminWorkoutListViewModel mAdminWorkoutListViewModel;
     private WorkoutListAdapter workoutListAdapter;
 
     private String TAG = "WorkoutListFragment";
@@ -35,11 +35,11 @@ public class WorkoutListFragment extends Fragment {
     private User client = new User();
     private Workout workout = new Workout();
 
-    public WorkoutListFragment(User user, User client) {
+    public AdminWorkoutListFragment(User user, User client) {
         this.client = client;
     }
 
-    public WorkoutListFragment(User client) {
+    public AdminWorkoutListFragment(User client) {
         this.client = client;
     }
 
@@ -56,11 +56,11 @@ public class WorkoutListFragment extends Fragment {
         binding.setWorkout(workout);
 
         // Gets ViewModel instance to observe  LiveData
-        binding.setModel(workoutListViewModel);
-        workoutListViewModel = ViewModelProviders.of(getActivity()).get(WorkoutListViewModel.class);
-        workoutListViewModel.init(client);
+        binding.setModel(mAdminWorkoutListViewModel);
+        mAdminWorkoutListViewModel = ViewModelProviders.of(getActivity()).get(AdminWorkoutListViewModel.class);
+        mAdminWorkoutListViewModel.init(client);
 
-        workoutListViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
+        mAdminWorkoutListViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<Workout> workouts) {
                 Log.d(TAG, "workouts changed");
@@ -69,11 +69,11 @@ public class WorkoutListFragment extends Fragment {
             }
         });
 
-        workoutListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        mAdminWorkoutListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    binding.rvWorkout.smoothScrollToPosition(workoutListViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
+                    binding.rvWorkout.smoothScrollToPosition(mAdminWorkoutListViewModel.getWorkouts().getValue().getSnapshots().size() - 1);
                 }
             }
 
@@ -92,10 +92,10 @@ public class WorkoutListFragment extends Fragment {
         workoutListAdapter.setOnItemClickListener(new WorkoutListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                workout = workoutListViewModel.onItemClicked(documentSnapshot, position);
+                workout = mAdminWorkoutListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment_report_list
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new WorkoutFragment(user, client, workout)).addToBackStack(null).commit();
+                        new AdminUpdateWorkoutFragment(user, client, workout)).addToBackStack(null).commit();
             }
         });
     }

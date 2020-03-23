@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,33 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
-import zachg.gsctrainingandnutritiontracker.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfileBinding;
-import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
@@ -105,7 +91,6 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Log.d(TAG, "title observer");
                 toWorkoutFragment(user, client, s);
             }
         });
@@ -113,7 +98,6 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel.getWorkoutTitleLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Log.d(TAG, "title observer");
                 toWorkoutFragment(user, client, s);
             }
         });
@@ -170,13 +154,12 @@ public class AdminClientProfileFragment extends Fragment {
 
     public void toWorkoutList(User user, User client) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new WorkoutListFragment(user, client)).addToBackStack(null).commit();
+                new AdminWorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void toWorkoutFragment(User user, User client, String workoutTitle) {
-        Log.d(TAG, "inside toWorkoutFragment");
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new WorkoutFragment(user, client, workoutTitle)).addToBackStack(null).commit();
+                new AdminUpdateWorkoutFragment(user, client, workoutTitle)).addToBackStack(null).commit();
     }
 
     @Override

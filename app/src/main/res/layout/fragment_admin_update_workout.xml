@@ -8,13 +8,13 @@
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
             name="fragment"
-            type="zachg.gsctrainingandnutritiontracker.fragments.WorkoutFragment"/>
+            type="zachg.gsctrainingandnutritiontracker.fragments.AdminUpdateWorkoutFragment"/>
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
             name="model"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.WorkoutViewModel" />
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminUpdateWorkoutViewModel" />
         <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
@@ -143,7 +143,8 @@
             android:clickable="true"
             android:background="#696969"
             android:layout_below="@id/buttonLayout"
-            android:layout_margin="1dp" />
+            android:layout_margin="1dp"
+            android:onClick="@{()->fragment.validateWorkout(client, workout)}"/>
 
         <Button
             android:id="@+id/bDeleteWorkout"
@@ -153,7 +154,7 @@
             android:clickable="true"
             android:background="#696969"
             android:layout_below="@id/bUpdateWorkout"
-            android:onClick="@{()->model.deleteWorkout(client, workout)}" />
+            android:onClick="@{()->fragment.deleteWorkout(client, workout)}" />
 
     </RelativeLayout>
     </ScrollView>

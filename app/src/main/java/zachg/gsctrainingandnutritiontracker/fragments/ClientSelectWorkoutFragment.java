@@ -3,7 +3,6 @@ package zachg.gsctrainingandnutritiontracker.fragments;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,24 +17,21 @@ import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
-import zachg.gsctrainingandnutritiontracker.generated.callback.OnClickListener;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.viewmodels.SelectWorkoutViewModel;
+import zachg.gsctrainingandnutritiontracker.viewmodels.ClientSelectWorkoutViewModel;
 
 import static android.media.CamcorderProfile.get;
 
-public class SelectWorkoutFragment extends Fragment implements View.OnClickListener {
-
-    private static final String TAG = "MyCustomDialog";
+public class ClientSelectWorkoutFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
 
     }
 
-    private SelectWorkoutViewModel selectWorkoutViewModel = new SelectWorkoutViewModel();
+    private ClientSelectWorkoutViewModel mClientSelectWorkoutViewModel = new ClientSelectWorkoutViewModel();
 
     private Workout workout = new Workout();
     private User user = new User();
@@ -48,10 +44,9 @@ public class SelectWorkoutFragment extends Fragment implements View.OnClickListe
 
     private int totalTvs = 0;
 
-    public SelectWorkoutFragment(User user, Report report) {
+    public ClientSelectWorkoutFragment(User user, Report report) {
         this.user = user;
         this.report = report;
-        Log.d(TAG, String.valueOf(user.getEmail()));
     }
 
     @Nullable
@@ -60,12 +55,13 @@ public class SelectWorkoutFragment extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.fragment_select_workout, container, false);
         actionCancel = view.findViewById(R.id.action_cancel);
 
-        selectWorkoutViewModel.init(user);
+        mClientSelectWorkoutViewModel.init(user);
 
         LinearLayout ll = view.findViewById(R.id.generateTvs);
         LinearLayout finalLl = ll;
 
-        selectWorkoutViewModel.getWorkouts().observe(this, new Observer<ArrayList<Workout>>() {
+        // TODO: change to rv
+        mClientSelectWorkoutViewModel.getWorkouts().observe(this, new Observer<ArrayList<Workout>>() {
             @Override
             public void onChanged(ArrayList<Workout> workouts) {
                 while (workouts.size() > totalTvs) {
@@ -92,7 +88,7 @@ public class SelectWorkoutFragment extends Fragment implements View.OnClickListe
             public void onClick(View v) {
                 Workout selectedWorkout = workout;
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ReportFragment(report, user, selectedWorkout)).addToBackStack(null).commit();
+                        new ClientReportFragment(report, user, selectedWorkout)).addToBackStack(null).commit();
             }
         });
 
@@ -103,6 +99,5 @@ public class SelectWorkoutFragment extends Fragment implements View.OnClickListe
 
         workoutTextViewArray.add(totalTvs, tv);
         totalTvs++;
-        Log.d(TAG, "addLine " + totalTvs);
     }
 }

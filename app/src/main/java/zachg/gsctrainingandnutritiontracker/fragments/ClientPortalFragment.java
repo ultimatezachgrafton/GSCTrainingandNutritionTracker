@@ -132,7 +132,7 @@ public class ClientPortalFragment extends Fragment {
 
     public void goToNewReport() {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new SelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
+                new ClientSelectWorkoutFragment(user, currentReport)).addToBackStack(null).commit();
     }
 
     public void goToViewReport() {
