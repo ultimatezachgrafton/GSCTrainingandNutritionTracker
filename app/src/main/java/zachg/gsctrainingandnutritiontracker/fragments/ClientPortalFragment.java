@@ -40,7 +40,10 @@ public class ClientPortalFragment extends Fragment {
     private String greeting;
 
     // Initializes client for maneuverability within WorkoutListFragment
-    public ClientPortalFragment(User user, User client) { this.user = user; this.client = client; }
+    public ClientPortalFragment(User user, User client) {
+        this.user = user;
+        this.client = client;
+    }
 
     public ClientPortalFragment(User user) { this.user = user; }
 
@@ -71,11 +74,11 @@ public class ClientPortalFragment extends Fragment {
         clientProfileViewModel.noReport.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer i) {
-                goToViewReport(currentReport);
+                goToViewReport(user, client, currentReport);
             }
         });
 
-        // NOTE: Listener is explicitly called to address issue that (as of this writing) android inversebinding
+        // NOTE: Listener is explicitly called here to address issue that (as of this writing) android inversebinding
         // is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             String dayOfMonthStr, monthStr;
@@ -93,11 +96,13 @@ public class ClientPortalFragment extends Fragment {
             String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
             currentReport.setDateString(dateString);
 
-            if (currentReport == null) {
-                currentReport.setIsNew(true);
+            if (currentReport.getIsNew()) {
                 goToSelectWorkoutList(user, client, currentReport);
             } else {
-                goToViewReport(currentReport);
+                // TODO do this elsewhere
+                this.currentReport.setEmail(client.getEmail());
+                this.currentReport.setClientName(client.getClientName());
+                goToViewReport(user, client, currentReport);
             }
         });
 
@@ -139,7 +144,7 @@ public class ClientPortalFragment extends Fragment {
                 new SelectWorkoutListFragment(user, client, report)).addToBackStack(null).commit();
     }
 
-    public void goToViewReport(Report report) {
+    public void goToViewReport(User user, User client, Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(user, client, report)).addToBackStack(null).commit();
     }

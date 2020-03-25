@@ -59,9 +59,11 @@ public class ViewReportFragment extends Fragment {
     private Report report = new Report();
     private Workout workout = new Workout();
     private Date date = new Date();
+    private String dailyWeightString;
 
     public ViewReportFragment() {}
 
+    // TODO if this comes from ReportList, everything needs to be validated...
     public ViewReportFragment(User user, User client, Report report) {
         this.report = report;
         this.user = user;
@@ -84,6 +86,7 @@ public class ViewReportFragment extends Fragment {
         binding.setClient(client);
         binding.setReport(report);
         photoFile = getPhotoFile(client);
+        binding.setDailyWeightString(report.getDailyWeightString());
 
         viewReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
         viewReportViewModel.init(user, client, report);

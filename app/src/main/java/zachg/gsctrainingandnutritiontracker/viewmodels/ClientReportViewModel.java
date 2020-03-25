@@ -66,9 +66,14 @@ public class ClientReportViewModel extends ViewModel {
 
     // Writes report to the Repository
     public void writeReportToRepo(User currentUser, Report report) {
-        report.setDateString("doink");
+
+        // TODO create these inside Report constructor
+        String dailyWeight = report.getDailyWeight();
+        report.setDailyWeightString(dailyWeight);
+        String dailyWeightString = report.getDailyWeightString();
+
         Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
-                report.getDailyWeight(), report.getComments(), report.getDateString(),
+                dailyWeight, dailyWeightString, report.getComments(), report.getDateString(),
                 report.getWorkoutTitle());
         repo.writeReportToRepo(generatedReport);
     }

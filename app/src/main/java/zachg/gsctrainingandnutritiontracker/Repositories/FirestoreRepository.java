@@ -175,8 +175,17 @@ public class FirestoreRepository {
                 .build();
     }
 
-    public FirestoreRecyclerOptions<Report> getReportsFromRepo(User user) {
-        Query reportQuery = userColRef.document(user.getEmail()).collection("reports");
+    public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, Report report) {
+        Query exerciseQuery = userColRef.document(user.getEmail()).collection("reports")
+                .document(report.getDateString()).collection("exercises");
+        return new FirestoreRecyclerOptions.Builder<Exercise>()
+                .setQuery(exerciseQuery, Exercise.class)
+                .build();
+    }
+
+    public FirestoreRecyclerOptions<Report> getReportsFromRepo(User user, Report report) {
+        Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
+                .whereEqualTo(report.getDateString(), "dateString");
         return new FirestoreRecyclerOptions.Builder<Report>()
                 .setQuery(reportQuery, Report.class)
                 .build();

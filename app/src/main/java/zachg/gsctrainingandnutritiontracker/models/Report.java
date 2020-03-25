@@ -19,6 +19,7 @@ public class Report extends BaseObservable {
     private String clientName; // client's name
     private String email;
     private String dailyWeight; // client's weight
+    private String dailyWeightString;
 
     private String exerciseNum;
     private String exerciseReps;
@@ -47,11 +48,13 @@ public class Report extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
-    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString,
+    public Report(String clientName, String email, String dailyWeight, String dailyWeightString,
+                  String exerciseWeight, String comments, String dateString,
                   String workoutTitle, String exerciseString) {
         this.clientName = clientName;
         this.email = email;
         this.dailyWeight = dailyWeight;
+        this.dailyWeightString = dailyWeightString;
         this.exerciseWeight = exerciseWeight;
         this.comments = comments;
         this.dateString = dateString;
@@ -60,10 +63,12 @@ public class Report extends BaseObservable {
     }
 
 
-    public Report(String clientName, String email, String dailyWeight, String exerciseWeight, String comments, String dateString) {
+    public Report(String clientName, String email, String dailyWeight, String dailyWeightString,
+                  String exerciseWeight, String comments, String dateString) {
         this.clientName = clientName;
         this.email = email;
         this.dailyWeight = dailyWeight;
+        this.dailyWeightString = dailyWeightString;
         this.exerciseWeight = exerciseWeight;
         this.comments = comments;
         this.dateString = dateString;
@@ -180,6 +185,13 @@ public class Report extends BaseObservable {
     public void setDailyWeight(String weight) {
         this.dailyWeight = weight;
         notifyPropertyChanged(BR.dailyWeight); }
+
+    @Bindable
+    public String getDailyWeightString() { return dailyWeightString; }
+
+    public void setDailyWeightString(String weight) {
+        this.dailyWeightString = "Today's Weight: " + weight;
+        notifyPropertyChanged(BR.dailyWeightString); }
 
     public boolean getIsNew() { return isNew; }
 

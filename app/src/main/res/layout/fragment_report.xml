@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/darker_gray"
-            tools:listitem="@layout/rv_exercise_item_report_only" />
+            tools:listitem="@layout/rv_exercise_item" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

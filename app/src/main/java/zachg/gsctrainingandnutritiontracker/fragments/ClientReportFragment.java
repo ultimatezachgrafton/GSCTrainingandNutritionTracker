@@ -48,7 +48,7 @@ public class ClientReportFragment extends Fragment {
 
     private ClientReportViewModel clientReportViewModel = new ClientReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private ExerciseForViewOnlyListAdapter exerciseListAdapter;
+    private ExerciseListAdapter exerciseListAdapter;
 
     private FragmentReportBinding binding;
 
@@ -104,6 +104,10 @@ public class ClientReportFragment extends Fragment {
         binding.setReport(report);
         binding.setUser(user);
 
+        Log.d(TAG, "clientReport");
+
+        // TODO implement "Today's Workout: workoutTitle" string
+
         binding.setModel(clientReportViewModel);
         clientReportViewModel = ViewModelProviders.of(getActivity()).get(ClientReportViewModel.class);
         clientReportViewModel.init(user, report, workout);
@@ -141,7 +145,7 @@ public class ClientReportFragment extends Fragment {
     }
 
     private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
-        exerciseListAdapter = new ExerciseForViewOnlyListAdapter(exercises);
+        exerciseListAdapter = new ExerciseListAdapter(exercises);
         binding.rvExercise.setAdapter(exerciseListAdapter);
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }

@@ -30,8 +30,7 @@ public class ViewReportViewModel extends ViewModel implements OnCompleteListener
     private User user = new User();
     private User client = new User();
     private Workout workout = new Workout();
-    private MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
-    private WorkoutCallback workoutCallback;
+    private MutableLiveData<Report> reportLiveData = new MutableLiveData<>();;
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
@@ -39,14 +38,13 @@ public class ViewReportViewModel extends ViewModel implements OnCompleteListener
 
     // init getting null data for user
     public void init(User user, User client, Report report) {
-        final StringBuilder str = new StringBuilder();
         this.user = user;
         this.client = client;
         this.currentReport = report;
         this.workout = report.getWorkout();
         repo = FirestoreRepository.getInstance();
         repo.setQuerySnapshotOnCompleteListener(this);
-        repo.getReportsFromRepo(client);
+        repo.getReportsFromRepo(client, currentReport);
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
@@ -64,7 +62,7 @@ public class ViewReportViewModel extends ViewModel implements OnCompleteListener
                 Report report = doc.toObject(Report.class);
                 currentReport = report;
             }
-            repo.getExercisesFromRepo(user, workout);
+            exerciseLiveData.setValue(repo.getExercisesFromRepo(user, currentReport));
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());
         }

@@ -48,6 +48,7 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         this.user = user;
         this.client = client;
         this.workout = workout;
+        report.setIsNew(false);
         workout.setIsNew(false);
         this.report = report;
 ;    }

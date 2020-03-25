@@ -63,7 +63,8 @@ public class LoginFragment extends Fragment {
                 } else if (user.getIsAdmin()) {
                     goToAdminList(user);
                 } else if (!user.getIsAdmin()) {
-                    goToProfile(user);
+                    User client = user;
+                    goToProfile(user, client);
                 }
             }
         });
@@ -119,11 +120,11 @@ public class LoginFragment extends Fragment {
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
-    public void goToProfile(User user) {
+    public void goToProfile(User user, User client) {
         Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
         loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientPortalFragment(user)).addToBackStack(null).commit();
+                new ClientPortalFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void goToAdminList(User user) {
