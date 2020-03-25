@@ -44,7 +44,6 @@ public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, Exer
 
     @Override
     public ExerciseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_exercise_item, parent, false);
         return new ExerciseViewHolder(view);
     }

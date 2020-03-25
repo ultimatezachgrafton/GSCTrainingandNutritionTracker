@@ -42,6 +42,8 @@ public class ClientPortalFragment extends Fragment {
     // Initializes client for maneuverability within WorkoutListFragment
     public ClientPortalFragment(User user, User client) { this.user = user; this.client = client; }
 
+    public ClientPortalFragment(User user) { this.user = user; }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment_report_list
@@ -59,11 +61,7 @@ public class ClientPortalFragment extends Fragment {
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                if (!r.isNew()) {
-                    goToSelectWorkoutList();
-                } else {
-                   goToViewReport();
-                }
+                currentReport = r;
             }
         });
 
@@ -73,11 +71,11 @@ public class ClientPortalFragment extends Fragment {
         clientProfileViewModel.noReport.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer i) {
-                    goToViewReport();
+                goToViewReport(currentReport);
             }
         });
 
-        // listener explicitly called to address issue that as of this writing android inversebinding
+        // NOTE: Listener is explicitly called to address issue that (as of this writing) android inversebinding
         // is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             String dayOfMonthStr, monthStr;
@@ -93,9 +91,14 @@ public class ClientPortalFragment extends Fragment {
                 monthStr = String.valueOf(month);
             }
             String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
-            Log.d(TAG, dateString);
             currentReport.setDateString(dateString);
-            goToSelectWorkoutList();
+
+            if (currentReport == null) {
+                currentReport.setIsNew(true);
+                goToSelectWorkoutList(user, client, currentReport);
+            } else {
+                goToViewReport(currentReport);
+            }
         });
 
         return v;
@@ -131,14 +134,14 @@ public class ClientPortalFragment extends Fragment {
     }
 
 
-    public void goToSelectWorkoutList() {
+    public void goToSelectWorkoutList(User user, User client, Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new SelectWorkoutListFragment(user, client)).addToBackStack(null).commit();
+                new SelectWorkoutListFragment(user, client, report)).addToBackStack(null).commit();
     }
 
-    public void goToViewReport() {
+    public void goToViewReport(Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ViewReportFragment(user, currentReport.getDateString())).addToBackStack(null).commit();
+                new ViewReportFragment(user, client, report)).addToBackStack(null).commit();
     }
 
 }

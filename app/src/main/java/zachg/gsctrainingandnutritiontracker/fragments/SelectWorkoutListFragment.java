@@ -37,12 +37,18 @@ public class SelectWorkoutListFragment extends Fragment {
     private Workout workout = new Workout();
     public Report report = new Report();
 
-    public SelectWorkoutListFragment(User user, User client) {
+    public SelectWorkoutListFragment(User user, User client, Report report) {
         this.user = user;
         this.client = client;
+        this.report = report;
     }
 
     public SelectWorkoutListFragment(User client) {
+        this.client = client;
+    }
+
+    public SelectWorkoutListFragment(User user, User client) {
+        this.user = user;
         this.client = client;
     }
 
@@ -57,6 +63,7 @@ public class SelectWorkoutListFragment extends Fragment {
         binding = FragmentWorkoutListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setWorkout(workout);
+        binding.setReport(report);
 
         // Gets ViewModel instance to observe  LiveData
         binding.setModel(adminWorkoutListViewModel);
@@ -66,7 +73,6 @@ public class SelectWorkoutListFragment extends Fragment {
         adminWorkoutListViewModel.getWorkouts().observe(this, new Observer<FirestoreRecyclerOptions<Workout>>() {
             @Override
             public void onChanged(@Nullable FirestoreRecyclerOptions<Workout> workouts) {
-                Log.d(TAG, "workouts changed");
                 initRecyclerView(workouts);
                 workoutListAdapter.startListening();
             }
@@ -96,13 +102,13 @@ public class SelectWorkoutListFragment extends Fragment {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 workout = adminWorkoutListViewModel.onItemClicked(documentSnapshot, position);
-                // If admin, goes to AdminWorkoutUpdate
+                // If user is admin, goes to AdminWorkoutUpdate
                 if (user.getIsAdmin()) {
                     SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new AdminUpdateWorkoutFragment(user, client, workout)).addToBackStack(null).commit();
+                            new AdminUpdateWorkoutFragment(user, client, workout, report)).addToBackStack(null).commit();
                 } else {
                     SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                            new ClientReportFragment(user, client, workout)).addToBackStack(null).commit();
+                            new ClientReportFragment(user, client, workout, report)).addToBackStack(null).commit();
                 }
             }
         });

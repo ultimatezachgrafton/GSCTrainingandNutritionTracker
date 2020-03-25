@@ -34,7 +34,6 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
     }
 
     public MutableLiveData<String> getWorkoutTitleLiveData() {
-        Log.d(TAG, "get " + workoutTitleLiveData.getValue());
         return workoutTitleLiveData;
     }
 

@@ -22,6 +22,7 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
 
     public String firstName, lastName, phoneNumber, email, password;
 
+    // TODO: add phone number
     public ObservableField<String> etFirstName = new ObservableField<>();
     public ObservableField<String> etLastName = new ObservableField<>();
     public ObservableField<String> etEmail = new ObservableField<>();
@@ -32,7 +33,6 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     public MutableLiveData<String> onError = new MutableLiveData<>();
     public MutableLiveData<Boolean> isEmailDuplicate = new MutableLiveData<>();
 
-    // TODO: make these string values
     private static String REGISTER_ERROR = "Please fill in all fields";
     private static String PASSWORD_ERROR = "Passwords do not match.";
     private static String CLIENT_ADDED = "Registering client! Please give us a moment...";

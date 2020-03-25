@@ -21,6 +21,7 @@ import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUpdateWorkoutBinding;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
+import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUpdateWorkoutViewModel;
@@ -33,6 +34,7 @@ public class AdminUpdateWorkoutFragment extends Fragment {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User user = new User();
     private User client = new User();
+    private Report report = new Report();
     private Workout workout = new Workout();
     private Button bAddExercise;
     public String TAG = "WorkoutFragment";
@@ -42,11 +44,12 @@ public class AdminUpdateWorkoutFragment extends Fragment {
     public AdminUpdateWorkoutFragment(Workout workout) {
     }
 
-    public AdminUpdateWorkoutFragment(User user, User client, Workout workout) {
+    public AdminUpdateWorkoutFragment(User user, User client, Workout workout, Report report) {
         this.user = user;
         this.client = client;
         this.workout = workout;
         workout.setIsNew(false);
+        this.report = report;
 ;    }
 
     public AdminUpdateWorkoutFragment(User user, User client, String workoutTitle) {
@@ -131,19 +134,16 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    // TODO
     public void addOne() {
-        // add one empty exercise
-        // write to repo
+        adminUpdateWorkoutViewModel.addOne();
     }
 
     public void addThree() {
-        // create 3 empty exercises
+        adminUpdateWorkoutViewModel.addThree();
     }
 
     public void addFive() {
-        // create 5
-        // write to repo
+        adminUpdateWorkoutViewModel.addFive();
     }
 
     public void validateWorkout(User client, Workout workout) {

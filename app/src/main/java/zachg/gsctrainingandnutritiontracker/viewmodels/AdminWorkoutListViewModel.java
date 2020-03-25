@@ -22,10 +22,11 @@ public class AdminWorkoutListViewModel extends ViewModel {
     public String TAG = "WorkoutListViewModel";
 
     public void init(User client) {
+        // TODO: why is client's email not set?
         this.client = client;
+        client.setEmail("p@p.com");
         repo = FirestoreRepository.getInstance();
         workouts.setValue(repo.getWorkoutsFromRepo(client));
-        Log.d(TAG, String.valueOf(workouts.getValue()));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Workout>> getWorkouts() {

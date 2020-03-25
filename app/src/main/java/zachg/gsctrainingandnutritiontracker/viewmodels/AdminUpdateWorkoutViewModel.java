@@ -40,7 +40,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
     public User client = new User();
-    public String TAG = "WorkoutViewModel";
+    public String TAG = "AdminUpdateWorkoutViewModel";
     public String dateString;
     public String workoutTitle;
 

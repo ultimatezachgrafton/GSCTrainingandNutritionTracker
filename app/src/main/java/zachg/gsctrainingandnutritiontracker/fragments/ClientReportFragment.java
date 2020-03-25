@@ -1,6 +1,7 @@
 package zachg.gsctrainingandnutritiontracker.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.adapters.ExerciseForViewOnlyListAdapter;
 import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
 import zachg.gsctrainingandnutritiontracker.adapters.WorkoutListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentReportBinding;
@@ -37,6 +39,7 @@ import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
+import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientReportViewModel;
 
 public class ClientReportFragment extends Fragment {
@@ -45,7 +48,7 @@ public class ClientReportFragment extends Fragment {
 
     private ClientReportViewModel clientReportViewModel = new ClientReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private ExerciseListAdapter exerciseListAdapter;
+    private ExerciseForViewOnlyListAdapter exerciseListAdapter;
 
     private FragmentReportBinding binding;
 
@@ -55,6 +58,7 @@ public class ClientReportFragment extends Fragment {
     private TextView tvClientName, tvDate;
     private ArrayList<Workout> workouts = new ArrayList<>();
     private Workout workout = new Workout();
+    private ImageView profilePhoto;
 
     private Date date;
     private User user = new User();
@@ -62,7 +66,7 @@ public class ClientReportFragment extends Fragment {
     private Report report = new Report();
 
     private static final int REQUEST_CONTACT = 1;
-    public String TAG = "ReportFragment";
+    public String TAG = "ClientReportFragment";
 
     public ClientReportFragment() {}
 
@@ -79,11 +83,11 @@ public class ClientReportFragment extends Fragment {
     }
 
     // TODO: needs dateString
-    public ClientReportFragment(User user, User client, Workout workout) {
+    public ClientReportFragment(User user, User client, Workout workout, Report report) {
         this.workout = workout;
         this.user = user;
         this.client = client;
-        this.report.setClientName(user.getClientName());
+        this.report = report;
         this.dateString = report.getDateString();
     }
 
@@ -107,7 +111,6 @@ public class ClientReportFragment extends Fragment {
         clientReportViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
             @Override
             public void onChanged(FirestoreRecyclerOptions<Exercise> e) {
-                Log.d(TAG, "firing");
                 initRecyclerView(e);
                 exerciseListAdapter.startListening();
             }
@@ -130,13 +133,38 @@ public class ClientReportFragment extends Fragment {
             }
         });
 
+        photoFile = getPhotoFile(client);
+        profilePhoto = v.findViewById(R.id.client_photo);
+        updatePhotoView();
+
         return v;
     }
 
     private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
-        exerciseListAdapter = new ExerciseListAdapter(exercises);
+        exerciseListAdapter = new ExerciseForViewOnlyListAdapter(exercises);
         binding.rvExercise.setAdapter(exerciseListAdapter);
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    public File getPhotoFile(User user) {
+        File filesDir = getContext().getFilesDir();
+        return new File(filesDir, user.getPhotoFilename());
+    }
+
+    private void updatePhotoView() {
+        if (photoFile == null || !photoFile.exists()) {
+            profilePhoto.setImageDrawable(null);
+            profilePhoto.setContentDescription(
+                    getString(R.string.report_photo_no_image_description)
+            );
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(photoFile.getPath(), getActivity());
+            profilePhoto.setImageBitmap(bitmap);
+            Log.d(TAG,"bitmap set: " + photoFile.getPath());
+            profilePhoto.setContentDescription(
+                    getString(R.string.report_photo_image_description)
+            );
+        }
     }
 
     @Override
@@ -159,14 +187,6 @@ public class ClientReportFragment extends Fragment {
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
             // TODO: ask ben and logged out are strings in res
-            case R.id.bSelectWorkout:
-                goToSelectWorkoutList(user, client);
         } return true;
     }
-
-    public void goToSelectWorkoutList(User user, User client) {
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new SelectWorkoutListFragment(user, client)).addToBackStack(null).commit();
-    }
-
 }

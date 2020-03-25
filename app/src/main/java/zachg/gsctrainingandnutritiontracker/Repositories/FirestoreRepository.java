@@ -39,13 +39,11 @@ public class FirestoreRepository {
     private static FirestoreRepository instance;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private OnCompleteListener<QuerySnapshot> querySnapshotOnCompleteListener;
-    private OnCompleteListener<DocumentSnapshot> docSnapshotOnCompleteListener;
     private User user = new User();
     public String TAG = "FirestoreRepository";
 
     public final CollectionReference userColRef = db.collection("users");
     public Query userQuery = userColRef;
-    public Query reportQuery = userColRef; // set to fetch reports
 
     // Gets singleton instance of FirestoreRepository
     public static FirestoreRepository getInstance() {
@@ -135,27 +133,18 @@ public class FirestoreRepository {
     }
 
     public void duplicateWorkoutTitleCheck(User user, String workoutTitle) {
-        Log.d(TAG, "in repo for dup check");
         Query userQuery = userColRef.document(user.getEmail()).collection("workouts")
                 .whereEqualTo("workoutTitle", workoutTitle);
         userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Gets all Reports for a single User
-    public FirestoreRecyclerOptions<Report> getReportsByUser(User user, String string) {
+    public FirestoreRecyclerOptions<Report> getReportsByUser(User user, String dateString) {
         Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
-                .whereEqualTo("clientName", user.getClientName());
+                .whereEqualTo(dateString, "dateString");
         return new FirestoreRecyclerOptions.Builder<Report>()
                 .setQuery(reportQuery, Report.class)
                 .build();
-//        reportQuery.get().addOnCompleteListener(snapshotOnCompleteListener);
-    }
-
-    // Gets all of a single User's reports on a specific date
-    public void getReportByUser(User user) {
-        Query reportQuery = userColRef.document(user.getEmail())
-                .collection("reports");
-        reportQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Returns Workouts as assigned by admin
@@ -183,6 +172,13 @@ public class FirestoreRepository {
                 .document(workout.getWorkoutTitle()).collection("exercises");
         return new FirestoreRecyclerOptions.Builder<Exercise>()
                 .setQuery(exerciseQuery, Exercise.class)
+                .build();
+    }
+
+    public FirestoreRecyclerOptions<Report> getReportsFromRepo(User user) {
+        Query reportQuery = userColRef.document(user.getEmail()).collection("reports");
+        return new FirestoreRecyclerOptions.Builder<Report>()
+                .setQuery(reportQuery, Report.class)
                 .build();
     }
 
@@ -295,8 +291,6 @@ public class FirestoreRepository {
     }
 
     public void writeReportToRepo(Report report) {
-        report.setFullReport(report.convertToFullReport(report));
-
         db.collection("users").document(report.getEmail()).collection("reports")
                 .document(report.getDateString())
                 .set(report)
@@ -304,7 +298,6 @@ public class FirestoreRepository {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "DocumentSnapshot added with ID: ");
-                        Log.d(TAG, report.getFullReport());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -313,6 +306,5 @@ public class FirestoreRepository {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
-        Log.d(TAG, report.getDateString() + report.getEmail());
     }
 }

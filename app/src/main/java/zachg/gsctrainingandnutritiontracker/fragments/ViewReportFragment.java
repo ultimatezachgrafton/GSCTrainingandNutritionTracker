@@ -14,19 +14,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.util.Date;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.adapters.ExerciseForViewOnlyListAdapter;
+import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentViewReportBinding;
+import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ViewReportViewModel;
 
@@ -37,29 +45,27 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class ViewReportFragment extends Fragment {
 
     // fragment_report_list for viewing past reports
-    private ViewReportViewModel adminReportViewModel;
+    private ViewReportViewModel viewReportViewModel;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private ExerciseForViewOnlyListAdapter exerciseListAdapter;
 
     private FragmentViewReportBinding binding;
 
     private File photoFile;
     private ImageView profilePhoto;
-    private User currentUser = new User();
-    private User currentClient = new User();
-    private Report currentReport = new Report();
+    private User user = new User();
+    private User client = new User();
+    private Report report = new Report();
+    private Workout workout = new Workout();
     private Date date = new Date();
 
     public ViewReportFragment() {}
 
-    public ViewReportFragment(User user, String dateString) {
-        this.date = date;//currentReport = report;
-        this.currentUser = user;
-    }
-
-    public ViewReportFragment(Report report, User user, User client) {
-        this.currentClient = client;
-        this.currentUser = user;
-        this.currentReport = report;
+    public ViewReportFragment(User user, User client, Report report) {
+        this.report = report;
+        this.user = user;
+        this.client = client;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -74,19 +80,41 @@ public class ViewReportFragment extends Fragment {
         final View v = binding.getRoot();
 
         binding.setFragment(this);
-        binding.setUser(currentUser);
-        binding.setClient(currentClient);
-        binding.setReport(currentReport);
-        photoFile = getPhotoFile(currentClient);
+        binding.setUser(user);
+        binding.setClient(client);
+        binding.setReport(report);
+        photoFile = getPhotoFile(client);
 
-        adminReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
-        adminReportViewModel.init(currentUser, currentClient, currentReport);
-        binding.setReport(adminReportViewModel.getCurrentReport());
+        viewReportViewModel = ViewModelProviders.of(getActivity()).get(ViewReportViewModel.class);
+        viewReportViewModel.init(user, client, report);
 
         profilePhoto = v.findViewById(R.id.profilePhotoImageView);
         updatePhotoView();
 
+        viewReportViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
+            @Override
+            public void onChanged(FirestoreRecyclerOptions<Exercise> e) {
+                initRecyclerView(e);
+                exerciseListAdapter.startListening();
+            }
+        });
+
+        viewReportViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (!aBoolean) {
+                    binding.rvExercise.smoothScrollToPosition(viewReportViewModel.getExerciseLiveData().getValue().getSnapshots().size() - 1);
+                }
+            }
+        });
+
         return v;
+    }
+
+    private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
+        exerciseListAdapter = new ExerciseForViewOnlyListAdapter(exercises);
+        binding.rvExercise.setAdapter(exerciseListAdapter);
+        binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     public File getPhotoFile(User user) {
@@ -120,7 +148,7 @@ public class ViewReportFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.bViewProfile:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientPortalFragment(currentUser, currentUser)).addToBackStack(null).commit();
+                        new ClientPortalFragment(user, client)).addToBackStack(null).commit();
             case R.id.bAddNewClient:
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new RegisterFragment()).addToBackStack(null).commit();

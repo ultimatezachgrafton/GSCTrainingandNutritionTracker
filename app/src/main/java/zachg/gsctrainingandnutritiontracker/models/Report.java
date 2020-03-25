@@ -24,18 +24,17 @@ public class Report extends BaseObservable {
     private String exerciseReps;
     private String exerciseWeight;
     private String exerciseName;
-    private Workout workout;
+    private Workout workout = new Workout();
     private String workoutTitle;
     private int workoutDay;
 
     private String comments;
-    private boolean isNew; // determines if report is new
+    private boolean isNew = true; // determines if report is new
 
     private ArrayList<Workout> workoutLists;
     private String fullReport;
     private String day;
     private String exerciseString;
-
 
     public Report() {}
 
@@ -207,6 +206,14 @@ public class Report extends BaseObservable {
     }
 
     @Bindable
+    public Workout getWorkout() { return workout; }
+
+    public void setWorkout(Workout workout) {
+        this.workout = workout;
+        notifyPropertyChanged(BR.workout);
+    }
+
+    @Bindable
     public String getWorkoutTitle() { return workoutTitle; }
 
     public void setWorkoutTitle(String workoutTitle) {
@@ -228,10 +235,5 @@ public class Report extends BaseObservable {
     public void setExerciseString(String exerciseStringBuilder) {
         this.exerciseString = String.valueOf(exerciseStringBuilder);
         notifyPropertyChanged(BR.exerciseString);
-    }
-
-    public String convertToFullReport(Report report) {
-        this.fullReport = "hiya";//report.getClientName().concat(report.getEmail()).concat(report.getDateString()).concat(report.getExerciseString());
-        return this.fullReport;
     }
 }

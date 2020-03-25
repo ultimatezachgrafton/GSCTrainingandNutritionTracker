@@ -31,7 +31,8 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
         this.currentUser = user;
         repo = FirestoreRepository.getInstance();
         repo.setQuerySnapshotOnCompleteListener(this);
-        repo.getReportByUser(user);
+        String dateString = "doink";
+        repo.getReportsByUser(currentUser, dateString);
     }
 
     @Override

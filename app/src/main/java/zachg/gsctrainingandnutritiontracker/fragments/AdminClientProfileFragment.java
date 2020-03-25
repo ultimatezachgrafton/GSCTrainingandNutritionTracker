@@ -105,7 +105,6 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel.onError.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                // TODO: getFocus
                 Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
             }
         });

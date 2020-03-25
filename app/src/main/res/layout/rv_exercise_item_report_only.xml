@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<data>
+    <import type="android.view.View"/>
+    <variable
+        name="exercise"
+        type="zachg.gsctrainingandnutritiontracker.models.Exercise"/>
+</data>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rv_exercise_item_report_only">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvExerciseSeparator"
+        android:text="@string/exercise"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{exercise.exerciseName}"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:id="@+id/tvExerciseName"
+        android:layout_below="@+id/tvExerciseSeparator"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvReps"
+        android:text="@{exercise.exerciseReps}"
+        android:layout_below="@+id/tvExerciseName"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvWeightUsed"
+        android:text="@{exercise.exerciseWeight}"
+        android:layout_below="@+id/tvReps"/>
+
+</RelativeLayout></layout>

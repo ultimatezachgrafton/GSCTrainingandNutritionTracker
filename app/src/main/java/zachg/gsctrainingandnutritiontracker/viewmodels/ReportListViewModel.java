@@ -33,9 +33,8 @@ public class ReportListViewModel extends ViewModel implements OnCompleteListener
         this.currentUser = user;
         repo = FirestoreRepository.getInstance();
         String dateString = "";
-        reportLiveData.setValue(repo.getReportsByUser(currentUser, dateString));
+        reportLiveData.setValue(repo.getReportsByUser(currentUser, "doink"));
         repo.setQuerySnapshotOnCompleteListener(this);
-//        getReportsByUser(user, dateString);
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Report>> getReports() {

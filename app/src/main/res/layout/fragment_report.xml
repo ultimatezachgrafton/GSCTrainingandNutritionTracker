@@ -13,29 +13,21 @@
             name="model"
             type="zachg.gsctrainingandnutritiontracker.viewmodels.ClientReportViewModel"/>
         <variable
-            name="dailyWeight"
-            type="String"/>
-        <variable
-            name="comments"
-            type="String"/>
-        <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
-            name="bSendReport"
-            type="android.widget.Button" />
+            name="profilePhoto"
+            type="android.widget.ImageView"/>
     </data>
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="fill_parent"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -87,7 +79,7 @@
         android:id="@+id/etWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@={model.dailyWeight}"
+        android:text="@{report.dailyWeight}"
         android:singleLine="true"
         android:textColor="@color/white"
         android:layout_toEndOf="@id/separator1"
@@ -102,32 +94,24 @@
         android:textColor="@color/white"
         android:layout_below="@id/etWeight"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/generateExercises"
-        android:background="#696969"
-        android:layout_below="@id/separator2"/>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/fragment_exercise_list"
-    android:layout_below="@+id/separator2"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExercise"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
-        tools:listitem="@layout/rv_exercise_item" />
+        android:id="@+id/layout_exercise_list"
+        android:layout_below="@+id/separator2"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvExercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            tools:listitem="@layout/rv_exercise_item_report_only" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <EditText
         android:id="@+id/etComments"
@@ -135,21 +119,21 @@
         android:layout_height="wrap_content"
         android:hint="@string/comments"
         android:textColorHint="@color/white"
-        android:text="@={model.comments}"
-        android:layout_below="@id/fragment_exercise_list"
+        android:text="@={report.comments}"
+        android:layout_below="@id/layout_exercise_list"
         android:textColor="@color/white" />
 
-    <Button
-        android:id="@+id/bSendReport"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/send_report"
-        android:layout_below="@id/etComments"
-        android:background="#696969"
-        android:clickable="true"
-        android:textColor="@color/white"
-        android:onClick="@{()->model.writeReport(user, report)}" />
+        <Button
+            android:id="@+id/bSendReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send_report"
+            android:background="#696969"
+            android:clickable="true"
+            android:layout_below="@id/etComments"
+            android:textColor="@color/white"
+            android:onClick="@{()->model.writeReportToRepo(user, report)}" />
 
-    </RelativeLayout>
-    </ScrollView>
+</RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

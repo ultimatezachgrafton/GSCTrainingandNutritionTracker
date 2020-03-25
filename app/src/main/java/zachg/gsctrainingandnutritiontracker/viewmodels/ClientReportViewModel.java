@@ -36,7 +36,6 @@ public class ClientReportViewModel extends ViewModel {
 
     public ObservableField<String> dailyWeight = new ObservableField<>();
     public ObservableField<String> comments = new ObservableField<>();
-    public ObservableField<String> exerciseWeight = new ObservableField<>();
 
     public Report report = new Report();
     public Workout workout = new Workout();
@@ -53,7 +52,8 @@ public class ClientReportViewModel extends ViewModel {
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();
-        getExercisesFromRepo(user, workout);
+        this.report.setWorkoutTitle(workout.getWorkoutTitle());
+        exerciseLiveData.setValue(repo.getExercisesFromRepo(user, workout));
     }
 
     public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
@@ -64,18 +64,12 @@ public class ClientReportViewModel extends ViewModel {
         return isUpdating;
     }
 
-    public void getExercisesFromRepo(User user, Workout workout) {
-        workout.setWorkoutTitle("charlie");
-        repo.getExercisesFromRepo(user, workout);
-    }
-
-    // TODO: not working, test after rv installed
     // Writes report to the Repository
-    public void writeReport(User currentUser, Report report) {
-            Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
-                    dailyWeight.get(), exerciseWeight.get(), comments.get(), report.getDateString(),
-                    report.getWorkoutTitle(), report.getExerciseString());
-            generatedReport.setDateString("doink");
-            repo.writeReportToRepo(generatedReport);
+    public void writeReportToRepo(User currentUser, Report report) {
+        report.setDateString("doink");
+        Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
+                report.getDailyWeight(), report.getComments(), report.getDateString(),
+                report.getWorkoutTitle());
+        repo.writeReportToRepo(generatedReport);
     }
 }

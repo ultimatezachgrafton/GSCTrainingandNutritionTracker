@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
         <variable
@@ -18,6 +19,11 @@
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
     </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -59,15 +65,41 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
 
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_exercise_list"
+                android:layout_below="@+id/profilePhotoImageView"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvExercise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/darker_gray"
+                    tools:listitem="@layout/rv_exercise_item_report_only" />
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvFullReport"
-                android:text="@{report.fullReport}"
-                android:layout_below="@id/profilePhotoImageView"
-                android:textColor="@color/white"/>
+                android:id="@+id/tvCommentString"
+                android:text="@string/comments_view"
+                android:layout_below="@id/layout_exercise_list"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvComments"
+                android:text="@{report.getComments()}"
+                android:layout_below="@id/tvCommentString"/>
 
         </RelativeLayout>
 
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
