@@ -21,35 +21,33 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
     private FirestoreRepository repo;
 
     public MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
-    public MutableLiveData<Integer> noReport = new MutableLiveData<Integer>();
+    public MutableLiveData<Boolean> doesReportExist = new MutableLiveData<>();
     private User currentUser = new User();
     private Report report = new Report();
     public String TAG = "ClientPortalViewModel";
     private String dateGreeting;
 
-    public void init(User user) {
-        this.currentUser = user;
+    public void init() {
         repo = FirestoreRepository.getInstance();
+    }
+
+    public void getReportFromRepo(User currentUser, String dateString) {
+        Log.d(TAG, "in viewmodel");
         repo.setQuerySnapshotOnCompleteListener(this);
-        String dateString = "doink";
-        repo.getReportsByUser(currentUser, dateString);
+        repo.getReportForPortal(currentUser, dateString);
     }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot doc : task.getResult()) {
-                if (doc.exists()) {
-                    report = doc.toObject(Report.class);
-                    reportLiveData.setValue(report);
-                } else {
-                    Log.d(TAG, "no report");
-                    noReport.setValue(1);
-                }
-            }
+        QuerySnapshot qs = task.getResult();
+        if (qs.size() == 0) {
+            doesReportExist.setValue(false);
         } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-            return;
+            for (QueryDocumentSnapshot doc : qs) {
+                report = doc.toObject(Report.class);
+                reportLiveData.setValue(report);
+                return;
+            }
         }
     }
 }

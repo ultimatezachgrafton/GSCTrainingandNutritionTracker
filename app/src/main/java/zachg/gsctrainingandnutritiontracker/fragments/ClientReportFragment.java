@@ -48,7 +48,7 @@ public class ClientReportFragment extends Fragment {
 
     private ClientReportViewModel clientReportViewModel = new ClientReportViewModel();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private ExerciseListAdapter exerciseListAdapter;
+    private ExerciseForViewOnlyListAdapter exerciseListAdapter;
 
     private FragmentReportBinding binding;
 
@@ -104,8 +104,6 @@ public class ClientReportFragment extends Fragment {
         binding.setReport(report);
         binding.setUser(user);
 
-        Log.d(TAG, "clientReport");
-
         // TODO implement "Today's Workout: workoutTitle" string
 
         binding.setModel(clientReportViewModel);
@@ -137,6 +135,16 @@ public class ClientReportFragment extends Fragment {
             }
         });
 
+        clientReportViewModel.areExercisesCollected.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Log.d(TAG, "in mutable");
+                    clientReportViewModel.writeReportToRepo(report);
+                }
+            }
+        });
+
         photoFile = getPhotoFile(client);
         profilePhoto = v.findViewById(R.id.client_photo);
         updatePhotoView();
@@ -145,7 +153,7 @@ public class ClientReportFragment extends Fragment {
     }
 
     private void initRecyclerView(FirestoreRecyclerOptions<Exercise> exercises) {
-        exerciseListAdapter = new ExerciseListAdapter(exercises);
+        exerciseListAdapter = new ExerciseForViewOnlyListAdapter(exercises);
         binding.rvExercise.setAdapter(exerciseListAdapter);
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }

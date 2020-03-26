@@ -44,6 +44,9 @@ public class ExerciseForViewOnlyListAdapter extends FirestoreRecyclerAdapter<Exe
 
     @Override
     protected void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position, @NonNull Exercise exercise) {
+        holder.tvExerciseName.setText(exercise.getExerciseName());
+        holder.tvReps.setText(exercise.getExerciseReps());
+        holder.tvWeightUsed.setText(exercise.getExerciseWeight());
     }
 
 }

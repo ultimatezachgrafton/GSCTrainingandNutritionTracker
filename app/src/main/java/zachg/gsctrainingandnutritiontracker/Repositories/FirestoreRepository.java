@@ -140,11 +140,19 @@ public class FirestoreRepository {
 
     // Gets all Reports for a single User
     public FirestoreRecyclerOptions<Report> getReportsByUser(User user, String dateString) {
+        Log.d(TAG, "in repo");
         Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
                 .whereEqualTo(dateString, "dateString");
         return new FirestoreRecyclerOptions.Builder<Report>()
                 .setQuery(reportQuery, Report.class)
                 .build();
+    }
+
+    // Gets all Reports for a single User - querySnapshot version
+    public void getReportForPortal(User user, String dateString) {
+        Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
+                .whereEqualTo(dateString, "dateString");
+        reportQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Returns Workouts as assigned by admin
@@ -153,6 +161,14 @@ public class FirestoreRepository {
         return new FirestoreRecyclerOptions.Builder<Workout>()
                 .setQuery(workoutQuery, Workout.class)
                 .build();
+    }
+
+    // Returns Workouts as assigned by admin
+    public void getExercisesForReport(User user, Report report) {
+        Log.d(TAG, "in repo");
+        Query exerciseQuery = userColRef.document(user.getEmail()).collection("workouts")
+                .document(report.getWorkoutTitle()).collection("exercises");
+        exerciseQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     public void getWorkoutsForReport(User user) {
@@ -315,5 +331,27 @@ public class FirestoreRepository {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+        writeExercisesToReport(report);
+    }
+
+    public void writeExercisesToReport(Report report) {
+        for (int i = 0; i < report.getExerciseArrayList().size(); i++) {
+            db.collection("users").document(report.getEmail()).collection("reports")
+                    .document(report.getDateString()).collection("exercises")
+                    .document("bazinga")//report.getExerciseArrayList().get(i).getExerciseName())
+                    .set(report.getExerciseArrayList().get(i))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot added with ID: ");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
+        }
     }
 }

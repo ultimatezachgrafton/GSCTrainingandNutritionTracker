@@ -45,8 +45,6 @@ public class ClientPortalFragment extends Fragment {
         this.client = client;
     }
 
-    public ClientPortalFragment(User user) { this.user = user; }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment_report_list
@@ -59,22 +57,28 @@ public class ClientPortalFragment extends Fragment {
         binding.setGreeting(greeting);
 
         clientProfileViewModel = ViewModelProviders.of(this).get(ClientPortalViewModel.class);
-        clientProfileViewModel.init(user);
+        clientProfileViewModel.init();
 
+        // Observes report returning from repo
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
                 currentReport = r;
+                goToViewReport(user, client, r);
             }
         });
 
         // TODO string res
         greeting = "Hi, " + user.getFirstName() + "!";
 
-        clientProfileViewModel.noReport.observe(this, new Observer<Integer>() {
+        // Observes for call to repo validating existence of report
+        clientProfileViewModel.doesReportExist.observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(Integer i) {
-                goToViewReport(user, client, currentReport);
+            public void onChanged(Boolean aBoolean) {
+                if (!aBoolean) {
+                    Log.d(TAG, "noreport firing");
+                    goToSelectWorkoutList(user, client, currentReport);
+                }
             }
         });
 
@@ -95,15 +99,7 @@ public class ClientPortalFragment extends Fragment {
             }
             String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
             currentReport.setDateString(dateString);
-
-            if (currentReport.getIsNew()) {
-                goToSelectWorkoutList(user, client, currentReport);
-            } else {
-                // TODO do this elsewhere
-                this.currentReport.setEmail(client.getEmail());
-                this.currentReport.setClientName(client.getClientName());
-                goToViewReport(user, client, currentReport);
-            }
+            clientProfileViewModel.getReportFromRepo(user, dateString);
         });
 
         return v;
@@ -145,6 +141,7 @@ public class ClientPortalFragment extends Fragment {
     }
 
     public void goToViewReport(User user, User client, Report report) {
+        //Log.d(TAG, report.get);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(user, client, report)).addToBackStack(null).commit();
     }

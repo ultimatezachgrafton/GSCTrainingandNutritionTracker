@@ -33,6 +33,7 @@ public class Report extends BaseObservable {
     private boolean isNew = true; // determines if report is new
 
     private ArrayList<Workout> workoutLists;
+    private ArrayList<Exercise> exerciseArrayList;
     private String fullReport;
     private String day;
     private String exerciseString;
@@ -64,7 +65,7 @@ public class Report extends BaseObservable {
 
 
     public Report(String clientName, String email, String dailyWeight, String dailyWeightString,
-                  String exerciseWeight, String comments, String dateString) {
+                  String exerciseWeight, String comments, String dateString, ArrayList<Exercise> exerciseArrayList) {
         this.clientName = clientName;
         this.email = email;
         this.dailyWeight = dailyWeight;
@@ -72,6 +73,7 @@ public class Report extends BaseObservable {
         this.exerciseWeight = exerciseWeight;
         this.comments = comments;
         this.dateString = dateString;
+        this.exerciseArrayList = exerciseArrayList;
     }
 
     @Bindable
@@ -247,5 +249,13 @@ public class Report extends BaseObservable {
     public void setExerciseString(String exerciseStringBuilder) {
         this.exerciseString = String.valueOf(exerciseStringBuilder);
         notifyPropertyChanged(BR.exerciseString);
+    }
+
+    @Bindable
+    public ArrayList<Exercise> getExerciseArrayList() {return exerciseArrayList;}
+
+    public void setExerciseArrayList(ArrayList<Exercise> exerciseArrayList) {
+        this.exerciseArrayList = exerciseArrayList;
+        notifyPropertyChanged(BR.exerciseArrayList);
     }
 }

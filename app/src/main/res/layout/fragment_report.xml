@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/darker_gray"
-            tools:listitem="@layout/rv_exercise_item" />
+            tools:listitem="@layout/rv_exercise_item_report_only" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -132,7 +132,7 @@
             android:clickable="true"
             android:layout_below="@id/etComments"
             android:textColor="@color/white"
-            android:onClick="@{()->model.writeReportToRepo(user, report)}" />
+            android:onClick="@{()->model.collectExercises(user, report)}" />
 
 </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
