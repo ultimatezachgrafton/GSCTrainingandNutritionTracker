@@ -14,12 +14,14 @@ import android.widget.CalendarView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.activities.LoginActivity;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -112,14 +114,20 @@ public class ClientPortalFragment extends Fragment {
                 return true;
             case R.id.bLogout:
                 auth.signOut();
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).addToBackStack(null).commit();
+                clearBackStack();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
             // TODO: ask ben and logged out are strings in res
         } return true;
     }
 
+    private void clearBackStack() {
+        Log.d(TAG, "Clearbackstack");
+        if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
+            FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
+            SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+    }
 
     public void goToSelectWorkoutList(User user, User client, Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
@@ -127,7 +135,6 @@ public class ClientPortalFragment extends Fragment {
     }
 
     public void goToViewReport(User user, User client, Report report) {
-        //Log.d(TAG, report.get);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(user, client, report)).addToBackStack(null).commit();
     }

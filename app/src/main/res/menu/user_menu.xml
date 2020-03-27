@@ -13,10 +13,6 @@
         android:title="@string/inbox" />
 
     <item
-        android:id="@+id/bSelectWorkout"
-        android:title="@string/selectWorkout" />
-
-    <item
         android:id="@+id/bLogout"
         android:title="@string/logout" />
 
