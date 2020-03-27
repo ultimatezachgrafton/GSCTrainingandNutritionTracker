@@ -22,19 +22,19 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
 
     public MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
     public MutableLiveData<Boolean> doesReportExist = new MutableLiveData<>();
-    private User currentUser = new User();
+    private User user = new User();
     private Report report = new Report();
     public String TAG = "ClientPortalViewModel";
     private String dateGreeting;
 
-    public void init() {
+    public void init(User user) {
         repo = FirestoreRepository.getInstance();
+        this.user = user;
     }
 
-    public void getReportFromRepo(User currentUser, String dateString) {
-        Log.d(TAG, "in viewmodel");
+    public void getReportFromRepo(User user, String dateString) {
         repo.setQuerySnapshotOnCompleteListener(this);
-        repo.getReportForPortal(currentUser, dateString);
+        repo.getReportForPortal(user, dateString);
     }
 
     @Override
@@ -49,5 +49,23 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
                 return;
             }
         }
+    }
+
+    public void createDateString(int year, int month, int dayOfMonth) {
+        String dayOfMonthStr, monthStr;
+        // if dayOfMonth is less than 10, put a zero in front of it
+        if (dayOfMonth < 10) {
+            dayOfMonthStr = "0" + (dayOfMonth);
+        } else {
+            dayOfMonthStr = String.valueOf(dayOfMonth);
+        }
+        if (month < 10) {
+            monthStr = "0" + (month + 1);
+        } else {
+            monthStr = String.valueOf(month);
+        }
+        String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
+        report.setDateString(dateString);
+        getReportFromRepo(user, dateString);
     }
 }

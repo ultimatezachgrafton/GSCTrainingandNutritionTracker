@@ -70,19 +70,6 @@ public class ClientReportFragment extends Fragment {
 
     public ClientReportFragment() {}
 
-    public ClientReportFragment(User user, User client) {
-        this.user = user;
-        this.client = client;
-    }
-
-    public ClientReportFragment(Report report, User user) {
-        this.report = report;
-        this.user = user;
-        report.setClientName(user.getClientName());
-        this.dateString = report.getDateString();
-    }
-
-    // TODO: needs dateString
     public ClientReportFragment(User user, User client, Workout workout, Report report) {
         this.workout = workout;
         this.user = user;
@@ -139,7 +126,6 @@ public class ClientReportFragment extends Fragment {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
-                    Log.d(TAG, "in mutable");
                     clientReportViewModel.writeReportToRepo(report);
                 }
             }

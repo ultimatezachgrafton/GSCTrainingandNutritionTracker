@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -18,7 +17,6 @@ import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
-import zachg.gsctrainingandnutritiontracker.utils.WorkoutCallback;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 

@@ -22,10 +22,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.activities.LoginActivity;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.adapters.UserListAdapter;
+import zachg.gsctrainingandnutritiontracker.utils.LogOutReceiver;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
 // AdminUserListFragment displays the list of Users which the admin accesses upon logging in
@@ -134,6 +136,8 @@ public class AdminUserListFragment extends Fragment {
                 auth.signOut();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();
+                // TODO: with FLAG_ACTIVITY_CLEAR_TOP; to fix back button
+
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return true;

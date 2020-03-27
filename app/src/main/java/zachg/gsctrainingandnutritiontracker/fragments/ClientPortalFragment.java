@@ -57,7 +57,7 @@ public class ClientPortalFragment extends Fragment {
         binding.setGreeting(greeting);
 
         clientProfileViewModel = ViewModelProviders.of(this).get(ClientPortalViewModel.class);
-        clientProfileViewModel.init();
+        clientProfileViewModel.init(user);
 
         // Observes report returning from repo
         clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
@@ -85,21 +85,7 @@ public class ClientPortalFragment extends Fragment {
         // NOTE: Listener is explicitly called here to address issue that (as of this writing) android inversebinding
         // is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            String dayOfMonthStr, monthStr;
-            // if dayOfMonth is less than 10, put a zero in front of it
-            if (dayOfMonth < 10) {
-                dayOfMonthStr = "0" + (dayOfMonth);
-            } else {
-                dayOfMonthStr = String.valueOf(dayOfMonth);
-            }
-            if (month < 10) {
-                monthStr = "0" + (month + 1);
-            } else {
-                monthStr = String.valueOf(month);
-            }
-            String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
-            currentReport.setDateString(dateString);
-            clientProfileViewModel.getReportFromRepo(user, dateString);
+            clientProfileViewModel.createDateString(year, month, dayOfMonth);
         });
 
         return v;
