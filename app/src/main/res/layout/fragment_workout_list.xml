@@ -1,0 +1,34 @@
+<layout xmlns:bind="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type ="android.view.View"/>
+        <variable name="workout"
+            type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
+        <variable
+            name="model"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminWorkoutListViewModel" />
+        <variable
+            name="client"
+            type="zachg.gsctrainingandnutritiontracker.models.User" />
+        <variable
+            name="report"
+            type="zachg.gsctrainingandnutritiontracker.models.Report" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_workout_list"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWorkout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            tools:listitem="@layout/rvworkout_item" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

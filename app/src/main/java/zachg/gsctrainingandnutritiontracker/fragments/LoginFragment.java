@@ -134,6 +134,8 @@ public class LoginFragment extends Fragment {
     // TODO: after error w registration, goes back to login and gives error D/FirestoreRepository: fuser null: null;
     // and register does not work
 
+    // weird xml problem
+
     public void onRegisterClick() {
         loginViewModel.user.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
