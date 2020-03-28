@@ -53,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:clickable="true"
             android:onClick="@{()->fragment.onLoginClick(user.email, user.password)}"
             android:text="@string/login"
             android:background="#696969"
@@ -64,7 +63,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#696969"
-            android:clickable="true"
             android:onClick="@{()->fragment.onRegisterClick()}"
             android:text="@string/register_new"
             android:textColor="@android:color/white" />

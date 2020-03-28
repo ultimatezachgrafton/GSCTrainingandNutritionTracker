@@ -26,28 +26,24 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth auth;
     private FragmentLoginBinding binding;
     private User user = new User();
-    LoginViewModel loginViewModel = new LoginViewModel();
-    String loggingIn = "Logging In...";
-    String logInNull = "Please fill out all fields.";
-    String userNull = "No record of user with this email/password.";
-    String TAG = "LoginFragment";
+    private LoginViewModel loginViewModel = new LoginViewModel();
+    private static final String loggingIn = "Logging In...";
+    private static final String logInNull = "Please fill out all fields.";
+    private static final String userNull = "No record of user with this email/password.";
+    private static final String TAG = "LoginFragment";
 
     public LoginFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         //Inflate and bind the layout for this fragment_report_list
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
-
         // Gets ViewModel instance to observe its LiveData
         binding.setModel(loginViewModel);
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        loginViewModel.init();
+        //loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel.init(firebaseUser);
 
         // Bind this fragment_report_list
         binding.setFragment(this);
@@ -78,6 +74,23 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        loginViewModel.isLoggedIn.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                if (bool) {
+                    if (user.getIsAdmin()) {
+                        goToAdminList(user);
+                    } else if (!user.getIsAdmin()) {
+                        User client = user;
+                        goToProfile(user, client);
+                } else if (!bool) {
+                        // set all livedata to null
+                        loginViewModel.clearLiveData();
+                    }
+                }
+            }
+        });
+
         loginViewModel.isLogInNull.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
@@ -99,19 +112,12 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        firebaseUser = auth.getCurrentUser();
-    }
-
     public void onLoginClick(final String email, final String password) {
         // Check if login values are valid
         loginViewModel.verifyUser(email, password);
     }
 
-
-    // after error w registration, goes back to login and gives error D/FirestoreRepository: fuser null: null;
+    // TODO: after error w registration, goes back to login and gives error D/FirestoreRepository: fuser null: null;
     // and register does not work
 
     public void onRegisterClick() {
@@ -121,27 +127,34 @@ public class LoginFragment extends Fragment {
     }
 
     public void goToProfile(User user, User client) {
-        Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
+        loginViewModel.clearLiveData();
         loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ClientPortalFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void goToAdminList(User user) {
-        Toast.makeText(getContext(), "Logging in...", Toast.LENGTH_LONG).show();
         loginViewModel.currentUser.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUserListFragment(user)).addToBackStack(null).commit();
     }
 
-    public void signOut() {
-        auth.signOut();
+    @Override
+    public void onStart() {
+        Log.d(TAG, "onstart");
+        super.onStart();
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+        // Check if user is signed in (non-null)
+        firebaseUser = auth.getCurrentUser();
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null)
-        firebaseUser = auth.getCurrentUser();
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+        if (firebaseUser == null) {
+            Log.d(TAG, "fuser null");
+        }
     }
 }

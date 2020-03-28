@@ -33,13 +33,13 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     public String TAG = "LoginViewModel";
 
     // Checks if user is logged in
-    public void init() {
-        FirebaseUser fUser = repo.getFirebaseUser();
-        repo.setQuerySnapshotOnCompleteListener(this);
+    public void init(FirebaseUser fUser) {
+        Log.d(TAG, "init");
         if (fUser == null) {
             isLoggedIn.setValue(false);
         } else {
             isLoggedIn.setValue(true);
+            repo.setQuerySnapshotOnCompleteListener(this);
             repo.getUserByEmail(fUser.getEmail());
         }
     }
@@ -53,7 +53,6 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
         } else {
             isLoggingIn.setValue(true);
             repo.queryUserByEmailPassword(email, password);
-
         }
     }
 
@@ -77,5 +76,10 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
                 repo.signIn(user.getEmail(), user.getPassword());
             }
         }
+    }
+
+    public void clearLiveData() {
+        currentUser.setValue(null);
+        isLoggingIn.setValue(false);
     }
 }
