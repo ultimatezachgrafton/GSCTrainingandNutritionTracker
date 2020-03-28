@@ -51,7 +51,21 @@ public class LoginFragment extends Fragment {
         // Bind User
         binding.setUser(user);
 
-        loginViewModel.currentUser.observe(this, new Observer<User>() {
+        loginViewModel.firebaseUser.observe(this, new Observer<FirebaseUser>() {
+            @Override
+            public void onChanged(FirebaseUser fUser) {
+                if (user == null) {
+                    Toast.makeText(getContext(), "That user does not exist.", Toast.LENGTH_SHORT).show();
+                } else if (user.getIsAdmin()) {
+                    goToAdminList(user);
+                } else if (!user.getIsAdmin()) {
+                    User client = user;
+                    goToProfile(user, client);
+                }
+            }
+        });
+
+        loginViewModel.user.observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 if (user == null) {
@@ -121,27 +135,26 @@ public class LoginFragment extends Fragment {
     // and register does not work
 
     public void onRegisterClick() {
-        loginViewModel.currentUser.removeObservers(this);
+        loginViewModel.user.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
     public void goToProfile(User user, User client) {
         loginViewModel.clearLiveData();
-        loginViewModel.currentUser.removeObservers(this);
+        loginViewModel.user.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ClientPortalFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void goToAdminList(User user) {
-        loginViewModel.currentUser.removeObservers(this);
+        loginViewModel.user.removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUserListFragment(user)).addToBackStack(null).commit();
     }
 
     @Override
     public void onStart() {
-        Log.d(TAG, "onstart");
         super.onStart();
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -152,9 +165,5 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
-        if (firebaseUser == null) {
-            Log.d(TAG, "fuser null");
-        }
     }
 }

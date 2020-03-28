@@ -27,8 +27,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     public MutableLiveData<Boolean> doesUserExist = new MutableLiveData<>();
     public MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
     public MutableLiveData<FirebaseUser> firebaseUser = new MutableLiveData<>();
-    public MutableLiveData<User> currentUser = new MutableLiveData<>();
-    public User user = new User();
+    public MutableLiveData<User> user = new MutableLiveData<>();
 
     public String TAG = "LoginViewModel";
 
@@ -70,8 +69,8 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             return;
         } else {
             for (QueryDocumentSnapshot doc : qs) {
-                user = doc.toObject(User.class);
-                currentUser.setValue(user);
+                User user = doc.toObject(User.class);
+                this.user.setValue(user);
                 doesUserExist.setValue(true);
                 repo.signIn(user.getEmail(), user.getPassword());
             }
@@ -79,7 +78,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     }
 
     public void clearLiveData() {
-        currentUser.setValue(null);
+        user.setValue(null);
         isLoggingIn.setValue(false);
     }
 }
