@@ -38,7 +38,6 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             isLoggedIn.setValue(false);
         } else {
             isLoggedIn.setValue(true);
-            repo.setQuerySnapshotOnCompleteListener(this);
             repo.getUserByEmail(fUser.getEmail());
         }
     }
@@ -51,6 +50,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             return;
         } else {
             isLoggingIn.setValue(true);
+            repo.setQuerySnapshotOnCompleteListener(this);
             repo.queryUserByEmailPassword(email, password);
         }
     }
