@@ -16,5 +16,8 @@ import zachg.gsctrainingandnutritiontracker.fragments.LoginFragment;
 
 public class LoginActivity extends SingleFragmentActivity {
 
-    protected Fragment createFragment() { return new LoginFragment();  }
+    protected Fragment createFragment() { return new LoginFragment(); }
+
+
+
 }

@@ -14,36 +14,33 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import zachg.gsctrainingandnutritiontracker.models.FirebaseAuth;
+import zachg.gsctrainingandnutritiontracker.models.SingleLiveEvent;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class LoginViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
+    private FirebaseAuth firebaseAuth = new FirebaseAuth();
     public ObservableField<String> email = new ObservableField<>();
     public ObservableField<String> password = new ObservableField<>();
-    public MutableLiveData<Boolean> isLoggingIn = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isLogInNull = new MutableLiveData<>();
-    public MutableLiveData<Boolean> doesUserExist = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isLoggedIn = new MutableLiveData<>();
-    public MutableLiveData<FirebaseUser> firebaseUser = new MutableLiveData<>();
-    public MutableLiveData<User> user = new MutableLiveData<>();
+    private SingleLiveEvent<Boolean> isLoggingIn = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> isLogInNull = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> doesUserExist = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> isLoggedIn = new SingleLiveEvent<>();
+    private SingleLiveEvent<User> userSingleLiveEvent = new SingleLiveEvent<>();
 
     public String TAG = "LoginViewModel";
 
     // Checks if user is logged in
-    public void init(FirebaseUser fUser) {
-        Log.d(TAG, "init");
-        if (fUser == null) {
-            isLoggedIn.setValue(false);
-        } else {
-            isLoggedIn.setValue(true);
-            repo.getUserByEmail(fUser.getEmail());
-        }
+    public void init() {
+       // repo.getUserByEmail(fUser.getEmail());
     }
 
     // Verifies user exists by the email and password provided
     public void verifyUser(String email, String password) {
+        Log.d(TAG, "verify");
         isLogInNull.setValue(false);
         if (!isLoginNull(email, password)) {
             isLogInNull.setValue(true);
@@ -57,6 +54,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
 
     // Verifies login fields are not null
     public boolean isLoginNull(String email, String password) {
+        Log.d(TAG, "isLoginNull");
         return email != null && password != null;
     }
 
@@ -69,16 +67,42 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             return;
         } else {
             for (QueryDocumentSnapshot doc : qs) {
+                Log.d(TAG, "oncomplete");
                 User user = doc.toObject(User.class);
-                this.user.setValue(user);
                 doesUserExist.setValue(true);
+                assignUserValue(user);
+                //repo.setQuerySnapshotOnCompleteListener(this);
                 repo.signIn(user.getEmail(), user.getPassword());
             }
         }
     }
 
-    public void clearLiveData() {
-        user.setValue(null);
-        isLoggingIn.setValue(false);
+    public void assignUserValue(User user) {
+        Log.d(TAG, "assign");
+        userSingleLiveEvent.setValue(user);
     }
+
+    public SingleLiveEvent<User> getUserSingleLiveEvent() {
+        return userSingleLiveEvent;
+    }
+
+    public void onUserSingleLiveEvent(User user) {
+        userSingleLiveEvent.setValue(user);
+    }
+
+    public SingleLiveEvent<Boolean> getIsLoggingIn() {
+        return isLoggingIn;
+    }
+
+    public SingleLiveEvent<Boolean> getIsLoggedIn() {
+        return isLoggedIn;
+    }
+    public SingleLiveEvent<Boolean> getDoesUserExist() {
+        return doesUserExist;
+    }
+
+    public SingleLiveEvent<Boolean> getIsLogInNull() {
+        return isLogInNull;
+    }
+
 }

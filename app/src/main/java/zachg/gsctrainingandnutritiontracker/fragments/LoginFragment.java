@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentLoginBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -43,7 +45,7 @@ public class LoginFragment extends Fragment {
         // Gets ViewModel instance to observe its LiveData
         binding.setModel(loginViewModel);
         //loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        loginViewModel.init(firebaseUser);
+        loginViewModel.init();
 
         // Bind this fragment_report_list
         binding.setFragment(this);
@@ -51,21 +53,14 @@ public class LoginFragment extends Fragment {
         // Bind User
         binding.setUser(user);
 
-        loginViewModel.firebaseUser.observe(this, new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser fUser) {
-                if (user == null) {
-                    Toast.makeText(getContext(), "That user does not exist.", Toast.LENGTH_SHORT).show();
-                } else if (user.getIsAdmin()) {
-                    goToAdminList(user);
-                } else if (!user.getIsAdmin()) {
-                    User client = user;
-                    goToProfile(user, client);
-                }
-            }
-        });
+        initObservers();
 
-        loginViewModel.user.observe(this, new Observer<User>() {
+        return v;
+    }
+
+    private void initObservers() {
+
+        loginViewModel.getUserSingleLiveEvent().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 if (user == null) {
@@ -79,7 +74,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        loginViewModel.isLoggingIn.observe(this, new Observer<Boolean>() {
+        loginViewModel.getIsLoggingIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
                 if (bool) {
@@ -88,24 +83,22 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        loginViewModel.isLoggedIn.observe(this, new Observer<Boolean>() {
+        loginViewModel.getIsLoggedIn().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
+                Log.d(TAG, "getIsloggedIn");
                 if (bool) {
                     if (user.getIsAdmin()) {
                         goToAdminList(user);
                     } else if (!user.getIsAdmin()) {
                         User client = user;
                         goToProfile(user, client);
-                } else if (!bool) {
-                        // set all livedata to null
-                        loginViewModel.clearLiveData();
                     }
                 }
             }
         });
 
-        loginViewModel.isLogInNull.observe(this, new Observer<Boolean>() {
+        loginViewModel.getIsLogInNull().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
                 if (bool) {
@@ -114,7 +107,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        loginViewModel.doesUserExist.observe(this, new Observer<Boolean>() {
+        loginViewModel.getDoesUserExist().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
                 if (!bool) {
@@ -122,8 +115,6 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
-
-        return v;
     }
 
     public void onLoginClick(final String email, final String password) {
@@ -134,23 +125,20 @@ public class LoginFragment extends Fragment {
     // TODO: after error w registration, goes back to login and gives error D/FirestoreRepository: fuser null: null;
     // and register does not work
 
-    // weird xml problem
-
     public void onRegisterClick() {
-        loginViewModel.user.removeObservers(this);
+        loginViewModel.getUserSingleLiveEvent().removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
     public void goToProfile(User user, User client) {
-        loginViewModel.clearLiveData();
-        loginViewModel.user.removeObservers(this);
+        loginViewModel.getUserSingleLiveEvent().removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ClientPortalFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void goToAdminList(User user) {
-        loginViewModel.user.removeObservers(this);
+        loginViewModel.getUserSingleLiveEvent().removeObservers(this);
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUserListFragment(user)).addToBackStack(null).commit();
     }

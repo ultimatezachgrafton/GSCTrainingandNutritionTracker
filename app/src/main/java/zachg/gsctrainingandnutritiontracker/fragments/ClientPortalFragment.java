@@ -62,7 +62,7 @@ public class ClientPortalFragment extends Fragment {
         clientProfileViewModel.init(user);
 
         // Observes report returning from repo
-        clientProfileViewModel.reportLiveData.observe(this, new Observer<Report>() {
+        clientProfileViewModel.getReportSingleLiveEvent().observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
                 currentReport = r;
@@ -74,7 +74,7 @@ public class ClientPortalFragment extends Fragment {
         greeting = "Hi, " + user.getFirstName() + "!";
 
         // Observes for call to repo validating existence of report
-        clientProfileViewModel.doesReportExist.observe(this, new Observer<Boolean>() {
+        clientProfileViewModel.getDoesReportExist().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (!aBoolean) {
@@ -114,19 +114,14 @@ public class ClientPortalFragment extends Fragment {
                 return true;
             case R.id.bLogout:
                 auth.signOut();
-                clearBackStack();
+                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+                if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
+                    SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
                 return true;
             // TODO: ask ben and logged out are strings in res
         } return true;
-    }
-
-    private void clearBackStack() {
-        Log.d(TAG, "Clearbackstack");
-        Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-        if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
-            FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
-            SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
     }
 
     public void goToSelectWorkoutList(User user, User client, Report report) {

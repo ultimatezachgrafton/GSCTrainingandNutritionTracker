@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.fragments.ClientPortalFragment;
 import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.models.SingleLiveEvent;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
@@ -20,8 +21,8 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
 
     private FirestoreRepository repo;
 
-    public MutableLiveData<Report> reportLiveData = new MutableLiveData<>();
-    public MutableLiveData<Boolean> doesReportExist = new MutableLiveData<>();
+    private SingleLiveEvent<Report> reportSingleLiveEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> doesReportExist = new SingleLiveEvent<>();
     private User user = new User();
     private Report report = new Report();
     public String TAG = "ClientPortalViewModel";
@@ -45,7 +46,7 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
         } else {
             for (QueryDocumentSnapshot doc : qs) {
                 report = doc.toObject(Report.class);
-                reportLiveData.setValue(report);
+                assignReportValue(report);
                 return;
             }
         }
@@ -67,5 +68,21 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
         String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
         report.setDateString(dateString);
         getReportFromRepo(user, dateString);
+    }
+
+    public void assignReportValue(Report report) {
+        reportSingleLiveEvent.setValue(report);
+    }
+
+    public SingleLiveEvent<Report> getReportSingleLiveEvent() {
+        return reportSingleLiveEvent;
+    }
+
+    public SingleLiveEvent<Boolean> getDoesReportExist() {
+        return doesReportExist;
+    }
+
+    public void onReportSingleLiveEvent(Report report) {
+        reportSingleLiveEvent.setValue(report);
     }
 }
