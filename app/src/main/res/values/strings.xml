@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GSC TnT: Training and Nutrition Tracker</string>
+    <string name="app_name">Ben Grafton Training</string>
     <string name="report_details_label">Today\'s Details</string>
     <string name="report_photo_button_description">Take photo</string>
     <string name="report_photo_no_image_description">Report photo (not set)</string>
@@ -88,5 +88,7 @@
     <string name="enter_exercise_name">Enter Exercise Name</string>
     <string name="enter_reps">Enter Reps</string>
     <string name="comments_view">Comments:</string>
+    <string name="workout_instructions">Want to create a new workout for this client?</string>
+    <string name="editWorkoutTitle">Edit This Workout: </string>
 
 </resources>

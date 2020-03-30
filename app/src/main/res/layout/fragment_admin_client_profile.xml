@@ -34,88 +34,105 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#525252">
+            android:layout_height="match_parent"
+            android:background="#575757">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
         <TextView
-            android:textColor="@android:color/white"
             android:id="@+id/tvClientName"
-            android:text="@{client.clientName}"
             android:layout_width="match_parent"
-            android:layout_toEndOf="@id/profilePhotoImageView"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@id/profilePhotoImageView"/>
+            android:layout_height="100dp"
+            android:layout_marginTop="40dp"
+            android:text="@{client.clientName}"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="50dp" />
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+        <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:id="@+id/profilePhotoImageView"
                 android:layout_marginBottom="1dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_marginLeft="110dp"
+                android:layout_marginRight="110dp"
+                android:layout_below="@id/tvClientName"
+                android:background="#545454" />
 
             <ImageButton
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
+                android:layout_width="190dp"
+                android:layout_height="50dp"
                 android:id="@+id/cameraImageButton"
                 android:clickable="true"
-                android:layout_alignBottom="@id/bToWorkoutList"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
+                android:layout_marginLeft="110dp"
+                android:layout_marginRight="1100dp"
                 android:background="#696969"
                 android:src="@android:drawable/ic_menu_camera"
                 android:layout_below="@id/profilePhotoImageView"/>
 
-        <Button
-            android:id="@+id/bToDatePicker"
-            android:layout_width="500dp"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/profilePhotoImageView"
-            android:layout_below="@id/tvClientName"
-            android:background="#696969"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:onClick="@{()->fragment.toDatePicker(user, client)}"
-            android:text="@string/toDatePicker"
+        <TextView
             android:textColor="@android:color/white"
-            android:layout_margin="1dp"/>
-
-        <Button
-            android:id="@+id/bToWorkoutList"
-            android:layout_width="500dp"
+            android:id="@+id/tvWorkoutInstructions"
+            android:text="@string/workout_instructions"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/profilePhotoImageView"
-            android:layout_below="@id/bToDatePicker"
-            android:background="#696969"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:onClick="@{()->fragment.toWorkoutList(user, client)}"
-            android:text="@string/toWorkoutList"
-            android:textColor="@android:color/white"
-            android:layout_margin="1dp"/>
+            android:layout_marginTop="40dp"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:layout_below="@id/cameraImageButton"/>
 
         <EditText
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/etWorkoutTitle"
             android:hint="@string/enterWorkoutTitle"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:textColorHint="@color/white"
             android:text="@={workoutTitle}"
-            android:textSize="24dp"
-            android:layout_below="@id/bToWorkoutList"/>
+            android:layout_below="@id/tvWorkoutInstructions" />
 
         <Button
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
             android:id="@+id/bCreateNewWorkout"
-            android:text="@string/addWorkout"
-            android:textSize="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etWorkoutTitle"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="#696969"
             android:onClick="@{()->fragment.verifyWorkoutTitle(workoutTitle)}"
-            android:layout_below="@id/etWorkoutTitle"/>
+            android:text="@string/addWorkout"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/bToDatePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bToWorkoutList"
+            android:backgroundTint="#696969"
+            android:layout_marginBottom="5dp"
+            android:onClick="@{()->fragment.toDatePicker(user, client)}"
+            android:text="@string/toDatePicker"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/bToWorkoutList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="25dp"
+            android:backgroundTint="#696969"
+            android:onClick="@{()->fragment.toWorkoutList(user, client)}"
+            android:text="@string/toWorkoutList"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 

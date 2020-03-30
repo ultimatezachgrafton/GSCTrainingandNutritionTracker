@@ -44,6 +44,10 @@
         android:id="@+id/fragment_register"
         tools:context=".activities.SingleFragmentActivity">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
         <TextView
             android:textColor="@android:color/white"
             android:layout_width="wrap_content"

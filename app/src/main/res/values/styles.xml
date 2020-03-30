@@ -1,15 +1,7 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
-    </style>
-
-    <style name="AppTheme" parent="Theme.AppCompat">
-    </style>
-
-    <style name="TitleColor" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/white</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
     <style name="user_title">
@@ -44,4 +36,5 @@
     </style>
 
     <color name="red">#F32313</color>
+
 </resources>

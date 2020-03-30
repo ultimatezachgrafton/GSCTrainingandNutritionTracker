@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="workout"
+            type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
+    </data>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -6,18 +13,14 @@
     android:id="@+id/rvworkout_item"
     android:background="@android:color/holo_orange_light"
     android:clickable="true"
-    android:backgroundTint="#696969">
+    android:backgroundTint="#454545"
+    android:layout_marginBottom="1dp">
 
     <TextView
         android:id="@+id/tvItemWorkoutTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:text="@{workout.workoutTitle}"/>
 
-    <TextView
-        android:id="@+id/tvItemWorkoutDay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"/>
-
-</LinearLayout>
+</LinearLayout></layout>

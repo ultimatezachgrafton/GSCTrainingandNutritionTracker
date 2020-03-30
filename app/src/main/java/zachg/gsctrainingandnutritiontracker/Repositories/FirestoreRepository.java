@@ -108,11 +108,6 @@ public class FirestoreRepository {
         return user;
     }
 
-    public void getUserByEmail(String email) {
-        Query userQuery = userColRef.whereEqualTo("email", email);
-        userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
-    }
-
     // Gets all Users
     public FirestoreRecyclerOptions<User> getUsersFromRepo() {
         return new FirestoreRecyclerOptions.Builder<User>()

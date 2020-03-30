@@ -10,7 +10,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/rv_exercise_item_report_only">
+    android:id="@+id/rv_exercise_item_report_only"
+    android:background="#454545"
+    android:layout_marginBottom="1dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@{exercise.exerciseName}"
         android:textColorHint="@color/white"
+        android:textSize="20dp"
         android:textColor="@color/white"
         android:id="@+id/tvExerciseName"
         android:layout_below="@+id/tvExerciseSeparator"/>
@@ -35,12 +38,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvReps"
         android:text="@{exercise.exerciseReps}"
+        android:textSize="20dp"
+        android:textColor="@color/white"
         android:layout_below="@+id/tvExerciseName"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvWeightUsed"
+        android:textSize="20dp"
+        android:textColor="@color/white"
         android:text="@{exercise.exerciseWeight}"
         android:layout_below="@+id/tvReps"/>
 

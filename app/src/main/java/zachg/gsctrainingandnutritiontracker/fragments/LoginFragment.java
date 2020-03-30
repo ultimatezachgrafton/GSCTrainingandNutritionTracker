@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,6 +30,7 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth auth;
     private FragmentLoginBinding binding;
     private User user = new User();
+    private Toolbar toolbar;
     private LoginViewModel loginViewModel = new LoginViewModel();
     private static final String loggingIn = "Logging In...";
     private static final String logInNull = "Please fill out all fields.";

@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+<data>
+    <import type="android.view.View"/>
+    <variable
+        name="user"
+        type="zachg.gsctrainingandnutritiontracker.models.User"/>
+</data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rvuser_item"
-        android:background="#696969"
-        android:clickable="true">
+        android:background="#454545"
+        android:clickable="true"
+        android:layout_marginBottom="1dp">
 
         <TextView
             android:id="@+id/tvClientName"
             style="@style/user_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:text="@{user.clientName}"/>
 
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            style="@style/user_title"
+            android:text="@{user.email}"
+            android:textSize="20dp"/>
 
     </LinearLayout>
+</layout>

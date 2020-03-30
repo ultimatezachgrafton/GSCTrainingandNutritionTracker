@@ -3,6 +3,7 @@ package zachg.gsctrainingandnutritiontracker.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,10 +31,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "apricot");
         setContentView(getLayoutResId());
         fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {

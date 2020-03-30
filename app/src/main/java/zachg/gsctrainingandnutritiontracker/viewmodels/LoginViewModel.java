@@ -34,9 +34,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     public String TAG = "LoginViewModel";
 
     // Checks if user is logged in
-    public void init() {
-       // repo.getUserByEmail(fUser.getEmail());
-    }
+    public void init() {}
 
     // Verifies user exists by the email and password provided
     public void verifyUser(String email, String password) {

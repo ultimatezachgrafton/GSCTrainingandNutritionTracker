@@ -46,22 +46,26 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
+        <TextView
+            android:id="@+id/workoutTitleEdit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/editWorkoutTitle"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:layout_below="@id/toolbar"/>
+
     <EditText
         android:id="@+id/tvWorkoutTitle"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/workoutTitleEdit"
+        android:background="#545454"
         android:textColor="@color/white"
         android:text="@={workout.workoutTitle}"/>
-
-    <TextView
-        android:layout_below="@id/tvWorkoutTitle"
-        android:id="@+id/separator1"
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="@string/workoutContains"/>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -71,7 +75,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/layout_exercise_list"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_below="@id/separator1">
+            android:layout_below="@id/tvWorkoutTitle">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvExercise"

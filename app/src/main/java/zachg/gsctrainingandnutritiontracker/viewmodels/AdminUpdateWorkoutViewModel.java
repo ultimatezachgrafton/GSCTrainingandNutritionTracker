@@ -74,6 +74,9 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
 
     // Create a workout with five initial exercises
     public void addBlankExercises(int i) {
+
+        ArrayList<Exercise> exerciseArray = new ArrayList<>(i);
+
         while (i < 5) {
             exercise.setId(UUID.randomUUID().toString());
             exerciseArray.add(i, exercise);

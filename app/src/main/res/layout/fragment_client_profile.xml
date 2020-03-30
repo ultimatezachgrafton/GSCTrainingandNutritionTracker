@@ -29,21 +29,23 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:background="#525252"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
 
-        android:gravity="center">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
         <TextView
             android:id="@+id/tvGreeting"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
+            android:layout_height="100dp"
             android:layout_marginBottom="15dp"
             android:text="@{greeting}"
             android:gravity="center"
             android:textSize="32sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_select_date"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/toolbar" />
 
         <TextView
             android:id="@+id/tv_select_date"
@@ -54,7 +56,8 @@
             android:textSize="22sp"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/calendarView"
-            app:layout_constraintTop_toBottomOf="@+id/tvGreeting" />
+            app:layout_constraintTop_toBottomOf="@+id/tvGreeting"
+            android:layout_marginBottom="10dp"/>
 
         <CalendarView
             android:layout_width="match_parent"
@@ -69,6 +72,9 @@
             android:weekSeparatorLineColor="@color/white"
             android:focusedMonthDateColor="@color/white"
             android:weekNumberColor="@color/white"
+            android:background="#454545"
+            android:layout_marginBottom="150dp"
+            android:layout_gravity="center"
             />
 
 </LinearLayout>

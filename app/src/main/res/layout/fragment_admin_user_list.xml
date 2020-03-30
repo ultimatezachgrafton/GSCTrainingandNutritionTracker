@@ -24,7 +24,7 @@
         android:id="@+id/rvUser"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
+        android:background="#696969"
         tools:listitem="@layout/rvuser_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

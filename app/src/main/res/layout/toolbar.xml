@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
-    android:minHeight="?attr/actionBarSize"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    android:background="?attr/colorPrimary">
+    android:layout_height="?attr/actionBarSize"
+    android:id="@+id/toolbar"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:elevation="4dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GSC Training and Nutrition Tracker"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:id="@+id/toolbar_title" />
 
 </androidx.appcompat.widget.Toolbar>

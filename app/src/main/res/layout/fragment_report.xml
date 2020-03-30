@@ -25,7 +25,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#525252">
 
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
@@ -49,7 +50,7 @@
         android:id="@+id/client_name"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_toRightOf="@id/client_photo"
         android:text="@{report.clientName}"
         android:textColor="@color/white"
@@ -59,7 +60,7 @@
         android:id="@+id/tvDate"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@id/client_name"
         android:layout_toRightOf="@id/client_photo"
         android:text="@{report.dateString}"
@@ -69,7 +70,7 @@
     <TextView
         android:id="@+id/separator1"
         style="?android:listSeparatorTextViewStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/enter_weight"
         android:textColor="@color/white"
@@ -79,7 +80,7 @@
         android:id="@+id/etWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{report.dailyWeight}"
+        android:text="@={report.dailyWeight}"
         android:singleLine="true"
         android:textColor="@color/white"
         android:layout_toEndOf="@id/separator1"
@@ -121,7 +122,8 @@
         android:textColorHint="@color/white"
         android:text="@={report.comments}"
         android:layout_below="@id/layout_exercise_list"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:background="#545454"/>
 
         <Button
             android:id="@+id/bSendReport"
