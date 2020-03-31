@@ -1,5 +1,6 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import zachg.gsctrainingandnutritiontracker.models.SingleLiveEvent;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
@@ -20,24 +22,19 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     private FirestoreRepository repo = new FirestoreRepository();
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public String firstName, lastName, phoneNumber, email, password;
+    public String firstName, lastName, phoneNumber, email, password, confirmPassword;
 
-    // TODO: add phone number
-    public ObservableField<String> etFirstName = new ObservableField<>();
-    public ObservableField<String> etLastName = new ObservableField<>();
-    public ObservableField<String> etEmail = new ObservableField<>();
-    public ObservableField<String> etPhoneNumber = new ObservableField<>();
-    public ObservableField<String> etPassword = new ObservableField<>();
-    public ObservableField<String> etConfirmPassword = new ObservableField<>();
-    public MutableLiveData<User> newUser = new MutableLiveData<>();
     public MutableLiveData<String> onError = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isEmailDuplicate = new MutableLiveData<>();
+    public MutableLiveData<String> onSuccess = new MutableLiveData<>();
+    public SingleLiveEvent<Boolean> isUserInputValid = new SingleLiveEvent<>();
+    public SingleLiveEvent<Boolean> isRegistrationComplete = new SingleLiveEvent<>();
 
     private static String REGISTER_ERROR = "Please fill in all fields";
     private static String PASSWORD_ERROR = "Passwords do not match.";
     private static String CLIENT_ADDED = "Registering client! Please give us a moment...";
     private static String EMAIL_BADLY_FORMATTED = "Email is badly formatted.";
     private static String PASSWORD_BADLY_FORMATTED = "Password must be at least six characters long.";
+    private static String PHONE_BADLY_FORMATTED = "Phone number be 10 digits long.";
     private static String DUPLICATE_EMAIL = "This email is already registered.";
 
     private String TAG = "RegisterViewModel";
@@ -46,8 +43,8 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
 
     // Checks validity, displays error statements
     public void registerUserCheck(final String firstName, final String lastName, final String phoneNumber,
-                                  final String email, final String password, String confirmPassword) {
-        if (!isRegisterReady(firstName, lastName, email, password, confirmPassword)) {
+                                  final String email, final String password, final String confirmPassword) {
+        if (!isRegisterReady(firstName, lastName, email, phoneNumber, password, confirmPassword)) {
             onError.setValue(REGISTER_ERROR);
             return;
         }
@@ -63,22 +60,17 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
             onError.setValue(PASSWORD_ERROR);
             return;
         }
+        if (!isPhoneNumberValid(phoneNumber)) {
+            onError.setValue(PHONE_BADLY_FORMATTED);
+            return;
+        }
         isEmailDuplicate(email);
     }
 
-    // TODO: phone number entry is weird
-
-    // Registers user
-    public void registerFirebaseUser() {
-        User user = new User(firstName, lastName, phoneNumber, email, password);
-        repo.registerFirebaseUser(user);
-        newUser.setValue(user);
-        onError.setValue(CLIENT_ADDED);
-    }
-
     // Checks if all required fields are filled in
-    public boolean isRegisterReady(String firstName, String lastName, String email, String password, String confirmPassword) {
-        if (firstName != null && lastName != null && email != null && password != null && confirmPassword != null) return true;
+    public boolean isRegisterReady(String firstName, String lastName, String phoneNumber, String email, String password, String confirmPassword) {
+        if (firstName != null && lastName != null && phoneNumber != null &&
+                email != null && password != null && confirmPassword != null) return true;
         else return false;
     }
 
@@ -88,7 +80,16 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         else return false;
     }
 
-    // TODO: Make sure this works
+    // Checks if phone number is proper length
+    public boolean isPhoneNumberValid(String phoneNumber) {
+        if (phoneNumber.length() != 9) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Checks if email input is valid
     public boolean isEmailValid(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
@@ -108,14 +109,17 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         repo.duplicateEmailCheck(email);
     }
 
-    // TODO: Do not let bad info be written to db
     // Sets user values
     public void setUserValues(String firstName, String lastName, String phoneNumber, String email, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.password = password;
+        User user = new User(firstName, lastName, phoneNumber, email, password);
+        registerFirebaseUser(user);
+    }
+
+    // Registers user
+    public void registerFirebaseUser(User user) {
+        repo.registerFirebaseUser(user);
+        onError.setValue(CLIENT_ADDED);
+        isRegistrationComplete.setValue(true);
     }
 
     // Handles isEmailDuplicate check
@@ -124,10 +128,9 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
         QuerySnapshot qs = task.getResult();
         if (qs.size() > 0) {
             onError.setValue(DUPLICATE_EMAIL);
-            Log.d(TAG, "duplicate checked");
         } else {
-            setUserValues(firstName, lastName, phoneNumber, email, password);
-            registerFirebaseUser();
+            Log.d(TAG, "duplicate checked");
+            isUserInputValid.setValue(true);
         }
     }
 }

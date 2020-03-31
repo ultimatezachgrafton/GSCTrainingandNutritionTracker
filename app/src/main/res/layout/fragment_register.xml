@@ -3,23 +3,23 @@
 <layout>
     <data>
         <variable
-            name="etPassword"
-            type="android.widget.EditText" />
+            name="firstName"
+            type="String" />
         <variable
-            name="etConfirmPassword"
-            type="android.widget.EditText" />
+            name="lastName"
+            type="String" />
         <variable
-            name="etFirstName"
-            type="android.widget.EditText" />
+            name="phoneNumber"
+            type="String" />
         <variable
-            name="etLastName"
-            type="android.widget.EditText" />
+            name="email"
+            type="String" />
         <variable
-            name="etPhoneNumber"
-            type="android.widget.EditText"/>
+            name="password"
+            type="String" />
         <variable
-            name="etEmail"
-            type="android.widget.EditText" />
+            name="confirmPassword"
+            type="String" />
         <variable
             name="bRegister"
             type="android.widget.Button" />
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="@={user.firstName}"/>
+            android:text="@={firstName}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="@={user.lastName}"/>
+            android:text="@={lastName}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -89,7 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:inputType="phone"
-            android:text="@={user.phoneNumber}"/>
+            android:digits="0123456789"
+            android:text="@={phoneNumber}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -104,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:inputType="textEmailAddress"
-            android:text="@={user.email}"/>
+            android:text="@={email}"/>
 
         <TextView
             android:textColor="@android:color/white"
@@ -118,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:text="@={user.password}"
+            android:text="@={password}"
             android:layout_marginBottom="10dp" />
 
         <TextView
@@ -133,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:text="@={user.confirmPassword}"
+            android:text="@={confirmPassword}"
             android:layout_marginBottom="10dp" />
 
         <Button
@@ -144,7 +145,7 @@
             android:clickable="true"
             android:background="#696969"
             android:textColor="@android:color/white"
-            android:onClick="@{()->fragment.onRegisterClick(user.firstName, user.lastName, user.phoneNumber, user.email, user.password, user.confirmPassword)}" />
+            android:onClick="@{()->fragment.onRegisterClick(firstName, lastName, phoneNumber, email, password, confirmPassword)}" />
 
     </LinearLayout>
 </layout>
