@@ -5,6 +5,7 @@
     android:layout_height="?attr/actionBarSize"
     android:id="@+id/toolbar"
     app:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:background="#575757"
     android:elevation="4dp">
 
     <TextView
@@ -14,6 +15,7 @@
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/white"
+        android:background="#575757"
         android:layout_gravity="center"
         android:id="@+id/toolbar_title" />
 

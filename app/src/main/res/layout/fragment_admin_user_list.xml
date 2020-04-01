@@ -1,4 +1,7 @@
-<layout xmlns:bind="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res-auto"
+    tools:ignore="NamespaceTypo">
     <data>
     <import type ="android.view.View"/>
         <variable name="user"
@@ -11,12 +14,22 @@
             type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel" />
     </data>
 
+    <RelativeLayout
+        bind:layout_width="match_parent"
+        bind:layout_height="match_parent"
+        android:background="#575757">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_below="@+id/toolbar"
     android:id="@+id/fragment_admin_list"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -28,4 +41,5 @@
         tools:listitem="@layout/rvuser_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
 </layout>
