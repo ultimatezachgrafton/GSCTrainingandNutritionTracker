@@ -51,25 +51,23 @@
             android:text="@{client.clientName}"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="50dp" />
+            android:textSize="30dp" />
 
         <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:id="@+id/profilePhotoImageView"
                 android:layout_marginBottom="1dp"
-                android:layout_marginLeft="110dp"
-                android:layout_marginRight="110dp"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/tvClientName"
-                android:background="#545454" />
+                android:background="#444444" />
 
             <ImageButton
-                android:layout_width="190dp"
+                android:layout_width="155dp"
                 android:layout_height="50dp"
                 android:id="@+id/cameraImageButton"
                 android:clickable="true"
-                android:layout_marginLeft="110dp"
-                android:layout_marginRight="1100dp"
+                android:layout_centerHorizontal="true"
                 android:background="#696969"
                 android:src="@android:drawable/ic_menu_camera"
                 android:layout_below="@id/profilePhotoImageView"/>
@@ -114,7 +112,7 @@
             android:id="@+id/bToDatePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/bToWorkoutList"
+            android:layout_below="@id/bCreateNewWorkout"
             android:backgroundTint="#696969"
             android:layout_marginBottom="5dp"
             android:onClick="@{()->fragment.toDatePicker(user, client)}"
@@ -125,11 +123,11 @@
             android:id="@+id/bToWorkoutList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="25dp"
             android:backgroundTint="#696969"
+            android:layout_below="@id/bToDatePicker"
             android:onClick="@{()->fragment.toWorkoutList(user, client)}"
             android:text="@string/toWorkoutList"
             android:textColor="@android:color/white" />

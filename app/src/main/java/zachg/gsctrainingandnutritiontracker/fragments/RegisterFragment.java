@@ -10,13 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentRegisterBinding;
-import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentRegisterBinding;
 import zachg.gsctrainingandnutritiontracker.viewmodels.RegisterViewModel;
 
 public class RegisterFragment extends Fragment {
@@ -24,7 +20,6 @@ public class RegisterFragment extends Fragment {
     public RegisterFragment() {}
 
     private String firstName, lastName, phoneNumber, email, password, confirmPassword;
-    private boolean isUserCopied, isInputValid;
 
     private FragmentRegisterBinding binding;
     private RegisterViewModel registerViewModel = new RegisterViewModel();

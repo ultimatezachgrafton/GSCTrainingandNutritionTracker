@@ -125,23 +125,28 @@ public class LoginFragment extends Fragment {
         loginViewModel.verifyUser(email, password);
     }
 
-    // TODO: after error w registration, goes back to login and gives error D/FirestoreRepository: fuser null: null;
-    // and register does not work
+    public void removeObservers() {
+        loginViewModel.getUserSingleLiveEvent().removeObservers(this);
+        loginViewModel.getDoesUserExist().removeObservers(this);
+        loginViewModel.getIsLoggedIn().removeObservers(this);
+        loginViewModel.getIsLoggingIn().removeObservers(this);
+        loginViewModel.getIsLogInNull().removeObservers(this);
+    }
 
     public void onRegisterClick() {
-        loginViewModel.getUserSingleLiveEvent().removeObservers(this);
+        removeObservers();
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new RegisterFragment()).addToBackStack(null).commit();
     }
 
     public void goToProfile(User user, User client) {
-        loginViewModel.getUserSingleLiveEvent().removeObservers(this);
+        removeObservers();
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ClientPortalFragment(user, client)).addToBackStack(null).commit();
     }
 
     public void goToAdminList(User user) {
-        loginViewModel.getUserSingleLiveEvent().removeObservers(this);
+        removeObservers();
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUserListFragment(user)).addToBackStack(null).commit();
     }
@@ -149,10 +154,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
-        // Check if user is signed in (non-null)
-        firebaseUser = auth.getCurrentUser();
     }
 
     @Override

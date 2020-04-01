@@ -10,9 +10,11 @@ import android.util.Log;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.fragments.LoginFragment;
+import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 
 public class LoginActivity extends SingleFragmentActivity {
 

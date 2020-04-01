@@ -90,22 +90,14 @@ public class FirestoreRepository {
     }
 
     // Gets User by searching for email
-    public User getFUserByEmail(String email) {
+    public void loginWithEmail(String email) {
         // Fetches "users" from Firestore database
         CollectionReference userColRef = db.collection("users");
         // Queries the users for matching email
         Query userQuery = userColRef.whereEqualTo("email", email);
 
         // Assigns matching User to currentUser
-        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (QueryDocumentSnapshot doc : task.getResult()) {
-                    user = doc.toObject(User.class);
-                }
-            }
-        });
-        return user;
+        userQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
     }
 
     // Gets all Users
