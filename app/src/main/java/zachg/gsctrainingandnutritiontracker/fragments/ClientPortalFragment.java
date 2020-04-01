@@ -70,7 +70,13 @@ public class ClientPortalFragment extends Fragment {
             }
         });
 
-        // TODO string res
+        clientProfileViewModel.getOnError().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         greeting = "Hi, " + user.getFirstName() + "!";
 
         // Observes for call to repo validating existence of report
@@ -78,8 +84,11 @@ public class ClientPortalFragment extends Fragment {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (!aBoolean) {
-                    Log.d(TAG, "noreport firing");
-                    goToSelectWorkoutList(user, client, currentReport);
+                    if (user.getIsAdmin()) {
+                        clientProfileViewModel.noReport();
+                    } else {
+                        goToSelectWorkoutList(user, client, currentReport);
+                    }
                 }
             }
         });
@@ -102,7 +111,7 @@ public class ClientPortalFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.user_menu, menu);
+        inflater.inflate(R.menu.menu, menu);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -120,7 +129,6 @@ public class ClientPortalFragment extends Fragment {
                     SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
                 return true;
-            // TODO: ask ben and logged out are strings in res
         } return true;
     }
 

@@ -12,22 +12,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
-import java.util.ArrayList;
-
-import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
@@ -189,6 +180,14 @@ public class FirestoreRepository {
     public FirestoreRecyclerOptions<Report> getReportsFromRepo(User user, Report report) {
         Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
                 .whereEqualTo(report.getDateString(), "dateString");
+        return new FirestoreRecyclerOptions.Builder<Report>()
+                .setQuery(reportQuery, Report.class)
+                .build();
+    }
+
+    public FirestoreRecyclerOptions<Report> getReportsFromRepo(User user) {
+        Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
+                .orderBy("dateString", Query.Direction.ASCENDING);
         return new FirestoreRecyclerOptions.Builder<Report>()
                 .setQuery(reportQuery, Report.class)
                 .build();

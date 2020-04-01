@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import zachg.gsctrainingandnutritiontracker.models.SingleLiveEvent;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
@@ -21,8 +22,8 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
 
     public User client = new User();
     public String workoutTitle;
-    public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> onError = new MutableLiveData<>();
+    private SingleLiveEvent<String> workoutTitleLiveData = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> onError = new SingleLiveEvent<>();
 
     public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
     public static String WORKOUT_TITLE_NULL = "Workout title is null.";
@@ -33,9 +34,11 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
         repo = FirestoreRepository.getInstance();
     }
 
-    public MutableLiveData<String> getWorkoutTitleLiveData() {
+    public SingleLiveEvent<String> getWorkoutTitleLiveData() {
         return workoutTitleLiveData;
     }
+
+    public SingleLiveEvent<String> getOnError() { return onError; }
 
     // Checks if WorkoutTitle is null
     public void nullWorkoutTitleCheck(User client, String workoutTitle) {

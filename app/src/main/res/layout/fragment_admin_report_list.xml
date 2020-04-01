@@ -1,17 +1,17 @@
 <layout xmlns:bind="http://schemas.android.com/apk/res/android">
     <data>
         <import type ="android.view.View"/>
-        <variable name="workout"
-            type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
-        <variable
-            name="model"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminWorkoutListViewModel" />
+        <variable name="user"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
             name="client"
             type="zachg.gsctrainingandnutritiontracker.models.User" />
         <variable
             name="report"
             type="zachg.gsctrainingandnutritiontracker.models.Report" />
+        <variable
+            name="model"
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminReportListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -20,7 +20,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_workout_list"
+        android:id="@+id/fragment_admin_report_list"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include
@@ -28,12 +28,12 @@
             layout="@layout/toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvWorkout"
+            android:id="@+id/rvReport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#696969"
+            android:background="@android:color/darker_gray"
             android:layout_marginTop="?attr/actionBarSize"
-            tools:listitem="@layout/rvworkout_item" />
+            tools:listitem="@layout/rvreport_item"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

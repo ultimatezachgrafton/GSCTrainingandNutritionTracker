@@ -20,7 +20,7 @@
         android:id="@+id/tvExerciseSeparator"
         android:text="@string/exercise"
         android:textColor="@color/white"
-        android:textSize="24dp"
+        android:textSize="20dp"
         android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp"
         />

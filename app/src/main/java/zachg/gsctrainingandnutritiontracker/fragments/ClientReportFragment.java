@@ -169,7 +169,7 @@ public class ClientReportFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.user_menu, menu);
+        inflater.inflate(R.menu.menu, menu);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

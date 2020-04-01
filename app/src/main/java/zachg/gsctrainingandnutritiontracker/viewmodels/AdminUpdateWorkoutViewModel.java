@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.models.SingleLiveEvent;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
@@ -29,12 +30,13 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 public class AdminUpdateWorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
-    public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
-    public MutableLiveData<String> workoutTitleLiveData = new MutableLiveData<String>();
-    public MutableLiveData<String> onError = new MutableLiveData<>();
-    public MutableLiveData<Boolean> workoutDeleted = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
+    private SingleLiveEvent<Workout> workoutLiveData = new SingleLiveEvent<>();
+    private SingleLiveEvent<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> workoutTitleLiveData = new SingleLiveEvent<String>();
+    private SingleLiveEvent<String> onError = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> onSuccess = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> workoutDeleted = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> isUpdating = new SingleLiveEvent<>();
     public ArrayList<Exercise> exerciseArray = new ArrayList<>();
 
     public Workout workout = new Workout();
@@ -46,6 +48,8 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
 
     public static String DUPLICATE_WORKOUT_TITLE = "Workout title already in use.";
     public static String WORKOUT_TITLE_NULL = "Workout title is null.";
+    public static String WORKOUT_UPDATED = "Workout updated.";
+    public static String WORKOUT_DELETED = "Workout deleted";
 
     public AdminUpdateWorkoutViewModel() {}
 
@@ -55,7 +59,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
         this.workout = workout;
         this.workoutTitle = workout.getWorkoutTitle();
         if (workout.getIsNew()) {
-            addFive();
+            createInitialExercises();
         }
     }
 
@@ -64,36 +68,41 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
         addBlankExercises(1);
     }
 
-    public void addThree() {
-        addBlankExercises(3);
-    }
+    public void addThree() { addBlankExercises(3); }
 
-    public void addFive() {
-        addBlankExercises(5);
-    }
+    public void addFive() { addBlankExercises(5); }
+
+    public void createInitialExercises() { addBlankExercises(5); }
 
     // Create a workout with five initial exercises
     public void addBlankExercises(int i) {
-
-        ArrayList<Exercise> exerciseArray = new ArrayList<>(i);
-
-        while (i < 5) {
+        ArrayList<Exercise> exerciseArray = new ArrayList<>();
+        int j = 0;
+        while (j < i) {
             exercise.setId(UUID.randomUUID().toString());
-            exerciseArray.add(i, exercise);
+            exerciseArray.add(exercise);
             repo.createBlankExercises(client, workout, exercise);
-            i++;
+            j++;
         }
         workout.setExercises(exerciseArray);
         exerciseLiveData.setValue(repo.getExercisesFromRepo(client, workout));
     }
 
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
+    public SingleLiveEvent<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
         return exerciseLiveData;
     }
 
-    public MutableLiveData<Boolean> getIsUpdating() {
+    public SingleLiveEvent<Boolean> getIsUpdating() {
         return isUpdating;
     }
+
+    public SingleLiveEvent<String> getWorkoutTitleLiveData() { return workoutTitleLiveData; }
+
+    public MutableLiveData<String> getOnError() { return onError; }
+
+    public SingleLiveEvent<Boolean> getWorkoutDeleted() { return workoutDeleted; }
+
+    public SingleLiveEvent<String> getOnSuccess() { return onSuccess; }
 
     // Checks if WorkoutTitle is null
     public void nullWorkoutTitleCheck(User client, Workout workout) {
@@ -115,6 +124,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
     // Deletes Workout from the repository
     public void deleteWorkout(User client, Workout workout) {
         repo.deleteWorkout(client, workout);
+        onSuccess.setValue(WORKOUT_DELETED);
         workoutDeleted.setValue(true);
     }
 
@@ -125,6 +135,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
         if (qs.size() > 0) {
             onError.setValue(DUPLICATE_WORKOUT_TITLE);
         } else {
+            onSuccess.setValue(WORKOUT_UPDATED);
             repo.updateWorkout(client, workout);
         }
     }

@@ -24,11 +24,11 @@ import java.io.File;
 import java.util.List;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfileBinding;
+import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
-import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
 
@@ -38,7 +38,6 @@ public class AdminClientProfileFragment extends Fragment {
     FragmentAdminClientProfileBinding binding;
 
     private AdminClientProfileViewModel adminClientProfileViewModel = new AdminClientProfileViewModel();
-    private ExerciseListAdapter exerciseListAdapter;
     private final String ARG_USER_ID = "user_id";
     private String TAG = "AdminClientProfileFragment";
     private String workoutTitle;
@@ -88,21 +87,16 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel = ViewModelProviders.of(this).get(AdminClientProfileViewModel.class);
         adminClientProfileViewModel.init();
 
-        adminClientProfileViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                toWorkoutFragment(user, client, s);
-            }
-        });
-
         adminClientProfileViewModel.getWorkoutTitleLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                toWorkoutFragment(user, client, s);
+                if (s != null) {
+                    toWorkoutFragment(user, client, s);
+                }
             }
         });
 
-        adminClientProfileViewModel.onError.observe(this, new Observer<String>() {
+        adminClientProfileViewModel.getOnError().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
@@ -140,27 +134,26 @@ public class AdminClientProfileFragment extends Fragment {
         adminClientProfileViewModel.nullWorkoutTitleCheck(client, workoutTitle);
     }
 
-    public void toDatePicker(User user, User client) {
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new ClientPortalFragment(user, client)).addToBackStack(null).commit();
+    public void removeObservers() {
+        adminClientProfileViewModel.getWorkoutTitleLiveData().removeObservers(this);
+        adminClientProfileViewModel.getOnError().removeObservers(this);
     }
 
     public void toWorkoutList(User user, User client) {
+        removeObservers();
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new SelectWorkoutListFragment(user, client)).addToBackStack(null).commit();
     }
 
+    public void toReportList(User user, User client) {
+        removeObservers();
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new AdminReportListFragment(user, client)).addToBackStack(null).commit();
+    }
+
     public void toWorkoutFragment(User user, User client, String workoutTitle) {
+        removeObservers();
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUpdateWorkoutFragment(user, client, workoutTitle)).addToBackStack(null).commit();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    public void onStop() {
-        super.onStop();
     }
 }

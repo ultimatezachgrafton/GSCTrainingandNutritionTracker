@@ -23,15 +23,19 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
 
     private SingleLiveEvent<Report> reportSingleLiveEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<Boolean> doesReportExist = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> onError = new SingleLiveEvent<>();
     private User user = new User();
     private Report report = new Report();
     public String TAG = "ClientPortalViewModel";
     private String dateGreeting;
+    private String NO_REPORT = "No report for this date.";
 
     public void init(User user) {
         repo = FirestoreRepository.getInstance();
         this.user = user;
     }
+
+    public SingleLiveEvent<String> getOnError() { return onError; }
 
     public void getReportFromRepo(User user, String dateString) {
         repo.setQuerySnapshotOnCompleteListener(this);
@@ -82,7 +86,5 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
         return doesReportExist;
     }
 
-    public void onReportSingleLiveEvent(Report report) {
-        reportSingleLiveEvent.setValue(report);
-    }
+    public void noReport() { onError.setValue(NO_REPORT); }
 }

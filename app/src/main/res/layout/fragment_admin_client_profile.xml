@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:margin="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
         <variable
@@ -46,16 +44,16 @@
         <TextView
             android:id="@+id/tvClientName"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="75dp"
             android:text="@{client.clientName}"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="30dp" />
 
         <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:id="@+id/profilePhotoImageView"
                 android:layout_marginBottom="1dp"
                 android:layout_centerHorizontal="true"
@@ -63,8 +61,8 @@
                 android:background="#444444" />
 
             <ImageButton
-                android:layout_width="155dp"
-                android:layout_height="50dp"
+                android:layout_width="105dp"
+                android:layout_height="30dp"
                 android:id="@+id/cameraImageButton"
                 android:clickable="true"
                 android:layout_centerHorizontal="true"
@@ -78,7 +76,7 @@
             android:text="@string/workout_instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:textSize="18dp"
             android:layout_below="@id/cameraImageButton"/>
@@ -92,6 +90,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:textColorHint="@color/white"
+            android:textColor="@color/white"
             android:text="@={workoutTitle}"
             android:layout_below="@id/tvWorkoutInstructions" />
 
@@ -109,29 +108,28 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/bToDatePicker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bCreateNewWorkout"
-            android:backgroundTint="#696969"
-            android:layout_marginBottom="5dp"
-            android:onClick="@{()->fragment.toDatePicker(user, client)}"
-            android:text="@string/toDatePicker"
-            android:textColor="@android:color/white" />
-
-        <Button
             android:id="@+id/bToWorkoutList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="5dp"
             android:backgroundTint="#696969"
-            android:layout_below="@id/bToDatePicker"
+            android:layout_below="@id/bCreateNewWorkout"
             android:onClick="@{()->fragment.toWorkoutList(user, client)}"
             android:text="@string/toWorkoutList"
             android:textColor="@android:color/white" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/bToReportList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bToWorkoutList"
+            android:backgroundTint="#696969"
+            android:layout_marginBottom="5dp"
+            android:onClick="@{()->fragment.toReportList(user, client)}"
+            android:text="@string/toReportList"
+            android:textColor="@android:color/white" />
 
+    </RelativeLayout>
 </layout>

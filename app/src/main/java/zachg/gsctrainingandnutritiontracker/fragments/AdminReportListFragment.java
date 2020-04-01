@@ -11,10 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -25,29 +24,33 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
-import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.adapters.ReportListAdapter;
 import zachg.gsctrainingandnutritiontracker.adapters.UserListAdapter;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminReportListBinding;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminUserListBinding;
+import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.models.User;
+import zachg.gsctrainingandnutritiontracker.viewmodels.AdminReportListViewModel;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminUserListViewModel;
 
-// AdminUserListFragment displays the list of Users which the admin accesses upon logging in
+public class AdminReportListFragment extends Fragment {
 
-public class AdminUserListFragment extends Fragment {
-
-    private FragmentAdminUserListBinding binding;
-    private AdminUserListViewModel adminListViewModel;
-    private UserListAdapter userListAdapter;
+    private FragmentAdminReportListBinding binding;
+    private AdminReportListViewModel adminReportListViewModel;
+    private ReportListAdapter reportListAdapter;
     private Toolbar toolbar;
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    public String TAG = "AdminUserListFragment";
+    public String TAG = "AdminReportListFragment";
 
     private User currentUser = new User();
     private User currentClient = new User();
+    private Report report = new Report();
 
-    public AdminUserListFragment(User user) {
+    public AdminReportListFragment(User user, User client) {
         this.currentUser = user;
+        this.currentClient = client;
     }
 
     @Override
@@ -58,29 +61,29 @@ public class AdminUserListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentAdminUserListBinding.inflate(inflater, container, false);
+        binding = FragmentAdminReportListBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setUser(currentUser);
         binding.setClient(currentClient);
 
         // Gets ViewModel instance to observe  LiveData
-        binding.setModel(adminListViewModel);
-        adminListViewModel = ViewModelProviders.of(getActivity()).get(AdminUserListViewModel.class);
-        adminListViewModel.init(currentUser);
+        binding.setModel(adminReportListViewModel);
+        adminReportListViewModel = ViewModelProviders.of(getActivity()).get(AdminReportListViewModel.class);
+        adminReportListViewModel.init(currentUser, report);
 
-        adminListViewModel.getUsers().observe(this, new Observer<FirestoreRecyclerOptions<User>>() {
+        adminReportListViewModel.getReports().observe(this, new Observer<FirestoreRecyclerOptions<Report>>() {
             @Override
-            public void onChanged(@Nullable FirestoreRecyclerOptions<User> users) {
-                initRecyclerView(users);
-                userListAdapter.startListening();
+            public void onChanged(@Nullable FirestoreRecyclerOptions<Report> reports) {
+                initRecyclerView(reports);
+                reportListAdapter.startListening();
             }
         });
 
-        adminListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+        adminReportListViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if (!aBoolean) {
-                    binding.rvUser.smoothScrollToPosition(adminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
+                    binding.rvReport.smoothScrollToPosition(adminReportListViewModel.getReports().getValue().getSnapshots().size() - 1);
                 }
             }
 
@@ -89,32 +92,27 @@ public class AdminUserListFragment extends Fragment {
         return v;
     }
 
-    private void initRecyclerView(FirestoreRecyclerOptions<User> users) {
-        userListAdapter = new UserListAdapter(users);
-        binding.rvUser.setAdapter(userListAdapter);
+    private void initRecyclerView(FirestoreRecyclerOptions<Report> reports) {
+        reportListAdapter = new ReportListAdapter(reports);
+        binding.rvReport.setAdapter(reportListAdapter);
 
-        binding.rvUser.setHasFixedSize(true);
-        binding.rvUser.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvReport.setHasFixedSize(true);
+        binding.rvReport.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
+        reportListAdapter.setOnItemClickListener(new ReportListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                currentClient = adminListViewModel.onItemClicked(documentSnapshot, position);
+                report = adminReportListViewModel.onItemClicked(documentSnapshot, position);
                 // Goes to client's profile fragment_report_list
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminClientProfileFragment(currentUser, currentClient)).addToBackStack(null).commit();
+                        new ViewReportFragment(currentUser, currentClient, report)).addToBackStack(null).commit();
             }
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
     public void onStop() {
         super.onStop();
-        userListAdapter.stopListening();
+        reportListAdapter.stopListening();
     }
 
     @Override
@@ -139,10 +137,14 @@ public class AdminUserListFragment extends Fragment {
                 auth.signOut();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();
-                // TODO: fix back button
-
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return true;
     }
+
+    //TODO
+    public void removeObservers() {
+
+    }
+
 }

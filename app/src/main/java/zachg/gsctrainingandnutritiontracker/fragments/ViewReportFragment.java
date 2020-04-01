@@ -64,7 +64,6 @@ public class ViewReportFragment extends Fragment {
 
     public ViewReportFragment() {}
 
-    // TODO if this comes from ReportList, everything needs to be validated...
     public ViewReportFragment(User user, User client, Report report) {
         this.report = report;
         this.user = user;
@@ -145,18 +144,11 @@ public class ViewReportFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.admin_menu, menu);
+        inflater.inflate(R.menu.menu, menu);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.bViewProfile:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new ClientPortalFragment(user, client)).addToBackStack(null).commit();
-            case R.id.bAddNewClient:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new RegisterFragment()).addToBackStack(null).commit();
-                return true;
             case R.id.bInbox:
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
                 sendIntent.setData(Uri.parse("sms:"));
@@ -165,15 +157,14 @@ public class ViewReportFragment extends Fragment {
             case R.id.bLogout:
                 auth.signOut();
                 clearBackStack();
-//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new LoginFragment()).addToBackStack(null).commit();
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new LoginFragment()).addToBackStack(null).commit();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return super.onOptionsItemSelected(item);
     }
 
     private void clearBackStack() {
-        Log.d(TAG, "Clearbackstack");
         if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
             FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
             SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);

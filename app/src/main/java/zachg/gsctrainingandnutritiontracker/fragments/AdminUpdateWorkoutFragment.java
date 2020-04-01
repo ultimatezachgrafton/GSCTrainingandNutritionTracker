@@ -35,14 +35,10 @@ public class AdminUpdateWorkoutFragment extends Fragment {
     private User user = new User();
     private User client = new User();
     private Report report = new Report();
+    private String workoutTitle;
     private Workout workout = new Workout();
     private Button bAddExercise;
     public String TAG = "WorkoutFragment";
-
-    public AdminUpdateWorkoutFragment() {}
-
-    public AdminUpdateWorkoutFragment(Workout workout) {
-    }
 
     public AdminUpdateWorkoutFragment(User user, User client, Workout workout, Report report) {
         this.user = user;
@@ -56,13 +52,8 @@ public class AdminUpdateWorkoutFragment extends Fragment {
     public AdminUpdateWorkoutFragment(User user, User client, String workoutTitle) {
         this.user = user;
         this.client = client;
-        this.workout.setWorkoutTitle(workoutTitle);
+        this.workoutTitle = workoutTitle;
         workout.setIsNew(true);
-    }
-
-    public AdminUpdateWorkoutFragment(User user, User client) {
-        this.user = user;
-        this.client = client;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -75,18 +66,18 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         binding = FragmentAdminUpdateWorkoutBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
         binding.setFragment(this);
-        binding.setWorkout(workout);
         binding.setClient(client);
         binding.setBAddExercise(bAddExercise);
         binding.setModel(adminUpdateWorkoutViewModel);
 
+
+        Workout workout = new Workout(client, workoutTitle);
+        binding.setWorkout(workout);
+
         adminUpdateWorkoutViewModel = ViewModelProviders.of(getActivity()).get(AdminUpdateWorkoutViewModel.class);
         adminUpdateWorkoutViewModel.init(client, workout);
 
-        Workout workout = new Workout(client);
-        binding.setWorkout(workout);
-
-        adminUpdateWorkoutViewModel.workoutTitleLiveData.observe(this, new Observer<String>() {
+        adminUpdateWorkoutViewModel.getWorkoutTitleLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String str) {
                 workout.setWorkoutTitle(str);
@@ -110,19 +101,26 @@ public class AdminUpdateWorkoutFragment extends Fragment {
             }
         });
 
-        adminUpdateWorkoutViewModel.onError.observe(this, new Observer<String>() {
+        adminUpdateWorkoutViewModel.getOnError().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                // TODO: getFocus
                 Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
 
-        adminUpdateWorkoutViewModel.workoutDeleted.observe(this, new Observer<Boolean>() {
+        adminUpdateWorkoutViewModel.getOnSuccess().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        adminUpdateWorkoutViewModel.getWorkoutDeleted().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean bool) {
+                removeObservers();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new SelectWorkoutListFragment(client)).addToBackStack(null).commit();
+                        new AdminClientProfileFragment(user, client)).addToBackStack(null).commit();
             }
         });
 
@@ -152,17 +150,20 @@ public class AdminUpdateWorkoutFragment extends Fragment {
     }
 
     public void deleteWorkout(User client, Workout workout) {
-        // TODO: are you certain? y/n pop-up
         adminUpdateWorkoutViewModel.deleteWorkout(client, workout);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     public void onStop() {
         super.onStop();
         exerciseListAdapter.stopListening();
+    }
+
+    public void removeObservers() {
+        adminUpdateWorkoutViewModel.getWorkoutDeleted().removeObservers(this);
+        adminUpdateWorkoutViewModel.getExerciseLiveData().removeObservers(this);
+        adminUpdateWorkoutViewModel.getIsUpdating().removeObservers(this);
+        adminUpdateWorkoutViewModel.getWorkoutTitleLiveData().removeObservers(this);
+        adminUpdateWorkoutViewModel.getOnError().removeObservers(this);
+        adminUpdateWorkoutViewModel.getOnSuccess().removeObservers(this);
     }
 }

@@ -154,6 +154,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        loginViewModel.checkFirebaseUser();
     }
 
     @Override

@@ -25,6 +25,11 @@ public class Workout extends BaseObservable {
         this.clientName = user.getClientName();
     }
 
+    public Workout(User user, String workoutTitle) {
+        this.currentUser = user;
+        this.workoutTitle = workoutTitle;
+    }
+
     public Workout(String clientName, String email, String workoutTitle) {
         this.clientName = clientName;
         this.email = email;

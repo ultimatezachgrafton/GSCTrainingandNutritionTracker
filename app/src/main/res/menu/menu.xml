@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/bAddNewClient"
-        android:icon="@drawable/ic_menu_add"
-        android:title="@string/add_new_client"
-        android:visible="true"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/bInbox"
         android:title="@string/inbox" />
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="report"
+            type="zachg.gsctrainingandnutritiontracker.models.Report"/>
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_report_item"
+        android:background="#454545"
+        android:layout_marginBottom="1dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvClientName"
+            android:text="@{report.clientName}"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{report.dateString}"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:id="@+id/tvDateString"
+            android:layout_below="@+id/tvClientName"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvWorkoutTitle"
+            android:text="@{report.WorkoutTitle}"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/tvDateString"/>
+
+    </RelativeLayout></layout>

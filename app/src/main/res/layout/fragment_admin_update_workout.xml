@@ -32,9 +32,9 @@
             type="android.widget.Button" />
     </data>
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="fill_parent"
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -64,8 +64,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/workoutTitleEdit"
         android:background="#545454"
+        android:textSize="20dp"
         android:textColor="@color/white"
-        android:text="@={workout.workoutTitle}"/>
+        android:text="@={workout.workoutTitle}"
+        android:hint="@{workout.workoutTitle}"
+        android:textColorHint="@color/white"/>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -151,5 +154,5 @@
             android:onClick="@{()->fragment.deleteWorkout(client, workout)}" />
 
     </RelativeLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>
