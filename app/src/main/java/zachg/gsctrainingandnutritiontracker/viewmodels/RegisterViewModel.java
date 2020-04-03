@@ -60,10 +60,6 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
             onError.setValue(PASSWORD_ERROR);
             return;
         }
-        if (!isPhoneNumberValid(phoneNumber)) {
-            onError.setValue(PHONE_BADLY_FORMATTED);
-            return;
-        }
         isEmailDuplicate(email);
     }
 
@@ -78,15 +74,6 @@ public class RegisterViewModel extends ViewModel implements OnCompleteListener<Q
     public boolean doPasswordsMatch(String password, String confirmPassword) {
         if (password.equals(confirmPassword)) return true;
         else return false;
-    }
-
-    // Checks if phone number is proper length
-    public boolean isPhoneNumberValid(String phoneNumber) {
-        if (phoneNumber.length() != 9) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     // Checks if email input is valid

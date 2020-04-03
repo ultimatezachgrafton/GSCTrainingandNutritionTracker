@@ -6,6 +6,10 @@ import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.fragment.app.FragmentActivity;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
+import java.util.ArrayList;
+
 public class User extends BaseObservable {
 
     @NonNull

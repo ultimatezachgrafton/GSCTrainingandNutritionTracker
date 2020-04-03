@@ -27,7 +27,7 @@ import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-public class AdminUpdateWorkoutViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class AdminUpdateWorkoutViewModel extends ViewModel {
 
     private FirestoreRepository repo = new FirestoreRepository();
     private SingleLiveEvent<Workout> workoutLiveData = new SingleLiveEvent<>();
@@ -37,7 +37,8 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
     private SingleLiveEvent<String> onSuccess = new SingleLiveEvent<>();
     private SingleLiveEvent<Boolean> workoutDeleted = new SingleLiveEvent<>();
     private SingleLiveEvent<Boolean> isUpdating = new SingleLiveEvent<>();
-    public ArrayList<Exercise> exerciseArray = new ArrayList<>();
+    private SingleLiveEvent<Boolean> isWorkoutUpdated = new SingleLiveEvent<>();
+    private ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
 
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
@@ -63,16 +64,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
         }
     }
 
-    // TODO test
-    public void addOne() {
-        addBlankExercises(1);
-    }
-
-    public void addThree() { addBlankExercises(3); }
-
-    public void addFive() { addBlankExercises(5); }
-
-    public void createInitialExercises() { addBlankExercises(5); }
+    public void createInitialExercises() { addBlankExercises(7); }
 
     // Create a workout with five initial exercises
     public void addBlankExercises(int i) {
@@ -105,20 +97,25 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
     public SingleLiveEvent<String> getOnSuccess() { return onSuccess; }
 
     // Checks if WorkoutTitle is null
-    public void nullWorkoutTitleCheck(User client, Workout workout) {
+    public void nullWorkoutTitleCheck(User client, Workout workout, ArrayList<Exercise> exerciseArrayList) {
+        this.exerciseArrayList = exerciseArrayList;
         if (workout.getWorkoutTitle() == null) {
             onError.setValue(WORKOUT_TITLE_NULL);
             return;
         } else {
-            duplicateWorkoutTitleCheck(client, workout);
+            updateWorkout(client, workout);
         }
     }
 
-    // Checks if workoutTitle is already used for this user
-    public void duplicateWorkoutTitleCheck(User client, Workout workout) {
-        this.client = client;
-        repo.setQuerySnapshotOnCompleteListener(this);
-        repo.duplicateWorkoutTitleCheck(client, workout.getWorkoutTitle());
+    public void updateWorkout(User client, Workout workout) {
+        repo.updateWorkout(client, workout);
+        int i = 0;
+        while (i < 7) {
+            repo.writeExercisesToRepo(client, workout, exerciseArrayList.get(i));
+            i++;
+        }
+        onSuccess.setValue(WORKOUT_UPDATED);
+        isWorkoutUpdated.setValue(true);
     }
 
     // Deletes Workout from the repository
@@ -128,15 +125,7 @@ public class AdminUpdateWorkoutViewModel extends ViewModel implements OnComplete
         workoutDeleted.setValue(true);
     }
 
-    // Callback to  update and override previous workout information
-    @Override
-    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        QuerySnapshot qs = task.getResult();
-        if (qs.size() > 0) {
-            onError.setValue(DUPLICATE_WORKOUT_TITLE);
-        } else {
-            onSuccess.setValue(WORKOUT_UPDATED);
-            repo.updateWorkout(client, workout);
-        }
+    public SingleLiveEvent<Boolean> getIsWorkoutUpdated() {
+        return isWorkoutUpdated;
     }
 }

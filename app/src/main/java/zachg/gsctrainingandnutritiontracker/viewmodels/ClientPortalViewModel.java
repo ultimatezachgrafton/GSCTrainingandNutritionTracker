@@ -70,7 +70,7 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
             monthStr = String.valueOf(month);
         }
         String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
-        report.setDateString(dateString);
+        this.report.setDateString(dateString);
         getReportFromRepo(user, dateString);
     }
 
@@ -85,6 +85,4 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
     public SingleLiveEvent<Boolean> getDoesReportExist() {
         return doesReportExist;
     }
-
-    public void noReport() { onError.setValue(NO_REPORT); }
 }

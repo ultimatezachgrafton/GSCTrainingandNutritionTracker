@@ -30,6 +30,9 @@
         <variable
             name="bAddExercise"
             type="android.widget.Button" />
+        <variable
+            name="exercises"
+            type="java.util.ArrayList" />
     </data>
 
 
@@ -57,7 +60,7 @@
             android:textAlignment="center"
             android:layout_below="@id/toolbar"/>
 
-    <EditText
+    <TextView
         android:id="@+id/tvWorkoutTitle"
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
@@ -67,7 +70,6 @@
         android:textSize="20dp"
         android:textColor="@color/white"
         android:text="@={workout.workoutTitle}"
-        android:hint="@{workout.workoutTitle}"
         android:textColorHint="@color/white"/>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -89,49 +91,6 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <LinearLayout
-            android:id="@+id/buttonLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="#525252"
-            android:layout_below="@id/layout_exercise_list">
-
-            <Button
-                android:id="@+id/bAddExercise1"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="#696969"
-                android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addOne()}"
-                android:text="@string/addExercise1"
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/bAddExercise3"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="#696969"
-                android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addThree()}"
-                android:text="@string/addExercise3"
-                android:textColor="@android:color/white"/>
-
-            <Button
-                android:id="@+id/bAddExercise5"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="#696969"
-                android:layout_margin="1dp"
-                android:onClick="@{()->fragment.addFive()}"
-                android:text="@string/addExercise5"
-                android:textColor="@android:color/white" />
-
-        </LinearLayout>
-
         <Button
             android:id="@+id/bUpdateWorkout"
             android:layout_width="match_parent"
@@ -139,9 +98,10 @@
             android:text="@string/update_workout"
             android:clickable="true"
             android:background="#696969"
-            android:layout_below="@id/buttonLayout"
+            android:textColor="@color/white"
+            android:layout_below="@id/layout_exercise_list"
             android:layout_margin="1dp"
-            android:onClick="@{()->fragment.validateWorkout(client, workout)}"/>
+            android:onClick="@{()->fragment.onUpdateClick(client, workout)}"/>
 
         <Button
             android:id="@+id/bDeleteWorkout"
@@ -150,6 +110,7 @@
             android:text="@string/delete_workout"
             android:clickable="true"
             android:background="#696969"
+            android:textColor="@color/white"
             android:layout_below="@id/bUpdateWorkout"
             android:onClick="@{()->fragment.deleteWorkout(client, workout)}" />
 

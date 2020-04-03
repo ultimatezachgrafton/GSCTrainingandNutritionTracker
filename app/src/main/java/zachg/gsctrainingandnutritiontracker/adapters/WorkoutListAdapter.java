@@ -19,14 +19,10 @@ import zachg.gsctrainingandnutritiontracker.models.Workout;
 
 public class WorkoutListAdapter extends FirestoreRecyclerAdapter<Workout, WorkoutListAdapter.WorkoutViewHolder> {
     private OnItemClickListener listener;
-    private User user = new User();
-    private Workout workout = new Workout();
     public String TAG = "WorkoutListAdapter";
 
     // Listens for a Firestore query
-    public WorkoutListAdapter(@NonNull FirestoreRecyclerOptions<Workout> options) {
-        super(options);
-    }
+    public WorkoutListAdapter(@NonNull FirestoreRecyclerOptions<Workout> options) { super(options); }
 
     @NonNull
     @Override

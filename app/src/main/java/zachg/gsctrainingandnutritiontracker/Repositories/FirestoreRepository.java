@@ -169,6 +169,12 @@ public class FirestoreRepository {
                 .build();
     }
 
+    public void getExercisesForArray(User user, Workout workout) {
+        Query exerciseQuery = userColRef.document(user.getEmail()).collection("workouts")
+                .document(workout.getWorkoutTitle()).collection("exercises");
+        exerciseQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
+    }
+
     public FirestoreRecyclerOptions<Exercise> getExercisesFromRepo(User user, Report report) {
         Query exerciseQuery = userColRef.document(user.getEmail()).collection("reports")
                 .document(report.getDateString()).collection("exercises");
@@ -231,12 +237,12 @@ public class FirestoreRepository {
         // Store user's data in a User model object stored in the database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Add user as a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("users").document(user.getEmail())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    public void onSuccess(Void aVoid) {
+                        Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: ");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -301,8 +307,8 @@ public class FirestoreRepository {
                 });
     }
 
-    public void writeReportToRepo(Report report) {
-        db.collection("users").document(report.getEmail()).collection("reports")
+    public void writeReportToRepo(User user, Report report) {
+        db.collection("users").document(user.getEmail()).collection("reports")
                 .document(report.getDateString())
                 .set(report)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -324,7 +330,7 @@ public class FirestoreRepository {
         for (int i = 0; i < report.getExerciseArrayList().size(); i++) {
             db.collection("users").document(report.getEmail()).collection("reports")
                     .document(report.getDateString()).collection("exercises")
-                    .document("bazinga")//report.getExerciseArrayList().get(i).getExerciseName())
+                    .document(report.getExerciseArrayList().get(i).getExerciseName())
                     .set(report.getExerciseArrayList().get(i))
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -339,5 +345,23 @@ public class FirestoreRepository {
                         }
                     });
         }
+    }
+
+    public void writeExercisesToRepo(User user, Workout workout, Exercise exercise) {
+        db.collection("users").document(user.getEmail()).collection("workouts")
+                .document(workout.getWorkoutTitle()).collection("exercises").document(exercise.getId())
+                .set(exercise)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("reports", "DocumentSnapshot added with ID: ");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("reports", "Error writing document", e);
+                    }
+                });
     }
 }

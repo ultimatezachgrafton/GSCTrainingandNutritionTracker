@@ -16,6 +16,9 @@
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
         <variable
+            name="client"
+            type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
             name="workout"
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
@@ -70,7 +73,7 @@
     <TextView
         android:id="@+id/separator1"
         style="?android:listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/enter_weight"
         android:textColor="@color/white"
@@ -134,7 +137,7 @@
             android:clickable="true"
             android:layout_below="@id/etComments"
             android:textColor="@color/white"
-            android:onClick="@{()->model.collectExercises(user, report)}" />
+            android:onClick="@{()->fragment.onSendReportClicked()}" />
 
 </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

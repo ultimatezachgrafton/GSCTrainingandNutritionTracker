@@ -1,18 +1,14 @@
 package zachg.gsctrainingandnutritiontracker.viewmodels;
 
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -20,33 +16,33 @@ import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.models.SingleLiveEvent;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class ClientReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
     private FirestoreRepository repo = new FirestoreRepository();
-    public MutableLiveData<Workout> workoutLiveData = new MutableLiveData<>();
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
-    public MutableLiveData<String> onError = new MutableLiveData<>();
-    public MutableLiveData<Boolean> areExercisesCollected = new MutableLiveData<>();
+    private SingleLiveEvent<Workout> workoutLiveData = new SingleLiveEvent<>();
+    private SingleLiveEvent<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> isUpdating = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> onError = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> onSuccess = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> areExcercisesCollected = new SingleLiveEvent<>();
+    public SingleLiveEvent<ArrayList<Exercise>> exerciseArrayListLiveData = new SingleLiveEvent<>();
 
     public ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
-
-    public ObservableField<String> dailyWeight = new ObservableField<>();
-    public ObservableField<String> comments = new ObservableField<>();
 
     public Report report = new Report();
     public Workout workout = new Workout();
     public Exercise exercise = new Exercise();
-    public User currentUser = new User();
+    private User currentUser = new User();
     public String TAG = "ReportViewModel";
+    public String REPORT_SUCCESS = "Report successfully written.";
     public String dateString;
     public String workoutTitle;
+    private boolean areExercisesCollectedBool = false;
 
     public ClientReportViewModel() {}
 
@@ -57,49 +53,62 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
         this.dateString = report.getDateString();
         this.report.setWorkoutTitle(workout.getWorkoutTitle());
         this.report.setEmail(user.getEmail());
-        exerciseLiveData.setValue(repo.getExercisesFromRepo(user, workout));
+        this.workout = workout;
+        this.report.setWorkout(workout);
+        createExerciseArrayList();
     }
 
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
+    public void createExerciseArrayList() {
+        exerciseLiveData.setValue(repo.getExercisesFromRepo(currentUser, report.getWorkout()));
+    }
+
+    public SingleLiveEvent<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
         return exerciseLiveData;
     }
 
-    public MutableLiveData<Boolean> getIsUpdating() {
+    public SingleLiveEvent<Boolean> getIsUpdating() {
         return isUpdating;
     }
 
-    // Writes report to the Repository
-    public void writeReportToRepo(Report report) {
-
-        // TODO create these inside Report constructor
-        String dailyWeight = report.getDailyWeight();
-        report.setDailyWeightString(dailyWeight);
-        String dailyWeightString = report.getDailyWeightString();
-
-        Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
-                dailyWeight, dailyWeightString, report.getComments(), report.getDateString(),
-                report.getWorkoutTitle(), report.getExerciseArrayList());
-        repo.writeReportToRepo(generatedReport);
-
+    public void getExercisesForArray() {
+        repo.setQuerySnapshotOnCompleteListener(this);
+        repo.getExercisesForArray(currentUser, report.getWorkout());
     }
 
-    // Collects Exercise data for Report
-    public void collectExercises(User user, Report report) {
-        Log.d(TAG, "in vm");
-        repo.setQuerySnapshotOnCompleteListener(this);
-        repo.getExercisesForReport(user, report);
+    // Writes report to the Repository
+    public void writeReportToRepo() {
+            // TODO create these inside Report constructor
+            String dailyWeight = report.getDailyWeight();
+            report.setDailyWeightString(dailyWeight);
+            String dailyWeightString = report.getDailyWeightString();
+
+            Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
+                    dailyWeight, dailyWeightString, report.getComments(), report.getDateString(),
+                    report.getWorkoutTitle(), exerciseArrayList);
+            repo.writeReportToRepo(currentUser, generatedReport);
+            onSuccess.setValue(REPORT_SUCCESS);
+    }
+
+    public SingleLiveEvent<String> getOnSuccess() {
+        return onSuccess;
+    }
+
+    public SingleLiveEvent<String> getOnError() {
+        return onError;
+    }
+
+    public SingleLiveEvent<Boolean> getAreExcercisesCollected() {
+        return areExcercisesCollected;
     }
 
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         if (task.isSuccessful()) {
             for (QueryDocumentSnapshot doc : task.getResult()) {
-                Exercise e = doc.toObject(Exercise.class);
-                exerciseArrayList.add(e);
-                Log.d(TAG, "in loop");
-            } Log.d(TAG, "in oncomplete");
-            report.setExerciseArrayList(exerciseArrayList);
-            writeReportToRepo(report);
+                Exercise exercise = doc.toObject(Exercise.class);
+                exerciseArrayList.add(exercise);
+            }
+            writeReportToRepo();
         } else {
             Log.d(TAG, "Error getting documents: ", task.getException());
         }

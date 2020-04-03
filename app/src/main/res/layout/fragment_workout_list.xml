@@ -5,7 +5,7 @@
             type="zachg.gsctrainingandnutritiontracker.models.Workout"/>
         <variable
             name="model"
-            type="zachg.gsctrainingandnutritiontracker.viewmodels.AdminWorkoutListViewModel" />
+            type="zachg.gsctrainingandnutritiontracker.viewmodels.SelectWorkoutListViewModel" />
         <variable
             name="client"
             type="zachg.gsctrainingandnutritiontracker.models.User" />

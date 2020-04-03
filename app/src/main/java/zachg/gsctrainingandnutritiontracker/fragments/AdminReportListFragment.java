@@ -124,10 +124,6 @@ public class AdminReportListFragment extends Fragment {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.bAddNewClient:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new RegisterFragment()).addToBackStack(null).commit();
-                return true;
             case R.id.bInbox:
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
                 sendIntent.setData(Uri.parse("sms:"));

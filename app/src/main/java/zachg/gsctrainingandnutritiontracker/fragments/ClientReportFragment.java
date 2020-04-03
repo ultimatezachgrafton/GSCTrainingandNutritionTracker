@@ -48,7 +48,6 @@ public class ClientReportFragment extends Fragment {
     // For Users to fill out their workout as they complete it
 
     private ClientReportViewModel clientReportViewModel = new ClientReportViewModel();
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private ExerciseForViewOnlyListAdapter exerciseListAdapter;
 
     private FragmentReportBinding binding;
@@ -77,6 +76,7 @@ public class ClientReportFragment extends Fragment {
         this.client = client;
         this.report = report;
         this.dateString = report.getDateString();
+        report.setClientName(user.getClientName());
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -91,11 +91,12 @@ public class ClientReportFragment extends Fragment {
 
         binding.setReport(report);
         binding.setUser(user);
-
-        // TODO implement "Today's Workout: workoutTitle" string
+        binding.setClient(client);
+        binding.setFragment(this);
 
         binding.setModel(clientReportViewModel);
         clientReportViewModel = ViewModelProviders.of(getActivity()).get(ClientReportViewModel.class);
+        binding.setLifecycleOwner(this);
         clientReportViewModel.init(user, report, workout);
 
         clientReportViewModel.getExerciseLiveData().observe(this, new Observer<FirestoreRecyclerOptions<Exercise>>() {
@@ -115,20 +116,18 @@ public class ClientReportFragment extends Fragment {
             }
         });
 
-        clientReportViewModel.onError.observe(this, new Observer<String>() {
+        clientReportViewModel.getOnError().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                // TODO: getFocus
                 Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
             }
         });
 
-        clientReportViewModel.areExercisesCollected.observe(this, new Observer<Boolean>() {
+        clientReportViewModel.getOnSuccess().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    clientReportViewModel.writeReportToRepo(report);
-                }
+            public void onChanged(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                goToClientPortal();
             }
         });
 
@@ -180,21 +179,25 @@ public class ClientReportFragment extends Fragment {
                 startActivity(sendIntent);
                 return true;
             case R.id.bLogout:
-                auth.signOut();
+//                auth.signOut();
                 clearBackStack();
-//                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-//                        new LoginFragment()).addToBackStack(null).commit();
-//                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
-            // TODO: ask ben and logged out are strings in res
         } return true;
     }
 
     private void clearBackStack() {
-        Log.d(TAG, "Clearbackstack");
         if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
             FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
             SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
+    }
+
+    public void onSendReportClicked() {
+        clientReportViewModel.getExercisesForArray();
+    }
+
+    private void goToClientPortal() {
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new ClientPortalFragment(user, client)).addToBackStack(null).commit();
     }
 }

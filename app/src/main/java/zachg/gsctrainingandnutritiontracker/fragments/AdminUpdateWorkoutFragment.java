@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.adapters.ExerciseListAdapter;
@@ -34,6 +37,7 @@ public class AdminUpdateWorkoutFragment extends Fragment {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User user = new User();
     private User client = new User();
+    private ArrayList<Exercise> exercises = new ArrayList<>();
     private Report report = new Report();
     private String workoutTitle;
     private Workout workout = new Workout();
@@ -44,6 +48,7 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         this.user = user;
         this.client = client;
         this.workout = workout;
+        this.workoutTitle = workout.getWorkoutTitle();
         report.setIsNew(false);
         workout.setIsNew(false);
         this.report = report;
@@ -69,7 +74,7 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         binding.setClient(client);
         binding.setBAddExercise(bAddExercise);
         binding.setModel(adminUpdateWorkoutViewModel);
-
+        binding.setExercises(exercises);
 
         Workout workout = new Workout(client, workoutTitle);
         binding.setWorkout(workout);
@@ -124,6 +129,15 @@ public class AdminUpdateWorkoutFragment extends Fragment {
             }
         });
 
+        adminUpdateWorkoutViewModel.getIsWorkoutUpdated().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean bool) {
+                removeObservers();
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new AdminClientProfileFragment(user, client)).addToBackStack(null).commit();
+            }
+        });
+
         return v;
     }
 
@@ -133,20 +147,10 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         binding.rvExercise.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    public void addOne() {
-        adminUpdateWorkoutViewModel.addOne();
-    }
-
-    public void addThree() {
-        adminUpdateWorkoutViewModel.addThree();
-    }
-
-    public void addFive() {
-        adminUpdateWorkoutViewModel.addFive();
-    }
-
-    public void validateWorkout(User client, Workout workout) {
-        adminUpdateWorkoutViewModel.nullWorkoutTitleCheck(client, workout);
+    public void onUpdateClick(User client, Workout newWorkout) {
+        workout.setWorkoutTitle(newWorkout.getWorkoutTitle());
+        ArrayList<Exercise> exerciseArrayList = exerciseListAdapter.getExercises();
+        adminUpdateWorkoutViewModel.nullWorkoutTitleCheck(client, workout, exerciseArrayList);
     }
 
     public void deleteWorkout(User client, Workout workout) {
@@ -165,5 +169,6 @@ public class AdminUpdateWorkoutFragment extends Fragment {
         adminUpdateWorkoutViewModel.getWorkoutTitleLiveData().removeObservers(this);
         adminUpdateWorkoutViewModel.getOnError().removeObservers(this);
         adminUpdateWorkoutViewModel.getOnSuccess().removeObservers(this);
+        adminUpdateWorkoutViewModel.getIsWorkoutUpdated().removeObservers(this);
     }
 }

@@ -11,9 +11,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/rvworkout_item"
-    android:background="@android:color/holo_orange_light"
+    android:background="#454545"
     android:clickable="true"
-    android:backgroundTint="#454545"
     android:layout_marginBottom="1dp">
 
     <TextView

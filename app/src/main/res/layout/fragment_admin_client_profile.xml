@@ -103,7 +103,7 @@
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="5dp"
             android:backgroundTint="#696969"
-            android:onClick="@{()->fragment.verifyWorkoutTitle(workoutTitle)}"
+            android:onClick="@{()->fragment.verifyWorkoutTitle(client, workoutTitle)}"
             android:text="@string/addWorkout"
             android:textColor="@color/white" />
 
@@ -129,6 +129,17 @@
             android:layout_marginBottom="5dp"
             android:onClick="@{()->fragment.toReportList(user, client)}"
             android:text="@string/toReportList"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/bLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bToReportList"
+            android:backgroundTint="#696969"
+            android:layout_marginBottom="5dp"
+            android:onClick="@{()->fragment.logout()}"
+            android:text="logout"
             android:textColor="@android:color/white" />
 
     </RelativeLayout>

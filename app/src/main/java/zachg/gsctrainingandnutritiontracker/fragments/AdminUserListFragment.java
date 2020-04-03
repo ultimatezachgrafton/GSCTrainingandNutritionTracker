@@ -83,7 +83,16 @@ public class AdminUserListFragment extends Fragment {
                     binding.rvUser.smoothScrollToPosition(adminListViewModel.getUsers().getValue().getSnapshots().size() - 1);
                 }
             }
+        });
 
+        adminListViewModel.getUserClicked().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User u) {
+                currentClient = u;
+                // Goes to client's profile fragment_report_list
+                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                        new AdminClientProfileFragment(currentUser, currentClient)).addToBackStack(null).commit();
+            }
         });
 
         return v;
@@ -99,12 +108,15 @@ public class AdminUserListFragment extends Fragment {
         userListAdapter.setOnItemClickListener(new UserListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                currentClient = adminListViewModel.onItemClicked(documentSnapshot, position);
-                // Goes to client's profile fragment_report_list
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new AdminClientProfileFragment(currentUser, currentClient)).addToBackStack(null).commit();
+                adminListViewModel.onItemClicked(documentSnapshot, position);
             }
         });
+    }
+
+    public void removeObservers() {
+        adminListViewModel.getUserClicked().removeObservers(this);
+        adminListViewModel.getIsUpdating().removeObservers(this);
+        adminListViewModel.getUsers().removeObservers(this);
     }
 
     @Override
@@ -126,10 +138,6 @@ public class AdminUserListFragment extends Fragment {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.bAddNewClient:
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new RegisterFragment()).addToBackStack(null).commit();
-                return true;
             case R.id.bInbox:
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
                 sendIntent.setData(Uri.parse("sms:"));
@@ -139,8 +147,6 @@ public class AdminUserListFragment extends Fragment {
                 auth.signOut();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();
-                // TODO: fix back button
-
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 return true;
         } return true;

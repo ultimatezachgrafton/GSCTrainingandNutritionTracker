@@ -14,7 +14,6 @@ public class Workout extends BaseObservable {
     private int workoutDay;
     private int arraySize;
     private int selectedItemPosition;
-    private boolean prevWorkout = false;
     private ArrayList<Exercise> exercises = new ArrayList<>();
     private Exercise exercise = new Exercise();
     private User currentUser = new User();

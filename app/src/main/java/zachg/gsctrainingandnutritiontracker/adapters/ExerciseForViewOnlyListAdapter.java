@@ -28,7 +28,6 @@ public class ExerciseForViewOnlyListAdapter extends FirestoreRecyclerAdapter<Exe
             super(itemView);
             tvExerciseName = itemView.findViewById(R.id.tvExerciseName);
             tvReps = itemView.findViewById(R.id.tvReps);
-            tvWeightUsed = itemView.findViewById(R.id.tvWeightUsed);
         }
     }
 
@@ -46,7 +45,6 @@ public class ExerciseForViewOnlyListAdapter extends FirestoreRecyclerAdapter<Exe
     protected void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position, @NonNull Exercise exercise) {
         holder.tvExerciseName.setText(exercise.getExerciseName());
         holder.tvReps.setText(exercise.getExerciseReps());
-        holder.tvWeightUsed.setText(exercise.getExerciseWeight());
     }
 
 }

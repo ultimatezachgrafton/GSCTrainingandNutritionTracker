@@ -29,6 +29,7 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentAdminClientProfi
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
+import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.utils.PictureUtils;
 import zachg.gsctrainingandnutritiontracker.viewmodels.AdminClientProfileViewModel;
 
@@ -130,7 +131,7 @@ public class AdminClientProfileFragment extends Fragment {
         }
     }
 
-    public void verifyWorkoutTitle(String workoutTitle) {
+    public void verifyWorkoutTitle(User client, String workoutTitle) {
         adminClientProfileViewModel.nullWorkoutTitleCheck(client, workoutTitle);
     }
 
@@ -155,5 +156,11 @@ public class AdminClientProfileFragment extends Fragment {
         removeObservers();
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new AdminUpdateWorkoutFragment(user, client, workoutTitle)).addToBackStack(null).commit();
+    }
+
+    public void logout() {
+        FirestoreRepository repo = new FirestoreRepository();
+        repo.signOut();SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new LoginFragment()).addToBackStack(null).commit();
     }
 }

@@ -15,15 +15,6 @@
     android:layout_marginBottom="1dp">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvExerciseSeparator"
-        android:text="@string/exercise"
-        android:textColor="@color/white"
-        android:textSize="24dp"
-        />
-
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{exercise.exerciseName}"
@@ -41,14 +32,5 @@
         android:textSize="20dp"
         android:textColor="@color/white"
         android:layout_below="@+id/tvExerciseName"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvWeightUsed"
-        android:textSize="20dp"
-        android:textColor="@color/white"
-        android:text="@{exercise.exerciseWeight}"
-        android:layout_below="@+id/tvReps"/>
 
 </RelativeLayout></layout>

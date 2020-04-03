@@ -26,13 +26,13 @@ import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBin
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientPortalViewModel;
 
 public class ClientPortalFragment extends Fragment {
 
     FragmentClientProfileBinding binding;
 
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private User user = new User();
     private User client = new User();
     private Report currentReport = new Report();
@@ -56,6 +56,9 @@ public class ClientPortalFragment extends Fragment {
         binding.setReport(currentReport);
         binding.setFragment(this);
         binding.setViewmodel(clientProfileViewModel);
+
+        // todo string res
+        greeting = "Hi, " + user.getFirstName() + "!";
         binding.setGreeting(greeting);
 
         clientProfileViewModel = ViewModelProviders.of(this).get(ClientPortalViewModel.class);
@@ -66,7 +69,11 @@ public class ClientPortalFragment extends Fragment {
             @Override
             public void onChanged(Report r) {
                 currentReport = r;
-                goToViewReport(user, client, r);
+                if (clientProfileViewModel.getDoesReportExist().getValue()) {
+                    goToViewReport(user, client, r);
+                } else {
+                    goToSelectWorkoutList(user, client, r);
+                }
             }
         });
 
@@ -77,18 +84,12 @@ public class ClientPortalFragment extends Fragment {
             }
         });
 
-        greeting = "Hi, " + user.getFirstName() + "!";
-
         // Observes for call to repo validating existence of report
         clientProfileViewModel.getDoesReportExist().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (!aBoolean) {
-                    if (user.getIsAdmin()) {
-                        clientProfileViewModel.noReport();
-                    } else {
-                        goToSelectWorkoutList(user, client, currentReport);
-                    }
+                    goToSelectWorkoutList(user, client, currentReport);
                 }
             }
         });
@@ -100,6 +101,10 @@ public class ClientPortalFragment extends Fragment {
         });
 
         return v;
+    }
+
+    public void removeObservers() {
+        //todo
     }
 
     @Override
@@ -122,7 +127,7 @@ public class ClientPortalFragment extends Fragment {
                 startActivity(sendIntent);
                 return true;
             case R.id.bLogout:
-                auth.signOut();
+//                auth.signOut();
                 Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
                 if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
                     FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
@@ -140,6 +145,13 @@ public class ClientPortalFragment extends Fragment {
     public void goToViewReport(User user, User client, Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(user, client, report)).addToBackStack(null).commit();
+    }
+
+    public void logout() {
+        FirestoreRepository repo = new FirestoreRepository();
+        repo.signOut();
+        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
+                new LoginFragment()).addToBackStack(null).commit();
     }
 
 }

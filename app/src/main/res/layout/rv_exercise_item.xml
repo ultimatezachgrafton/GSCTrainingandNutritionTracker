@@ -14,17 +14,6 @@
     android:background="#454545"
     android:layout_marginBottom="1dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvExerciseSeparator"
-        android:text="@string/exercise"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="5dp"
-        />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,13 +30,5 @@
         android:text="@={exercise.exerciseReps}"
         android:textColor="@color/white"
         android:layout_below="@+id/etExerciseName"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etWeightUsed"
-        android:text="@={exercise.exerciseWeight}"
-        android:textColor="@color/white"
-        android:layout_below="@+id/etReps"/>
 
 </RelativeLayout></layout>

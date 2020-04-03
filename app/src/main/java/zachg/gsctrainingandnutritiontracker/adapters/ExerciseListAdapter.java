@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import zachg.gsctrainingandnutritiontracker.R;
@@ -24,7 +27,9 @@ import static androidx.annotation.InspectableProperty.ValueType.COLOR;
 
 public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, ExerciseListAdapter.ExerciseViewHolder> {
 
-    private static final String TAG = "ExerciseListAdapter";;
+    private Exercise exercise = new Exercise();
+    private ArrayList<Exercise> exerciseArrayList = new ArrayList<>();
+    private static final String TAG = "ExerciseListAdapter";
 
     public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
@@ -34,7 +39,6 @@ public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, Exer
             super(itemView);
             etExerciseName = itemView.findViewById(R.id.etExerciseName);
             etReps = itemView.findViewById(R.id.etReps);
-            etWeightUsed = itemView.findViewById(R.id.etWeightUsed);
         }
     }
 
@@ -54,9 +58,37 @@ public class ExerciseListAdapter extends FirestoreRecyclerAdapter<Exercise, Exer
         holder.etExerciseName.setHintTextColor(Color.WHITE);
         holder.etReps.setHint(R.string.enter_reps);
         holder.etReps.setHintTextColor(Color.WHITE);
-        holder.etWeightUsed.setHint(R.string.enter_weight);
-        holder.etWeightUsed.setHintTextColor(Color.WHITE);
-        Log.d(TAG, "onBind");
+
+        holder.etExerciseName.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                String text = s.toString();
+                exercise.setExerciseName(text);
+                exerciseArrayList.add(position, exercise);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        holder.etReps.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                String text = s.toString();
+                exercise.setExerciseReps(text);
+                exerciseArrayList.add(position, exercise);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+    }
+
+    // Add a method for easy access to your weights.
+    public ArrayList<Exercise> getExercises() {
+        return exerciseArrayList;
     }
 
 }
