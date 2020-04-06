@@ -77,13 +77,13 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
 
     // Writes report to the Repository
     public void writeReportToRepo() {
-            // TODO create these inside Report constructor
+            // TODO create these inside Report constructor or something
             String dailyWeight = report.getDailyWeight();
             report.setDailyWeightString(dailyWeight);
             String dailyWeightString = report.getDailyWeightString();
 
             Report generatedReport = new Report(report.getClientName(), currentUser.getEmail(),
-                    dailyWeight, dailyWeightString, report.getComments(), report.getDateString(),
+                    dailyWeight, dailyWeightString, report.getComments(), this.dateString,
                     report.getWorkoutTitle(), exerciseArrayList);
             repo.writeReportToRepo(currentUser, generatedReport);
             onSuccess.setValue(REPORT_SUCCESS);

@@ -40,6 +40,7 @@ public class ClientPortalFragment extends Fragment {
     public String TAG = "ClientPortalFragment";
     public CalendarView calendarView;
     private String greeting;
+    private String dateString;
 
     // Initializes client for maneuverability within WorkoutListFragment
     public ClientPortalFragment(User user, User client) {
@@ -65,15 +66,10 @@ public class ClientPortalFragment extends Fragment {
         clientProfileViewModel.init(user);
 
         // Observes report returning from repo
-        clientProfileViewModel.getReportSingleLiveEvent().observe(this, new Observer<Report>() {
+        clientProfileViewModel.getExistingReport().observe(this, new Observer<Report>() {
             @Override
             public void onChanged(Report r) {
-                currentReport = r;
-                if (clientProfileViewModel.getDoesReportExist().getValue()) {
-                    goToViewReport(user, client, r);
-                } else {
-                    goToSelectWorkoutList(user, client, r);
-                }
+                goToViewReport(user, client, r);
             }
         });
 
@@ -97,7 +93,22 @@ public class ClientPortalFragment extends Fragment {
         // NOTE: Listener is explicitly called here to address issue that (as of this writing) android inversebinding
         // is not supported for CalendarView (though it is listed in the documentation as if it is)
         binding.calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            clientProfileViewModel.createDateString(year, month, dayOfMonth);
+            String dayOfMonthStr, monthStr;
+            // if dayOfMonth is less than 10, put a zero in front of it
+            if (dayOfMonth < 10) {
+                dayOfMonthStr = "0" + (dayOfMonth);
+            } else {
+                dayOfMonthStr = String.valueOf(dayOfMonth);
+            }
+            if (month < 10) {
+                monthStr = "0" + (month + 1);
+            } else {
+                monthStr = String.valueOf(month);
+            }
+            String dateString = (monthStr + "-" + dayOfMonthStr + "-" + year);
+            binding.setDateString(dateString);
+            currentReport.setDateString(dateString);
+            clientProfileViewModel.getReportFromRepo(user, dateString);
         });
 
         return v;

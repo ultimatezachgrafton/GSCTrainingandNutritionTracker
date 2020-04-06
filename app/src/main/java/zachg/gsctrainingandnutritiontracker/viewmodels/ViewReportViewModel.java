@@ -14,6 +14,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import zachg.gsctrainingandnutritiontracker.models.Exercise;
 import zachg.gsctrainingandnutritiontracker.models.Report;
+import zachg.gsctrainingandnutritiontracker.models.SingleLiveEvent;
 import zachg.gsctrainingandnutritiontracker.models.User;
 import zachg.gsctrainingandnutritiontracker.models.Workout;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
@@ -21,18 +22,17 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
-public class ViewReportViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
+public class ViewReportViewModel extends ViewModel {
 
     private FirestoreRepository repo;
     private Report currentReport = new Report();
     private User user = new User();
     private User client = new User();
     private Workout workout = new Workout();
-    private MutableLiveData<Report> reportLiveData = new MutableLiveData<>();;
 
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isUpdating = new MutableLiveData<>();
-    public MutableLiveData<String> onError = new MutableLiveData<>();
+    private SingleLiveEvent<FirestoreRecyclerOptions<Exercise>> exerciseLiveData = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> isUpdating = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> onError = new SingleLiveEvent<>();
 
     // init getting null data for user
     public void init(User user, User client, Report report) {
@@ -41,28 +41,14 @@ public class ViewReportViewModel extends ViewModel implements OnCompleteListener
         this.currentReport = report;
         this.workout = report.getWorkout();
         repo = FirestoreRepository.getInstance();
-        repo.setQuerySnapshotOnCompleteListener(this);
-        repo.getReportsFromRepo(client, currentReport);
+        exerciseLiveData.setValue(repo.getExercisesFromRepo(client, currentReport));
     }
 
-    public MutableLiveData<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
+    public SingleLiveEvent<FirestoreRecyclerOptions<Exercise>> getExerciseLiveData() {
         return exerciseLiveData;
     }
 
-    public MutableLiveData<Boolean> getIsUpdating() {
+    public SingleLiveEvent<Boolean> getIsUpdating() {
         return isUpdating;
-    }
-
-    @Override
-    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-        if (task.isSuccessful()) {
-            for (QueryDocumentSnapshot doc : task.getResult()) {
-                Report report = doc.toObject(Report.class);
-                currentReport = report;
-            }
-            exerciseLiveData.setValue(repo.getExercisesFromRepo(user, currentReport));
-        } else {
-            Log.d(TAG, "Error getting documents: ", task.getException());
-        }
     }
 }

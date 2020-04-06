@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,6 +31,8 @@ public class FirestoreRepository {
     private static FirestoreRepository instance;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     private OnCompleteListener<QuerySnapshot> querySnapshotOnCompleteListener;
+    private OnCompleteListener<DocumentSnapshot> documentSnapshotOnCompleteListener;
+
     private User user = new User();
     public String TAG = "FirestoreRepository";
 
@@ -46,6 +49,10 @@ public class FirestoreRepository {
 
     public void setQuerySnapshotOnCompleteListener(OnCompleteListener<QuerySnapshot> snapshotOnCompleteListener) {
         this.querySnapshotOnCompleteListener = snapshotOnCompleteListener;
+    }
+
+    public void setDocumentReferenceOnCompleteListener(OnCompleteListener<DocumentSnapshot> documentSnapshoteOnCompleteListener) {
+        this.documentSnapshotOnCompleteListener = documentSnapshoteOnCompleteListener;
     }
 
     // Gets FirebaseUser for authentification
@@ -128,9 +135,9 @@ public class FirestoreRepository {
 
     // Gets all Reports for a single User - querySnapshot version
     public void getReportForPortal(User user, String dateString) {
-        Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
-                .whereEqualTo(dateString, "dateString");
-        reportQuery.get().addOnCompleteListener(querySnapshotOnCompleteListener);
+        DocumentReference reportDocRef = userColRef.document(user.getEmail()).collection("reports")
+                .document(dateString);
+        reportDocRef.get().addOnCompleteListener(documentSnapshotOnCompleteListener);
     }
 
     // Returns Workouts as assigned by admin
@@ -180,14 +187,6 @@ public class FirestoreRepository {
                 .document(report.getDateString()).collection("exercises");
         return new FirestoreRecyclerOptions.Builder<Exercise>()
                 .setQuery(exerciseQuery, Exercise.class)
-                .build();
-    }
-
-    public FirestoreRecyclerOptions<Report> getReportsFromRepo(User user, Report report) {
-        Query reportQuery = userColRef.document(user.getEmail()).collection("reports")
-                .whereEqualTo(report.getDateString(), "dateString");
-        return new FirestoreRecyclerOptions.Builder<Report>()
-                .setQuery(reportQuery, Report.class)
                 .build();
     }
 

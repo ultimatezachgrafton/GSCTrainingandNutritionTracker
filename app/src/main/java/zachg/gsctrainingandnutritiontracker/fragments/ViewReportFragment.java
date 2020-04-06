@@ -47,7 +47,6 @@ public class ViewReportFragment extends Fragment {
 
     // fragment_report_list for viewing past reports
     private ViewReportViewModel viewReportViewModel;
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     private ExerciseForViewOnlyListAdapter exerciseListAdapter;
 
@@ -59,7 +58,10 @@ public class ViewReportFragment extends Fragment {
     private User client = new User();
     private Report report = new Report();
     private Workout workout = new Workout();
+    private Exercise exercise = new Exercise();
     private Date date = new Date();
+
+    // TODO fix dailyweightstring "Today's weight" showing up twice
     private String dailyWeightString;
 
     public ViewReportFragment() {}
@@ -85,6 +87,7 @@ public class ViewReportFragment extends Fragment {
         binding.setUser(user);
         binding.setClient(client);
         binding.setReport(report);
+        binding.setExercise(exercise);
         photoFile = getPhotoFile(client);
         binding.setDailyWeightString(report.getDailyWeightString());
 
@@ -155,7 +158,7 @@ public class ViewReportFragment extends Fragment {
                 startActivity(sendIntent);
                 return true;
             case R.id.bLogout:
-                auth.signOut();
+//                auth.signOut();
                 clearBackStack();
                 SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();

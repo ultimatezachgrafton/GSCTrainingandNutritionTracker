@@ -21,11 +21,14 @@
         <variable
             name="user"
             type="zachg.gsctrainingandnutritiontracker.models.User"/>
+        <variable
+            name="exercise"
+            type="zachg.gsctrainingandnutritiontracker.models.Exercise" />
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     <LinearLayout
@@ -74,8 +77,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvDate"
-                android:layout_toRightOf="@id/profilePhotoImageView"
                 android:text="@{dailyWeightString}"
+                android:textSize="18sp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/tvWorkoutTitle"
+                style="?android:listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDailyWeight"
+                android:text="@{report.workoutTitle}"
                 android:textSize="18sp"
                 android:textColor="@color/white"/>
 
@@ -86,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_exercise_list"
-                android:layout_below="@+id/profilePhotoImageView"
+                android:layout_below="@+id/tvWorkoutTitle"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -109,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvComments"
-                android:text="@{report.getComments()}"
+                android:text="@{report.comments}"
                 android:layout_below="@id/tvCommentString"/>
 
         </RelativeLayout>

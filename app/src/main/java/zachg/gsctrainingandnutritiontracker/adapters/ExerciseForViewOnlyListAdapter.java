@@ -18,11 +18,12 @@ import zachg.gsctrainingandnutritiontracker.models.Exercise;
 
 public class ExerciseForViewOnlyListAdapter extends FirestoreRecyclerAdapter<Exercise, ExerciseForViewOnlyListAdapter.ExerciseViewHolder> {
 
-    private static final String TAG = "ExerciseListAdapter";;
+    private Exercise exercise = new Exercise();
+    private static final String TAG = "ExerciseListAdapter";
 
     public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvExerciseName, tvReps, tvWeightUsed;
+        TextView tvExerciseName, tvReps;
 
         ExerciseViewHolder(View itemView) {
             super(itemView);

@@ -50,29 +50,14 @@ public class Report extends BaseObservable {
     }
 
     public Report(String clientName, String email, String dailyWeight, String dailyWeightString,
-                  String exerciseWeight, String comments, String dateString,
-                  String workoutTitle, String exerciseString) {
+                  String comments, String dateString, String workoutTitle, ArrayList<Exercise> exerciseArrayList) {
         this.clientName = clientName;
         this.email = email;
         this.dailyWeight = dailyWeight;
         this.dailyWeightString = dailyWeightString;
-        this.exerciseWeight = exerciseWeight;
         this.comments = comments;
         this.dateString = dateString;
         this.workoutTitle = workoutTitle;
-        this.exerciseString = exerciseString;
-    }
-
-
-    public Report(String clientName, String email, String dailyWeight, String dailyWeightString,
-                  String exerciseWeight, String comments, String dateString, ArrayList<Exercise> exerciseArrayList) {
-        this.clientName = clientName;
-        this.email = email;
-        this.dailyWeight = dailyWeight;
-        this.dailyWeightString = dailyWeightString;
-        this.exerciseWeight = exerciseWeight;
-        this.comments = comments;
-        this.dateString = dateString;
         this.exerciseArrayList = exerciseArrayList;
     }
 
