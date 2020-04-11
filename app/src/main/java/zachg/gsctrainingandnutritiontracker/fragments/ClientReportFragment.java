@@ -165,25 +165,7 @@ public class ClientReportFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu, menu);
-    }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bInbox:
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                sendIntent.setData(Uri.parse("sms:"));
-                startActivity(sendIntent);
-                return true;
-            case R.id.bLogout:
-//                auth.signOut();
-                clearBackStack();
-                return true;
-        } return true;
-    }
 
     private void clearBackStack() {
         if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {

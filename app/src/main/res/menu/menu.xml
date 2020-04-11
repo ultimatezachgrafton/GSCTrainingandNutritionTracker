@@ -4,10 +4,12 @@
 
     <item
         android:id="@+id/bInbox"
-        android:title="@string/inbox" />
+        android:title="@string/inbox"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/bLogout"
-        android:title="@string/logout" />
+        android:title="@string/logout"
+        app:showAsAction="never"/>
 
 </menu>

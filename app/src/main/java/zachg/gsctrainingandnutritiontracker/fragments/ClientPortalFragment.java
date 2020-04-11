@@ -130,24 +130,6 @@ public class ClientPortalFragment extends Fragment {
         inflater.inflate(R.menu.menu, menu);
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bInbox:
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                sendIntent.setData(Uri.parse("sms:"));
-                startActivity(sendIntent);
-                return true;
-            case R.id.bLogout:
-//                auth.signOut();
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
-                    FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
-                    SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
-                return true;
-        } return true;
-    }
-
     public void goToSelectWorkoutList(User user, User client, Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new SelectWorkoutListFragment(user, client, report)).addToBackStack(null).commit();
