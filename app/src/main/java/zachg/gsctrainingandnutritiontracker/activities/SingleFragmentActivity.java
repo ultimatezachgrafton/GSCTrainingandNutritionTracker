@@ -1,9 +1,8 @@
 package zachg.gsctrainingandnutritiontracker.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import androidx.appcompat.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +31,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
+        setSupportActionBar(findViewById(R.id.toolbar));
         fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
@@ -47,4 +47,17 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        //TODO - do all your stuff for when you click on the options item here
+        return super.onOptionsItemSelected(item);
+    }
 }

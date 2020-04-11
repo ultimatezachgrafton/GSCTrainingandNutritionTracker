@@ -23,10 +23,6 @@
         android:id="@+id/fragment_workout_list"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWorkout"
             android:layout_width="match_parent"

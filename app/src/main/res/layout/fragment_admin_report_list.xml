@@ -23,16 +23,11 @@
         android:id="@+id/fragment_admin_report_list"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
-            android:layout_marginTop="?attr/actionBarSize"
             tools:listitem="@layout/rvreport_item"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
