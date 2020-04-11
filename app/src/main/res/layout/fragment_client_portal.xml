@@ -31,10 +31,6 @@
         android:background="#525252"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
         <TextView
             android:id="@+id/tvGreeting"
             android:layout_width="match_parent"
@@ -44,8 +40,7 @@
             android:gravity="center"
             android:textSize="32sp"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/toolbar" />
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tv_select_date"
@@ -58,17 +53,6 @@
             app:layout_constraintBottom_toTopOf="@+id/calendarView"
             app:layout_constraintTop_toBottomOf="@+id/tvGreeting"
             android:layout_marginBottom="10dp"/>
-
-        <Button
-            android:id="@+id/bLogout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_select_date"
-            android:backgroundTint="#696969"
-            android:layout_marginBottom="5dp"
-            android:onClick="@{()->fragment.logout()}"
-            android:text="logout"
-            android:textColor="@android:color/white" />
 
         <CalendarView
             android:layout_width="match_parent"

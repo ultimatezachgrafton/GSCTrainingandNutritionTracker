@@ -37,10 +37,6 @@
             android:layout_height="match_parent"
             android:background="#575757">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
         <TextView
             android:id="@+id/tvClientName"
             android:layout_width="match_parent"

@@ -8,29 +8,22 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-
 import zachg.gsctrainingandnutritiontracker.R;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.databinding.FragmentLoginBinding;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.viewmodels.LoginViewModel;
 
 public class LoginFragment extends Fragment {
 
-    private FirebaseUser firebaseUser;
-    private FirebaseAuth auth;
     private FragmentLoginBinding binding;
     private User user = new User();
-    private Toolbar toolbar;
     private LoginViewModel loginViewModel = new LoginViewModel();
     private static final String loggingIn = "Logging In...";
     private static final String logInNull = "Please fill out all fields.";
@@ -155,10 +148,5 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         loginViewModel.checkFirebaseUser();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 }

@@ -3,7 +3,6 @@ package zachg.gsctrainingandnutritiontracker.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,20 +17,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import zachg.gsctrainingandnutritiontracker.R;
-import zachg.gsctrainingandnutritiontracker.activities.LoginActivity;
-import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientProfileBinding;
+import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
+import zachg.gsctrainingandnutritiontracker.databinding.FragmentClientPortalBinding;
 import zachg.gsctrainingandnutritiontracker.models.Report;
 import zachg.gsctrainingandnutritiontracker.models.User;
-import zachg.gsctrainingandnutritiontracker.activities.SingleFragmentActivity;
 import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 import zachg.gsctrainingandnutritiontracker.viewmodels.ClientPortalViewModel;
 
 public class ClientPortalFragment extends Fragment {
 
-    FragmentClientProfileBinding binding;
+    FragmentClientPortalBinding binding;
 
     private User user = new User();
     private User client = new User();
@@ -51,14 +47,13 @@ public class ClientPortalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //Inflate the layout for this fragment_report_list
-        binding = FragmentClientProfileBinding.inflate(inflater, container, false);
+        binding = FragmentClientPortalBinding.inflate(inflater, container, false);
         final View v = binding.getRoot();
         binding.setUser(user);
         binding.setReport(currentReport);
         binding.setFragment(this);
         binding.setViewmodel(clientProfileViewModel);
 
-        // todo string res
         greeting = "Hi, " + user.getFirstName() + "!";
         binding.setGreeting(greeting);
 
@@ -124,30 +119,6 @@ public class ClientPortalFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu, menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bInbox:
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                sendIntent.setData(Uri.parse("sms:"));
-                startActivity(sendIntent);
-                return true;
-            case R.id.bLogout:
-//                auth.signOut();
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                if (SingleFragmentActivity.fm.getBackStackEntryCount() > 0) {
-                    FragmentManager.BackStackEntry first = SingleFragmentActivity.fm.getBackStackEntryAt(0);
-                    SingleFragmentActivity.fm.popBackStackImmediate(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
-                return true;
-        } return true;
-    }
-
     public void goToSelectWorkoutList(User user, User client, Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new SelectWorkoutListFragment(user, client, report)).addToBackStack(null).commit();
@@ -156,13 +127,6 @@ public class ClientPortalFragment extends Fragment {
     public void goToViewReport(User user, User client, Report report) {
         SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
                 new ViewReportFragment(user, client, report)).addToBackStack(null).commit();
-    }
-
-    public void logout() {
-        FirestoreRepository repo = new FirestoreRepository();
-        repo.signOut();
-        SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                new LoginFragment()).addToBackStack(null).commit();
     }
 
 }

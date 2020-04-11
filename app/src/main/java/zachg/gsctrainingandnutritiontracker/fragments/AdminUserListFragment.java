@@ -38,9 +38,6 @@ public class AdminUserListFragment extends Fragment {
     private FragmentAdminUserListBinding binding;
     private AdminUserListViewModel adminListViewModel;
     private UserListAdapter userListAdapter;
-    private Toolbar toolbar;
-
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
     public String TAG = "AdminUserListFragment";
 
     private User currentUser = new User();
@@ -53,7 +50,6 @@ public class AdminUserListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -113,42 +109,15 @@ public class AdminUserListFragment extends Fragment {
         });
     }
 
+    // todo
     public void removeObservers() {
         adminListViewModel.getUserClicked().removeObservers(this);
         adminListViewModel.getIsUpdating().removeObservers(this);
         adminListViewModel.getUsers().removeObservers(this);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
     public void onStop() {
         super.onStop();
         userListAdapter.stopListening();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.d(TAG, "Optionsmenu");
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu, menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.bInbox:
-                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-                sendIntent.setData(Uri.parse("sms:"));
-                startActivity(sendIntent);
-                return true;
-            case R.id.bLogout:
-                auth.signOut();
-                SingleFragmentActivity.fm.beginTransaction().replace(R.id.fragment_container,
-                        new LoginFragment()).addToBackStack(null).commit();
-                Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-                return true;
-        } return true;
     }
 }
