@@ -8,18 +8,24 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import zachg.gsctrainingandnutritiontracker.R;
 import zachg.gsctrainingandnutritiontracker.fragments.LoginFragment;
+import zachg.gsctrainingandnutritiontracker.models.FirebaseSource;
 
-// Controls the various fragments and sets appbar
+// Controls the various fragments and sets toolbar
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     public static FragmentManager fm;
     protected abstract Fragment createFragment();
+    FirebaseSource firebaseSource = new FirebaseSource();
 
     private static final String TAG = "SingleFragmentActivity";
 
@@ -33,7 +39,17 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
-        setSupportActionBar(findViewById(R.id.appbar));
+
+        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                // set up
+            }
+        };
+
+        Toolbar toolbar = findViewById((R.id.toolbar));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getString(R.string.app_name));
         fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
@@ -55,6 +71,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.bInbox:
@@ -63,7 +80,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
                 startActivity(sendIntent);
                 return true;
             case R.id.bLogout:
-//                auth.signOut(); how do I handle from view?
+                firebaseSource.logout();
                 clearBackStack();
                 fm.beginTransaction().replace(R.id.fragment_container,
                         new LoginFragment()).addToBackStack(null).commit();

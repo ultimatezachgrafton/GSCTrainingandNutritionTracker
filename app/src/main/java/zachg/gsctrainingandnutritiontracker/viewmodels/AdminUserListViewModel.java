@@ -29,7 +29,6 @@ public class AdminUserListViewModel extends ViewModel {
 
     public void init(User user) {
         this.currentUser = user;
-        repo = FirestoreRepository.getInstance();
         users.setValue(repo.getUsersFromRepo());
     }
 

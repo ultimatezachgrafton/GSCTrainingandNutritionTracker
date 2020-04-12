@@ -18,7 +18,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminClientProfileViewModel extends ViewModel implements OnCompleteListener<QuerySnapshot> {
 
-    private FirestoreRepository repo = FirestoreRepository.getInstance();
+    private FirestoreRepository repo = new FirestoreRepository();
 
     public User client = new User();
     public String workoutTitle;
@@ -30,9 +30,7 @@ public class AdminClientProfileViewModel extends ViewModel implements OnComplete
 
     public AdminClientProfileViewModel() {}
 
-    public void init() {
-        repo = FirestoreRepository.getInstance();
-    }
+    public void init() {}
 
     public SingleLiveEvent<String> getWorkoutTitleLiveData() {
         return workoutTitleLiveData;

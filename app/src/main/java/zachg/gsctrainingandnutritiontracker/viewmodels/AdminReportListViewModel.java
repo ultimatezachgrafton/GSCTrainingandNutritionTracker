@@ -22,7 +22,6 @@ public class AdminReportListViewModel extends ViewModel {
     public void init(User user, Report report) {
         this.currentUser = user;
         this.report = report;
-        repo = FirestoreRepository.getInstance();
         reports.setValue(repo.getReportsFromRepo(currentUser));
     }
 

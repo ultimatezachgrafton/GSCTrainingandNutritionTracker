@@ -55,7 +55,6 @@ public class AdminUpdateWorkoutViewModel extends ViewModel {
     public AdminUpdateWorkoutViewModel() {}
 
     public void init(User user, Workout workout) {
-        repo = FirestoreRepository.getInstance();
         this.client = user;
         this.workout = workout;
         this.workoutTitle = workout.getWorkoutTitle();

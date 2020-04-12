@@ -68,7 +68,7 @@
             android:focusedMonthDateColor="@color/white"
             android:weekNumberColor="@color/white"
             android:background="#454545"
-            android:layout_marginBottom="150dp"
+            android:layout_marginBottom="0dp"
             android:layout_gravity="center"
             />
 

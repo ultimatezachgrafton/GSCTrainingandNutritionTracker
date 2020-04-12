@@ -47,7 +47,6 @@ public class ClientReportViewModel extends ViewModel implements OnCompleteListen
     public ClientReportViewModel() {}
 
     public void init(User user, Report report, Workout workout) {
-        repo = FirestoreRepository.getInstance();
         this.currentUser = user;
         this.report = report;
         this.dateString = report.getDateString();

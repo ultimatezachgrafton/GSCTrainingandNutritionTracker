@@ -40,7 +40,6 @@ public class ViewReportViewModel extends ViewModel {
         this.client = client;
         this.currentReport = report;
         this.workout = report.getWorkout();
-        repo = FirestoreRepository.getInstance();
         exerciseLiveData.setValue(repo.getExercisesFromRepo(client, currentReport));
     }
 

@@ -34,7 +34,6 @@ public class ClientPortalViewModel extends ViewModel implements OnCompleteListen
     private String NO_REPORT = "No report for this date.";
 
     public void init(User user) {
-        repo = FirestoreRepository.getInstance();
         this.user = user;
     }
 

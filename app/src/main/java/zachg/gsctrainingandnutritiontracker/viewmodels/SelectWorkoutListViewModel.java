@@ -32,7 +32,6 @@ public class SelectWorkoutListViewModel extends ViewModel {
 
     public void init(User client) {
         this.client = client;
-        repo = FirestoreRepository.getInstance();
         repo.getWorkoutsFromRepo(client);
         workouts.setValue(repo.getWorkoutsFromRepo(client));
     }
