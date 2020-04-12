@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GSC Training and Nutrition Tracker</string>
+    <string name="app_name">GSC Training Tracker</string>
     <string name="report_details_label">Today\'s Details</string>
     <string name="report_photo_button_description">Take photo</string>
     <string name="report_photo_no_image_description">Report photo (not set)</string>
@@ -13,7 +13,7 @@
     <string name="send_report">Send Report</string>
     <string name="show_subtitle">subtitle</string>
     <string name="date_greeting">Hi, %s!</string>
-    <string name="select_date">Select Workout Date:</string>
+    <string name="select_date">Select workout date to report a new workout or to view an existing report:</string>
     <string name="add_phone">Phone Number</string>
 
     <string name="add_email">Email</string>

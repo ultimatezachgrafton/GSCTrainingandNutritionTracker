@@ -28,14 +28,15 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:background="#525252"
+        android:background="#454545"
         android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/tvGreeting"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="80dp"
             android:text="@{greeting}"
             android:gravity="center"
             android:textSize="32sp"
@@ -47,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/select_date"
-            android:gravity="center"
+            android:layout_marginLeft="25dp"
             android:textSize="22sp"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/calendarView"
