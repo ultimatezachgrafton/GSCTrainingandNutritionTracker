@@ -22,7 +22,7 @@ import zachg.gsctrainingandnutritiontracker.repositories.FirestoreRepository;
 
 public class ClientPortalViewModel extends ViewModel implements OnCompleteListener<DocumentSnapshot> {
 
-    private FirestoreRepository repo;
+    private FirestoreRepository repo = new FirestoreRepository();
 
     private SingleLiveEvent<Report> existingReport = new SingleLiveEvent<>();
     private SingleLiveEvent<Boolean> doesReportExist = new SingleLiveEvent<>();

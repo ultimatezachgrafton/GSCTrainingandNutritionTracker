@@ -19,6 +19,7 @@
         android:id="@+id/tvItemWorkoutTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/user_title"
         android:textColor="@color/white"
         android:text="@{workout.workoutTitle}"/>
 

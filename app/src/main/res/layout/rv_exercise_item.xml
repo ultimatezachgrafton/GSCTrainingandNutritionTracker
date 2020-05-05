@@ -20,8 +20,7 @@
         android:text="@={exercise.exerciseName}"
         android:textColorHint="@color/white"
         android:textColor="@color/white"
-        android:id="@+id/etExerciseName"
-        android:layout_below="@+id/tvExerciseSeparator"/>
+        android:id="@+id/etExerciseName"/>
 
     <EditText
         android:layout_width="match_parent"

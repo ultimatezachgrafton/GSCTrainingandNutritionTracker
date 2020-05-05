@@ -4,7 +4,6 @@ package zachg.gsctrainingandnutritiontracker.models;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.ObservableField;
 import androidx.databinding.library.baseAdapters.BR;
 
 import java.util.ArrayList;

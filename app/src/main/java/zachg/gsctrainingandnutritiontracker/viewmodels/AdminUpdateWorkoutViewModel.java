@@ -124,6 +124,8 @@ public class AdminUpdateWorkoutViewModel extends ViewModel {
         workoutDeleted.setValue(true);
     }
 
+    // TODO crashes on update click if all workouts are empty
+
     public SingleLiveEvent<Boolean> getIsWorkoutUpdated() {
         return isWorkoutUpdated;
     }
