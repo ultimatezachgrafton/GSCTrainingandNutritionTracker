@@ -22,7 +22,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     private FirestoreRepository repo = new FirestoreRepository();
     private FirebaseAuth auth;
     private FirebaseUser firebaseUser;
-    private boolean searchingForDuplicate = false;
+    private boolean isDuplicate = false;
     public ObservableField<String> email = new ObservableField<>();
     public ObservableField<String> password = new ObservableField<>();
     private SingleLiveEvent<Boolean> isLoggingIn = new SingleLiveEvent<>();
@@ -44,7 +44,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
             return;
         } else {
             isLoggingIn.setValue(true);
-            this.searchingForDuplicate = true;
+            this.isDuplicate = true;
             repo.setQuerySnapshotOnCompleteListener(this);
             repo.queryUserByEmailPassword(email, password);
         }
@@ -81,7 +81,7 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
         } else {
             for (QueryDocumentSnapshot doc : qs) {
                 User user = doc.toObject(User.class);
-                if (searchingForDuplicate) {
+                if (isDuplicate) {
                     doesUserExist.setValue(true);
                 }
                 assignUserValue(user);
@@ -93,7 +93,6 @@ public class LoginViewModel extends ViewModel implements OnCompleteListener<Quer
     public void assignUserValue(User user) {
         userSingleLiveEvent.setValue(user);
     }
-
     public SingleLiveEvent<User> getUserSingleLiveEvent() {
         return userSingleLiveEvent;
     }
